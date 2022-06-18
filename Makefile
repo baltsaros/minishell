@@ -16,7 +16,7 @@ SRC_FILES	= minishell.c \
 				alloc_check.c \
 				ft_free.c \
 				ft_split_space.c \
-				signal.c \
+				signals.c \
 				execute.c \
 				builtins.c \
 				get_next_line.c \
