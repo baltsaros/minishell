@@ -155,12 +155,15 @@ void	data_init(t_input *data)
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_input data;
+	struct sigaction act;
 
+	(void)argv;
 	if (argc != 1)
 		exit(EXIT_FAILURE);
-	(void) argv;
-	//signal(SIGINT, sigint_handler);
-	//signal(SIGQUIT, sigint_handler);
+	act.sa_sigaction = signal_handler;
+	act.sa_flags = SA_SIGINFO;
+	sigaction(SIGINT, &act, NULL);
+	sigaction(SIGQUIT, &act, NULL);
 	envp_init(&data, envp);
 	while (1)
 	{
@@ -168,11 +171,11 @@ int	main(int argc, char *argv[], char *envp[])
 		if (data.buf)
 			add_history(data.buf);
 		check_field(&data.buf);
-		// printf("buf is %s\n", data.buf);
+	//	// printf("buf is %s\n", data.buf);
 		data_init(&data);
 		asterisks(&data);
 		execute(&data);
-		// ft_free_token(data.args);
+	//	// ft_free_token(data.args);
 	}
 	return ((data.status >> 8) & 0xff);
 }

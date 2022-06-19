@@ -18,6 +18,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <libft.h>
+# include <stdbool.h>
 // # include "libft/libft.h"
 
 // # define SEPAR 1
@@ -120,6 +121,7 @@ typedef struct s_input
 	char			*buf;
 	struct builtin	*builtins;
 	int				status;
+	pid_t			pid;
 }	t_input;
 
 struct builtin
@@ -178,6 +180,7 @@ int		check_charset(char c, char *charset);
 int		check_envp(char *c, t_env *envp_n, int n);
 
 // minishell
+void	main_process(t_input data);
 
 // execute
 int		pipex(int argc, char *argv[], char *envp[]);
@@ -195,7 +198,7 @@ int		yo_unset(t_input *data);
 int		yo_exit(t_input *data);
 
 //signals
-void	sigint_handler(int sign_num);
+void	signal_handler(int signo, siginfo_t *info, void *context);
 
 // others
 void	asterisks(t_input *data);
