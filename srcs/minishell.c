@@ -68,6 +68,26 @@ void	create_envp(t_input *data, char *envp[])
 	}
 }
 
+void	check_next(t_input *data, size_t *i)
+{
+	int	type;
+	int	next;
+
+	type = check_charset(data->buf[*i], "\"$\'&<>=*|()");
+	next = check_charset(data->buf[*i + 1], "<>|&");
+	if (type == next)
+	{
+		data->value = ft_strndup(data->buf + *i, 2);
+		type += 100;
+		++*i;
+	}
+	else
+		data->value = ft_strndup(data->buf + *i, 1);
+	data->node_tmp = ft_token_new(type, data->value);
+	ft_token_back(&data->args, data->node_tmp);
+	++*i;
+}
+
 void	create_token(t_input *data)
 {
 	size_t	i;
@@ -92,11 +112,7 @@ void	create_token(t_input *data)
 		}
 		if (check_charset(data->buf[i], "\"$\'&<>=*|()\\"))
 		{
-			type = check_charset(data->buf[i], "\"$\'&<>=*|()");
-			data->value = ft_strndup(data->buf + i, 1);
-			data->node_tmp = ft_token_new(type, data->value);
-			ft_token_back(&data->args, data->node_tmp);
-			++i;
+			check_next(data, &i);
 		}
 	}
 }
@@ -149,18 +165,21 @@ void	data_init(t_input *data)
 		++i;
 	}
 	data->argv[i] = NULL;
-	// ft_token_print(data->args);
+	ft_token_print(data->args);
 }
 
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_input data;
+	struct sigaction act;
 
 	(void)argv;
 	if (argc != 1)
 		exit(EXIT_FAILURE);
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, sigint_handler);
+	act.sa_sigaction = signal_handler;
+	act.sa_flags = SA_SIGINFO;
+	sigaction(SIGINT, &act, NULL);
+	sigaction(SIGQUIT, &act, NULL);
 	envp_init(&data, envp);
 	while (1)
 	{

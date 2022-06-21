@@ -18,40 +18,35 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <libft.h>
+# include <stdbool.h>
 // # include "libft/libft.h"
-
-// # define SEPAR 1
-// # define WORD 2
-// # define QUOTE 3
-// # define QUOTE_D 4
-// # define REDIR_OUT 5
-// # define REDIR_IN 6
-// # define REDIR_AP 7
-// # define REDIR_HD 8
-// # define PIPE 9
 
 enum tokens
 {
 	DOLLAR		= 36,
 	WORD		= 2,
-	WORD_AST	= 3,
+	WORD_AST	= 3, // *
 	QUOTE		= 39,
 	QUOTE_D		= 34,
-	REDIR_OUT	= 62,
-	REDIR_IN	= 60,
-	REDIR_AP	= 7,
-	REDIR_HD	= 8,
+	REDIR_OUT	= 62,	// >
+	REDIR_IN	= 60,	// <
+	REDIR_AP	= 162,	// >>
+	REDIR_HD	= 160,	// <<
 	DELIM		= 9,
 	PIPE		= 124,
 	EQUAL		= 61,
 	ASTER		= 42,
-	AND			= 13,
-	OR			= 14,
+	AND			= 138,	// &&
+	OR			= 224,	// ||
 	BR_L		= 40,
 	BR_R		= 41,
 	AMPER		= 38,
 	APOST		= 44,
-	BACKSL		= 92
+	BACKSL		= 92,
+	CMD			= 4,
+	FLAGS		= 5,
+	IN_FILE		= 6,
+	OUT_FILE	= 7
 };
 
 // enum builtins
@@ -74,6 +69,19 @@ typedef struct s_node
 	struct s_node	*prev;
 }	t_node;
 
+typedef struct s_cmd
+{
+	char			*cmd;
+ 	char			*cmd_flags;
+ 	int				in;
+ 	int				out;
+ 	char			*delim;
+ 	int				node_start;
+ 	int				node_end;
+ 	struct s_node	*next;
+ 	struct s_node	*prev;
+ }	t_cmd;
+
 typedef struct s_env
 {
 	char			*type;
@@ -81,25 +89,6 @@ typedef struct s_env
 	struct s_env	*next;
 	struct s_env	*prev;
 }	t_env;
-
-typedef	struct s_cell
-{
-	t_node			*cmds;
-	int				redir;
-	int				pipe;
-	int				tmp_in;
-	int				tmp_out;
-	
-	struct s_cell	*next;
-	struct s_cell	*prev;
-}	t_cell;
-
-typedef struct s_cell_list
-{
-	struct s_cell		*cell;
-	struct s_cell_list	*next;
-	struct s_cell_list	*prev;
-}	t_cell_list;
 
 typedef struct s_input
 {
@@ -122,7 +111,7 @@ typedef struct s_input
 	struct builtin	*builtins;
 	int				status;
 	char			**line;
-}	t_input;
+} t_input;
 
 struct builtin
 {
@@ -180,6 +169,7 @@ int		check_charset(char c, char *charset);
 int		check_envp(char *c, t_env *envp_n, int n);
 
 // minishell
+void	main_process(t_input data);
 
 // execute
 int		pipex(int argc, char *argv[], char *envp[]);
@@ -197,7 +187,7 @@ int		yo_unset(t_input *data);
 int		yo_exit(t_input *data);
 
 //signals
-void	sigint_handler(int sign_num);
+void	signal_handler(int signo, siginfo_t *info, void *context);
 
 // others
 void	asterisks(t_input *data);
