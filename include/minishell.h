@@ -49,17 +49,17 @@ enum tokens
 	OUT_FILE	= 7
 };
 
-// enum builtins
-// {
-// 	BI_ECHO		= 10,
-// 	BI_CD 		= 11,
-// 	BI_PWD		= 12,
-// 	BI_EXPORT	= 13,
-// 	BI_UNSET	= 14,
-// 	BI_ENV		= 15,
-// 	BI_EXIT		= 16,
-// 	BI_ECHON	= 17
-// };
+enum builtins
+{
+	BI_ECHO		= 10,
+ 	BI_CD 		= 11,
+ 	BI_PWD		= 12,
+ 	BI_EXPORT	= 13,
+ 	BI_UNSET	= 14,
+ 	BI_ENV		= 15,
+ 	BI_EXIT		= 16,
+ 	BI_ECHON	= 17
+};
 
 typedef struct s_node
 {
@@ -106,6 +106,7 @@ typedef struct s_input
 	char			**envp;
 	t_env			*envp_n;
 	t_node			*args;
+	t_cmd			*cmds;
 	t_node			*wild;
 	char			*buf;
 	struct builtin	*builtins;
@@ -197,7 +198,9 @@ int	parsing(t_input *data, char *buf);
 
 // parsing_utils
 bool	is_a_right_builtin(char *cmd);
+t_node	*parse_args(char **line);
 void	free_args(t_node *args);
 void	free_data_line(char **line);
+int		init_type_builtin(t_node *cmd);
 
 #endif

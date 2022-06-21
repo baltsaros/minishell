@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:44:46 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/06/21 13:34:37 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/06/21 15:17:45 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,45 +47,23 @@ int	check_all(t_input *data)
 	return (er);
 }
 
-int	free_all_and_error(t_input *data)
-{
-	free_data_line(data->line);
-	//free_args(data->args);
-	return (1);
-}
-
-t_node	*init_first_elem(char *line)
-{
-
-}
-
-t_node	*parse_args(char *line)
-{
-	t_node 	*first_elem;
-	t_node	*args;
-	t_node	*new_con;
-	int		i;
-
-	first_elem = init_first_elem(line);
-	i = 0;
-	while (line[i])
-	{
-
-	}
-	return (first_elem);
-}
-
 int	parsing(t_input *data, char *buf)
 {
 	int	i;
+	t_node *cmd_node;
 
 	i = 0;
 	data->line = ft_split(buf, ' ');
-	if (check_all(data) != 0)
-		return (free_all_and_error(data));
-	//data->args = parse_args(data->line);
+	//if (check_all(data) != 0)
+	//	return (free_all_and_error(data));
+	cmd_node = parse_args(data->line);
+	if (!cmd_node)
+	{
+		free_data_line(data->line);
+		return (1);
+	}
 	free_data_line(data->line);
-	//if (!data->args)
-	//	free_args(data->args);
+	//data->cmds = init_cmds(cmd_node);
+	free_args(cmd_node);
 	return (0);
 }
