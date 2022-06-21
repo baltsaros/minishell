@@ -21,16 +21,6 @@
 # include <stdbool.h>
 // # include "libft/libft.h"
 
-// # define SEPAR 1
-// # define WORD 2
-// # define QUOTE 3
-// # define QUOTE_D 4
-// # define REDIR_OUT 5
-// # define REDIR_IN 6
-// # define REDIR_AP 7
-// # define REDIR_HD 8
-// # define PIPE 9
-
 enum tokens
 {
 	DOLLAR		= 36,
@@ -38,16 +28,16 @@ enum tokens
 	WORD_AST	= 3,
 	QUOTE		= 39,
 	QUOTE_D		= 34,
-	REDIR_OUT	= 62,
-	REDIR_IN	= 60,
-	REDIR_AP	= 7,
-	REDIR_HD	= 8,
+	REDIR_OUT	= 62,	// >
+	REDIR_IN	= 60,	// <
+	REDIR_AP	= 162,	// >>
+	REDIR_HD	= 160,	// <<
 	DELIM		= 9,
 	PIPE		= 124,
 	EQUAL		= 61,
 	ASTER		= 42,
-	AND			= 13,
-	OR			= 14,
+	AND			= 138,	// &&
+	OR			= 224,	// ||
 	BR_L		= 40,
 	BR_R		= 41,
 	AMPER		= 38,
