@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:44:46 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/06/21 15:17:45 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/06/21 19:02:31 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,52 +18,47 @@
 // check for redirects
 // assign priority
 
-int	check_all(t_input *data)
+int	is_end_elem(char c)
 {
-	int i;
-	int er;
+	if (c == '<' || c == '>' || c == '|')
+		return (0);
+	if (c == '\0' || c == '\n')
+		return (0);
+	return (1);
+}
 
+int	get_nb_elem(char	*buf)
+{
+	int count;
+	int	i;
+
+	count = 1;
 	i = 0;
-	er = 0;
-	if (!ft_strncmp(data->line[0], "|", 1))
+	while (buf[i])
 	{
-		write(1, "Error: parse error near `|'\n", 28);
-		er++;
-	}
-	else
-	{
-		while (data->line[i])	
+		if (!is_end_elem(buf[i]))
 		{
-			if (is_a_right_builtin(data->line[i]) != true && ft_strncmp(data->line[i], "|", 1))
-			{
-				write(1, "Error: command not found: ", 26);
-				write(1, data->line[i], ft_strlen(data->line[i]));
-				write(1, "\n", 1);
-				er++;
-			}
-			i++;
+			count++;
+			while (!is_end_elem(buf[i]))
+				i++;
+			count++;
 		}
+		i++;
 	}
-	return (er);
+	return (count);
 }
 
 int	parsing(t_input *data, char *buf)
 {
-	int	i;
-	t_node *cmd_node;
+	(void)data;
+	//char	**line;
+	
+	buf = remove_white_spaces(buf);
 
-	i = 0;
-	data->line = ft_split(buf, ' ');
-	//if (check_all(data) != 0)
-	//	return (free_all_and_error(data));
-	cmd_node = parse_args(data->line);
-	if (!cmd_node)
-	{
-		free_data_line(data->line);
-		return (1);
-	}
-	free_data_line(data->line);
-	//data->cmds = init_cmds(cmd_node);
-	free_args(cmd_node);
+	printf("%s\n", buf);
+	printf("%d\n", get_nb_elem(buf));
+
+	free(buf);
+		
 	return (0);
 }

@@ -46,7 +46,8 @@ enum tokens
 	CMD			= 4,
 	FLAGS		= 5,
 	IN_FILE		= 6,
-	OUT_FILE	= 7
+	OUT_FILE	= 7,
+	ARG			= 8
 };
 
 enum builtins
@@ -65,6 +66,7 @@ typedef struct s_node
 {
 	int				type;
 	char			*value;
+	int				i;
 	struct s_node	*next;
 	struct s_node	*prev;
 }	t_node;
@@ -72,15 +74,21 @@ typedef struct s_node
 typedef struct s_cmd
 {
 	char			*cmd;
- 	char			*cmd_flags;
+	char			*cmd_flags;
+	char			*delim;
  	int				in;
  	int				out;
- 	char			*delim;
- 	int				node_start;
- 	int				node_end;
- 	struct s_node	*next;
- 	struct s_node	*prev;
+	struct s_cmd	*next;
+	struct s_cmd	*prev;
  }	t_cmd;
+
+ // Save
+ //char			*cmd_flags;
+ //char			*delim;
+ //int				node_start;
+ //int				node_end;
+ //struct s_node	*next;
+ //struct s_node	*prev;
 
 typedef struct s_env
 {
@@ -197,10 +205,6 @@ void	asterisks(t_input *data);
 int	parsing(t_input *data, char *buf);
 
 // parsing_utils
-bool	is_a_right_builtin(char *cmd);
-t_node	*parse_args(char **line);
-void	free_args(t_node *args);
-void	free_data_line(char **line);
-int		init_type_builtin(t_node *cmd);
+char	*remove_white_spaces(char *buf);
 
 #endif
