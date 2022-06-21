@@ -25,7 +25,7 @@ enum tokens
 {
 	DOLLAR		= 36,
 	WORD		= 2,
-	WORD_AST	= 3,
+	WORD_AST	= 3, // *
 	QUOTE		= 39,
 	QUOTE_D		= 34,
 	REDIR_OUT	= 62,	// >
@@ -42,7 +42,11 @@ enum tokens
 	BR_R		= 41,
 	AMPER		= 38,
 	APOST		= 44,
-	BACKSL		= 92
+	BACKSL		= 92,
+	CMD			= 4,
+	FLAGS		= 5,
+	IN_FILE		= 6,
+	OUT_FILE	= 7
 };
 
 // enum builtins
@@ -65,6 +69,19 @@ typedef struct s_node
 	struct s_node	*prev;
 }	t_node;
 
+// typedef struct s_cmd
+// {
+// 	char			*cmd;
+// 	char			*cmd_flags;
+// 	int				in;
+// 	int				out;
+// 	char			*delim;
+// 	int				node_start;
+// 	int				node_end;
+// 	struct s_node	*next;
+// 	struct s_node	*prev;
+// }	t_cmd;
+
 typedef struct s_env
 {
 	char			*type;
@@ -72,24 +89,6 @@ typedef struct s_env
 	struct s_env	*next;
 	struct s_env	*prev;
 }	t_env;
-
-typedef	struct s_cell
-{
-	t_node			*cmds;
-	int				redir;
-	int				tmp_in;
-	int				tmp_out;
-	
-	struct s_cell	*next;
-	struct s_cell	*prev;
-}	t_cell;
-
-typedef struct s_cell_list
-{
-	struct s_cell		*cell;
-	struct s_cell_list	*next;
-	struct s_cell_list	*prev;
-}	t_cell_list;
 
 typedef struct s_input
 {
