@@ -1,5 +1,10 @@
 #include "../include/minishell.h"
 
+void	find_files(t_input *data)
+{
+
+}
+
 void	asterisks(t_input *data)
 {
 	DIR				*dir;
@@ -19,16 +24,28 @@ void	asterisks(t_input *data)
 		tmp = tmp->next;
 	if (!tmp)
 		return ;
-	while ((fname = readdir(dir)) != NULL)
+	if ((!tmp->prev || tmp->prev->type != WORD_AST) 
+		&& (!tmp->next || tmp->next->type != WORD_AST))
 	{
-		if (!ft_strncmp(fname->d_name, tmp->prev->value, ft_strlen(tmp->prev->value)))
+		while ((fname = readdir(dir)) != NULL)
 		{
-			if (!tmp->next || ft_strstr(fname->d_name, tmp->next->value))
+			data->tmp = ft_strdup(fname->d_name);
+			data->node_tmp = ft_token_new(ASTER, data->tmp);
+			ft_token_back(&data->wild, data->node_tmp);
+		}	
+	}
+	else if (tmp->prev && tmp->prev->type == WORD_AST)
+	{
+		while ((fname = readdir(dir)) != NULL)
+		{
+			if (!ft_strncmp(fname->d_name, tmp->prev->value, ft_strlen(tmp->prev->value)))
 			{
-				data->tmp = ft_strdup(fname->d_name);
-				printf("value is %s\n", data->tmp);
-				data->node_tmp = ft_token_new(ASTER, data->tmp);
-				ft_token_back(&data->wild, data->node_tmp);
+				if (!tmp->next || (tmp->next && tmp->next->type == WORD_AST && ft_strstr(fname->d_name, tmp->next->value)))
+				{
+					data->tmp = ft_strdup(fname->d_name);
+					data->node_tmp = ft_token_new(ASTER, data->tmp);
+					ft_token_back(&data->wild, data->node_tmp);
+				}
 			}
 		}
 	}

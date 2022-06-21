@@ -88,6 +88,25 @@ void	check_next(t_input *data, size_t *i)
 	++*i;
 }
 
+void	check_asterisk(t_input *data)
+{
+	int	i;
+
+	i = 0;
+	data->node_tmp = data->args;
+	while (data->node_tmp->next && data->node_tmp->type != ASTER)
+		data->node_tmp = data->node_tmp->next;
+	while (data->buf[i] && data->buf[i] != '*')
+		++i;
+	if (data->node_tmp->type == ASTER)
+	{
+		if (data->buf[i - 1] && data->buf[i - 1] != ' ')
+			data->node_tmp->prev->type = WORD_AST;
+		if (data->buf[i + 1] && data->buf[i + 1] != ' ')
+			data->node_tmp->next->type = WORD_AST;
+	}
+}
+
 void	create_token(t_input *data)
 {
 	size_t	i;
@@ -115,6 +134,7 @@ void	create_token(t_input *data)
 			check_next(data, &i);
 		}
 	}
+	check_asterisk(data);
 }
 
 void	envp_init(t_input *data, char *envp[])
@@ -189,7 +209,7 @@ int	main(int argc, char *argv[], char *envp[])
 		check_field(&data.buf);
 	//	// printf("buf is %s\n", data.buf);
 		data_init(&data);
-		// asterisks(&data);
+		asterisks(&data);
 		execute(&data);
 	//	// ft_free_token(data.args);
 	}

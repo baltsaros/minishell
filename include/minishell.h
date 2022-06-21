@@ -111,6 +111,8 @@ typedef struct s_input
 	struct builtin	*builtins;
 	int				status;
 	pid_t			pid;
+	struct dirent	*fname;
+	DIR				*dir;
 }	t_input;
 
 struct builtin
@@ -118,6 +120,7 @@ struct builtin
 	char	*name;
 	int		(*func)(t_input *data);
 };
+
 typedef	struct s_env_var
 {
 	char	*name;
