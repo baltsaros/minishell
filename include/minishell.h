@@ -111,7 +111,6 @@ typedef struct s_input
 	struct builtin	*builtins;
 	int				status;
 	pid_t			pid;
-	struct dirent	*fname;
 	DIR				*dir;
 }	t_input;
 
@@ -194,5 +193,6 @@ void	signal_handler(int signo, siginfo_t *info, void *context);
 
 // others
 void	asterisks(t_input *data);
+void	find_files(t_input *data, t_node *tmp, struct dirent *fname);
 
 #endif
