@@ -86,6 +86,7 @@ typedef	struct s_cell
 {
 	t_node			*cmds;
 	int				redir;
+	int				pipe;
 	int				tmp_in;
 	int				tmp_out;
 	
@@ -120,6 +121,7 @@ typedef struct s_input
 	char			*buf;
 	struct builtin	*builtins;
 	int				status;
+	char			**line;
 }	t_input;
 
 struct builtin
@@ -199,5 +201,13 @@ void	sigint_handler(int sign_num);
 
 // others
 void	asterisks(t_input *data);
+
+// parsing
+int	parsing(t_input *data, char *buf);
+
+// parsing_utils
+bool	is_a_right_builtin(char *cmd);
+void	free_args(t_node *args);
+void	free_data_line(char **line);
 
 #endif

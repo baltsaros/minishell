@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:44:46 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/05/23 17:56:48 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/06/21 13:34:37 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,91 +18,74 @@
 // check for redirects
 // assign priority
 
-
-// t_node		*ft_assign_builtin(t_node *args)
-// {
-// 	t_node *head;
-
-// 	head = args;
-// 	while (head)
-// 	{
-// 		checkbuiltin(args);
-// 		args = args->next;
-// 	}
-// 	return (args);
-// }
-
-// t_cell	*cell_init(void)
-// {
-// 	t_cell	*cell;
-// 	cell->cmds = NULL;
-// 	cell->next = NULL;
-// 	cell->prev = NULL;
-// 	cell->redir = 0;
-// 	cell->tmp_in = stdin;
-// 	cell->tmp_out = stdout;
-// 	return (cell);
-// }
-
-// t_cell	*ft_create_cells(t_node *args)
-// {
-// 	t_cell	**cell_list;
-// 	t_cell	*cell;
-// 	t_node	*head;
-
-// 	ft_assign_builtin(args);
-// 	head = args;
-// 	while (head)
-// 	{
-// 		while (head->type != PIPE && head)
-// 		{
-// 			cell = cell_init();
-// 			ft_cell_add_cmd(cell, args);
-// 			args = args->next;
-// 		}
-// 		ft_cell_back(&cell_list, cell);
-// 		args = args->next;
-// 	}
-// 	return (cell_list);
-// }
-
-// void	ft_redirect(t_cell *cell_l)
-// {
-// 	while (cell_l->cmds)
-// 	{
-// 		if ((*cell_l).cmds.type == REDIR_OUT)
-// 			(*cell_l).redir = REDIR_OUT;
-// 		else if ((*cell_l).cmds.type == REDIR_IN)
-// 			(*cell_l).redir = REDIR_IN;
-// 		else if ((*cell_l).cmds.type == REDIR_AP)
-// 			(*cell_l).redir = REDIR_OUT;
-// 		else if ((*cell_l)->cmds.type == REDIR_HD)
-// 			(*cell_l).redir = REDIR_OUT;
-// 		else
-// 			(*cell_l).redir = 0;
-// 		cell_l = cell_l->next;
-// 	}
-// }
-
-// void	*ft_finish_cells(t_cell *cell_l)
-// {
-// 	t_cell *head;
-
-// 	head = cell_l;
-// 	while (head)
-// 	{
-// 		fr_redirect(head);
-// 		head = head->next;
-// 	}
-// }
-
-/*t_cell_list	**ft_cell_list(t_node *args)
+int	check_all(t_input *data)
 {
-	t_cell_list	*cmd_ls;
+	int i;
+	int er;
 
-	while (args)
+	i = 0;
+	er = 0;
+	if (!ft_strncmp(data->line[0], "|", 1))
 	{
-		cmd_ls->cell = ft_create_cells(args);
-		cmd_ls = cmd_ls->next;
+		write(1, "Error: parse error near `|'\n", 28);
+		er++;
 	}
-}*/
+	else
+	{
+		while (data->line[i])	
+		{
+			if (is_a_right_builtin(data->line[i]) != true && ft_strncmp(data->line[i], "|", 1))
+			{
+				write(1, "Error: command not found: ", 26);
+				write(1, data->line[i], ft_strlen(data->line[i]));
+				write(1, "\n", 1);
+				er++;
+			}
+			i++;
+		}
+	}
+	return (er);
+}
+
+int	free_all_and_error(t_input *data)
+{
+	free_data_line(data->line);
+	//free_args(data->args);
+	return (1);
+}
+
+t_node	*init_first_elem(char *line)
+{
+
+}
+
+t_node	*parse_args(char *line)
+{
+	t_node 	*first_elem;
+	t_node	*args;
+	t_node	*new_con;
+	int		i;
+
+	first_elem = init_first_elem(line);
+	i = 0;
+	while (line[i])
+	{
+
+	}
+	return (first_elem);
+}
+
+int	parsing(t_input *data, char *buf)
+{
+	int	i;
+
+	i = 0;
+	data->line = ft_split(buf, ' ');
+	if (check_all(data) != 0)
+		return (free_all_and_error(data));
+	//data->args = parse_args(data->line);
+	free_data_line(data->line);
+	//if (!data->args)
+	//	free_args(data->args);
+	return (0);
+}

@@ -156,9 +156,9 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	t_input data;
 
+	(void)argv;
 	if (argc != 1)
 		exit(EXIT_FAILURE);
-	(void) argv;
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, sigint_handler);
 	envp_init(&data, envp);
@@ -167,11 +167,14 @@ int	main(int argc, char *argv[], char *envp[])
 		data.buf = readline("yo> ");
 		if (data.buf)
 			add_history(data.buf);
-		check_field(&data.buf);
-		// printf("buf is %s\n", data.buf);
-		data_init(&data);
-		asterisks(&data);
-		execute(&data);
+
+		parsing(&data, data.buf);
+
+		//check_field(&data.buf);
+		//data_init(&data);
+		//asterisks(&data);
+		//execute(&data);
+
 		// ft_free_token(data.args);
 	}
 	return ((data.status >> 8) & 0xff);
