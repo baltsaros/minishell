@@ -6,23 +6,17 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:44:46 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/06/21 20:07:47 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/06/22 11:34:00 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-// interesting: if p1 | p2 -> p2 always gets excuted, even if 1 doesnt exist or is not comaptible -> exit never works with pipe
-// p1 only gets excecuted if p2 exists
-// check for pipes
-// check for redirects
-// assign priority
-
 int	is_end_elem(char c)
 {
 	if (c == '<' || c == '>' || c == '|')
 		return (0);
-	if (c == '\0' || c == '\n')
+	if (c == '\0' || c == '\n' || c == '&')
 		return (0);
 	return (1);
 }
