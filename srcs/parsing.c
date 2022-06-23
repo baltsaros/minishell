@@ -6,103 +6,132 @@
 /*   By: abuzdin <abuzdin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:44:46 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/05/23 17:56:48 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/06/23 09:28:15 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-// interesting: if p1 | p2 -> p2 always gets excuted, even if 1 doesnt exist or is not comaptible -> exit never works with pipe
-// p1 only gets excecuted if p2 exists
-// check for pipes
-// check for redirects
-// assign priority
-
-
-// t_node		*ft_assign_builtin(t_node *args)
-// {
-// 	t_node *head;
-
-// 	head = args;
-// 	while (head)
-// 	{
-// 		checkbuiltin(args);
-// 		args = args->next;
-// 	}
-// 	return (args);
-// }
-
-// t_cell	*cell_init(void)
-// {
-// 	t_cell	*cell;
-// 	cell->cmds = NULL;
-// 	cell->next = NULL;
-// 	cell->prev = NULL;
-// 	cell->redir = 0;
-// 	cell->tmp_in = stdin;
-// 	cell->tmp_out = stdout;
-// 	return (cell);
-// }
-
-// t_cell	*ft_create_cells(t_node *args)
-// {
-// 	t_cell	**cell_list;
-// 	t_cell	*cell;
-// 	t_node	*head;
-
-// 	ft_assign_builtin(args);
-// 	head = args;
-// 	while (head)
-// 	{
-// 		while (head->type != PIPE && head)
-// 		{
-// 			cell = cell_init();
-// 			ft_cell_add_cmd(cell, args);
-// 			args = args->next;
-// 		}
-// 		ft_cell_back(&cell_list, cell);
-// 		args = args->next;
-// 	}
-// 	return (cell_list);
-// }
-
-// void	ft_redirect(t_cell *cell_l)
-// {
-// 	while (cell_l->cmds)
-// 	{
-// 		if ((*cell_l).cmds.type == REDIR_OUT)
-// 			(*cell_l).redir = REDIR_OUT;
-// 		else if ((*cell_l).cmds.type == REDIR_IN)
-// 			(*cell_l).redir = REDIR_IN;
-// 		else if ((*cell_l).cmds.type == REDIR_AP)
-// 			(*cell_l).redir = REDIR_OUT;
-// 		else if ((*cell_l)->cmds.type == REDIR_HD)
-// 			(*cell_l).redir = REDIR_OUT;
-// 		else
-// 			(*cell_l).redir = 0;
-// 		cell_l = cell_l->next;
-// 	}
-// }
-
-// void	*ft_finish_cells(t_cell *cell_l)
-// {
-// 	t_cell *head;
-
-// 	head = cell_l;
-// 	while (head)
-// 	{
-// 		fr_redirect(head);
-// 		head = head->next;
-// 	}
-// }
-
-/*t_cell_list	**ft_cell_list(t_node *args)
+int	is_end_elem(char c)
 {
-	t_cell_list	*cmd_ls;
+	if (c == '<' || c == '>' || c == '|')
+		return (0);
+	if (c == '\0' || c == '\n' || c == '&')
+		return (0);
+	return (1);
+}
 
-	while (args)
+int	get_nb_elem(char	*buf)
+{
+	int count;
+	int	i;
+
+	count = 1;
+	i = 0;
+	while (buf[i])
 	{
-		cmd_ls->cell = ft_create_cells(args);
-		cmd_ls = cmd_ls->next;
+		if (!is_end_elem(buf[i]))
+		{
+			count++;
+			while (!is_end_elem(buf[i]))
+				i++;
+			count++;
+		}
+		i++;
 	}
-}*/
+	return (count);
+}
+
+int	get_size_elem(char	*buf, int pos)
+{
+	int	i;
+	
+	i = 0;
+	if (is_end_elem(buf[pos]))
+	{
+		while (buf[pos] && is_end_elem(buf[pos]))
+		{
+			pos++;
+			i++;
+		}
+	}
+	else
+	{
+		while (buf[pos] && !is_end_elem(buf[pos]))
+		{
+			pos++;
+			i++;
+		}
+	}
+	return (i);
+}
+
+t_node	*init_elem(char	*buf, int pos)
+{
+	int	i;
+	int size;
+	t_node	*elem;
+
+	i = 0;
+	size = get_size_elem(buf, pos);
+	elem = (t_node *) malloc (sizeof(t_node));
+	if (!elem)
+		return (NULL);
+	elem->value = (char *) malloc ((size + 1) * sizeof(char));
+	if (!elem->value)
+		return (NULL);
+	while (i != size)
+	{
+		elem->value[i] = buf[pos++];
+		i++;
+	}
+	elem->value[i] = '\0';
+	elem->i = size;
+	elem->next = NULL;
+	elem->prev = NULL;
+	return (elem);
+}
+
+t_node	*get_args(char *buf, int nb_elem)
+{
+	int		i;
+	int		pos;
+	t_node	*first_elem;
+	t_node	*args;
+	t_node	*new_con;
+
+	i = 1;
+	pos = 0;
+	first_elem = init_elem(buf, 0);
+	if (!first_elem)
+		return (NULL);
+	args = first_elem;
+	while (i < nb_elem)
+	{
+		pos += args->i;
+		new_con = init_elem(buf, pos);
+		if (!new_con)
+			return (NULL);
+		new_con->prev = args;
+		args->next = new_con;
+		args = args->next;
+		i++;
+	}
+	return (first_elem);
+}
+
+int	parsing(t_input *data, char *buf)
+{
+	(void)data;
+	t_node	*parsing;
+	
+	buf = remove_white_spaces(buf);
+	parsing = get_args(buf, get_nb_elem(buf));
+	while (parsing)
+	{
+		printf("parsed value: %s\n", parsing->value);
+		parsing = parsing->next;
+	}
+	free(buf);
+	return (0);
+}

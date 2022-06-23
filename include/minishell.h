@@ -21,6 +21,7 @@
 # include <stdbool.h>
 // # include "libft/libft.h"
 
+// enum for tokens
 enum tokens
 {
 	DOLLAR		= 36,
@@ -46,42 +47,52 @@ enum tokens
 	CMD			= 4,
 	FLAGS		= 5,
 	IN_FILE		= 6,
-	OUT_FILE	= 7
+	OUT_FILE	= 7,
+	ARG			= 8
 };
 
-// enum builtins
-// {
-// 	BI_ECHO		= 10,
-// 	BI_CD 		= 11,
-// 	BI_PWD		= 12,
-// 	BI_EXPORT	= 13,
-// 	BI_UNSET	= 14,
-// 	BI_ENV		= 15,
-// 	BI_EXIT		= 16,
-// 	BI_ECHON	= 17
-// };
+enum builtins
+{
+	BI_ECHO		= 10,
+ 	BI_CD 		= 11,
+ 	BI_PWD		= 12,
+ 	BI_EXPORT	= 13,
+ 	BI_UNSET	= 14,
+ 	BI_ENV		= 15,
+ 	BI_EXIT		= 16,
+ 	BI_ECHON	= 17
+};
 
+// struct for token (+ wildcard) linked lists
 typedef struct s_node
 {
 	int				type;
 	char			*value;
+	int				i;
 	struct s_node	*next;
 	struct s_node	*prev;
 }	t_node;
 
-// typedef struct s_cmd
-// {
-// 	char			*cmd;
-// 	char			*cmd_flags;
-// 	int				in;
-// 	int				out;
-// 	char			*delim;
-// 	int				node_start;
-// 	int				node_end;
-// 	struct s_node	*next;
-// 	struct s_node	*prev;
-// }	t_cmd;
+typedef struct s_cmd
+{
+	char			*cmd;
+	char			*cmd_flags;
+	char			*delim;
+ 	int				in;
+ 	int				out;
+	struct s_cmd	*next;
+	struct s_cmd	*prev;
+ }	t_cmd;
 
+ // Save
+ //char			*cmd_flags;
+ //char			*delim;
+ //int				node_start;
+ //int				node_end;
+ //struct s_node	*next;
+ //struct s_node	*prev;
+
+// struct for envp linked lists
 typedef struct s_env
 {
 	char			*type;
@@ -90,6 +101,7 @@ typedef struct s_env
 	struct s_env	*prev;
 }	t_env;
 
+// global structure
 typedef struct s_input
 {
 	int				i;
@@ -106,14 +118,17 @@ typedef struct s_input
 	char			**envp;
 	t_env			*envp_n;
 	t_node			*args;
+	t_cmd			*cmds;
 	t_node			*wild;
 	char			*buf;
 	struct builtin	*builtins;
 	int				status;
 	pid_t			pid;
 	DIR				*dir;
+	char			**line;
 }	t_input;
 
+// struct for builins functions
 struct builtin
 {
 	char	*name;
@@ -194,5 +209,11 @@ void	signal_handler(int signo, siginfo_t *info, void *context);
 // others
 void	asterisks(t_input *data);
 void	find_files(t_input *data, t_node *tmp, struct dirent *fname);
+
+// parsing
+int	parsing(t_input *data, char *buf);
+
+// parsing_utils
+char	*remove_white_spaces(char *buf);
 
 #endif

@@ -207,6 +207,7 @@ int	main(int argc, char *argv[], char *envp[])
 		if (data.buf)
 			add_history(data.buf);
 		check_field(&data.buf);
+		parsing(&data, data.buf);
 	//	// printf("buf is %s\n", data.buf);
 		data_init(&data);
 		asterisks(&data);
