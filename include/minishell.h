@@ -68,7 +68,7 @@ typedef struct s_node
 {
 	int				type;
 	char			*value;
-	int				i;
+	// int				i;
 	struct s_node	*next;
 	struct s_node	*prev;
 }	t_node;
@@ -118,6 +118,7 @@ typedef struct s_input
 	char			**envp;
 	t_env			*envp_n;
 	t_node			*args;
+	t_node			*parsing;
 	t_cmd			*cmds;
 	t_node			*wild;
 	char			*buf;

@@ -43,7 +43,6 @@ void	asterisks(t_input *data)
 		perror("opendir");
 		exit (EXIT_FAILURE);
 	}
-	data->wild = NULL;
 	fname = NULL;
 	tmp = data->args;
 	while (tmp && tmp->type != ASTER)

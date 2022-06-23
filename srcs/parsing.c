@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:44:46 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/06/23 09:28:15 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/06/23 09:50:49 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ int	parsing(t_input *data, char *buf)
 		printf("parsed value: %s\n", parsing->value);
 		parsing = parsing->next;
 	}
+	data->parsing = parsing;
 	free(buf);
 	return (0);
 }

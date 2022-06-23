@@ -173,6 +173,7 @@ void	data_init(t_input *data)
 	data->in = 0;
 	data->out = 1;
 	data->args = NULL;
+	data->wild = NULL;
 	create_token(data);
 	tmp = data->args;
 	data->argc = ft_token_size(data->args);
@@ -207,12 +208,12 @@ int	main(int argc, char *argv[], char *envp[])
 		if (data.buf)
 			add_history(data.buf);
 		check_field(&data.buf);
-		parsing(&data, data.buf);
-	//	// printf("buf is %s\n", data.buf);
 		data_init(&data);
 		asterisks(&data);
+		// parsing(&data, data.buf);
+		// ft_token_print(data.parsing);
 		execute(&data);
-	//	// ft_free_token(data.args);
+		// ft_free_token(data.args);
 	}
 	return ((data.status >> 8) & 0xff);
 }
