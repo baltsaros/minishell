@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:44:46 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/06/28 01:42:41 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/06/28 01:48:25 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,11 +137,28 @@ t_cmd	*init_elem(char	**line, t_cmd *elem)
 			elem->argument = ft_strdup(line[i]);
 		else if (!ft_strncmp(line[i], "<<", 2))
 		{
+			// Open Heredoc here
 			i++;
 			elem->delim = ft_strdup(line[i]);
 		}
-		//else if ()
-		//else if ()
+		else if (line[i][0] == '<')
+		{
+			elem->in = open(elem->argument, O_RDONLY);
+			// Basic
+		}
+		else if (line[i][0] == '>')
+		{
+			if (line[i][1] == '>')
+			{
+				elem->out = open(elem->argument, O_WRONLY | O_CREAT | O_APPEND, 00644);
+				//Append
+			}
+			else
+			{
+				elem->out = open(elem->argument, O_WRONLY | O_CREAT | O_TRUNC, 00644);
+				// Basic
+			}
+		}
 		else if (line[i][0] == '|' && line[i][1] != '|')
 			elem->pipe = 1;
 		i++;
