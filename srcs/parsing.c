@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:44:46 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/06/27 03:16:32 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/06/27 20:46:40 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,26 +37,34 @@ t_cmd	*init_cmd(t_node *parsing, t_cmd *cmd)
 	i = 0;
 	while (parsing && parsing->value[0] != '|')
 	{
-		// Get cmd
 		if (i == 0)
 			cmd->cmd = parsing->value;
 		else
 		{
-			//AAAAAAAAAARGH
-			// Get flags
 			if (parsing->value[0] == '-')
 				cmd->cmd_flags = parsing->value;
-			// Get argument
 			else if (parsing->type == WORD)
 				cmd->argument = parsing->value;
-			// Get delim
 			else if (!ft_strncmp(parsing->value, "<<", 2))
 				cmd->delim = parsing->next->value;
-			// Get in
-			// It's in progress but not commited
-			// Get out
-			// It's in progress but not commited
-			// Get pipe
+			else if (parsing->value[0] == '<')
+			{
+				if (parsing->value[1] == '<')
+				{
+					//Heredoc
+				}
+				else
+					cmd->in = open(cmd->argument, O_RDONLY);
+			}
+			else if (parsing->value[0] == '>')
+			{
+				if (parsing->value[1] == '>')
+				{
+					cmd->out = open(cmd->argument, O_WRONLY | O_CREAT | O_APPEND, 00644);
+				}
+				else
+					cmd->out = open(cmd->argument, O_WRONLY | O_CREAT | O_TRUNC, 00644);
+			}
 			else if (parsing->next->value[0] == '|')
 			{
 				cmd->pipe = 1;
@@ -66,6 +74,7 @@ t_cmd	*init_cmd(t_node *parsing, t_cmd *cmd)
 		i++;
 		parsing = parsing->next;
 	}
+	//printf("I: %d\n", i);
 	cmd->index = i;
 	cmd->next = NULL;
 	cmd->prev = NULL;
