@@ -200,10 +200,5 @@ void	asterisks(t_input *data);
 int	parsing(t_input *data, char *buf);
 
 // parsing_utils
-char	*remove_white_spaces(char *buf);
-int		get_size_elem(char	*buf, int pos);
-int		get_nb_elem(char	*buf);
-int		is_end_elem(char c);
-t_node	*get_args(char *buf, int nb_elem);
 
 #endif

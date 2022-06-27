@@ -22,8 +22,7 @@ SRC_FILES	= minishell.c \
 				get_next_line.c \
 				parsing_utils.c \
 				wildcard.c \
-				parsing.c \
-				parsing_utils_2.c
+				parsing.c 
 SRCS		= $(notdir $(SRC_FILES))
 
 OBJ_DIR		= objs
