@@ -75,20 +75,15 @@ typedef struct s_cmd
 {
 	char			*cmd;
 	char			*cmd_flags;
+	char			*argument;
 	char			*delim;
  	int				in;
  	int				out;
+	int				pipe;
+	int				index;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
  }	t_cmd;
-
- // Save
- //char			*cmd_flags;
- //char			*delim;
- //int				node_start;
- //int				node_end;
- //struct s_node	*next;
- //struct s_node	*prev;
 
 typedef struct s_env
 {
@@ -206,5 +201,9 @@ int	parsing(t_input *data, char *buf);
 
 // parsing_utils
 char	*remove_white_spaces(char *buf);
+int		get_size_elem(char	*buf, int pos);
+int		get_nb_elem(char	*buf);
+int		is_end_elem(char c);
+t_node	*get_args(char *buf, int nb_elem);
 
 #endif

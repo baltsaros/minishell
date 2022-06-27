@@ -6,133 +6,116 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:44:46 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/06/22 11:34:00 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/06/27 03:16:32 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	is_end_elem(char c)
+t_cmd	*init_empty(void)
 {
-	if (c == '<' || c == '>' || c == '|')
-		return (0);
-	if (c == '\0' || c == '\n' || c == '&')
-		return (0);
-	return (1);
+	t_cmd	*cmd;
+
+	cmd = (t_cmd *) malloc (sizeof(t_cmd));
+	if (!cmd)
+		return (NULL);
+	cmd->cmd = NULL;
+	cmd->cmd_flags = NULL;
+	cmd->argument = NULL;
+	cmd->delim = NULL;
+	cmd->in = 0;
+	cmd->out = 1;
+	cmd->pipe = 0;
+	cmd->index = 0;
+	return (cmd);
 }
 
-int	get_nb_elem(char	*buf)
+t_cmd	*init_cmd(t_node *parsing, t_cmd *cmd)
 {
-	int count;
 	int	i;
 
-	count = 1;
 	i = 0;
-	while (buf[i])
+	while (parsing && parsing->value[0] != '|')
 	{
-		if (!is_end_elem(buf[i]))
+		// Get cmd
+		if (i == 0)
+			cmd->cmd = parsing->value;
+		else
 		{
-			count++;
-			while (!is_end_elem(buf[i]))
+			//AAAAAAAAAARGH
+			// Get flags
+			if (parsing->value[0] == '-')
+				cmd->cmd_flags = parsing->value;
+			// Get argument
+			else if (parsing->type == WORD)
+				cmd->argument = parsing->value;
+			// Get delim
+			else if (!ft_strncmp(parsing->value, "<<", 2))
+				cmd->delim = parsing->next->value;
+			// Get in
+			// It's in progress but not commited
+			// Get out
+			// It's in progress but not commited
+			// Get pipe
+			else if (parsing->next->value[0] == '|')
+			{
+				cmd->pipe = 1;
 				i++;
-			count++;
+			}
 		}
 		i++;
+		parsing = parsing->next;
 	}
-	return (count);
+	cmd->index = i;
+	cmd->next = NULL;
+	cmd->prev = NULL;
+	return (cmd);
 }
 
-int	get_size_elem(char	*buf, int pos)
+t_cmd	*get_cmd(t_node	*parsing)
 {
-	int	i;
-	
-	i = 0;
-	if (is_end_elem(buf[pos]))
-	{
-		while (buf[pos] && is_end_elem(buf[pos]))
-		{
-			pos++;
-			i++;
-		}
-	}
-	else
-	{
-		while (buf[pos] && !is_end_elem(buf[pos]))
-		{
-			pos++;
-			i++;
-		}
-	}
-	return (i);
-}
+	t_cmd	*first_cmd;
+	//t_cmd	*args;
+	// /t_cmd	*new_con;
 
-t_node	*init_elem(char	*buf, int pos)
-{
-	int	i;
-	int size;
-	t_node	*elem;
-
-	i = 0;
-	size = get_size_elem(buf, pos);
-	elem = (t_node *) malloc (sizeof(t_node));
-	if (!elem)
-		return (NULL);
-	elem->value = (char *) malloc ((size + 1) * sizeof(char));
-	if (!elem->value)
-		return (NULL);
-	while (i != size)
-	{
-		elem->value[i] = buf[pos++];
-		i++;
-	}
-	elem->value[i] = '\0';
-	elem->i = size;
-	elem->next = NULL;
-	elem->prev = NULL;
-	return (elem);
-}
-
-t_node	*get_args(char *buf, int nb_elem)
-{
-	int		i;
-	int		pos;
-	t_node	*first_elem;
-	t_node	*args;
-	t_node	*new_con;
-
-	i = 1;
-	pos = 0;
-	first_elem = init_elem(buf, 0);
-	if (!first_elem)
-		return (NULL);
-	args = first_elem;
-	while (i < nb_elem)
-	{
-		pos += args->i;
-		new_con = init_elem(buf, pos);
-		if (!new_con)
-			return (NULL);
-		new_con->prev = args;
-		args->next = new_con;
-		args = args->next;
-		i++;
-	}
-	return (first_elem);
+	first_cmd = init_empty();
+	first_cmd = init_cmd(parsing, first_cmd);
+	//args = first_cmd;
+	//while (parsing)
+	//{
+	//	args = args->next;
+	//	parsing = parsing->next;
+	//}
+	return  (first_cmd);
 }
 
 int	parsing(t_input *data, char *buf)
 {
 	(void)data;
 	t_node	*parsing;
+	t_cmd	*cmd;
 	
 	buf = remove_white_spaces(buf);
 	parsing = get_args(buf, get_nb_elem(buf));
-	while (parsing)
+	free(buf);
+	//while (parsing)
+	//{
+	//	printf("parsed value: %s\n", parsing->value);
+	//	parsing = parsing->next;
+	//}
+	// More parsing
+	cmd = get_cmd(parsing);
+	while (cmd)
 	{
-		printf("parsed value: %s\n", parsing->value);
-		parsing = parsing->next;
+		printf("cmd: %s\n", cmd->cmd);
+		printf("flags: %s\n", cmd->cmd_flags);
+		printf("argument: %s\n", cmd->argument);
+		printf("delim: %s\n", cmd->delim);
+		printf("in: %d\n", cmd->in);
+		printf("out: %d\n", cmd->out);
+		printf("\n");
+		break ;
+		cmd = cmd->next;
 	}
-
-	free(buf);		
 	return (0);
 }
