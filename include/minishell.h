@@ -77,22 +77,16 @@ typedef struct s_cmd
 {
 	char			*cmd;
 	char			*cmd_flags;
+	char			*argument;
 	char			*delim;
  	int				in;
  	int				out;
+	int				pipe;
+	int				index;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
  }	t_cmd;
 
- // Save
- //char			*cmd_flags;
- //char			*delim;
- //int				node_start;
- //int				node_end;
- //struct s_node	*next;
- //struct s_node	*prev;
-
-// struct for envp linked lists
 typedef struct s_env
 {
 	char			*type;
@@ -214,6 +208,5 @@ void	find_files(t_input *data, t_node *tmp, struct dirent *fname);
 int	parsing(t_input *data, char *buf);
 
 // parsing_utils
-char	*remove_white_spaces(char *buf);
 
 #endif

@@ -22,12 +22,12 @@ SRC_FILES	= minishell.c \
 				get_next_line.c \
 				parsing_utils.c \
 				wildcard.c \
-				parsing.c
-SRCS		= ${notdir ${SRC_FILES}}
+				parsing.c 
+SRCS		= $(notdir $(SRC_FILES))
 
 OBJ_DIR		= objs
-OBJ_FILES	= ${SRCS:.c=.o}
-OBJS		= ${addprefix ${OBJ_DIR}/,${OBJ_FILES}}
+OBJ_FILES	= $(SRCS:.c=.o)
+OBJS		= $(addprefix $(OBJ_DIR)/,$(OBJ_FILES))
 
 INCS		= -Iinclude -Ilibft
 
@@ -36,35 +36,35 @@ RM			= rm -f
 RMF			= rm -rf
 CFLAGS		= -Wall -Wextra -Werror
 
-all:		libft ${NAME}
+all:		libft $(NAME)
 
-${OBJ_DIR}/%.o: ${SRC_DIR}/%.c
-			@mkdir -p ${OBJ_DIR}
-			@printf "${C_GREEN}.${C_RESET}";
-			@${GCC} ${CFLAGS} -c $< ${INCS} -o $@
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+			@mkdir -p $(OBJ_DIR)
+			@printf "$(C_GREEN).$(C_RESET)";
+			@$(GCC) $(CFLAGS) -c $< $(INCS) -o $@
 
-${NAME}:	${OBJS} 
-			@${GCC} ${OBJS} ${INCS} libft/libft.a -lreadline -o ${NAME}
-			@printf "\n${C_GREEN_B}Finished!${C_RESET}\n";
+$(NAME):	$(OBJS) 
+			@$(GCC) $(OBJS) ${INCS} libft/libft.a -lreadline -o $(NAME)
+			@printf "\n$(C_GREEN_B)Finished!$(C_RESET)\n";
 
 libft:
 			@make -C ./libft
 norm:
-			@echo "${C_PURPLE_B}Let's test the Norm!${C_RESET}";
+			@echo "$(C_PURPLE_B)Let's test the Norm!$(C_RESET)";
 			@norminette
-			@echo "${C_PURPLE_B}Done!${C_RESET}";
+			@echo "$(C_PURPLE_B)Done!$(C_RESET)";
 clean:
-			@echo "${C_RED_B}Deleting minishell o-files...${C_RESET}";
+			@echo "$(C_RED_B)Deleting minishell o-files...$(C_RESET)";
 			@make -C ./libft clean
-			@${RM} ${OBJS}
-			@${RMF} ${OBJ_DIR}
-			@echo "${C_RED_B}Minishell o-files have been deleted!${C_RESET}";
+			@$(RM) $(OBJS)
+			@$(RMF) $(OBJ_DIR)
+			@echo "$(C_RED_B)Minishell o-files have been deleted!$(C_RESET)";
 
 fclean:		clean
 			@make -C ./libft fclean
-			@echo "${C_RED_B}Deleting minishell program...${C_RESET}";
-			@${RM} ${NAME}
-			@echo "${C_RED_B}Minishell program has been deleted!${C_RESET}";
+			@echo "$(C_RED_B)Deleting minishell program...$(C_RESET)";
+			@$(RM) $(NAME)
+			@echo "$(C_RED_B)Minishell program has been deleted!$(C_RESET)";
 
 re:			fclean all
 
