@@ -160,12 +160,11 @@ void	data_init(t_input *data)
 	while (tmp)
 	{
 		data->argv[i] = tmp->value;
-		// printf("argv[%d] is |%s|\n", i, data->argv[i]);
 		tmp = tmp->next;
 		++i;
 	}
 	data->argv[i] = NULL;
-	ft_token_print(data->args);
+	//ft_token_print(data->args);
 }
 
 int	main(int argc, char *argv[], char *envp[])
@@ -186,15 +185,15 @@ int	main(int argc, char *argv[], char *envp[])
 		data.buf = readline("yo> ");
 		if (data.buf)
 			add_history(data.buf);
+		check_field(&data.buf);
+		data_init(&data);
+		if (parsing(&data) == 0)
+		{
+			//asterisks(&data);
+			//execute(&data);
 
-		parsing(&data, data.buf);
-
-		//check_field(&data.buf);
-		//data_init(&data);
-		//asterisks(&data);
-		//execute(&data);
-
-		// ft_free_token(data.args);
+			// ft_free_token(data.args);
+		}
 	}
 	return ((data.status >> 8) & 0xff);
 }

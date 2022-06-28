@@ -196,8 +196,11 @@ void	signal_handler(int signo, siginfo_t *info, void *context);
 // others
 void	asterisks(t_input *data);
 
+//syntax checker
+int syntax_checker(t_node *args);
+
 // parsing
-int	parsing(t_input *data, char *buf);
+int	parsing(t_input *data);
 
 // parsing_utils
 
