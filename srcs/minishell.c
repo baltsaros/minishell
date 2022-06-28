@@ -210,7 +210,7 @@ int	main(int argc, char *argv[], char *envp[])
 		check_field(&data.buf);
 		data_init(&data);
 		asterisks(&data);
-		// parsing(&data, data.buf);
+		parsing(&data, data.buf);
 		// ft_token_print(data.parsing);
 		execute(&data);
 		// ft_free_token(data.args);
