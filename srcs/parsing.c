@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:44:46 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/06/29 01:05:22 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/06/29 14:29:03 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,48 @@ t_cmd	*init_empty_elem(void)
 	return (elem);
 }
 
+t_cmd	*fill_elem(t_input *data, t_cmd *elem)
+{
+	int	i;
+
+	i = 0;
+	if (data->args->type == WORD)
+		elem->cmd = ft_strdup(data->args->value);
+	else
+		return (NULL);
+	i++;
+	data->args = data->args->next;
+	while (data->args && data->args->prev->value[0] != '|')
+	{
+		if (data->args->value[0] == '-')
+			elem->cmd_flags = ft_strdup(data->args->value + 1);
+		else if (data->args->type == WORD)
+			elem->argument = ft_strdup(data->args->value);
+		else if (!ft_strncmp(data->args->value, "<<", 2))
+		{
+			// Open Heredoc here
+			data->args = data->args->next;
+			i++;
+			elem->delim = ft_strdup(data->args->value);
+		}
+		else if (data->args->value[0] == '<')
+			elem->in = open(elem->argument, O_RDONLY);
+		else if (data->args->value[0] == '>')
+		{
+			if (data->args->value[1] == '>')
+				elem->out = open(elem->argument, O_WRONLY | O_CREAT | O_APPEND, 00644);
+			else
+				elem->out = open(elem->argument, O_WRONLY | O_CREAT | O_TRUNC, 00644);
+		}
+		else if (data->args && data->args->value[0] == '|')
+			elem->pipe = 1;
+		i++;
+		data->args = data->args->next;
+	}
+	elem->index = i;
+	return (elem);
+}
+
 t_cmd	*parse_cmd(t_input *data)
 {
 	(void)data;
@@ -40,6 +82,7 @@ t_cmd	*parse_cmd(t_input *data)
 	t_cmd	*new_con;
 
 	first_elem = init_empty_elem();
+	first_elem = fill_elem(data, first_elem);
 	(void)arg;
 	(void)new_con;
 	return (first_elem);
