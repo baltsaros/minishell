@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:44:46 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/06/29 21:51:38 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/06/29 23:16:17 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,22 @@ t_cmd	*fill_elem(t_input *data, t_cmd *elem)
 	{
 		if (data->args->value[0] == '-')
 			elem->cmd_flags = ft_strdup(data->args->value + 1);
-		else if (data->args->type == WORD && elem->in == 0 && elem->out == 1
-				&& elem->pipe == -1)
+		else if (data->args->type == WORD)
 		{
-			printf("ARGUMENTS\n");
+			//elem->argument = ft_strdup(data->args->value);
+			//while (data->args)
+			//{
+				//printf("elem->argument: %s\n", elem->argument);
+				//printf("data->args->value: %s\n", data->args->value);
+				//if (data->args->type != WORD)
+				//	break ;
+			//	i++;
+			//	data->args = data->args->next;
+			//	if (!data->args)
+			//		break ;
+			//	elem->argument = ft_strjoin_free(elem->argument, " ");
+			//	elem->argument = ft_strjoin_free(elem->argument, data->args->value);
+			//}
 		}
 		else if (!ft_strncmp(data->args->value, "<<", 2))
 		{
@@ -118,16 +130,7 @@ int	parsing(t_input *data)
 	{
 		printf("cmd: %s\n", data->cmds->cmd);
 		printf("cmd_flags: %s\n", data->cmds->cmd_flags);
-		//if (data->cmds->arguments == NULL)
-		//	printf("argument[0]: (null)\n");
-		//else
-		//{
-			for (int i = 0; data->cmds->argument; i++)
-			{
-				printf("argument[%d]: %s\n", i, data->cmds->argument->value);
-				data->cmds->argument = data->cmds->argument->next;
-			}
-		//}
+		printf("arguments: %s\n", data->cmds->argument);
 		printf("delim: %s\n", data->cmds->delim);
 		printf("in: %d\n", data->cmds->in);
 		printf("in arg: %s\n", data->cmds->in_arg);

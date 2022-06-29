@@ -164,7 +164,7 @@ void	data_init(t_input *data)
 		++i;
 	}
 	data->argv[i] = NULL;
-	//ft_token_print(data->args);
+	ft_token_print(data->args);
 }
 
 int	main(int argc, char *argv[], char *envp[])
