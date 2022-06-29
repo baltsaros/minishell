@@ -75,10 +75,12 @@ typedef struct s_cmd
 {
 	char			*cmd;
 	char			*cmd_flags;
-	char			*argument;
+	t_node			*argument;
 	char			*delim;
  	int				in;
+	char			*in_arg;
  	int				out;
+	char			*out_arg;
 	int				pipe;
 	int				index;
 	struct s_cmd	*next;
