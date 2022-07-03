@@ -73,9 +73,9 @@ typedef struct s_node
 
 typedef struct s_cmd
 {
-	char			*cmd;
+	char			**cmd;
+	char			*argument_buf;
 	char			*cmd_flags;
-	char			*argument;
 	char			*delim;
  	int				in;
 	char			*in_arg;
@@ -205,5 +205,6 @@ int syntax_checker(t_node *args);
 int	parsing(t_input *data);
 
 // parsing_utils
+char	*get_args(t_node	*args);
 
 #endif

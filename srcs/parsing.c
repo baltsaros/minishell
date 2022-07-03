@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:44:46 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/06/29 23:16:17 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/03 19:43:33 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ t_cmd	*init_empty_elem(void)
 	if (!elem)
 		return (NULL);
 	elem->cmd = NULL;
+	elem->argument_buf = NULL;
 	elem->cmd_flags = NULL;
-	elem->argument = NULL;
 	elem->delim = NULL;
 	elem->in = 0;
 	elem->in_arg = NULL;
@@ -39,66 +39,68 @@ t_cmd	*fill_elem(t_input *data, t_cmd *elem)
 	int	i;
 
 	i = 0;
-	if (data->args->type == WORD)
-		elem->cmd = ft_strdup(data->args->value);
-	else
+	elem->cmd = ft_split(elem->argument_buf, ' ');
+	if (!elem->cmd)
+	{
+		free(elem->argument_buf);
 		return (NULL);
-	i++;
-	data->args = data->args->next;
-	while (data->args && data->args->prev->value[0] != '|')
+	}
+	free(elem->argument_buf);
+	while (data->args && data->args->type != PIPE)
 	{
 		if (data->args->value[0] == '-')
+		{
 			elem->cmd_flags = ft_strdup(data->args->value + 1);
-		else if (data->args->type == WORD)
-		{
-			//elem->argument = ft_strdup(data->args->value);
-			//while (data->args)
-			//{
-				//printf("elem->argument: %s\n", elem->argument);
-				//printf("data->args->value: %s\n", data->args->value);
-				//if (data->args->type != WORD)
-				//	break ;
-			//	i++;
-			//	data->args = data->args->next;
-			//	if (!data->args)
-			//		break ;
-			//	elem->argument = ft_strjoin_free(elem->argument, " ");
-			//	elem->argument = ft_strjoin_free(elem->argument, data->args->value);
-			//}
-		}
-		else if (!ft_strncmp(data->args->value, "<<", 2))
-		{
-			// Open Heredoc here
-			data->args = data->args->next;
-			i++;
-			elem->delim = ft_strdup(data->args->value);
+			if (!elem->cmd_flags)
+				return (NULL);
 		}
 		else if (data->args->value[0] == '<')
 		{
-			data->args = data->args->next;
-			i++;
-			elem->in_arg = ft_strdup(data->args->value);
-			elem->in = open(elem->in_arg, O_RDONLY);
+			if (!ft_strncmp(data->args->value, "<<", 2))
+			{
+				//Open Heredoc here
+				i++;
+				data->args =  data->args->next;
+				elem->delim = ft_strdup(data->args->value);
+				if (!elem->delim)
+					return (NULL);
+			}
+			else if (data->args->value[1] == '\0')
+			{
+				i++;
+				data->args = data->args->next;
+				elem->in_arg = ft_strdup(data->args->value);
+				if (!elem->in_arg)
+					return (NULL);
+				elem->in = open(elem->in_arg, O_RDONLY);
+			}
 		}
 		else if (data->args->value[0] == '>')
 		{
-			if (data->args->value[1] == '>')
+			if (!ft_strncmp(data->args->value, ">>", 2))
 			{
-				data->args = data->args->next;
 				i++;
+				data->args = data->args->next;
 				elem->out_arg = ft_strdup(data->args->value);
+				if (!elem->out_arg)
+					return (NULL);
 				elem->out = open(elem->out_arg, O_WRONLY | O_CREAT | O_APPEND, 00644);
 			}
-			else
+			else if (data->args->value[1] == '\0')
 			{
-				data->args = data->args->next;
 				i++;
+				data->args = data->args->next;
 				elem->out_arg = ft_strdup(data->args->value);
+				if (!elem->out_arg)
+					return (NULL);
 				elem->out = open(elem->out_arg, O_WRONLY | O_CREAT | O_TRUNC, 00644);
-			}
+			} 
 		}
-		else if (data->args && data->args->value[0] == '|')
-			elem->pipe = 1;
+		else if (data->args->next)
+		{
+			if (data->args->next->type == PIPE)
+				elem->pipe = 1;
+		}
 		i++;
 		data->args = data->args->next;
 	}
@@ -106,15 +108,32 @@ t_cmd	*fill_elem(t_input *data, t_cmd *elem)
 	return (elem);
 }
 
+t_cmd	*init_elem(t_input	*data)
+{
+	t_cmd	*elem;
+
+	elem = init_empty_elem();
+	if (!elem)
+		return (NULL);
+	elem->argument_buf = get_args(data->args);
+	if (!elem->argument_buf)
+		return (NULL);
+	elem = fill_elem(data, elem);
+	if (!elem)
+		return (NULL);
+	return (elem);
+}
+
 t_cmd	*parse_cmd(t_input *data)
 {
-	(void)data;
 	t_cmd	*first_elem;
 	t_cmd	*arg;
 	t_cmd	*new_con;
 
-	first_elem = init_empty_elem();
-	first_elem = fill_elem(data, first_elem);
+	first_elem = init_elem(data);
+	if (!first_elem)
+		return (NULL);
+	arg = first_elem;
 	(void)arg;
 	(void)new_con;
 	return (first_elem);
@@ -128,9 +147,9 @@ int	parsing(t_input *data)
 		
 	while (data->cmds)
 	{
-		printf("cmd: %s\n", data->cmds->cmd);
+		for (int i = 0; data->cmds->cmd[i]; i++)
+			printf("cmd[%d]: %s\n", i, data->cmds->cmd[i]);
 		printf("cmd_flags: %s\n", data->cmds->cmd_flags);
-		printf("arguments: %s\n", data->cmds->argument);
 		printf("delim: %s\n", data->cmds->delim);
 		printf("in: %d\n", data->cmds->in);
 		printf("in arg: %s\n", data->cmds->in_arg);
