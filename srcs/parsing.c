@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:44:46 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/07/03 19:43:33 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/03 20:05:26 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_cmd	*init_empty_elem(void)
 	return (elem);
 }
 
-t_cmd	*fill_elem(t_input *data, t_cmd *elem)
+t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 {
 	int	i;
 
@@ -46,79 +46,81 @@ t_cmd	*fill_elem(t_input *data, t_cmd *elem)
 		return (NULL);
 	}
 	free(elem->argument_buf);
-	while (data->args && data->args->type != PIPE)
+	while (args && args->type != PIPE)
 	{
-		if (data->args->value[0] == '-')
+		if (args->value[0] == '-')
 		{
-			elem->cmd_flags = ft_strdup(data->args->value + 1);
+			elem->cmd_flags = ft_strdup(args->value + 1);
 			if (!elem->cmd_flags)
 				return (NULL);
 		}
-		else if (data->args->value[0] == '<')
+		else if (args->value[0] == '<')
 		{
-			if (!ft_strncmp(data->args->value, "<<", 2))
+			if (!ft_strncmp(args->value, "<<", 2))
 			{
 				//Open Heredoc here
 				i++;
-				data->args =  data->args->next;
-				elem->delim = ft_strdup(data->args->value);
+				args =  args->next;
+				elem->delim = ft_strdup(args->value);
 				if (!elem->delim)
 					return (NULL);
 			}
-			else if (data->args->value[1] == '\0')
+			else if (args->value[1] == '\0')
 			{
 				i++;
-				data->args = data->args->next;
-				elem->in_arg = ft_strdup(data->args->value);
+				args = args->next;
+				elem->in_arg = ft_strdup(args->value);
 				if (!elem->in_arg)
 					return (NULL);
 				elem->in = open(elem->in_arg, O_RDONLY);
 			}
 		}
-		else if (data->args->value[0] == '>')
+		else if (args->value[0] == '>')
 		{
-			if (!ft_strncmp(data->args->value, ">>", 2))
+			if (!ft_strncmp(args->value, ">>", 2))
 			{
 				i++;
-				data->args = data->args->next;
-				elem->out_arg = ft_strdup(data->args->value);
+				args = args->next;
+				elem->out_arg = ft_strdup(args->value);
 				if (!elem->out_arg)
 					return (NULL);
 				elem->out = open(elem->out_arg, O_WRONLY | O_CREAT | O_APPEND, 00644);
 			}
-			else if (data->args->value[1] == '\0')
+			else if (args->value[1] == '\0')
 			{
 				i++;
-				data->args = data->args->next;
-				elem->out_arg = ft_strdup(data->args->value);
+				args = args->next;
+				elem->out_arg = ft_strdup(args->value);
 				if (!elem->out_arg)
 					return (NULL);
 				elem->out = open(elem->out_arg, O_WRONLY | O_CREAT | O_TRUNC, 00644);
 			} 
 		}
-		else if (data->args->next)
+		else if (args->next)
 		{
-			if (data->args->next->type == PIPE)
+			if (args->next->type == PIPE)
 				elem->pipe = 1;
 		}
 		i++;
-		data->args = data->args->next;
+		args = args->next;
 	}
+	if (args && args->type == PIPE)
+		i += 2;
 	elem->index = i;
 	return (elem);
 }
 
-t_cmd	*init_elem(t_input	*data)
+t_cmd	*init_elem(t_node *args)
 {
 	t_cmd	*elem;
 
 	elem = init_empty_elem();
 	if (!elem)
 		return (NULL);
-	elem->argument_buf = get_args(data->args);
+	elem->argument_buf = get_args(args);
 	if (!elem->argument_buf)
 		return (NULL);
-	elem = fill_elem(data, elem);
+	elem = fill_elem(args, elem);
 	if (!elem)
 		return (NULL);
 	return (elem);
@@ -129,13 +131,34 @@ t_cmd	*parse_cmd(t_input *data)
 	t_cmd	*first_elem;
 	t_cmd	*arg;
 	t_cmd	*new_con;
+	int		index;
+	int		i;
 
-	first_elem = init_elem(data);
+	first_elem = init_elem(data->args);
 	if (!first_elem)
 		return (NULL);
 	arg = first_elem;
+	index = first_elem->index;
+	i = 0;
+	//while (data->args)
+	//{
+	//	while (i != index)
+	//	{
+	//		data->args = data->args->next;
+	//		i++;
+	//	}
+	//	i = 0;
+	//	new_con = init_elem(data->args);
+	//	if (!new_con)
+	//		return (NULL);
+	//	new_con->prev = arg;
+	//	arg->next = new_con;
+	//	arg = arg->next;
+	//}
 	(void)arg;
 	(void)new_con;
+	(void)i;
+	(void)index;
 	return (first_elem);
 }
 
