@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:44:46 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/07/03 20:05:26 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/03 21:35:48 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,16 +96,14 @@ t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 				elem->out = open(elem->out_arg, O_WRONLY | O_CREAT | O_TRUNC, 00644);
 			} 
 		}
-		else if (args->next)
+		else if (args->next && args->next->type == PIPE)
 		{
-			if (args->next->type == PIPE)
-				elem->pipe = 1;
+			elem->pipe = 1;
+			i++;
 		}
 		i++;
 		args = args->next;
 	}
-	if (args && args->type == PIPE)
-		i += 2;
 	elem->index = i;
 	return (elem);
 }
@@ -126,39 +124,55 @@ t_cmd	*init_elem(t_node *args)
 	return (elem);
 }
 
+int	get_nb_elem(t_node *args)
+{
+	int	i;
+
+	i = 0;
+	while (args)
+	{
+		i++;
+		args = args->next;
+	}
+	return (i);
+}
+
 t_cmd	*parse_cmd(t_input *data)
 {
 	t_cmd	*first_elem;
 	t_cmd	*arg;
 	t_cmd	*new_con;
-	int		index;
 	int		i;
+	int		j;
+	int		nb_elem;
 
 	first_elem = init_elem(data->args);
 	if (!first_elem)
 		return (NULL);
 	arg = first_elem;
-	index = first_elem->index;
-	i = 0;
-	//while (data->args)
-	//{
-	//	while (i != index)
-	//	{
-	//		data->args = data->args->next;
-	//		i++;
-	//	}
-	//	i = 0;
-	//	new_con = init_elem(data->args);
-	//	if (!new_con)
-	//		return (NULL);
-	//	new_con->prev = arg;
-	//	arg->next = new_con;
-	//	arg = arg->next;
-	//}
-	(void)arg;
-	(void)new_con;
-	(void)i;
+	i = first_elem->index;
+	j = 0;
+	nb_elem = get_nb_elem(data->args);
+	while (i != nb_elem)
+	{
+		while (j != i)
+		{
+			data->args = data->args->next;
+			j++;
+		}
+		new_con = init_elem(data->args);
+		if (!new_con)
+			return (NULL);
+		i += new_con->index;
+		printf("i: %d\n", i);
+		new_con->prev = arg;
+		arg->next = new_con;
+		arg = arg->next;
+	}
 	(void)index;
+	(void)i;
+	(void)new_con;
+	(void)arg;
 	return (first_elem);
 }
 
