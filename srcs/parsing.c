@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:44:46 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/07/03 21:35:48 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/04 13:47:40 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,6 @@ t_cmd	*init_empty_elem(void)
 
 t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 {
-	int	i;
-
-	i = 0;
 	elem->cmd = ft_split(elem->argument_buf, ' ');
 	if (!elem->cmd)
 	{
@@ -46,8 +43,10 @@ t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 		return (NULL);
 	}
 	free(elem->argument_buf);
-	while (args && args->type != PIPE)
+	while (args)
 	{
+		if (args->prev && args->prev->type == PIPE)
+			break ;
 		if (args->value[0] == '-')
 		{
 			elem->cmd_flags = ft_strdup(args->value + 1);
@@ -59,7 +58,7 @@ t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 			if (!ft_strncmp(args->value, "<<", 2))
 			{
 				//Open Heredoc here
-				i++;
+				elem->index++;
 				args =  args->next;
 				elem->delim = ft_strdup(args->value);
 				if (!elem->delim)
@@ -67,7 +66,7 @@ t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 			}
 			else if (args->value[1] == '\0')
 			{
-				i++;
+				elem->index++;
 				args = args->next;
 				elem->in_arg = ft_strdup(args->value);
 				if (!elem->in_arg)
@@ -79,7 +78,7 @@ t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 		{
 			if (!ft_strncmp(args->value, ">>", 2))
 			{
-				i++;
+				elem->index++;
 				args = args->next;
 				elem->out_arg = ft_strdup(args->value);
 				if (!elem->out_arg)
@@ -88,7 +87,7 @@ t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 			}
 			else if (args->value[1] == '\0')
 			{
-				i++;
+				elem->index++;
 				args = args->next;
 				elem->out_arg = ft_strdup(args->value);
 				if (!elem->out_arg)
@@ -96,15 +95,11 @@ t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 				elem->out = open(elem->out_arg, O_WRONLY | O_CREAT | O_TRUNC, 00644);
 			} 
 		}
-		else if (args->next && args->next->type == PIPE)
-		{
+		else if (args->type == PIPE)
 			elem->pipe = 1;
-			i++;
-		}
-		i++;
+		elem->index++;
 		args = args->next;
 	}
-	elem->index = i;
 	return (elem);
 }
 
@@ -155,19 +150,33 @@ t_cmd	*parse_cmd(t_input *data)
 	nb_elem = get_nb_elem(data->args);
 	while (i != nb_elem)
 	{
+
+		printf("[LAST ARG BEFORE LOOP]: %s\n", data->args->value);
+		printf("[INDEX]:  %d\n", i);
+
 		while (j != i)
 		{
 			data->args = data->args->next;
 			j++;
 		}
+		
+		printf("[LAST ARG AFTER LOOP]: %s\n", data->args->value);
+
+		j = 0;
 		new_con = init_elem(data->args);
 		if (!new_con)
 			return (NULL);
 		i += new_con->index;
-		printf("i: %d\n", i);
+
+		printf("[NEW_CON->INDEX]: %d\n", new_con->index);
+
 		new_con->prev = arg;
 		arg->next = new_con;
 		arg = arg->next;
+
+		printf("[LAST ARG]: %s\n", data->args->value);
+
+		//break ;
 	}
 	(void)index;
 	(void)i;
