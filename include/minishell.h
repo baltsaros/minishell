@@ -82,7 +82,6 @@ typedef struct s_cmd
  	int				out;
 	char			*out_arg;
 	int				pipe;
-	int				index;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
  }	t_cmd;
