@@ -2,16 +2,18 @@
 
 void	signal_handler(int signo, siginfo_t *info, void *context)
 {
-    // Ctrl + C
 	if (signo == SIGINT)
     {
-        printf("SIGINT\n");
+        write(1, "\n", 1);
+        rl_replace_line("", 0);
+        rl_on_new_line();
+        rl_redisplay();
     }
     // Ctrl + '\'
-	else if (signo == SIGQUIT)
-    {
-        printf("SIGQUIT\n");
-    }
+	//else if (signo == SIGQUIT)
+    //{
+    //    printf("SIGQUIT\n");
+    //}
 		
 	(void)signo;
 	(void)info;
