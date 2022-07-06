@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:44:46 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/07/06 16:19:45 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/06 16:33:43 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,17 @@
 
 t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 {
-	elem->cmd = ft_split(elem->argument_buf, ' ');
+	elem->cmd = init_cmd(elem);
 	if (!elem->cmd)
-	{
-		free(elem->argument_buf);
 		return (NULL);
-	}
-	free(elem->argument_buf);
 	while (args && args->type != PIPE)
 	{
-		if (args->value[0] == '<')
-		{
-			if (!args->next || is_the_next_is_word(args) == 1)
-				return (print_syntax_error(args));
-			if (init_in(args, elem) == 1)
-				return (NULL);
-		}
-		else if (args->value[0] == '>')
-		{
-			if (!args->next || is_the_next_is_word(args) == 1)
-				return (print_syntax_error(args));
-			if (init_out(args, elem) == 1)
-				return (NULL);
-		}
+		if (redirection_check(args, elem) == 1)
+			return (NULL);
 		if (args->next && args->next->type == PIPE)
 		{
 			if (!args->next->next || is_the_next_is_word(args->next) == 1)
-				return (print_syntax_error(args->next));
+				return (print_syntax_error_cmd(args->next));
 			elem->pipe = 1;
 		}
 		args = args->next;
@@ -95,18 +79,18 @@ int	parsing(t_input *data)
 	if (!data->cmds)
 		return (1);
 		
-	//while (data->cmds)
-	//{
-	//	for (int i = 0; data->cmds->cmd[i]; i++)
-	//		printf("cmd[%d]: %s\n", i, data->cmds->cmd[i]);
-	//	printf("delim: %s\n", data->cmds->delim);
-	//	printf("in: %d\n", data->cmds->in);
-	//	printf("in arg: %s\n", data->cmds->in_arg);
-	//	printf("out: %d\n", data->cmds->out);
-	//	printf("out arg: %s\n", data->cmds->out_arg);
-	//	printf("pipe: %d\n", data->cmds->pipe);
-	//	printf("[NEXT]\n");
-	//	data->cmds = data->cmds->next;
-	//}
+	while (data->cmds)
+	{
+		for (int i = 0; data->cmds->cmd[i]; i++)
+			printf("cmd[%d]: %s\n", i, data->cmds->cmd[i]);
+		printf("delim: %s\n", data->cmds->delim);
+		printf("in: %d\n", data->cmds->in);
+		printf("in arg: %s\n", data->cmds->in_arg);
+		printf("out: %d\n", data->cmds->out);
+		printf("out arg: %s\n", data->cmds->out_arg);
+		printf("pipe: %d\n", data->cmds->pipe);
+		printf("[NEXT]\n");
+		data->cmds = data->cmds->next;
+	}
 	return (0);
 }

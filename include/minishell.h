@@ -198,7 +198,8 @@ void	asterisks(t_input *data);
 
 //syntax checker
 int		is_the_next_is_word(t_node *args);
-t_cmd 	*print_syntax_error(t_node *args);
+t_cmd 	*print_syntax_error_cmd(t_node *args);
+int   	print_syntax_error_bool(t_node *args);
 
 // parsing
 int	parsing(t_input *data);
@@ -208,8 +209,10 @@ t_node 	*next_elem(t_node *args);
 t_cmd	*init_empty_elem(void);
 int		init_in(t_node *args, t_cmd *elem);
 int		init_out(t_node *args, t_cmd *elem);
+char	**init_cmd(t_cmd *elem);
 
 // parsing_utils_2
 char	*get_args(t_node	*args);
+int		redirection_check(t_node *args, t_cmd *elem);
 
 #endif
