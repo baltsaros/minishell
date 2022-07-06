@@ -219,6 +219,8 @@ int	main(int argc, char *argv[], char *envp[])
 			ft_free_token(data.args);
 			ft_free_cmd(data.cmds);
 		}
+		else
+			ft_free_token(data.args);
 		// execute(&data);
 	}
 	return ((data.status >> 8) & 0xff);

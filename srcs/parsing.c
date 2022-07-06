@@ -63,8 +63,6 @@ t_cmd	*parse_cmd(t_input *data)
 
 int	parsing(t_input *data)
 {
-	if (!data->buf || !*data->buf)
-		return (1);
 	data->cmds = parse_cmd(data);
 	if (!data->cmds)
 		return (1);
