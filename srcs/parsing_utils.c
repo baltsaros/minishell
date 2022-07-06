@@ -1,31 +1,5 @@
 #include "../include/minishell.h"
 
-char	*get_args(t_node	*args)
-{
-	char	*str;
-
-	str = ft_strdup("");
-	if (!str)
-		return (NULL);
-	while (args->type == WORD && args)
-	{
-		if (args->value[0])
-		{
-			str = ft_strjoin_free(str, args->value);
-			if (!str)
-				return (NULL);
-			str = ft_strjoin_free(str, " ");
-			if (!str)
-				return (NULL);
-		}
-		if (args->next)
-			args = args->next;
-		else
-			break ;
-	}
-	return (str);
-}
-
 t_node *next_elem(t_node *args)
 {
 	t_node	*next_elem;
@@ -107,4 +81,18 @@ int	init_out(t_node *args, t_cmd *elem)
 		return (0);
 	}
 	return (1);
+}
+
+char	**init_cmd(t_cmd *elem)
+{
+	char	**str;
+	
+	str = ft_split(elem->argument_buf, ' ');
+	if (!str)
+	{
+		free(elem->argument_buf);
+		return (NULL);
+	}
+	free(elem->argument_buf);
+	return (str);
 }

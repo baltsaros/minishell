@@ -162,6 +162,7 @@ int		ft_envp_size(t_env *node);
 void	ft_free(char *str[]);
 t_node	*ft_free_token(t_node *node);
 t_env	*ft_free_envp(t_env *node);
+void	ft_free_cmd(t_cmd *cmd);
 
 // utils
 char	*ft_strndup(char const *str, size_t size);
@@ -207,16 +208,22 @@ void	asterisks(t_input *data);
 void	find_files(t_input *data, t_node *tmp, struct dirent *fname);
 
 //syntax checker
-int syntax_checker(t_node *args);
+int		is_the_next_is_word(t_node *args);
+t_cmd 	*print_syntax_error_cmd(t_node *args);
+int   	print_syntax_error_bool(t_node *args);
 
 // parsing
 int	parsing(t_input *data);
 
 // parsing_utils
-char	*get_args(t_node	*args);
 t_node 	*next_elem(t_node *args);
 t_cmd	*init_empty_elem(void);
 int		init_in(t_node *args, t_cmd *elem);
 int		init_out(t_node *args, t_cmd *elem);
+char	**init_cmd(t_cmd *elem);
+
+// parsing_utils_2
+char	*get_args(t_node	*args);
+int		redirection_check(t_node *args, t_cmd *elem);
 
 #endif

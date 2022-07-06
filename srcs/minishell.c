@@ -217,6 +217,7 @@ int	main(int argc, char *argv[], char *envp[])
 		{
 			execute(&data);
 			ft_free_token(data.args);
+			ft_free_cmd(data.cmds);
 		}
 		// execute(&data);
 	}
