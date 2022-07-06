@@ -44,6 +44,14 @@ void	ft_free_cmd(t_cmd *cmd)
 	while (cmd)
 	{
 		tmp = cmd->next;
+		if (cmd->cmd)
+			free(cmd->cmd);
+		if (cmd->delim)
+			free(cmd->delim);
+		if (cmd->in_arg)
+			free(cmd->in_arg);
+		if (cmd->out_arg)
+			free(cmd->out_arg);
 		free(cmd);
 		cmd = tmp;
 	}
