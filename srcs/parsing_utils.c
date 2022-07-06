@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 12:38:20 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/07/06 13:32:31 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/06 13:37:15 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	init_in(t_node *args, t_cmd *elem)
 		elem->in = create_heredoc(elem->delim);
 		return (0);
 	}
-	else if (args->value[1] == '\0')
+	else if (args->type == REDIR_IN)
 	{
 		args = args->next;
 		elem->in_arg = ft_strdup(args->value);
@@ -111,7 +111,7 @@ int	init_out(t_node *args, t_cmd *elem)
 		elem->out = open(elem->out_arg, O_WRONLY | O_CREAT | O_APPEND, 00644);
 		return (0);
 	}
-	else if (args->value[1] == '\0')
+	else if (args->type == REDIR_OUT)
 	{
 		args = args->next;
 		elem->out_arg = ft_strdup(args->value);
