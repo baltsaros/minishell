@@ -199,6 +199,7 @@ void	prompt(t_input *data)
 		data->buf = readline("yo> ");
 		if (!data->buf)
 		{
+			free(data->buf);
 			yo_exit(data);
 		}
 		else if (data->buf && data->buf[0] != '\0')
