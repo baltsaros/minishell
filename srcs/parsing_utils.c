@@ -9,14 +9,15 @@ char	*get_args(t_node	*args)
 		return (NULL);
 	while (args->type == WORD && args)
 	{
-		if (args->value[0] != '-')
+		// if (args->value[0] != '-')
+		if (args->value[0])
 		{
 			str = ft_strjoin_free(str, args->value);
-            if (!str)
-            {
-                free(str);
-                return (NULL);
-            }
+			if (!str)
+			{
+				free(str);
+				return (NULL);
+			}
 			str = ft_strjoin_free(str, " ");
 			if (!str)
 			{

@@ -49,31 +49,28 @@ void	ft_heredoc(char *limiter)
 	error_check(dup2(fd[0], STDIN_FILENO), "In Dup2_pr ", 12);
 }
 
-int	pipex(int argc, char *argv[], char *envp[])
+int	pipex(t_input *data, t_cmd *cmds)
 {
-	int	in;
-	int	out;
-	int	i;
-
-	if (argc < 5)
-		error_check(-1, "Invalid argc ", 14);
-	if (ft_strncmp("here_doc", argv[1], 9) == 0)
-	{
-		i = 3;
-		out = ft_open(argv[argc - 1], 0);
-		ft_heredoc(argv[2]);
+	// if (ft_strncmp("here_doc", argv[1], 9) == 0)
+	// {
+	// 	i = 3;
+	// 	out = ft_open(argv[argc - 1], 0);
+	// 	ft_heredoc(argv[2]);
+	// }
+	// else
+	// {
+	// 	i = 2;
+	// 	in = ft_open(argv[1], 1);
+	// 	error_check(dup2(in, STDIN_FILENO), "In Dup2_in ", 12);
+	// 	out = ft_open(argv[argc - 1], 2);
+	// }
+	error_check(dup2(cmds->in, STDIN_FILENO), "In Dup2_in ", 12);
+	while (cmds->pipe == 1){
+		ft_fork(cmds->argument_buf, data->envp);
+		cmds = cmds->next;
 	}
-	else
-	{
-		i = 2;
-		in = ft_open(argv[1], 1);
-		error_check(dup2(in, STDIN_FILENO), "In Dup2_in ", 12);
-		out = ft_open(argv[argc - 1], 2);
-	}
-	while (i < argc - 2)
-		ft_fork(argv[i++], envp);
-	error_check(dup2(out, STDOUT_FILENO), "In Dup2_out ", 13);
-	ft_execve(argv[i], envp);
+	error_check(dup2(cmds->out, STDOUT_FILENO), "In Dup2_out ", 13);
+	ft_execve(cmds->argument_buf, data->envp);
 	return (0);
 }
 
@@ -84,6 +81,7 @@ int	execute(t_input *data)
 
 	pid = 0;
 	i = 0;
+
 	while (i < 7)
 	{
 		if (ft_strncmp(data->argv[0], data->builtins[i].name, ft_strlen(data->builtins[i].name) + 1))
@@ -98,7 +96,8 @@ int	execute(t_input *data)
 	{
 		pid = fork();
 		if (pid == 0)
-			ft_execve(data->buf, data->envp);
+			pipex(data, data->cmds);
+			// ft_execve(data->buf, data->envp);
 	}
 	waitpid(pid, &data->status, 0);
 	return (0);

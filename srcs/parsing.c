@@ -29,7 +29,7 @@ t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 		free(elem->argument_buf);
 		return (NULL);
 	}
-	free(elem->argument_buf);
+	// free(elem->argument_buf);
 	while (args)
 	{
 		if (args->prev && args->prev->type == PIPE)
@@ -139,20 +139,22 @@ int	parsing(t_input *data)
 	if (!data->cmds)
 		return (1);
 		
-	while (data->cmds)
-	{
-		for (int i = 0; data->cmds->cmd[i]; i++)
-			printf("cmd[%d]: %s\n", i, data->cmds->cmd[i]);
-		printf("cmd_flags: %s\n", data->cmds->cmd_flags);
-		printf("delim: %s\n", data->cmds->delim);
-		printf("in: %d\n", data->cmds->in);
-		printf("in arg: %s\n", data->cmds->in_arg);
-		printf("out: %d\n", data->cmds->out);
-		printf("out arg: %s\n", data->cmds->out_arg);
-		printf("pipe: %d\n", data->cmds->pipe);
-		printf("[NEXT]\n");
-		data->cmds = data->cmds->next;
-	}
+	// while (data->cmds)
+	// {
+	// 	for (int i = 0; data->cmds->cmd[i]; i++)
+	// 		printf("cmd[%d]: %s\n", i, data->cmds->cmd[i]);
+		
+	// 	printf("buf: %s\n", data->cmds->argument_buf);
+	// 	printf("cmd_flags: %s\n", data->cmds->cmd_flags);
+	// 	printf("delim: %s\n", data->cmds->delim);
+	// 	printf("in: %d\n", data->cmds->in);
+	// 	printf("in arg: %s\n", data->cmds->in_arg);
+	// 	printf("out: %d\n", data->cmds->out);
+	// 	printf("out arg: %s\n", data->cmds->out_arg);
+	// 	printf("pipe: %d\n", data->cmds->pipe);
+	// 	printf("[NEXT]\n");
+	// 	data->cmds = data->cmds->next;
+	// }
 	//if (syntax_checker(data->args) == 1)
 	//	return (1);
 	return (0);

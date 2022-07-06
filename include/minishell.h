@@ -184,7 +184,7 @@ int		check_envp(char *c, t_env *envp_n, int n);
 void	main_process(t_input data);
 
 // execute
-int		pipex(int argc, char *argv[], char *envp[]);
+int		pipex(t_input *data, t_cmd *cmds);
 void	ft_heredoc(char *limiter);
 void	ft_fork(char *argv, char *envp[]);
 int		execute(t_input *data);

@@ -117,10 +117,10 @@ void	create_token(t_input *data)
 	start = 0;
 	while (data->buf[i])
 	{
-		while (check_charset(data->buf[i], " \f\n\r\t\v;"))
+		while (check_charset(data->buf[i], " \f\n\r\t\v"))
 			++i;
 		start = i;
-		while (data->buf[i] && !check_charset(data->buf[i], "\"$\'&<>=*| \f\n\r\t\v\\;()"))
+		while (data->buf[i] && !check_charset(data->buf[i], "\"$\'&<>=*| \f\n\r\t\v\\()"))
 			++i;
 		if (i != start)
 		{
@@ -211,7 +211,7 @@ int	main(int argc, char *argv[], char *envp[])
 		if (parsing(&data) == 0)
 		{
 			//asterisks(&data);
-			//execute(&data);
+			execute(&data);
 
 			// ft_free_token(data.args);
 		}
