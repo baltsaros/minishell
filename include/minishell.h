@@ -21,6 +21,7 @@
 # include <stdbool.h>
 # include "../libft/libft.h"
 
+pid_t	g_pid;
 
 // enum for tokens
 enum tokens
@@ -118,7 +119,6 @@ typedef struct s_input
 	char			*buf;
 	struct builtin	*builtins;
 	int				status;
-	pid_t			pid;
 	DIR				*dir;
 	char			**line;
 }	t_input;
