@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../include/minishell.h"
 
 // char	*prepare_str(t_input *data)
 // {

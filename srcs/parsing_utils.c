@@ -14,16 +14,10 @@ char	*get_args(t_node	*args)
 		{
 			str = ft_strjoin_free(str, args->value);
 			if (!str)
-			{
-				free(str);
 				return (NULL);
-			}
 			str = ft_strjoin_free(str, " ");
 			if (!str)
-			{
-				free(str);
 				return (NULL);
-			}
 		}
 		if (args->next)
 			args = args->next;

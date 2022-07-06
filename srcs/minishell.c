@@ -206,14 +206,14 @@ int	main(int argc, char *argv[], char *envp[])
 		data.buf = readline("yo> ");
 		if (data.buf)
 			add_history(data.buf);
-		check_field(&data.buf);
+		// check_field(&data.buf);
 		data_init(&data);
 		if (parsing(&data) == 0)
 		{
 			//asterisks(&data);
 			execute(&data);
 
-			// ft_free_token(data.args);
+			ft_free_token(data.args);
 		}
 	}
 	return ((data.status >> 8) & 0xff);

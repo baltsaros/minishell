@@ -17,9 +17,9 @@
 # include <term.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <libft.h>
+// # include <libft.h>
 # include <stdbool.h>
-// # include "libft/libft.h"
+# include "../libft/libft.h"
 
 // enum for tokens
 enum tokens
@@ -171,11 +171,12 @@ char	*ft_charjoin_free(char *line, char b);
 
 char	**get_address(char *cmd[], char *envp[]);
 char	*access_check(char *cmd[], char *envp[]);
-void	ft_execve(char *argv, char *envp[]);
+void	ft_execve(char *argv[], char *envp[]);
 int		ft_open(char *file, int par);
 
 char	**ft_split_space(char const *s, char *charset);
 int		get_next_line(char **line);
+int		get_next_line_hd(char **line);
 int		ft_strstr(char *str, char *to_find);
 int		check_charset(char c, char *charset);
 int		check_envp(char *c, t_env *envp_n, int n);
@@ -185,8 +186,8 @@ void	main_process(t_input data);
 
 // execute
 int		pipex(t_input *data, t_cmd *cmds);
-void	ft_heredoc(char *limiter);
-void	ft_fork(char *argv, char *envp[]);
+void	ft_heredoc(char *limiter, t_cmd *elem);
+void	ft_fork(char *argv[], char *envp[]);
 int		execute(t_input *data);
 
 // builtins

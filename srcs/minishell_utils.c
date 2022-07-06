@@ -134,23 +134,22 @@ char	*access_check(char *cmd[], char *envp[])
 	return (ret);
 }
 
-void	ft_execve(char *argv, char *envp[])
+void	ft_execve(char **argv, char *envp[])
 {
 	char	*path;
-	char	**cmd;
 
 	if (!argv || !argv[0])
 	{
 		write(2, "parse error near ""\n", 19);
 		exit(1);
 	}
-	cmd = ft_split(argv, ' ');
-	alloc_check(cmd);
-	path = access_check(cmd, envp);
-	if (execve(path, cmd, envp) < 0)
+	// cmd = ft_split(argv, ' ');
+	// alloc_check(cmd);
+	path = access_check(argv, envp);
+	if (execve(path, argv, envp) < 0)
 	{
 		perror("Execve error");
-		ft_free(cmd);
+		ft_free(argv);
 		free(path);
 		exit(127);
 	}

@@ -29,7 +29,7 @@ t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 		free(elem->argument_buf);
 		return (NULL);
 	}
-	// free(elem->argument_buf);
+	free(elem->argument_buf);
 	while (args)
 	{
 		if (args->prev && args->prev->type == PIPE)
@@ -49,6 +49,8 @@ t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 				elem->delim = ft_strdup(args->value);
 				if (!elem->delim)
 					return (NULL);
+				ft_heredoc(elem->delim, elem);
+				elem->in_arg = "heredoc.tmp";
 			}
 			else if (args->value[1] == '\0')
 			{
@@ -138,13 +140,11 @@ int	parsing(t_input *data)
 	data->cmds = parse_cmd(data);
 	if (!data->cmds)
 		return (1);
-		
 	// while (data->cmds)
 	// {
 	// 	for (int i = 0; data->cmds->cmd[i]; i++)
 	// 		printf("cmd[%d]: %s\n", i, data->cmds->cmd[i]);
-		
-	// 	printf("buf: %s\n", data->cmds->argument_buf);
+	// 	// printf("buf: %s\n", data->cmds->argument_buf);
 	// 	printf("cmd_flags: %s\n", data->cmds->cmd_flags);
 	// 	printf("delim: %s\n", data->cmds->delim);
 	// 	printf("in: %d\n", data->cmds->in);
@@ -155,7 +155,7 @@ int	parsing(t_input *data)
 	// 	printf("[NEXT]\n");
 	// 	data->cmds = data->cmds->next;
 	// }
-	//if (syntax_checker(data->args) == 1)
-	//	return (1);
+	// if (syntax_checker(data->args) == 1)
+	// 	return (1);
 	return (0);
 }
