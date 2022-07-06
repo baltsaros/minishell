@@ -21,6 +21,7 @@
 # include <stdbool.h>
 # include "../libft/libft.h"
 
+
 // enum for tokens
 enum tokens
 {
@@ -186,7 +187,7 @@ void	main_process(t_input data);
 // execute
 int		pipex(t_input *data, t_cmd *cmds);
 void	ft_heredoc(char *limiter, t_cmd *elem);
-void	ft_fork(char *argv[], char *envp[]);
+void	ft_fork(char *argv[], t_input *data);
 int		execute(t_input *data);
 
 // builtins

@@ -213,12 +213,12 @@ int	main(int argc, char *argv[], char *envp[])
 		check_field(&data.buf);
 		data_init(&data);
 		asterisks(&data);
-		// if (parsing(&data) == 0)
-		// {
-		// 	execute(&data);
-		// 	ft_free_token(data.args);
-		// }
-		execute(&data);
+		if (parsing(&data) == 0)
+		{
+			execute(&data);
+			ft_free_token(data.args);
+		}
+		// execute(&data);
 	}
 	return ((data.status >> 8) & 0xff);
 }
