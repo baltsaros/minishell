@@ -71,6 +71,8 @@ t_cmd	*parse_cmd(t_input *data)
 
 int	parsing(t_input *data)
 {
+	if (!data->buf)
+		return (1);
 	data->cmds = parse_cmd(data);
 	if (!data->cmds)
 		return (1);
@@ -87,7 +89,7 @@ int	parsing(t_input *data)
 	// 	printf("[NEXT]\n");
 	// 	data->cmds = data->cmds->next;
 	// }
-	if (syntax_checker(data->args) == 1)
-		return (1);
+	// if (syntax_checker(data->args) == 1)
+	// 	return (1);
 	return (0);
 }

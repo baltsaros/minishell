@@ -83,6 +83,8 @@ int	pipex(t_input *data, t_cmd *cmds)
 	// cmds = cmds->next;
 	error_check(dup2(cmds->out, STDOUT_FILENO), "In Dup2_out ", 13);
 	ft_execve(cmds->cmd, data->envp);
+	close(cmds->in);
+	close(cmds->out);
 	return (0);
 }
 
@@ -93,7 +95,8 @@ int	execute(t_input *data)
 
 	pid = 0;
 	i = 0;
-
+	if (!data->buf || !*data->buf)
+		return (0);
 	while (i < 7)
 	{
 		if (ft_strncmp(data->argv[0], data->builtins[i].name, ft_strlen(data->builtins[i].name) + 1))

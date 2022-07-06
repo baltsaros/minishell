@@ -26,6 +26,8 @@ int		check_field(char **buf)
 	int		quote_d;
 	char	*tmp;
 
+	if (!*buf)
+		return (0);
 	i = 0;
 	quote = 0;
 	quote_d = 0;
@@ -120,7 +122,7 @@ void	create_token(t_input *data)
 		while (check_charset(data->buf[i], " \f\n\r\t\v"))
 			++i;
 		start = i;
-		while (data->buf[i] && !check_charset(data->buf[i], "\"$\'&<>=*| \f\n\r\t\v\\()"))
+		while (data->buf[i] && !check_charset(data->buf[i], "\"$\'&<>=*| \f\n\r\t\v()"))
 			++i;
 		if (i != start)
 		{
@@ -129,7 +131,7 @@ void	create_token(t_input *data)
 			data->node_tmp = ft_token_new(type, data->value);
 			ft_token_back(&data->args, data->node_tmp);
 		}
-		if (check_charset(data->buf[i], "\"$\'&<>=*|()\\"))
+		if (check_charset(data->buf[i], "\"$\'&<>=*|()"))
 		{
 			check_next(data, &i);
 		}
@@ -168,6 +170,8 @@ void	data_init(t_input *data)
 	t_node *tmp;
 	int		i;
 
+	if (!data->buf || !*data->buf)
+		return ;
 	i = 0;
 	data->status = 0;
 	data->in = 0;
@@ -206,15 +210,15 @@ int	main(int argc, char *argv[], char *envp[])
 		data.buf = readline("yo> ");
 		if (data.buf)
 			add_history(data.buf);
-		// check_field(&data.buf);
+		check_field(&data.buf);
 		data_init(&data);
-		if (parsing(&data) == 0)
-		{
-			//asterisks(&data);
-			execute(&data);
-
-			ft_free_token(data.args);
-		}
+		asterisks(&data);
+		// if (parsing(&data) == 0)
+		// {
+		// 	execute(&data);
+		// 	ft_free_token(data.args);
+		// }
+		execute(&data);
 	}
 	return ((data.status >> 8) & 0xff);
 }
