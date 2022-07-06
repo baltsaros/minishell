@@ -24,6 +24,7 @@ void	ft_heredoc(char *limiter, t_cmd *elem)
 	char	*line;
 
 	elem->in = open("heredoc.tmp", O_RDWR | O_CREAT | O_APPEND, 0777);
+	error_check(elem->in, "In Open heredoc ", 17);
 	while (get_next_line_hd(&line))
 	{
 		if (ft_strncmp(limiter, line, ft_strlen(limiter)) == 0 &&
@@ -36,7 +37,9 @@ void	ft_heredoc(char *limiter, t_cmd *elem)
 		write(elem->in, line, ft_strlen(line));
 		free(line);
 	}
+	close(elem->in);
 	elem->in = open("heredoc.tmp", O_RDONLY);
+	error_check(elem->in, "In Open heredoc ", 17);
 	unlink("heredoc.tmp");
 }
 
@@ -72,22 +75,6 @@ void	ft_heredoc(char *limiter, t_cmd *elem)
 
 int	pipex(t_input *data, t_cmd *cmds)
 {
-	// if (ft_strncmp("here_doc", argv[1], 9) == 0)
-	// {
-	// 	i = 3;
-	// 	out = ft_open(argv[argc - 1], 0);
-	// 	ft_heredoc(argv[2]);
-	// }
-	// else
-	// {
-	// 	i = 2;
-	// 	in = ft_open(argv[1], 1);
-	// 	error_check(dup2(in, STDIN_FILENO), "In Dup2_in ", 12);
-	// 	out = ft_open(argv[argc - 1], 2);
-	// }
-	// if (!cmds->delim)
-	// else
-	// 	ft_heredoc(cmds->delim);
 	error_check(dup2(cmds->in, STDIN_FILENO), "In Dup2_in ", 12);
 	while (cmds->pipe == 1){
 		ft_fork(cmds->cmd, data->envp);
