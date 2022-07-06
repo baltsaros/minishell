@@ -208,14 +208,14 @@ int	main(int argc, char *argv[], char *envp[])
 			add_history(data.buf);
 		// check_field(&data.buf);
 		data_init(&data);
-		//asterisks(&data);
+		asterisks(&data);
 
-		if (parsing(&data) == 0)
-		{
+		//if (parsing(&data) == 0)
+		//{
 		//	execute(&data);
 		//
 		//	ft_free_token(data.args);
-		}
+		//}
 	}
 	return ((data.status >> 8) & 0xff);
 }
