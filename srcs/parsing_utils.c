@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -12,6 +13,36 @@
 
 #include "../include/minishell.h"
 
+=======
+#include "../include/minishell.h"
+
+char	*get_args(t_node	*args)
+{
+	char	*str;
+
+	str = ft_strdup("");
+	if (!str)
+		return (NULL);
+	while (args->type == WORD && args)
+	{
+		if (args->value[0])
+		{
+			str = ft_strjoin_free(str, args->value);
+			if (!str)
+				return (NULL);
+			str = ft_strjoin_free(str, " ");
+			if (!str)
+				return (NULL);
+		}
+		if (args->next)
+			args = args->next;
+		else
+			break ;
+	}
+	return (str);
+}
+
+>>>>>>> execution
 t_node *next_elem(t_node *args)
 {
 	t_node	*next_elem;
@@ -56,7 +87,8 @@ int	init_in(t_node *args, t_cmd *elem)
 		elem->delim = ft_strdup(args->value);
 		if (!elem->delim)
 			return (1);
-		// Open heredoc here
+		ft_heredoc(elem->delim, elem);
+		elem->in_arg = "heredoc.tmp";
 		return (0);
 	}
 	else if (args->type == REDIR_IN)

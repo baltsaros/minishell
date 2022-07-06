@@ -17,10 +17,11 @@
 # include <term.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <libft.h>
+// # include <libft.h>
 # include <stdbool.h>
-// # include "libft/libft.h"
+# include "../libft/libft.h"
 
+// enum for tokens
 enum tokens
 {
 	DOLLAR		= 36,
@@ -62,6 +63,7 @@ enum builtins
  	BI_ECHON	= 17
 };
 
+// struct for token (+ wildcard) linked lists
 typedef struct s_node
 {
 	int				type;
@@ -93,6 +95,7 @@ typedef struct s_env
 	struct s_env	*prev;
 }	t_env;
 
+// global structure
 typedef struct s_input
 {
 	int				i;
@@ -114,14 +117,18 @@ typedef struct s_input
 	char			*buf;
 	struct builtin	*builtins;
 	int				status;
+	pid_t			pid;
+	DIR				*dir;
 	char			**line;
-} t_input;
+}	t_input;
 
+// struct for builins functions
 struct builtin
 {
 	char	*name;
 	int		(*func)(t_input *data);
 };
+
 typedef	struct s_env_var
 {
 	char	*name;
@@ -163,11 +170,12 @@ char	*ft_charjoin_free(char *line, char b);
 
 char	**get_address(char *cmd[], char *envp[]);
 char	*access_check(char *cmd[], char *envp[]);
-void	ft_execve(char *argv, char *envp[]);
+void	ft_execve(char *argv[], char *envp[]);
 int		ft_open(char *file, int par);
 
 char	**ft_split_space(char const *s, char *charset);
 int		get_next_line(char **line);
+int		get_next_line_hd(char **line);
 int		ft_strstr(char *str, char *to_find);
 int		check_charset(char c, char *charset);
 int		check_envp(char *c, t_env *envp_n, int n);
@@ -176,9 +184,9 @@ int		check_envp(char *c, t_env *envp_n, int n);
 void	main_process(t_input data);
 
 // execute
-int		pipex(int argc, char *argv[], char *envp[]);
-void	ft_heredoc(char *limiter);
-void	ft_fork(char *argv, char *envp[]);
+int		pipex(t_input *data, t_cmd *cmds);
+void	ft_heredoc(char *limiter, t_cmd *elem);
+void	ft_fork(char *argv[], char *envp[]);
 int		execute(t_input *data);
 
 // builtins
@@ -195,6 +203,7 @@ void	signal_handler(int signo, siginfo_t *info, void *context);
 
 // others
 void	asterisks(t_input *data);
+void	find_files(t_input *data, t_node *tmp, struct dirent *fname);
 
 //syntax checker
 int		is_the_next_is_word(t_node *args);

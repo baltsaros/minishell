@@ -88,6 +88,25 @@ void	check_next(t_input *data, size_t *i)
 	++*i;
 }
 
+void	check_asterisk(t_input *data)
+{
+	int	i;
+
+	i = 0;
+	data->node_tmp = data->args;
+	while (data->node_tmp->next && data->node_tmp->type != ASTER)
+		data->node_tmp = data->node_tmp->next;
+	while (data->buf[i] && data->buf[i] != '*')
+		++i;
+	if (data->node_tmp->type == ASTER)
+	{
+		if (data->buf[i - 1] && data->buf[i - 1] != ' ')
+			data->node_tmp->prev->type = WORD_AST;
+		if (data->buf[i + 1] && data->buf[i + 1] != ' ')
+			data->node_tmp->next->type = WORD_AST;
+	}
+}
+
 void	create_token(t_input *data)
 {
 	size_t	i;
@@ -98,10 +117,10 @@ void	create_token(t_input *data)
 	start = 0;
 	while (data->buf[i])
 	{
-		while (check_charset(data->buf[i], " \f\n\r\t\v;"))
+		while (check_charset(data->buf[i], " \f\n\r\t\v"))
 			++i;
 		start = i;
-		while (data->buf[i] && !check_charset(data->buf[i], "\"$\'&<>=*| \f\n\r\t\v\\;()"))
+		while (data->buf[i] && !check_charset(data->buf[i], "\"$\'&<>=*| \f\n\r\t\v\\()"))
 			++i;
 		if (i != start)
 		{
@@ -115,6 +134,7 @@ void	create_token(t_input *data)
 			check_next(data, &i);
 		}
 	}
+	check_asterisk(data);
 }
 
 void	envp_init(t_input *data, char *envp[])
@@ -153,6 +173,7 @@ void	data_init(t_input *data)
 	data->in = 0;
 	data->out = 1;
 	data->args = NULL;
+	data->wild = NULL;
 	create_token(data);
 	tmp = data->args;
 	data->argc = ft_token_size(data->args);
@@ -185,7 +206,7 @@ int	main(int argc, char *argv[], char *envp[])
 		data.buf = readline("yo> ");
 		if (data.buf)
 			add_history(data.buf);
-		check_field(&data.buf);
+		// check_field(&data.buf);
 		data_init(&data);
 		//asterisks(&data);
 

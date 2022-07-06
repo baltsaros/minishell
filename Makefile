@@ -20,6 +20,7 @@ SRC_FILES	= minishell.c \
 				execute.c \
 				builtins.c \
 				get_next_line.c \
+				get_next_line_hd.c \
 				parsing_utils.c \
 				parsing_utils_2.c \
 				wildcard.c \
