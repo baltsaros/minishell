@@ -37,6 +37,8 @@ void	asterisks(t_input *data)
 	t_node			*tmp;
 	struct dirent	*fname;
 
+	if (!data->buf || !*data->buf)
+		return ;
 	data->dir = opendir(".");
 	if (!data->dir)
 	{

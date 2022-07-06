@@ -1,6 +1,25 @@
 #include "../include/minishell.h"
 
-void	ft_fork(char *argv[], char *envp[])
+int	check_builtin(t_input *data, t_cmd *cmds)
+{
+	int	i;
+
+	i = 0;
+	while (i < 7)
+	{
+		if (ft_strncmp(cmds->cmd[0], data->builtins[i].name
+			, ft_strlen(data->builtins[i].name) + 1))
+			++i;
+		else
+		{
+			data->builtins[i].func(data);
+			return (1);
+		}
+	}
+	return (0);
+}
+
+void	ft_fork(char *argv[], t_input *data)
 {
 	int		fd[2];
 	int		pid;
@@ -11,8 +30,12 @@ void	ft_fork(char *argv[], char *envp[])
 	if (pid == 0)
 	{
 		error_check(dup2(fd[1], STDOUT_FILENO), "In Dup2_ch ", 12);
+		// close(data->cmds->in);
 		close(fd[0]);
-		ft_execve(argv, envp);
+		if (check_builtin(data, data->cmds))
+			exit(data->status);
+		else
+			ft_execve(argv, data->envp);
 	}
 	waitpid(pid, NULL, 0);
 	error_check(dup2(fd[0], STDIN_FILENO), "In Dup2_pr ", 12);
@@ -31,7 +54,6 @@ void	ft_heredoc(char *limiter, t_cmd *elem)
 			ft_strlen(limiter) == (ft_strlen(line) - 1))
 		{
 			free(line);
-			// exit(EXIT_SUCCESS);
 			break ;
 		}	
 		write(elem->in, line, ft_strlen(line));
@@ -43,74 +65,40 @@ void	ft_heredoc(char *limiter, t_cmd *elem)
 	unlink("heredoc.tmp");
 }
 
-// void	ft_heredoc(char *limiter)
-// {
-// 	char	*line;
-// 	int		fd[2];
-// 	int		pid1;
-
-// 	error_check(pipe(fd), "In pipe ", 9);
-// 	pid1 = fork();
-// 	error_check(pid1, "In fork ", 9);
-// 	if (pid1 == 0)
-// 	{
-// 		error_check(dup2(fd[1], STDOUT_FILENO), "In Dup2_ch ", 12);
-// 		close(fd[0]);
-// 		while (get_next_line_hd(&line))
-// 		{
-// 			if (ft_strncmp(limiter, line, ft_strlen(limiter)) == 0 &&
-// 				ft_strlen(limiter) == (ft_strlen(line) - 1))
-// 			{
-// 				free(line);
-// 				exit(EXIT_SUCCESS);
-// 			}	
-// 			write(1, line, ft_strlen(line));
-// 			free(line);
-// 		}
-// 	}
-// 	waitpid(pid1, NULL, 0);
-// 	close(fd[1]);
-// 	error_check(dup2(fd[0], STDIN_FILENO), "In Dup2_pr ", 12);
-// }
-
 int	pipex(t_input *data, t_cmd *cmds)
 {
 	error_check(dup2(cmds->in, STDIN_FILENO), "In Dup2_in ", 12);
-	while (cmds->pipe == 1){
-		ft_fork(cmds->cmd, data->envp);
+	while (cmds->pipe == 1)
+	{
+		ft_fork(cmds->cmd, data);
 		cmds = cmds->next;
 	}
-	// cmds = cmds->next;
 	error_check(dup2(cmds->out, STDOUT_FILENO), "In Dup2_out ", 13);
-	ft_execve(cmds->cmd, data->envp);
+	if (!check_builtin(data, cmds))
+		ft_execve(cmds->cmd, data->envp);
+	close(cmds->in);
+	close(cmds->out);
 	return (0);
 }
 
 int	execute(t_input *data)
 {
 	int	pid;
-	int	i;
 
 	pid = 0;
-	i = 0;
-
-	while (i < 7)
-	{
-		if (ft_strncmp(data->argv[0], data->builtins[i].name, ft_strlen(data->builtins[i].name) + 1))
-			++i;
-		else
-		{
-			data->builtins[i].func(data);
-			break;
-		}
-	}
-	if (i >= 7)
+	if (!data->buf || !*data->buf)
+		return (0);
+	if (data->cmds->pipe == 1 || !check_builtin(data, data->cmds))
 	{
 		pid = fork();
 		if (pid == 0)
-			pipex(data, data->cmds);
-			// ft_execve(data->cmds->cmd, data->envp);
+		{
+			if (data->cmds->pipe == 1)
+				pipex(data, data->cmds);
+			else
+				ft_execve(data->cmds->cmd, data->envp);
+		}
+		waitpid(pid, &data->status, 0);
 	}
-	waitpid(pid, &data->status, 0);
 	return (0);
 }
