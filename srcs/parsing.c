@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:44:46 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/07/05 00:49:02 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/06 12:36:20 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 		}
 		else if (args->value[0] == '<')
 		{
-			if (!ft_strncmp(args->value, "<<", 2))
+			if (args->type == REDIR_HD)
 			{
 				//Open Heredoc here
 				args =  args->next;
@@ -73,7 +73,7 @@ t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 		}
 		else if (args->value[0] == '>')
 		{
-			if (!ft_strncmp(args->value, ">>", 2))
+			if (args->type == REDIR_AP)
 			{
 				args = args->next;
 				elem->out_arg = ft_strdup(args->value);
