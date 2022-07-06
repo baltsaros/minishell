@@ -209,7 +209,4 @@ t_cmd	*init_empty_elem(void);
 int		init_in(t_node *args, t_cmd *elem);
 int		init_out(t_node *args, t_cmd *elem);
 
-// heredoc
-int		create_heredoc(char *end);
-
 #endif

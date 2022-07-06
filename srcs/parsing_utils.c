@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 12:38:20 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/07/06 13:37:15 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/06 13:42:43 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	init_in(t_node *args, t_cmd *elem)
 		elem->delim = ft_strdup(args->value);
 		if (!elem->delim)
 			return (1);
-		elem->in = create_heredoc(elem->delim);
+		// Open heredoc here
 		return (0);
 	}
 	else if (args->type == REDIR_IN)
