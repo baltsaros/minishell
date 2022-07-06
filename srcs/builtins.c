@@ -169,10 +169,13 @@ int		yo_unset(t_input *data)
 int		yo_exit(t_input *data)
 {
 	ft_free_envp(data->envp_n);
-	ft_free_token(data->args);
-	if (data->wild)
-		ft_free_token(data->wild);
+	if (data->buf)
+		ft_free_token(data->args);
+	//if (data->wild)
+	//	ft_free_token(data->wild);
 	printf("exit\n");
+	if (!data->buf)
+		exit(data->status);
 	if (data->argv[1])
 	{
 		data->status = ft_atoi(data->argv[1]);

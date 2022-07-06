@@ -192,25 +192,30 @@ void	data_init(t_input *data)
 	//ft_token_print(data->args);
 }
 
-void	prompt(t_input data)
+void	prompt(t_input *data)
 {
-	while (1)
+	while (data->buf)
 	{
-		data.buf = readline("yo> ");
-		if (data.buf)
-			add_history(data.buf);
-		check_field(&data.buf);
-		data_init(&data);
-		//asterisks(&data);
-		if (parsing(&data) == 0)
+		data->buf = readline("yo> ");
+		if (!data->buf)
 		{
-			execute(&data);
-			ft_free_token(data.args);
-			ft_free_cmd(data.cmds);
+			yo_exit(data);
 		}
-		else
-			ft_free_token(data.args);
-		// execute(&data);
+		else if (data->buf && data->buf[0] != '\0')
+		{
+			add_history(data->buf);
+			check_field(&data->buf);
+			data_init(data);
+			if (parsing(data) == 0)
+			{
+				execute(data);
+				ft_free_token(data->args);
+				ft_free_cmd(data->cmds);
+			}
+			else
+				ft_free_token(data->args);
+		}
+		//asterisks(&data);
 	}
 }
 
@@ -227,6 +232,6 @@ int	main(int argc, char *argv[], char *envp[])
 	sigaction(SIGINT, &act, NULL);
 	sigaction(SIGQUIT, &act, NULL);
 	envp_init(&data, envp);
-	prompt(data);
+	prompt(&data);
 	return ((data.status >> 8) & 0xff);
 }
