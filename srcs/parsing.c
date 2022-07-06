@@ -6,31 +6,11 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:44:46 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/07/06 13:00:55 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/06 13:33:07 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-t_cmd	*init_empty_elem(void)
-{
-	t_cmd	*elem;
-
-	elem = (t_cmd *) malloc (sizeof(t_cmd));
-	if (!elem)
-		return (NULL);
-	elem->cmd = NULL;
-	elem->argument_buf = NULL;
-	elem->delim = NULL;
-	elem->in = 0;
-	elem->in_arg = NULL;
-	elem->out = 1;
-	elem->out_arg = NULL;
-	elem->pipe = -1;
-	elem->next = NULL;
-	elem->prev = NULL;
-	return (elem);
-}
 
 t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 {
@@ -43,44 +23,15 @@ t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 	free(elem->argument_buf);
 	while (args && args->type != PIPE)
 	{
-		//printf("Line readed: %s\n", args->value);
 		if (args->value[0] == '<')
 		{
-			if (args->type == REDIR_HD)
-			{
-				//Open Heredoc here
-				args =  args->next;
-				elem->delim = ft_strdup(args->value);
-				if (!elem->delim)
-					return (NULL);
-			}
-			else if (args->value[1] == '\0')
-			{
-				args = args->next;
-				elem->in_arg = ft_strdup(args->value);
-				if (!elem->in_arg)
-					return (NULL);
-				elem->in = open(elem->in_arg, O_RDONLY);
-			}
+			if (init_in(args, elem) == 1)
+				return (NULL);
 		}
 		else if (args->value[0] == '>')
 		{
-			if (args->type == REDIR_AP)
-			{
-				args = args->next;
-				elem->out_arg = ft_strdup(args->value);
-				if (!elem->out_arg)
-					return (NULL);
-				elem->out = open(elem->out_arg, O_WRONLY | O_CREAT | O_APPEND, 00644);
-			}
-			else if (args->value[1] == '\0')
-			{
-				args = args->next;
-				elem->out_arg = ft_strdup(args->value);
-				if (!elem->out_arg)
-					return (NULL);
-				elem->out = open(elem->out_arg, O_WRONLY | O_CREAT | O_TRUNC, 00644);
-			} 
+			if (init_out(args, elem) == 1)
+				return (NULL);
 		}
 		if (args->next && args->next->type == PIPE)
 			elem->pipe = 1;
@@ -117,14 +68,7 @@ t_cmd	*parse_cmd(t_input *data)
 	arg = first_elem;
 	while (data->args)
 	{
-		while (data->args)
-		{
-			if (!data->args->next)
-				break ;
-			data->args = data->args->next;
-			if (data->args->prev && data->args->prev->type == PIPE)
-				break ;
-		}
+		data->args = next_elem(data->args);
 		if (!data->args || !data->args->next)
 			break ;
 		new_con = init_elem(data->args);
