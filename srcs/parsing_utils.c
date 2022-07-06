@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 12:38:20 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/07/06 15:11:41 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/06 15:17:37 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*get_args(t_node	*args)
 	str = ft_strdup("");
 	if (!str)
 		return (NULL);
-	while (args && (args->type == WORD || args->type == DOLLAR))
+	while (args && (args->type == WORD || args->type == DOLLAR || args->type == QUOTE_D))
 	{
 		if (args->type == DOLLAR)
 		{
@@ -31,20 +31,23 @@ char	*get_args(t_node	*args)
 					str = ft_strjoin_free(str, getenv(args->value));
 					if (!str)
 						return (NULL);
+					str = ft_strjoin_free(str, " ");
+					if (!str)
+						return (NULL);
 				}
 			}
 			else
 				return (NULL);
 		}
-		else
+		else if (args->type != QUOTE_D)
 		{
 			str = ft_strjoin_free(str, args->value);
 			if (!str)
             	return (NULL);
+			str = ft_strjoin_free(str, " ");
+			if (!str)
+				return (NULL);
 		}
-		str = ft_strjoin_free(str, " ");
-		if (!str)
-			return (NULL);
 		if (args->next)
 			args = args->next;
 		else
