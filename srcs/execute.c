@@ -82,7 +82,6 @@ int	pipex(t_input *data, t_cmd *cmds)
 
 int	execute(t_input *data)
 {
-	g_pid = 0;
 	if (!data->buf || !*data->buf)
 		return (0);
 	if (data->cmds->pipe == 1 || !check_builtin(data, data->cmds))

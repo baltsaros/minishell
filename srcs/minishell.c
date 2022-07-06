@@ -230,8 +230,9 @@ int	main(int argc, char *argv[], char *envp[])
 		exit(EXIT_FAILURE);
 	act.sa_sigaction = signal_handler;
 	act.sa_flags = SA_SIGINFO;
-	sigaction(SIGINT, &act, NULL);
-	sigaction(SIGQUIT, &act, NULL);
+	if (sigaction(SIGINT, &act, NULL) == -1
+		|| sigaction(SIGQUIT, &act, NULL) == -1)
+		printf("[ERROR]: Signal handler failed\n");
 	envp_init(&data, envp);
 	prompt(&data);
 	return ((data.status >> 8) & 0xff);
