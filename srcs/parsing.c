@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:44:46 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/07/06 12:36:20 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/06 13:00:55 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ t_cmd	*init_empty_elem(void)
 		return (NULL);
 	elem->cmd = NULL;
 	elem->argument_buf = NULL;
-	elem->cmd_flags = NULL;
 	elem->delim = NULL;
 	elem->in = 0;
 	elem->in_arg = NULL;
@@ -42,17 +41,10 @@ t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 		return (NULL);
 	}
 	free(elem->argument_buf);
-	while (args)
+	while (args && args->type != PIPE)
 	{
-		if (args->prev && args->prev->type == PIPE)
-			break ;
-		if (args->value[0] == '-')
-		{
-			elem->cmd_flags = ft_strdup(args->value + 1);
-			if (!elem->cmd_flags)
-				return (NULL);
-		}
-		else if (args->value[0] == '<')
+		//printf("Line readed: %s\n", args->value);
+		if (args->value[0] == '<')
 		{
 			if (args->type == REDIR_HD)
 			{
@@ -90,7 +82,7 @@ t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 				elem->out = open(elem->out_arg, O_WRONLY | O_CREAT | O_TRUNC, 00644);
 			} 
 		}
-		else if (args->type == PIPE)
+		if (args->next && args->next->type == PIPE)
 			elem->pipe = 1;
 		args = args->next;
 	}
@@ -155,7 +147,6 @@ int	parsing(t_input *data)
 	{
 		for (int i = 0; data->cmds->cmd[i]; i++)
 			printf("cmd[%d]: %s\n", i, data->cmds->cmd[i]);
-		printf("cmd_flags: %s\n", data->cmds->cmd_flags);
 		printf("delim: %s\n", data->cmds->delim);
 		printf("in: %d\n", data->cmds->in);
 		printf("in arg: %s\n", data->cmds->in_arg);

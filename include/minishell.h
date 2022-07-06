@@ -75,7 +75,6 @@ typedef struct s_cmd
 {
 	char			**cmd;
 	char			*argument_buf;
-	char			*cmd_flags;
 	char			*delim;
  	int				in;
 	char			*in_arg;
