@@ -3,7 +3,7 @@
 void	signal_handler(int signo, siginfo_t *info, void *context)
 {
     (void)info;
-	(void)context;
+    (void)context;
     if (!kill(g_pid, signo))
     {
         if (signo == SIGQUIT)
