@@ -202,7 +202,7 @@ void	prompt(t_input *data)
 			free(data->buf);
 			yo_exit(data);
 		}
-		else if (data->buf && data->buf[0] != '\0')
+		else if (data->buf[0] != '\0')
 		{
 			add_history(data->buf);
 			check_field(&data->buf);
