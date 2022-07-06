@@ -192,19 +192,8 @@ void	data_init(t_input *data)
 	//ft_token_print(data->args);
 }
 
-int	main(int argc, char *argv[], char *envp[])
+void	prompt(t_input data)
 {
-	t_input data;
-	struct sigaction act;
-
-	(void)argv;
-	if (argc != 1)
-		exit(EXIT_FAILURE);
-	act.sa_sigaction = signal_handler;
-	act.sa_flags = SA_SIGINFO;
-	sigaction(SIGINT, &act, NULL);
-	sigaction(SIGQUIT, &act, NULL);
-	envp_init(&data, envp);
 	while (1)
 	{
 		data.buf = readline("yo> ");
@@ -223,5 +212,21 @@ int	main(int argc, char *argv[], char *envp[])
 			ft_free_token(data.args);
 		// execute(&data);
 	}
+}
+
+int	main(int argc, char *argv[], char *envp[])
+{
+	t_input data;
+	struct sigaction act;
+
+	(void)argv;
+	if (argc != 1)
+		exit(EXIT_FAILURE);
+	act.sa_sigaction = signal_handler;
+	act.sa_flags = SA_SIGINFO;
+	sigaction(SIGINT, &act, NULL);
+	sigaction(SIGQUIT, &act, NULL);
+	envp_init(&data, envp);
+	prompt(data);
 	return ((data.status >> 8) & 0xff);
 }
