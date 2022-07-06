@@ -75,14 +75,15 @@ typedef struct s_node
 
 typedef struct s_cmd
 {
-	char			*cmd;
+	char			**cmd;
+	char			*argument_buf;
 	char			*cmd_flags;
-	char			*argument;
 	char			*delim;
  	int				in;
+	char			*in_arg;
  	int				out;
+	char			*out_arg;
 	int				pipe;
-	int				index;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
  }	t_cmd;
@@ -204,9 +205,13 @@ void	signal_handler(int signo, siginfo_t *info, void *context);
 void	asterisks(t_input *data);
 void	find_files(t_input *data, t_node *tmp, struct dirent *fname);
 
+//syntax checker
+int syntax_checker(t_node *args);
+
 // parsing
-int	parsing(t_input *data, char *buf);
+int	parsing(t_input *data);
 
 // parsing_utils
+char	*get_args(t_node	*args);
 
 #endif
