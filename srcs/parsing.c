@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:44:46 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/07/06 15:27:36 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/06 16:19:45 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,24 @@ t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 	{
 		if (args->value[0] == '<')
 		{
+			if (!args->next || is_the_next_is_word(args) == 1)
+				return (print_syntax_error(args));
 			if (init_in(args, elem) == 1)
 				return (NULL);
 		}
 		else if (args->value[0] == '>')
 		{
+			if (!args->next || is_the_next_is_word(args) == 1)
+				return (print_syntax_error(args));
 			if (init_out(args, elem) == 1)
 				return (NULL);
 		}
 		if (args->next && args->next->type == PIPE)
+		{
+			if (!args->next->next || is_the_next_is_word(args->next) == 1)
+				return (print_syntax_error(args->next));
 			elem->pipe = 1;
+		}
 		args = args->next;
 	}
 	return (elem);
@@ -100,7 +108,5 @@ int	parsing(t_input *data)
 	//	printf("[NEXT]\n");
 	//	data->cmds = data->cmds->next;
 	//}
-	//if (syntax_checker(data->args) == 1)
-	//	return (1);
 	return (0);
 }

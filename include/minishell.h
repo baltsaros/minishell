@@ -197,7 +197,8 @@ void	signal_handler(int signo, siginfo_t *info, void *context);
 void	asterisks(t_input *data);
 
 //syntax checker
-int syntax_checker(t_node *args);
+int		is_the_next_is_word(t_node *args);
+t_cmd 	*print_syntax_error(t_node *args);
 
 // parsing
 int	parsing(t_input *data);
