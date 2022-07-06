@@ -161,6 +161,7 @@ int		ft_envp_size(t_env *node);
 void	ft_free(char *str[]);
 t_node	*ft_free_token(t_node *node);
 t_env	*ft_free_envp(t_env *node);
+void	ft_free_cmd(t_cmd *cmd);
 
 // utils
 char	*ft_strndup(char const *str, size_t size);

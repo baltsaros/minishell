@@ -34,3 +34,17 @@ t_env	*ft_free_envp(t_env *node)
 	node = NULL;
 	return (node);
 }
+
+void	ft_free_cmd(t_cmd *cmd)
+{
+	t_cmd	*tmp;
+
+	if (!cmd)
+		return ;
+	while (cmd)
+	{
+		tmp = cmd->next;
+		free(cmd);
+		cmd = tmp;
+	}
+}
