@@ -208,7 +208,7 @@ int	main(int argc, char *argv[], char *envp[])
 			add_history(data.buf);
 		check_field(&data.buf);
 		data_init(&data);
-		asterisks(&data);
+		//asterisks(&data);
 		if (parsing(&data) == 0)
 		{
 			ft_free_token(data.args);
