@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 14:44:46 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/07/06 13:33:07 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/06 13:39:29 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	parsing(t_input *data)
 		printf("[NEXT]\n");
 		data->cmds = data->cmds->next;
 	}
-	//if (syntax_checker(data->args) == 1)
-	//	return (1);
+	if (syntax_checker(data->args) == 1)
+		return (1);
 	return (0);
 }
