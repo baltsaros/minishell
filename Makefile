@@ -21,6 +21,7 @@ SRC_FILES	= minishell.c \
 				builtins.c \
 				get_next_line.c \
 				parsing_utils.c \
+				parsing_utils_2.c \
 				wildcard.c \
 				parsing.c \
 				syntax_checker.c

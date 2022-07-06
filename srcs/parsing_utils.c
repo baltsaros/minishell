@@ -6,55 +6,11 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/18 12:38:20 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/07/06 15:17:37 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/06 15:20:09 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-char	*get_args(t_node	*args)
-{
-	char	*str;
-
-	str = ft_strdup("");
-	if (!str)
-		return (NULL);
-	while (args && (args->type == WORD || args->type == DOLLAR || args->type == QUOTE_D))
-	{
-		if (args->type == DOLLAR)
-		{
-			if (args->next)
-			{
-				args = args->next;
-				if (args->type == WORD)
-				{
-					str = ft_strjoin_free(str, getenv(args->value));
-					if (!str)
-						return (NULL);
-					str = ft_strjoin_free(str, " ");
-					if (!str)
-						return (NULL);
-				}
-			}
-			else
-				return (NULL);
-		}
-		else if (args->type != QUOTE_D)
-		{
-			str = ft_strjoin_free(str, args->value);
-			if (!str)
-            	return (NULL);
-			str = ft_strjoin_free(str, " ");
-			if (!str)
-				return (NULL);
-		}
-		if (args->next)
-			args = args->next;
-		else
-			break ;
-	}
-	return (str);
-}
 
 t_node *next_elem(t_node *args)
 {

@@ -203,10 +203,12 @@ int syntax_checker(t_node *args);
 int	parsing(t_input *data);
 
 // parsing_utils
-char	*get_args(t_node	*args);
 t_node 	*next_elem(t_node *args);
 t_cmd	*init_empty_elem(void);
 int		init_in(t_node *args, t_cmd *elem);
 int		init_out(t_node *args, t_cmd *elem);
+
+// parsing_utils_2
+char	*get_args(t_node	*args);
 
 #endif
