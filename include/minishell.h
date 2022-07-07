@@ -226,4 +226,7 @@ char	**init_cmd(t_cmd *elem);
 char	*get_args(t_node	*args);
 int		redirection_check(t_node *args, t_cmd *elem);
 
+// Readline functions
+void rl_replace_line (const char *text, int clear_undo);
+
 #endif

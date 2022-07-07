@@ -201,8 +201,8 @@ int	is_right_buf(char	*buf)
 		return (1);
 	while (buf[i])
 	{
-		if (buf[i] != ' ' || buf[i] != '\t' || buf[i] != '\n'
-			|| buf[i] != '\v' || buf[i] != '\f' || buf[i] != '\r')
+		if (buf[i] != ' ' && buf[i] != '\t' && buf[i] != '\n'
+			&& buf[i] != '\v' && buf[i] != '\f' && buf[i] != '\r')
 			return (0);
 		i++;
 	}
