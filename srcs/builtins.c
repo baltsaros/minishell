@@ -77,48 +77,6 @@ int	yo_echo(t_input *data)
 	return (0);
 }
 
-int		yo_export(t_input *data)
-{
-	t_env	*tmp;
-	int		i;
-
-	i = 1;
-	tmp = NULL;
-	while (data->argv[i])	// need to manage duplicates
-	{
-		// if (data->argv[i][0] == '=' || check_envp(data->argv[i], data->envp_n, ft_strlen(data->argv[i])))
-		// 	++i;
-		// if (!data->argv[i])
-		// 	break ;
-		if (!data->argv[i + 1] || (data->argv[i + 1] && data->argv[i + 1][0] != '='))
-			tmp = ft_envp_new(data->argv[i], NULL);
-		else if (data->argv[i + 2])
-		{
-			tmp = ft_envp_new(data->argv[i], data->argv[i + 2]);
-			i += 2;
-		}
-		else
-		{
-			tmp = ft_envp_new(data->argv[i], ft_strdup(""));
-			i += 2;
-		}
-		++i;
-		ft_envp_back(&data->envp_n, tmp);
-	}
-	if (data->argc > 1)
-		return (0);
-	tmp = data->envp_n;
-	while (tmp)
-	{
-		if (tmp->value)
-			printf("declare -x %s=\"%s\"\n", tmp->type, tmp->value);
-		else
-			printf("declare -x %s\n", tmp->type);
-		tmp = tmp->next;
-	}
-	return (0);
-}
-
 int		yo_env(t_input *data)
 {
 	t_env	*tmp;

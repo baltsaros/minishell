@@ -87,7 +87,7 @@ void	increase_shlvl(t_input *data)
 	i = 0;
 	while (data->envp[i] && ft_strncmp(data->envp[i], "SHLVL", 5))
 		i++;
-	data->tmp = strdup(data->envp[i] + 6);
+	data->tmp = ft_strdup(data->envp[i] + 6);
 	alloc_check_small(data->tmp);
 	data->value = ft_strndup(data->envp[i], 6);
 	alloc_check_small(data->value);

@@ -25,6 +25,7 @@ SRC_FILES	= minishell.c \
 				parsing_utils_2.c \
 				wildcard.c \
 				parsing.c \
+				yo_export.c \
 				syntax_checker.c
 SRCS		= $(notdir $(SRC_FILES))
 
