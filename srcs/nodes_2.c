@@ -57,7 +57,8 @@ t_env	*ft_envp_del(t_env *node)
 		node->prev = NULL;
 	}
 	free(tmp->type);
-	free(tmp->value);
+	if (tmp->value)
+		free(tmp->value);
 	free(tmp);
 	return (node);
 }

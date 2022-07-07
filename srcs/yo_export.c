@@ -1,6 +1,6 @@
 #include "../include/minishell.h"
 
-static void	update_envp(t_input *data, char *type, char *value)
+static void	add_envp(t_input *data, char *type, char *value)
 {
 	int		size;
 	char	**tmp;
@@ -9,7 +9,7 @@ static void	update_envp(t_input *data, char *type, char *value)
 	data->i = 0;
 	while (data->envp[size])
 		size++;
-	tmp = (char **)malloc(sizeof(*tmp) * (size + 1));
+	tmp = (char **)malloc(sizeof(*tmp) * (size + 2));
 	alloc_check(tmp);
 	while (data->envp[data->i])
 	{
@@ -40,7 +40,7 @@ static int	check_duplicate(t_input *data, char *type, char *value)
 	if (data->envp_tmp->value)
 		free(data->envp_tmp->value);
 	data->envp_tmp->value = value;
-	update_envp(data, type, value);
+	add_envp(data, type, value);
 	return (1);
 }
 
@@ -81,6 +81,6 @@ int		yo_export(t_input *data)
 		return (0);
 	data->envp_tmp = ft_envp_new(data->type, data->value);
 	ft_envp_back(&data->envp_n, data->envp_tmp);
-	update_envp(data, data->type, data->value);
+	add_envp(data, data->type, data->value);
 	return (0);
 }

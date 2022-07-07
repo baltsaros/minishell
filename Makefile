@@ -18,7 +18,6 @@ SRC_FILES	= minishell.c \
 				ft_split_space.c \
 				signals.c \
 				execute.c \
-				builtins.c \
 				get_next_line.c \
 				get_next_line_hd.c \
 				parsing_utils.c \
@@ -27,6 +26,11 @@ SRC_FILES	= minishell.c \
 				parsing.c \
 				yo_export.c \
 				yo_echo.c \
+				yo_cd.c \
+				yo_env.c \
+				yo_unset.c \
+				yo_exit.c \
+				yo_pwd.c \
 				syntax_checker.c
 SRCS		= $(notdir $(SRC_FILES))
 

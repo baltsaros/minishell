@@ -137,6 +137,24 @@ void	create_token(t_input *data)
 	check_asterisk(data);
 }
 
+void	copy_envp(t_input *data, char *envp[])
+{
+	int	size;
+
+	size = 0;
+	while(envp[size])
+		++size;
+	data->envp = (char **)malloc(sizeof(*data->envp) * (size + 1));
+	alloc_check(data->envp);
+	data->i = 0;
+	while (envp[data->i])
+	{
+		data->envp[data->i] = envp[data->i];
+		data->i++;
+	}
+	data->envp[data->i] = NULL;
+}
+
 void	envp_init(t_input *data, char *envp[])
 {
 	static struct builtin builtins[] =
@@ -149,7 +167,7 @@ void	envp_init(t_input *data, char *envp[])
 		{"unset", &yo_unset},
 		{"exit", &yo_exit}
 	};
-	data->envp = envp;
+	copy_envp(data, envp);
 	data->envp_n = NULL;
 	data->type = NULL;
 	data->value = NULL;
