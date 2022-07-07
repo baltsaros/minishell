@@ -80,6 +80,28 @@ char	*ft_charjoin_free(char *line, char b)
 	return (unis);
 }
 
+void	increase_shlvl(t_input *data)
+{
+	int	i;
+
+	i = 0;
+	while (data->envp[i] && ft_strncmp(data->envp[i], "SHLVL", 5))
+		i++;
+	data->tmp = strdup(data->envp[i] + 6);
+	alloc_check_small(data->tmp);
+	data->value = ft_strndup(data->envp[i], 6);
+	alloc_check_small(data->value);
+	data->i = ft_atoi(data->tmp);
+	data->i++;
+	free(data->tmp);
+	data->tmp = ft_itoa(data->i);
+	alloc_check_small(data->tmp);
+	data->envp[i] = ft_strjoin(data->value, data->tmp);
+	alloc_check_small(data->envp[i]);
+	free(data->value);
+	free(data->tmp);
+}
+
 char	**get_address(char *cmd[], char *envp[])
 {
 	char	**env;
@@ -88,13 +110,14 @@ char	**get_address(char *cmd[], char *envp[])
 	i = 0;
 	while (ft_strncmp("PATH=", envp[i], 5))
 		++i;
+	envp[i] = ft_strjoin(envp[i], ":.");
 	env = ft_split(envp[i] + 5, ':');
 	alloc_check(env);
 	i = 0;
 	while (env[i])
 	{
-		env[i] = ft_strjoin(env[i], "/");
-		env[i] = ft_strjoin(env[i], cmd[0]);
+		env[i] = ft_strjoin_free(env[i], "/");
+		env[i] = ft_strjoin_free(env[i], cmd[0]);
 		if (!env[i])
 		{
 			ft_free(env);
@@ -134,7 +157,7 @@ char	*access_check(char *cmd[], char *envp[])
 	return (ret);
 }
 
-void	ft_execve(char **argv, char *envp[])
+void	ft_execve(char **argv, t_input *data)
 {
 	char	*path;
 
@@ -143,10 +166,12 @@ void	ft_execve(char **argv, char *envp[])
 		write(2, "parse error near ""\n", 19);
 		exit(1);
 	}
+	if (!ft_strncmp(argv[0], "./minishell", 12))
+		increase_shlvl(data);
 	// cmd = ft_split(argv, ' ');
 	// alloc_check(cmd);
-	path = access_check(argv, envp);
-	if (execve(path, argv, envp) < 0)
+	path = access_check(argv, data->envp);
+	if (execve(path, argv, data->envp) < 0)
 	{
 		perror("Execve error");
 		ft_free(argv);

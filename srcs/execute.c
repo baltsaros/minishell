@@ -35,7 +35,7 @@ void	ft_fork(char *argv[], t_input *data)
 		if (check_builtin(data, data->cmds))
 			exit(data->status);
 		else
-			ft_execve(argv, data->envp);
+			ft_execve(argv, data);
 	}
 	waitpid(pid, NULL, 0);
 	error_check(dup2(fd[0], STDIN_FILENO), "In Dup2_pr ", 12);
@@ -75,7 +75,7 @@ int	pipex(t_input *data, t_cmd *cmds)
 	}
 	error_check(dup2(cmds->out, STDOUT_FILENO), "In Dup2_out ", 13);
 	if (!check_builtin(data, cmds))
-		ft_execve(cmds->cmd, data->envp);
+		ft_execve(cmds->cmd, data);
 	close(cmds->in);
 	close(cmds->out);
 	return (0);
@@ -96,7 +96,7 @@ int	execute(t_input *data)
 			if (data->cmds->pipe == 1)
 				pipex(data, data->cmds);
 			else
-				ft_execve(data->cmds->cmd, data->envp);
+				ft_execve(data->cmds->cmd, data);
 		}
 		waitpid(pid, &data->status, 0);
 	}

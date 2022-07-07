@@ -17,39 +17,41 @@
 # include <term.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-// # include <libft.h>
+# include <libft.h>
 # include <stdbool.h>
-# include "../libft/libft.h"
+// # include "../libft/libft.h"
 
 
 // enum for tokens
 enum tokens
 {
-	DOLLAR		= 36,
+	DOLLAR		= 36,	// $
 	WORD		= 2,
-	WORD_AST	= 3, // *
-	QUOTE		= 39,
-	QUOTE_D		= 34,
+	WORD_AST	= 3,	// *
+	QUOTE		= 39,	// '
+	QUOTE_D		= 34,	// "
 	REDIR_OUT	= 62,	// >
 	REDIR_IN	= 60,	// <
 	REDIR_AP	= 162,	// >>
 	REDIR_HD	= 160,	// <<
 	DELIM		= 9,
-	PIPE		= 124,
-	EQUAL		= 61,
-	ASTER		= 42,
+	PIPE		= 124,	// |
+	EQUAL		= 61,	// =
+	ASTER		= 42,	// *
 	AND			= 138,	// &&
 	OR			= 224,	// ||
-	BR_L		= 40,
-	BR_R		= 41,
-	AMPER		= 38,
-	APOST		= 44,
-	BACKSL		= 92,
+	BR_L		= 40,	// (
+	BR_R		= 41,	// )
+	AMPER		= 38,	// &
+	APOST		= 44,	// `
+	BACKSL		= 92,	// '\'
 	CMD			= 4,
 	FLAGS		= 5,
 	IN_FILE		= 6,
 	OUT_FILE	= 7,
-	ARG			= 8
+	ARG			= 8,
+	BRACES_L	= 123,	// {
+	BRACES_R	= 125	// }
 };
 
 enum builtins
@@ -172,7 +174,7 @@ char	*ft_charjoin_free(char *line, char b);
 
 char	**get_address(char *cmd[], char *envp[]);
 char	*access_check(char *cmd[], char *envp[]);
-void	ft_execve(char *argv[], char *envp[]);
+void	ft_execve(char *argv[], t_input *data);
 int		ft_open(char *file, int par);
 
 char	**ft_split_space(char const *s, char *charset);
@@ -181,6 +183,7 @@ int		get_next_line_hd(char **line);
 int		ft_strstr(char *str, char *to_find);
 int		check_charset(char c, char *charset);
 int		check_envp(char *c, t_env *envp_n, int n);
+void	increase_shlvl(t_input *data);
 
 // minishell
 void	main_process(t_input data);
