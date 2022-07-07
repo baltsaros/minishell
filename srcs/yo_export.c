@@ -19,10 +19,10 @@ static void	add_envp(t_input *data, char *type, char *value)
 	if (value)
 	{
 		data->tmp = ft_strjoin(type, "=");
-		tmp[data->i] = ft_strjoin(data->tmp, value);
+		tmp[data->i] = ft_strjoin_free(data->tmp, value);
 	}
 	else
-		tmp[data->i] = type;
+		tmp[data->i] = ft_strdup(type);
 	// alloc_check_small(tmp[data->i]);
 	tmp[data->i + 1] = NULL;
 	data->envp = tmp;
@@ -70,17 +70,28 @@ int		yo_export(t_input *data)
 		return (0);
 	}
 	i = 1;
-	while (data->argv[i] && data->argv[i][0] != '=')
+	while (data->cmds->cmd[i])
+	{
+		data->type = ft_strdup(data->cmds->cmd[i]);
+		if (!data->cmds->cmd[i + 1])
+			data->value = NULL;
+		else if (data->cmds->cmd[i + 1] && data->cmds->cmd[i + 1][0] == '=')
+		{
+			if (data->cmds->cmd[i + 2])
+				data->value = ft_strdup(data->cmds->cmd[i + 1]);
+			else
+				data->value = ft_strdup("");
+			++i;
+		}
+		else
+			data->value = NULL;
+		if (!check_duplicate(data, data->type, data->value))
+		{
+			data->envp_tmp = ft_envp_new(data->type, data->value);
+			ft_envp_back(&data->envp_n, data->envp_tmp);
+			add_envp(data, data->type, data->value);
+		}
 		++i;
-	data->type = ft_strdup(data->argv[i - 1]);
-	if (data->argv[i + 1])
-		data->value = ft_strdup(data->argv[i + 1]);
-	else
-		data->value = NULL;
-	if (check_duplicate(data, data->type, data->value))
-		return (0);
-	data->envp_tmp = ft_envp_new(data->type, data->value);
-	ft_envp_back(&data->envp_n, data->envp_tmp);
-	add_envp(data, data->type, data->value);
+	}
 	return (0);
 }
