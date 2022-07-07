@@ -132,9 +132,7 @@ void	create_token(t_input *data)
 			ft_token_back(&data->args, data->node_tmp);
 		}
 		if (check_charset(data->buf[i], "\"$\'&<>=*|(){}"))
-		{
 			check_next(data, &i);
-		}
 	}
 	check_asterisk(data);
 }
@@ -162,7 +160,7 @@ void	envp_init(t_input *data, char *envp[])
 	data->node_tmp = NULL;
 	data->builtins = builtins;
 	create_envp(data, envp);
-	// ft_envp_print(data->envp_n);
+	ft_envp_print(data->envp_n);
 }
 
 void	data_init(t_input *data)
@@ -189,7 +187,7 @@ void	data_init(t_input *data)
 		++i;
 	}
 	data->argv[i] = NULL;
-	ft_token_print(data->args);
+	// ft_token_print(data->args);
 }
 
 int	main(int argc, char *argv[], char *envp[])
@@ -216,11 +214,11 @@ int	main(int argc, char *argv[], char *envp[])
 		if (parsing(&data) == 0)
 		{
 			execute(&data);
-			ft_free_token(data.args);
-			ft_free_cmd(data.cmds);
+			// ft_free_token(data.args);
+			// ft_free_cmd(data.cmds);
 		}
-		else
-			ft_free_token(data.args);
+		// else
+			// ft_free_token(data.args);
 		// execute(&data);
 	}
 	return ((data.status >> 8) & 0xff);

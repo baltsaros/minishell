@@ -43,7 +43,7 @@ enum tokens
 	BR_L		= 40,	// (
 	BR_R		= 41,	// )
 	AMPER		= 38,	// &
-	APOST		= 44,	// ^
+	APOST		= 44,	// `
 	BACKSL		= 92,	// '\'
 	CMD			= 4,
 	FLAGS		= 5,
@@ -174,7 +174,7 @@ char	*ft_charjoin_free(char *line, char b);
 
 char	**get_address(char *cmd[], char *envp[]);
 char	*access_check(char *cmd[], char *envp[]);
-void	ft_execve(char *argv[], char *envp[]);
+void	ft_execve(char *argv[], t_input *data);
 int		ft_open(char *file, int par);
 
 char	**ft_split_space(char const *s, char *charset);
