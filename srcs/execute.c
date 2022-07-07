@@ -89,11 +89,13 @@ int	execute(t_input *data)
 		data->pid = fork();
 		if (data->pid == 0)
 		{
+			g_pid = data->pid;
 			if (data->cmds->pipe == 1)
 				pipex(data, data->cmds);
 			else
 				ft_execve(data->cmds->cmd, data->envp);
 		}
+		//printf("Salut\n");
 		//signal(SIGINT, signal_handler_process) != SIG_ERR
 		//signal(SIGQUIT, signal_handler_process);
 		waitpid(data->pid, &data->status, 0);
