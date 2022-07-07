@@ -1,16 +1,5 @@
 #include "../include/minishell.h"
 
-// char	*prepare_str(t_input *data)
-// {
-// 	char	*ret;
-
-// 	while (data->args)
-// 	{
-// 		data->args = data->args->next;
-// 	}
-// 	return (ret);
-// }
-
 int	yo_pwd(t_input *data)
 {
 	char	*ret;
@@ -35,44 +24,6 @@ int	yo_cd(t_input *data)
 	{
 		data->status = 1;
 		perror("cd");
-	}
-	return (0);
-}
-
-int	yo_echo(t_input *data)
-{
-	int		i;
-
-	i = 1;
-	if (!data->argv[1])
-		write(1, "\n", 1);
-	else if (strncmp(data->argv[1], "-n", 2) == 0)
-	{
-		++i;
-		while (data->argv[i])
-		{
-			if (ft_strncmp(data->argv[i], "$?", 3) == 0)
-			{
-				free(data->argv[i]);
-				data->argv[i] = ft_strdup(ft_itoa(data->status));
-			}
-			printf("%s", data->argv[i]);
-			++i;
-		}
-	}
-	else
-	{
-		while (data->argv[i])
-		{
-			if (ft_strncmp(data->argv[i], "$?", 3) == 0)	// need to merge two tokens for this to work
-			{
-				free(data->argv[i]);
-				data->argv[i] = ft_strdup(ft_itoa(data->status));
-			}
-			printf("%s", data->argv[i]);
-			++i;
-		}
-		printf("\n");
 	}
 	return (0);
 }
