@@ -16,7 +16,7 @@ static void	echo_without_flag(t_cmd *com)
 {
 	int	i;
 
-	i = 2;
+	i = 1;
 	while (com->cmd[i])
 	{
 		write(com->out, com->cmd[i], ft_strlen(com->cmd[i]));

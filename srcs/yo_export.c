@@ -64,7 +64,7 @@ int		yo_export(t_input *data)
 {
 	int	i;
 
-	if (data->argc == 1)
+	if (data->cmds->len_cmd == 1)
 	{
 		print_envp(data->envp_n);
 		return (0);
@@ -78,7 +78,10 @@ int		yo_export(t_input *data)
 		else if (data->cmds->cmd[i + 1] && data->cmds->cmd[i + 1][0] == '=')
 		{
 			if (data->cmds->cmd[i + 2])
-				data->value = ft_strdup(data->cmds->cmd[i + 1]);
+			{
+				data->value = ft_strdup(data->cmds->cmd[i + 2]);
+				++i;
+			}
 			else
 				data->value = ft_strdup("");
 			++i;
