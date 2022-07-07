@@ -192,6 +192,23 @@ void	data_init(t_input *data)
 	//ft_token_print(data->args);
 }
 
+int	is_right_buf(char	*buf)
+{
+	int	i;
+
+	i = 0;
+	if (buf[0] == '\0')
+		return (1);
+	while (buf[i])
+	{
+		if (buf[i] != ' ' || buf[i] != '\t' || buf[i] != '\n'
+			|| buf[i] != '\v' || buf[i] != '\f' || buf[i] != '\r')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 void	prompt(t_input *data)
 {
 	while (data->buf)
@@ -202,7 +219,7 @@ void	prompt(t_input *data)
 			free(data->buf);
 			yo_exit(data);
 		}
-		else if (data->buf[0] != '\0')
+		else if (is_right_buf(data->buf) != 1)
 		{
 			add_history(data->buf);
 			check_field(&data->buf);
