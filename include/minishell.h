@@ -25,33 +25,33 @@
 // enum for tokens
 enum tokens
 {
-	DOLLAR		= 36,
+	DOLLAR		= 36,	// $
 	WORD		= 2,
-	WORD_AST	= 3, // *
-	QUOTE		= 39,
-	QUOTE_D		= 34,
+	WORD_AST	= 3,	// *
+	QUOTE		= 39,	// '
+	QUOTE_D		= 34,	// "
 	REDIR_OUT	= 62,	// >
 	REDIR_IN	= 60,	// <
 	REDIR_AP	= 162,	// >>
 	REDIR_HD	= 160,	// <<
 	DELIM		= 9,
-	PIPE		= 124,
-	EQUAL		= 61,
-	ASTER		= 42,
+	PIPE		= 124,	// |
+	EQUAL		= 61,	// =
+	ASTER		= 42,	// *
 	AND			= 138,	// &&
 	OR			= 224,	// ||
-	BR_L		= 40,
-	BR_R		= 41,
-	AMPER		= 38,
-	APOST		= 44,
-	BACKSL		= 92,
+	BR_L		= 40,	// (
+	BR_R		= 41,	// )
+	AMPER		= 38,	// &
+	APOST		= 44,	// ^
+	BACKSL		= 92,	// '\'
 	CMD			= 4,
 	FLAGS		= 5,
 	IN_FILE		= 6,
 	OUT_FILE	= 7,
 	ARG			= 8,
-	BRACES_L	= 123,
-	BRACES_R	= 125
+	BRACES_L	= 123,	// {
+	BRACES_R	= 125	// }
 };
 
 enum builtins
