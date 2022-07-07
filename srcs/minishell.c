@@ -246,6 +246,7 @@ int	main(int argc, char *argv[], char *envp[])
 		|| signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 		printf("[ERROR]: Signal handler failed\n");
 	envp_init(&data, envp);
+	g_pid = -1;
 	prompt(&data);
 	return ((data.status >> 8) & 0xff);
 }

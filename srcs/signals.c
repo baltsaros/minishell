@@ -12,7 +12,6 @@ void    signal_handler_process(int signo)
 
 void	signal_handler(int signo)
 {
-    printf("Ola\n");
     if (signo == SIGINT)
     {
         printf("\n");
