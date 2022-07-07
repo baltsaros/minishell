@@ -85,27 +85,21 @@ void	increase_shlvl(t_input *data)
 	int	i;
 
 	i = 0;
-	// data->envp_tmp = data->envp_n;
-	// while (data->envp_tmp && ft_strncmp(data->envp_tmp->type, "SHLVL", 6))
-	// 	data->envp_tmp = data->envp_tmp->next;
-	// printf("type: %s, value: %s\n", data->envp_tmp->type, data->envp_tmp->value);
-	// data->i = ft_atoi(data->envp_tmp->value);
-	// data->i++;
-	// free(data->envp_tmp->value);
-	// data->envp_tmp->value = ft_itoa(data->i);
-	// printf("type: %s, value: %s\n", data->envp_tmp->type, data->envp_tmp->value);
 	while (data->envp[i] && ft_strncmp(data->envp[i], "SHLVL", 5))
 		i++;
 	data->tmp = strdup(data->envp[i] + 6);
+	alloc_check_small(data->tmp);
 	data->value = ft_strndup(data->envp[i], 6);
+	alloc_check_small(data->value);
 	data->i = ft_atoi(data->tmp);
 	data->i++;
 	free(data->tmp);
 	data->tmp = ft_itoa(data->i);
+	alloc_check_small(data->tmp);
 	data->envp[i] = ft_strjoin(data->value, data->tmp);
+	alloc_check_small(data->envp[i]);
 	free(data->value);
 	free(data->tmp);
-
 }
 
 char	**get_address(char *cmd[], char *envp[])

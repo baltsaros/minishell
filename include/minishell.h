@@ -183,6 +183,7 @@ int		get_next_line_hd(char **line);
 int		ft_strstr(char *str, char *to_find);
 int		check_charset(char c, char *charset);
 int		check_envp(char *c, t_env *envp_n, int n);
+void	increase_shlvl(t_input *data);
 
 // minishell
 void	main_process(t_input data);
