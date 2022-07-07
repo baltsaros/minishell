@@ -79,6 +79,7 @@ typedef struct s_node
 typedef struct s_cmd
 {
 	char			**cmd;
+	int				len_cmd;
 	char			*argument_buf;
 	char			*delim;
  	int				in;
