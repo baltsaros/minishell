@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/07 16:12:36 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/07 16:14:50 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ char	*get_args(t_node	*args)
             str = str_other(str, args);
             if (!str)
                 return (NULL);
+			args = args->next;
 		}
 		else if (args->type != QUOTE_D)
 		{
