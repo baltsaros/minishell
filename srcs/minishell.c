@@ -240,15 +240,12 @@ void	prompt(t_input *data)
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_input data;
-	struct sigaction act;
 
 	(void)argv;
 	if (argc != 1)
 		exit(EXIT_FAILURE);
-	act.sa_sigaction = signal_handler;
-	act.sa_flags = SA_SIGINFO;
-	if (sigaction(SIGINT, &act, NULL) == -1
-		|| sigaction(SIGQUIT, &act, NULL) == -1)
+	if (signal(SIGINT, signal_handler) == SIG_ERR
+		|| signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 		printf("[ERROR]: Signal handler failed\n");
 	envp_init(&data, envp);
 	prompt(&data);

@@ -120,6 +120,7 @@ typedef struct s_input
 	struct builtin	*builtins;
 	int				status;
 	DIR				*dir;
+	pid_t			pid;
 	char			**line;
 }	t_input;
 
@@ -201,7 +202,8 @@ int		yo_unset(t_input *data);
 int		yo_exit(t_input *data);
 
 //signals
-void	signal_handler(int signo, siginfo_t *info, void *context);
+void	signal_handler(int signo);
+void    signal_handler_process(int signo);
 
 // others
 void	asterisks(t_input *data);
@@ -227,6 +229,6 @@ char	*get_args(t_node	*args);
 int		redirection_check(t_node *args, t_cmd *elem);
 
 // Readline functions
-void rl_replace_line (const char *text, int clear_undo);
+void	rl_replace_line (const char *text, int clear_undo);
 
 #endif
