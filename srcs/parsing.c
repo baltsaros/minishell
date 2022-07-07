@@ -1,10 +1,21 @@
 #include "../include/minishell.h"
 
+int	get_len_cmd(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
 t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 {
 	elem->cmd = init_cmd(elem);
 	if (!elem->cmd)
 		return (NULL);
+	elem->len_cmd = get_len_cmd(elem->cmd);
 	while (args && args->type != PIPE)
 	{
 		if (redirection_check(args, elem) == 1)
