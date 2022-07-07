@@ -1,10 +1,21 @@
 #include "../include/minishell.h"
 
+int	get_len_cmd(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
 t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 {
 	elem->cmd = init_cmd(elem);
 	if (!elem->cmd)
 		return (NULL);
+	elem->len_cmd = get_len_cmd(elem->cmd);
 	while (args && args->type != PIPE)
 	{
 		if (redirection_check(args, elem) == 1)
@@ -66,18 +77,19 @@ int	parsing(t_input *data)
 	data->cmds = parse_cmd(data);
 	if (!data->cmds)
 		return (1);
-	// while (data->cmds)
-	// {
-	// 	for (int i = 0; data->cmds->cmd[i]; i++)
-	// 		printf("cmd[%d]: %s\n", i, data->cmds->cmd[i]);
-	// 	printf("delim: %s\n", data->cmds->delim);
-	// 	printf("in: %d\n", data->cmds->in);
-	// 	printf("in arg: %s\n", data->cmds->in_arg);
-	// 	printf("out: %d\n", data->cmds->out);
-	// 	printf("out arg: %s\n", data->cmds->out_arg);
-	// 	printf("pipe: %d\n", data->cmds->pipe);
-	// 	printf("[NEXT]\n");
-	// 	data->cmds = data->cmds->next;
-	// }
+	while (data->cmds)
+	{
+		for (int i = 0; data->cmds->cmd[i]; i++)
+			printf("cmd[%d]: %s\n", i, data->cmds->cmd[i]);
+		printf("len_cmd: %d\n", data->cmds->len_cmd);
+		printf("delim: %s\n", data->cmds->delim);
+		printf("in: %d\n", data->cmds->in);
+		printf("in arg: %s\n", data->cmds->in_arg);
+		printf("out: %d\n", data->cmds->out);
+		printf("out arg: %s\n", data->cmds->out_arg);
+		printf("pipe: %d\n", data->cmds->pipe);
+		printf("[NEXT]\n");
+		data->cmds = data->cmds->next;
+	}
 	return (0);
 }
