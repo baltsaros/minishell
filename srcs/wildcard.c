@@ -54,5 +54,5 @@ void	asterisks(t_input *data)
 	fname = readdir(data->dir);
 	find_files(data, tmp, fname);
 	closedir(data->dir);
-	ft_token_print(data->wild);
+	// ft_token_print(data->wild);
 }

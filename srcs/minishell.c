@@ -75,7 +75,7 @@ void	check_next(t_input *data, size_t *i)
 	int	type;
 	int	next;
 
-	type = check_charset(data->buf[*i], "\"$\'&<>=*|()");
+	type = check_charset(data->buf[*i], "\"$\'&<>=*|(){}");
 	next = check_charset(data->buf[*i + 1], "<>|&");
 	if (type == next)
 	{
@@ -122,7 +122,7 @@ void	create_token(t_input *data)
 		while (check_charset(data->buf[i], " \f\n\r\t\v"))
 			++i;
 		start = i;
-		while (data->buf[i] && !check_charset(data->buf[i], "\"$\'&<>=*| \f\n\r\t\v()"))
+		while (data->buf[i] && !check_charset(data->buf[i], "\"$\'&<>=*| \f\n\r\t\v(){}"))
 			++i;
 		if (i != start)
 		{
@@ -131,7 +131,7 @@ void	create_token(t_input *data)
 			data->node_tmp = ft_token_new(type, data->value);
 			ft_token_back(&data->args, data->node_tmp);
 		}
-		if (check_charset(data->buf[i], "\"$\'&<>=*|()"))
+		if (check_charset(data->buf[i], "\"$\'&<>=*|(){}"))
 		{
 			check_next(data, &i);
 		}
@@ -189,7 +189,7 @@ void	data_init(t_input *data)
 		++i;
 	}
 	data->argv[i] = NULL;
-	//ft_token_print(data->args);
+	ft_token_print(data->args);
 }
 
 int	main(int argc, char *argv[], char *envp[])

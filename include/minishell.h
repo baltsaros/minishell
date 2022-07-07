@@ -17,9 +17,9 @@
 # include <term.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-// # include <libft.h>
+# include <libft.h>
 # include <stdbool.h>
-# include "../libft/libft.h"
+// # include "../libft/libft.h"
 
 
 // enum for tokens
@@ -49,7 +49,9 @@ enum tokens
 	FLAGS		= 5,
 	IN_FILE		= 6,
 	OUT_FILE	= 7,
-	ARG			= 8
+	ARG			= 8,
+	BRACES_L	= 123,
+	BRACES_R	= 125
 };
 
 enum builtins
