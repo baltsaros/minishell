@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_free.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/01 11:06:30 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/06/02 17:46:29 by abuzdin          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../include/minishell.h"
 
 void	ft_free(char *str[])
@@ -45,4 +33,26 @@ t_env	*ft_free_envp(t_env *node)
 	node = ft_envp_del(node);
 	node = NULL;
 	return (node);
+}
+
+void	ft_free_cmd(t_cmd *cmd)
+{
+	t_cmd	*tmp;
+
+	if (!cmd)
+		return ;
+	while (cmd)
+	{
+		tmp = cmd->next;
+		if (cmd->cmd)
+			free(cmd->cmd);
+		if (cmd->delim)
+			free(cmd->delim);
+		if (cmd->in_arg)
+			free(cmd->in_arg);
+		if (cmd->out_arg)
+			free(cmd->out_arg);
+		free(cmd);
+		cmd = tmp;
+	}
 }

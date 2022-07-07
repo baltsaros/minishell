@@ -17,62 +17,76 @@
 # include <term.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <libft.h>
-// # include "libft/libft.h"
+// # include <libft.h>
+# include <stdbool.h>
+# include "../libft/libft.h"
 
-// # define SEPAR 1
-// # define WORD 2
-// # define QUOTE 3
-// # define QUOTE_D 4
-// # define REDIR_OUT 5
-// # define REDIR_IN 6
-// # define REDIR_AP 7
-// # define REDIR_HD 8
-// # define PIPE 9
 
+// enum for tokens
 enum tokens
 {
 	DOLLAR		= 36,
 	WORD		= 2,
-	WORD_AST	= 3,
+	WORD_AST	= 3, // *
 	QUOTE		= 39,
 	QUOTE_D		= 34,
-	REDIR_OUT	= 62,
-	REDIR_IN	= 60,
-	REDIR_AP	= 7,
-	REDIR_HD	= 8,
+	REDIR_OUT	= 62,	// >
+	REDIR_IN	= 60,	// <
+	REDIR_AP	= 162,	// >>
+	REDIR_HD	= 160,	// <<
 	DELIM		= 9,
 	PIPE		= 124,
 	EQUAL		= 61,
 	ASTER		= 42,
-	AND			= 13,
-	OR			= 14,
+	AND			= 138,	// &&
+	OR			= 224,	// ||
 	BR_L		= 40,
 	BR_R		= 41,
 	AMPER		= 38,
 	APOST		= 44,
-	BACKSL		= 92
+	BACKSL		= 92,
+	CMD			= 4,
+	FLAGS		= 5,
+	IN_FILE		= 6,
+	OUT_FILE	= 7,
+	ARG			= 8
 };
 
-// enum builtins
-// {
-// 	BI_ECHO		= 10,
-// 	BI_CD 		= 11,
-// 	BI_PWD		= 12,
-// 	BI_EXPORT	= 13,
-// 	BI_UNSET	= 14,
-// 	BI_ENV		= 15,
-// 	BI_EXIT		= 16,
-// 	BI_ECHON	= 17
-// };
+enum builtins
+{
+	BI_ECHO		= 10,
+ 	BI_CD 		= 11,
+ 	BI_PWD		= 12,
+ 	BI_EXPORT	= 13,
+ 	BI_UNSET	= 14,
+ 	BI_ENV		= 15,
+ 	BI_EXIT		= 16,
+ 	BI_ECHON	= 17
+};
 
+// struct for token (+ wildcard) linked lists
 typedef struct s_node
 {
 	int				type;
 	char			*value;
+	int				i;
 	struct s_node	*next;
 	struct s_node	*prev;
 }	t_node;
+
+typedef struct s_cmd
+{
+	char			**cmd;
+	char			*argument_buf;
+	char			*delim;
+ 	int				in;
+	char			*in_arg;
+ 	int				out;
+	char			*out_arg;
+	int				pipe;
+	struct s_cmd	*next;
+	struct s_cmd	*prev;
+ }	t_cmd;
 
 typedef struct s_env
 {
@@ -82,24 +96,7 @@ typedef struct s_env
 	struct s_env	*prev;
 }	t_env;
 
-typedef	struct s_cell
-{
-	t_node			*cmds;
-	int				redir;
-	int				tmp_in;
-	int				tmp_out;
-	
-	struct s_cell	*next;
-	struct s_cell	*prev;
-}	t_cell;
-
-typedef struct s_cell_list
-{
-	struct s_cell		*cell;
-	struct s_cell_list	*next;
-	struct s_cell_list	*prev;
-}	t_cell_list;
-
+// global structure
 typedef struct s_input
 {
 	int				i;
@@ -116,17 +113,23 @@ typedef struct s_input
 	char			**envp;
 	t_env			*envp_n;
 	t_node			*args;
+	t_cmd			*cmds;
 	t_node			*wild;
 	char			*buf;
 	struct builtin	*builtins;
 	int				status;
+	pid_t			pid;
+	DIR				*dir;
+	char			**line;
 }	t_input;
 
+// struct for builins functions
 struct builtin
 {
 	char	*name;
 	int		(*func)(t_input *data);
 };
+
 typedef	struct s_env_var
 {
 	char	*name;
@@ -159,6 +162,7 @@ int		ft_envp_size(t_env *node);
 void	ft_free(char *str[]);
 t_node	*ft_free_token(t_node *node);
 t_env	*ft_free_envp(t_env *node);
+void	ft_free_cmd(t_cmd *cmd);
 
 // utils
 char	*ft_strndup(char const *str, size_t size);
@@ -168,21 +172,23 @@ char	*ft_charjoin_free(char *line, char b);
 
 char	**get_address(char *cmd[], char *envp[]);
 char	*access_check(char *cmd[], char *envp[]);
-void	ft_execve(char *argv, char *envp[]);
+void	ft_execve(char *argv[], char *envp[]);
 int		ft_open(char *file, int par);
 
 char	**ft_split_space(char const *s, char *charset);
 int		get_next_line(char **line);
+int		get_next_line_hd(char **line);
 int		ft_strstr(char *str, char *to_find);
 int		check_charset(char c, char *charset);
 int		check_envp(char *c, t_env *envp_n, int n);
 
 // minishell
+void	main_process(t_input data);
 
 // execute
-int		pipex(int argc, char *argv[], char *envp[]);
-void	ft_heredoc(char *limiter);
-void	ft_fork(char *argv, char *envp[]);
+int		pipex(t_input *data, t_cmd *cmds);
+void	ft_heredoc(char *limiter, t_cmd *elem);
+void	ft_fork(char *argv[], t_input *data);
 int		execute(t_input *data);
 
 // builtins
@@ -195,9 +201,29 @@ int		yo_unset(t_input *data);
 int		yo_exit(t_input *data);
 
 //signals
-void	sigint_handler(int sign_num);
+void	signal_handler(int signo, siginfo_t *info, void *context);
 
 // others
 void	asterisks(t_input *data);
+void	find_files(t_input *data, t_node *tmp, struct dirent *fname);
+
+//syntax checker
+int		is_the_next_is_word(t_node *args);
+t_cmd 	*print_syntax_error_cmd(t_node *args);
+int   	print_syntax_error_bool(t_node *args);
+
+// parsing
+int	parsing(t_input *data);
+
+// parsing_utils
+t_node 	*next_elem(t_node *args);
+t_cmd	*init_empty_elem(void);
+int		init_in(t_node *args, t_cmd *elem);
+int		init_out(t_node *args, t_cmd *elem);
+char	**init_cmd(t_cmd *elem);
+
+// parsing_utils_2
+char	*get_args(t_node	*args);
+int		redirection_check(t_node *args, t_cmd *elem);
 
 #endif

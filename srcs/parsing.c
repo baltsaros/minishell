@@ -1,108 +1,84 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/18 14:44:46 by ccaluwe           #+#    #+#             */
-/*   Updated: 2022/05/23 17:56:48 by abuzdin          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../include/minishell.h"
 
-// interesting: if p1 | p2 -> p2 always gets excuted, even if 1 doesnt exist or is not comaptible -> exit never works with pipe
-// p1 only gets excecuted if p2 exists
-// check for pipes
-// check for redirects
-// assign priority
-
-
-// t_node		*ft_assign_builtin(t_node *args)
-// {
-// 	t_node *head;
-
-// 	head = args;
-// 	while (head)
-// 	{
-// 		checkbuiltin(args);
-// 		args = args->next;
-// 	}
-// 	return (args);
-// }
-
-// t_cell	*cell_init(void)
-// {
-// 	t_cell	*cell;
-// 	cell->cmds = NULL;
-// 	cell->next = NULL;
-// 	cell->prev = NULL;
-// 	cell->redir = 0;
-// 	cell->tmp_in = stdin;
-// 	cell->tmp_out = stdout;
-// 	return (cell);
-// }
-
-// t_cell	*ft_create_cells(t_node *args)
-// {
-// 	t_cell	**cell_list;
-// 	t_cell	*cell;
-// 	t_node	*head;
-
-// 	ft_assign_builtin(args);
-// 	head = args;
-// 	while (head)
-// 	{
-// 		while (head->type != PIPE && head)
-// 		{
-// 			cell = cell_init();
-// 			ft_cell_add_cmd(cell, args);
-// 			args = args->next;
-// 		}
-// 		ft_cell_back(&cell_list, cell);
-// 		args = args->next;
-// 	}
-// 	return (cell_list);
-// }
-
-// void	ft_redirect(t_cell *cell_l)
-// {
-// 	while (cell_l->cmds)
-// 	{
-// 		if ((*cell_l).cmds.type == REDIR_OUT)
-// 			(*cell_l).redir = REDIR_OUT;
-// 		else if ((*cell_l).cmds.type == REDIR_IN)
-// 			(*cell_l).redir = REDIR_IN;
-// 		else if ((*cell_l).cmds.type == REDIR_AP)
-// 			(*cell_l).redir = REDIR_OUT;
-// 		else if ((*cell_l)->cmds.type == REDIR_HD)
-// 			(*cell_l).redir = REDIR_OUT;
-// 		else
-// 			(*cell_l).redir = 0;
-// 		cell_l = cell_l->next;
-// 	}
-// }
-
-// void	*ft_finish_cells(t_cell *cell_l)
-// {
-// 	t_cell *head;
-
-// 	head = cell_l;
-// 	while (head)
-// 	{
-// 		fr_redirect(head);
-// 		head = head->next;
-// 	}
-// }
-
-/*t_cell_list	**ft_cell_list(t_node *args)
+t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 {
-	t_cell_list	*cmd_ls;
-
-	while (args)
+	elem->cmd = init_cmd(elem);
+	if (!elem->cmd)
+		return (NULL);
+	while (args && args->type != PIPE)
 	{
-		cmd_ls->cell = ft_create_cells(args);
-		cmd_ls = cmd_ls->next;
+		if (redirection_check(args, elem) == 1)
+			return (NULL);
+		if (args->next && args->next->type == PIPE)
+		{
+			if (!args->next->next || is_the_next_is_word(args->next) == 1)
+				return (print_syntax_error_cmd(args->next));
+			elem->pipe = 1;
+		}
+		args = args->next;
 	}
-}*/
+	return (elem);
+}
+
+t_cmd	*init_elem(t_node *args)
+{
+	t_cmd	*elem;
+
+	elem = init_empty_elem();
+	if (!elem)
+		return (NULL);
+	elem->argument_buf = get_args(args);
+	if (!elem->argument_buf)
+		return (NULL);
+	elem = fill_elem(args, elem);
+	if (!elem)
+		return (NULL);
+	return (elem);
+}
+
+t_cmd	*parse_cmd(t_input *data)
+{
+	t_cmd	*first_elem;
+	t_cmd	*arg;
+	t_cmd	*new_con;
+
+	first_elem = init_elem(data->args);
+	if (!first_elem)
+		return (NULL);
+	arg = first_elem;
+	while (data->args)
+	{
+		data->args = next_elem(data->args);
+		if (!data->args || !data->args->next)
+			break ;
+		new_con = init_elem(data->args);
+		if (!new_con)
+			return (NULL);
+		new_con->prev = arg;
+		arg->next = new_con;
+		arg = arg->next;
+	}
+	return (first_elem);
+}
+
+int	parsing(t_input *data)
+{
+	data->cmds = parse_cmd(data);
+	if (!data->cmds)
+		return (1);
+		
+	while (data->cmds)
+	{
+		for (int i = 0; data->cmds->cmd[i]; i++)
+			printf("cmd[%d]: %s\n", i, data->cmds->cmd[i]);
+		printf("delim: %s\n", data->cmds->delim);
+		printf("in: %d\n", data->cmds->in);
+		printf("in arg: %s\n", data->cmds->in_arg);
+		printf("out: %d\n", data->cmds->out);
+		printf("out arg: %s\n", data->cmds->out_arg);
+		printf("pipe: %d\n", data->cmds->pipe);
+		printf("[NEXT]\n");
+		data->cmds = data->cmds->next;
+	}
+	return (0);
+}
