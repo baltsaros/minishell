@@ -209,6 +209,8 @@ int	is_right_buf(char	*buf)
 
 void	prompt(t_input *data)
 {
+	pid_t	pid;
+
 	while (data->buf)
 	{
 		data->buf = readline("minishell> ");
@@ -224,7 +226,9 @@ void	prompt(t_input *data)
 			data_init(data);
 			if (parsing(data) == 0)
 			{
-				execute(data);
+				pid = fork();
+				if (pid == 0)
+					execute(data);
 				ft_free_token(data->args);
 				ft_free_cmd(data->cmds);
 			}
@@ -237,18 +241,18 @@ void	prompt(t_input *data)
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	t_input data;
-	struct sigaction act_int;
-	struct sigaction act_quit;
+	t_input 			data;
+	struct sigaction	act;
+	///struct sigaction	act_quit;
 
 	(void)argv;
 	if (argc != 1)
 		exit(EXIT_FAILURE);
-	act_int.sa_flags = SA_SIGINFO;
-	act_int.sa_sigaction = &signal_handler;
-	act_quit.sa_handler = SIG_IGN;
-	if (sigaction(SIGINT, &act_int, NULL) == -1
-		|| sigaction(SIGQUIT, &act_quit, NULL) == -1)
+	act.sa_flags = SA_SIGINFO;
+	act.sa_sigaction = &signal_handler;
+	//act_quit.sa_handler = SIG_IGN;
+	if (sigaction(SIGINT, &act, NULL) == -1
+		|| sigaction(SIGQUIT, &act, NULL) == -1)
 		printf("[ERROR]: Signal handler failed\n");
 	envp_init(&data, envp);
 	prompt(&data);
