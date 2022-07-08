@@ -89,7 +89,6 @@ int	execute(t_input *data)
 		data->pid = fork();
 		if (data->pid == 0)
 		{
-			g_pid = data->pid;
 			if (data->cmds->pipe == 1)
 				pipex(data, data->cmds);
 			else

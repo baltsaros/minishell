@@ -206,8 +206,7 @@ int		yo_unset(t_input *data);
 int		yo_exit(t_input *data);
 
 //signals
-void	signal_handler(int signo);
-void    signal_handler_process(int signo);
+void	signal_handler(int signo, siginfo_t *info, void	*context);
 
 // others
 void	asterisks(t_input *data);

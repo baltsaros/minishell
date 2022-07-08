@@ -211,7 +211,7 @@ void	prompt(t_input *data)
 {
 	while (data->buf)
 	{
-		data->buf = readline("yo> ");
+		data->buf = readline("minishell> ");
 		if (!data->buf)
 		{
 			free(data->buf);
@@ -238,15 +238,19 @@ void	prompt(t_input *data)
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_input data;
+	struct sigaction act_int;
+	struct sigaction act_quit;
 
 	(void)argv;
 	if (argc != 1)
 		exit(EXIT_FAILURE);
-	if (signal(SIGINT, signal_handler) == SIG_ERR
-		|| signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+	act_int.sa_flags = SA_SIGINFO;
+	act_int.sa_sigaction = &signal_handler;
+	act_quit.sa_handler = SIG_IGN;
+	if (sigaction(SIGINT, &act_int, NULL) == -1
+		|| sigaction(SIGQUIT, &act_quit, NULL) == -1)
 		printf("[ERROR]: Signal handler failed\n");
 	envp_init(&data, envp);
-	g_pid = -1;
 	prompt(&data);
 	return ((data.status >> 8) & 0xff);
 }
