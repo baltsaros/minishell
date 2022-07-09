@@ -20,9 +20,10 @@ static void	echo_without_flag(t_cmd *com)
 	while (com->cmd[i])
 	{
 		write(com->out, com->cmd[i], ft_strlen(com->cmd[i]));
+		write(com->out, " ", 1);
 		++i;
 	}
-	write(com->out, "/n", 1);
+	write(com->out, "\n", 1);
 }
 
 int	yo_echo(t_input *data)

@@ -29,12 +29,12 @@ static void	remove_envp(t_input *data, char *type)
 
 int		yo_unset(t_input *data)
 {
-	t_env	*tmp;
+	// t_env	*tmp;
 	int		i;
 	int		len;
 
 	i = 1;
-	tmp = data->envp_n;
+	// tmp = data->envp_n;
 	while (data->cmds->cmd[i])
 	{
 		len = ft_strlen(data->cmds->cmd[i]) + 1;
