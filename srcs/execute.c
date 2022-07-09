@@ -89,13 +89,18 @@ int	execute(t_input *data)
 		data->pid = fork();
 		if (data->pid == 0)
 		{
-			if (data->cmds->pipe == 1)
+			if (data->cmds->pipe == 1 && !data->cmds->next)
+			{
+				printf("one cmd with pipe\n");
+				return (0);
+			}	
+			else if (data->cmds->pipe == 1)
 				pipex(data, data->cmds);
 			else
 				ft_execve(data->cmds->cmd, data);
 		}
-		else
-			g_pid = data->pid;
+		// else
+		// 	g_pid = data->pid;
 		waitpid(data->pid, &data->status, 0);
 	}
 	kill(data->pid, 15);
