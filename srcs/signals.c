@@ -1,19 +1,34 @@
 #include "../include/minishell.h"
 
-void	signal_handler(int signo, siginfo_t *info, void *context)
+void	signal_handler(int signo, siginfo_t *info, void	*context)
 {
-    // Ctrl + C
-	if (signo == SIGINT)
+    int status;
+    int status_wait;
+
+    (void)info;
+    (void)context;
+    status_wait = waitpid(-1, &status, WNOHANG);
+    if (status_wait == -1)
     {
-        printf("SIGINT\n");
+        if (signo == SIGINT)
+        {
+            write(1, "\n", 1);
+            rl_replace_line("", 0);
+            rl_on_new_line();
+            rl_redisplay();
+        }
     }
-    // Ctrl + '\'
-	else if (signo == SIGQUIT)
+    else
     {
-        printf("SIGQUIT\n");
+        if (signo == SIGINT)
+        {
+            write(1, "\n", 1);
+            kill(g_pid, signo);
+        }
+        else
+        {
+            write(1, "Quit\n", 5);
+            kill(g_pid, signo);
+        }
     }
-		
-	(void)signo;
-	(void)info;
-	(void)context;
 }

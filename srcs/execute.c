@@ -22,12 +22,11 @@ int	check_builtin(t_input *data, t_cmd *cmds)
 void	ft_fork(char *argv[], t_input *data)
 {
 	int		fd[2];
-	int		pid;
 
 	error_check(pipe(fd), "In pipe ", 9);
-	pid = fork();
-	error_check(pid, "In fork ", 9);
-	if (pid == 0)
+	data->pid = fork();
+	error_check(data->pid, "In fork ", 9);
+	if (data->pid == 0)
 	{
 		error_check(dup2(fd[1], STDOUT_FILENO), "In Dup2_ch ", 12);
 		// close(data->cmds->in);
@@ -37,7 +36,7 @@ void	ft_fork(char *argv[], t_input *data)
 		else
 			ft_execve(argv, data);
 	}
-	waitpid(pid, NULL, 0);
+	waitpid(data->pid, NULL, 0);
 	error_check(dup2(fd[0], STDIN_FILENO), "In Dup2_pr ", 12);
 	close(fd[1]);
 }
@@ -83,22 +82,22 @@ int	pipex(t_input *data, t_cmd *cmds)
 
 int	execute(t_input *data)
 {
-	int	pid;
-
-	pid = 0;
 	if (!data->buf || !*data->buf)
 		return (0);
 	if (data->cmds->pipe == 1 || !check_builtin(data, data->cmds))
 	{
-		pid = fork();
-		if (pid == 0)
+		data->pid = fork();
+		if (data->pid == 0)
 		{
 			if (data->cmds->pipe == 1)
 				pipex(data, data->cmds);
 			else
 				ft_execve(data->cmds->cmd, data);
 		}
-		waitpid(pid, &data->status, 0);
+		else
+			g_pid = data->pid;
+		waitpid(data->pid, &data->status, 0);
 	}
+	kill(data->pid, 15);
 	return (0);
 }

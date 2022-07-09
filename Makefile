@@ -44,8 +44,13 @@ GCC			= gcc
 RM			= rm -f
 RMF			= rm -rf
 CFLAGS		= -Wall -Wextra -Werror
+CFLAGS_COMP = -lreadline
 
 all:		libft $(NAME)
+
+brew :
+			@brew install readline
+			@printf "\n$(C_GREEN_B)Installed!$(C_RESET)\n";
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 			@mkdir -p $(OBJ_DIR)
@@ -53,7 +58,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 			@$(GCC) $(CFLAGS) -c $< $(INCS) -o $@
 
 $(NAME):	$(OBJS) 
-			@$(GCC) $(OBJS) ${INCS} libft/libft.a -lreadline -o $(NAME)
+			@$(GCC) $(OBJS) ${INCS} libft/libft.a -o $(NAME) $(CFLAGS_COMP) -L/Users/$(USER)/.brew/opt/readline/lib -I/Users/$(USER)/.brew/opt/readline/include/
 			@printf "\n$(C_GREEN_B)Finished!$(C_RESET)\n";
 
 libft:

@@ -169,8 +169,6 @@ void	ft_execve(char **argv, t_input *data)
 	}
 	if (!ft_strncmp(argv[0], "./minishell", 12))
 		increase_shlvl(data);
-	// cmd = ft_split(argv, ' ');
-	// alloc_check(cmd);
 	path = access_check(argv, data->envp);
 	if (execve(path, argv, data->envp) < 0)
 	{
