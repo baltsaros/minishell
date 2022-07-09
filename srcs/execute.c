@@ -82,11 +82,6 @@ int	pipex(t_input *data, t_cmd *cmds)
 
 int	execute(t_input *data)
 {
-	struct sigaction	act;
-
-	//act.sa_flags = SA_SIGINFO;
-	//act.sa_sigaction = &signal_handler_process;
-	act.sa_handler = SIG_IGN;
 	if (!data->buf || !*data->buf)
 		return (0);
 	if (data->cmds->pipe == 1 || !check_builtin(data, data->cmds))
@@ -94,8 +89,6 @@ int	execute(t_input *data)
 		data->pid = fork();
 		if (data->pid == 0)
 		{
-			//sigaction(SIGINT, &act, NULL);
-			//sigaction(SIGQUIT, &act, NULL);
 			if (data->cmds->pipe == 1)
 				pipex(data, data->cmds);
 			else
@@ -105,5 +98,6 @@ int	execute(t_input *data)
 			g_pid = data->pid;
 		waitpid(data->pid, &data->status, 0);
 	}
+	kill(data->pid, 15);
 	return (0);
 }
