@@ -21,7 +21,7 @@
 # include <stdbool.h>
 // # include "../libft/libft.h"
 
-pid_t	g_pid;
+// pid_t	g_pid;
 
 // enum for tokens
 enum tokens

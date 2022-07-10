@@ -195,7 +195,7 @@ void	envp_init(t_input *data, char *envp[])
 	data->envp_tmp = NULL;
 	data->node_tmp = NULL;
 	data->builtins = builtins;
-	create_envp(data, envp);
+	create_envp(data, data->envp);
 	//ft_envp_print(data->envp_n);
 }
 
