@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/10 23:56:43 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/11 00:04:48 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ char	*get_args(t_node	*args)
 	str = ft_strdup("");
 	if (!str)
 		return (NULL);
-	while (args && (args->type == WORD || args->type == DOLLAR || args->type == QUOTE_D || args->type == EQUAL))
+	while (args && (args->type == WORD || args->type == DOLLAR
+		|| args->type == QUOTE_D || args->type == EQUAL))
 	{
 		if (args->type == DOLLAR && !ft_strncmp(args->next->value, "?", 2))
 		{
