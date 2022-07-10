@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/07 16:14:50 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/10 17:00:23 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,17 @@ char	*get_args(t_node	*args)
 		return (NULL);
 	while (args && (args->type == WORD || args->type == DOLLAR || args->type == QUOTE_D || args->type == EQUAL))
 	{
-		if (args->type == DOLLAR)
+		if (args->type == DOLLAR && (args->next->value[0] == '?' && args->next->value[1] == '\0'))
+		{
+			str = ft_strjoin_free(str, args->value);
+			if (!str)
+				return (NULL);
+			args = args->next;
+			str = ft_strjoin_free(str, args->value);
+			if (!str)
+				return (NULL);
+		}
+		else if (args->type == DOLLAR)
 		{
             str = str_other(str, args);
             if (!str)
