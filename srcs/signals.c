@@ -1,7 +1,5 @@
 #include "../include/minishell.h"
 
-pid_t	g_pid;
-
 void	signal_handler(int signo, siginfo_t *info, void	*context)
 {
 	int status;
