@@ -278,9 +278,9 @@ void	prompt(t_input *data)
 			data_init(data);
 			if (parsing(data) == 0)
 			{
-				execute(data);
-				ft_free_token(data->args);
-				ft_free_cmd(data->cmds);
+			//	execute(data);
+			//	ft_free_token(data->args);
+			//	ft_free_cmd(data->cmds);
 			}
 			else
 				ft_free_token(data->args);

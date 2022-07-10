@@ -6,30 +6,44 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/10 17:00:23 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/10 23:36:14 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-char    *str_other(char  *str, t_node *args)
+char    *str_variable(char  *str, t_node *args)
 {
+	char	*value;
+	
 	if (args->next)
 	{
 		args = args->next;
-		if (args->type == WORD)
-		{
-			str = ft_strjoin_free(str, getenv(args->value));
-			if (!str)
-				return (NULL);
-			str = ft_strjoin_free(str, " ");
-			if (!str)
-				return (NULL);
-		}
+		value = getenv(args->value);
+		if (!value)
+			return (str);
+		str = ft_strjoin_free(str, value);
+		if (!str)
+			return (NULL);
+		str = ft_strjoin_free(str, " ");
+		if (!str)
+			return (NULL);
 	}
 	else
 		return (NULL);
     return (str);
+}
+
+char	*str_other(char	*str, t_node *args)
+{
+	str = ft_strjoin_free(str, args->value);
+	if (!str)
+		return (NULL);
+	args = args->next;
+	str = ft_strjoin_free(str, args->value);
+	if (!str)
+		return (NULL);
+	return (str);
 }
 
 char    *str_word(char *str, t_node *args)
@@ -52,19 +66,16 @@ char	*get_args(t_node	*args)
 		return (NULL);
 	while (args && (args->type == WORD || args->type == DOLLAR || args->type == QUOTE_D || args->type == EQUAL))
 	{
-		if (args->type == DOLLAR && (args->next->value[0] == '?' && args->next->value[1] == '\0'))
+		if (args->type == DOLLAR && !ft_strncmp(args->next->value, "?", 2))
 		{
-			str = ft_strjoin_free(str, args->value);
+			str = str_other(str, args);
 			if (!str)
 				return (NULL);
 			args = args->next;
-			str = ft_strjoin_free(str, args->value);
-			if (!str)
-				return (NULL);
 		}
-		else if (args->type == DOLLAR)
+		else if (args->type == DOLLAR && (args->next && args->next->type == DOLLAR))
 		{
-            str = str_other(str, args);
+            str = str_variable(str, args);
             if (!str)
                 return (NULL);
 			args = args->next;
