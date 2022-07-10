@@ -94,8 +94,8 @@ int	execute(t_input *data)
 			else
 				ft_execve(data->cmds->cmd, data);
 		}
-		// else
-		// 	g_pid = data->pid;
+		else
+			g_pid = data->pid;
 		waitpid(data->pid, &data->status, 0);
 	}
 	kill(data->pid, 15);

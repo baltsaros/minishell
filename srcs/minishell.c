@@ -93,10 +93,11 @@ void	check_next(t_input *data, size_t *i)
 	int	type;
 	int	next;
 
-	if (!data->buf[*i + 1])
-		return ;
 	type = check_charset(data->buf[*i], "\"$\'&<>=*|(){}");
-	next = check_charset(data->buf[*i + 1], "<>|&");
+	if (!data->buf[*i + 1])
+		next = 0;
+	else
+		next = check_charset(data->buf[*i + 1], "<>|&");
 	if (type == next)
 	{
 		data->value = ft_strndup(data->buf + *i, 2);
