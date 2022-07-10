@@ -21,6 +21,7 @@
 # include <stdbool.h>
 // # include "../libft/libft.h"
 
+// pid_t	g_pid;
 
 // enum for tokens
 enum tokens
@@ -121,8 +122,8 @@ typedef struct s_input
 	char			*buf;
 	struct builtin	*builtins;
 	int				status;
-	pid_t			pid;
 	DIR				*dir;
+	pid_t			pid;
 	char			**line;
 }	t_input;
 
@@ -205,7 +206,7 @@ int		yo_unset(t_input *data);
 int		yo_exit(t_input *data);
 
 //signals
-void	signal_handler(int signo, siginfo_t *info, void *context);
+void	signal_handler(int signo, siginfo_t *info, void	*context);
 
 // others
 void	asterisks(t_input *data);
@@ -229,5 +230,8 @@ char	**init_cmd(t_cmd *elem);
 // parsing_utils_2
 char	*get_args(t_node	*args);
 int		redirection_check(t_node *args, t_cmd *elem);
+
+// Readline functions
+void	rl_replace_line (const char *text, int clear_undo);
 
 #endif

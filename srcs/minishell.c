@@ -1,5 +1,24 @@
 #include "../include/minishell.h"
 
+int		read_after_pipe(char **buf, char *msg, char c)
+{
+	char	*tmp;
+
+	while (1)
+	{
+		tmp = readline(msg);
+		*buf = ft_charjoin_free(*buf, '\n');
+		*buf = ft_strjoin_free(*buf, tmp);
+		if (!ft_strchr(tmp, c))
+		{
+			free(tmp);
+			break;
+		}
+		free(tmp);
+	}
+	return (0);
+}
+
 int		read_after(char **buf, char *msg, char c)
 {
 	char	*tmp;
@@ -19,31 +38,30 @@ int		read_after(char **buf, char *msg, char c)
 	return (0);
 }
 
-int		check_field(char **buf)
+int		check_field(char **buf, t_input *data)
 {
-	int		i;
 	int		quote;
 	int		quote_d;
 	char	*tmp;
 
-	if (!*buf)
-		return (0);
-	i = 0;
+	data->i = 0;
 	quote = 0;
 	quote_d = 0;
 	tmp = *buf;
-	while (tmp[i])
+	while (tmp[data->i])
 	{
-		if (tmp[i] == '\'')
+		if (tmp[data->i] == '\'')
 			++quote;
-		else if (tmp[i] == '\"')
+		else if (tmp[data->i] == '\"')
 			++quote_d;
-		++i;
+		++data->i;
 	}
 	if (quote && quote % 2 != 0)
 		read_after(buf, "quote>", '\'');
 	else if (quote_d &&quote_d % 2 != 0)
 		read_after(buf, "dquote>", '\"');
+	if (tmp[data->i - 1] == '|')
+		read_after_pipe(buf, ">", '|');
 	return (0);
 }
 
@@ -137,6 +155,24 @@ void	create_token(t_input *data)
 	check_asterisk(data);
 }
 
+void	copy_envp(t_input *data, char *envp[])
+{
+	int	size;
+
+	size = 0;
+	while(envp[size])
+		++size;
+	data->envp = (char **)malloc(sizeof(*data->envp) * (size + 1));
+	alloc_check(data->envp);
+	data->i = 0;
+	while (envp[data->i])
+	{
+		data->envp[data->i] = envp[data->i];
+		data->i++;
+	}
+	data->envp[data->i] = NULL;
+}
+
 void	envp_init(t_input *data, char *envp[])
 {
 	static struct builtin builtins[] =
@@ -149,7 +185,7 @@ void	envp_init(t_input *data, char *envp[])
 		{"unset", &yo_unset},
 		{"exit", &yo_exit}
 	};
-	data->envp = envp;
+	copy_envp(data, envp);
 	data->envp_n = NULL;
 	data->type = NULL;
 	data->value = NULL;
@@ -159,7 +195,7 @@ void	envp_init(t_input *data, char *envp[])
 	data->envp_tmp = NULL;
 	data->node_tmp = NULL;
 	data->builtins = builtins;
-	create_envp(data, envp);
+	create_envp(data, data->envp);
 	//ft_envp_print(data->envp_n);
 }
 
@@ -190,36 +226,62 @@ void	data_init(t_input *data)
 	ft_token_print(data->args);
 }
 
+int	is_right_buf(char	*buf)
+{
+	int	i;
+
+	i = 0;
+	if (buf[0] == '\0')
+		return (1);
+	while (buf[i])
+	{
+		if (buf[i] != ' ' && buf[i] != '\t' && buf[i] != '\n'
+			&& buf[i] != '\v' && buf[i] != '\f' && buf[i] != '\r')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+void	prompt(t_input *data)
+{
+	while (1)
+	{
+		data->buf = readline("minishell$ ");
+		if (!data->buf)
+			yo_exit(data);
+		else if (is_right_buf(data->buf) != 1)
+		{
+			add_history(data->buf);
+			check_field(&data->buf, data);
+			data_init(data);
+			if (parsing(data) == 0)
+			{
+				execute(data);
+				ft_free_token(data->args);
+				ft_free_cmd(data->cmds);
+			}
+			else
+				ft_free_token(data->args);
+		}
+		//asterisks(&data);
+	}
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
-	t_input data;
-	struct sigaction act;
+	t_input 			data;
+	struct sigaction	act;
 
 	(void)argv;
 	if (argc != 1)
 		exit(EXIT_FAILURE);
-	act.sa_sigaction = signal_handler;
 	act.sa_flags = SA_SIGINFO;
-	sigaction(SIGINT, &act, NULL);
-	sigaction(SIGQUIT, &act, NULL);
+	act.sa_sigaction = &signal_handler;
+	if (sigaction(SIGINT, &act, NULL) == -1
+		|| sigaction(SIGQUIT, &act, NULL) == -1)
+		printf("[ERROR]: Signal handler failed\n");
 	envp_init(&data, envp);
-	while (1)
-	{
-		data.buf = readline("yo> ");
-		if (data.buf)
-			add_history(data.buf);
-		check_field(&data.buf);
-		data_init(&data);
-		//asterisks(&data);
-		//if (parsing(&data) == 0)
-		//{
-			//execute(&data);
-			// ft_free_token(data.args);
-			// ft_free_cmd(data.cmds);
-		//}
-		// else
-			// ft_free_token(data.args);
-		// execute(&data);
-	}
+	prompt(&data);
 	return ((data.status >> 8) & 0xff);
 }

@@ -87,7 +87,7 @@ void	increase_shlvl(t_input *data)
 	i = 0;
 	while (data->envp[i] && ft_strncmp(data->envp[i], "SHLVL", 5))
 		i++;
-	data->tmp = strdup(data->envp[i] + 6);
+	data->tmp = ft_strdup(data->envp[i] + 6);
 	alloc_check_small(data->tmp);
 	data->value = ft_strndup(data->envp[i], 6);
 	alloc_check_small(data->value);
@@ -96,6 +96,7 @@ void	increase_shlvl(t_input *data)
 	free(data->tmp);
 	data->tmp = ft_itoa(data->i);
 	alloc_check_small(data->tmp);
+	free(data->envp[i]);
 	data->envp[i] = ft_strjoin(data->value, data->tmp);
 	alloc_check_small(data->envp[i]);
 	free(data->value);
@@ -168,8 +169,6 @@ void	ft_execve(char **argv, t_input *data)
 	}
 	if (!ft_strncmp(argv[0], "./minishell", 12))
 		increase_shlvl(data);
-	// cmd = ft_split(argv, ' ');
-	// alloc_check(cmd);
 	path = access_check(argv, data->envp);
 	if (execve(path, argv, data->envp) < 0)
 	{
@@ -253,8 +252,11 @@ int	check_envp(char *c, t_env *envp_n, int n)
 		return (0);
 	while (envp_n)
 	{
-		if (ft_strncmp(c, envp_n->type, n))
+		if (!ft_strncmp(c, envp_n->type, n))
+		{
+			envp_n = ft_envp_del(envp_n);
 			return (1);
+		}
 		envp_n = envp_n->next;
 	}
 	return (0);
