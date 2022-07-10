@@ -93,6 +93,8 @@ void	check_next(t_input *data, size_t *i)
 	int	type;
 	int	next;
 
+	if (!data->buf[*i + 1])
+		return ;
 	type = check_charset(data->buf[*i], "\"$\'&<>=*|(){}");
 	next = check_charset(data->buf[*i + 1], "<>|&");
 	if (type == next)
@@ -127,6 +129,23 @@ void	check_asterisk(t_input *data)
 	}
 }
 
+void	check_dollar(t_input *data)
+{
+	int	i;
+
+	i = 0;
+	data->node_tmp = data->args;
+	while (data->node_tmp->next && data->node_tmp->type != DOLLAR)
+		data->node_tmp = data->node_tmp->next;
+	while (data->buf[i] && data->buf[i] != '$')
+		++i;
+	if (data->node_tmp && data->node_tmp->next && data->node_tmp->type == DOLLAR)
+	{
+		if (data->buf[i + 1] && data->buf[i + 1] != ' ')
+			data->node_tmp->next->type = DOLLAR;
+	}
+}
+
 void	create_token(t_input *data)
 {
 	size_t	i;
@@ -153,6 +172,7 @@ void	create_token(t_input *data)
 			check_next(data, &i);
 	}
 	check_asterisk(data);
+	check_dollar(data);
 }
 
 void	copy_envp(t_input *data, char *envp[])
