@@ -52,6 +52,8 @@ enum tokens
 	IN_FILE		= 6,
 	OUT_FILE	= 7,
 	ARG			= 8,
+	TRU			= 10,
+	FALS		= 11,
 	BRACES_L	= 123,	// {
 	BRACES_R	= 125	// }
 };

@@ -1,12 +1,12 @@
 #include "../include/minishell.h"
 
-static void	check_dquote(t_input *data, size_t *i)
+static void	check_quote(t_input *data, size_t *i, char c)
 {
 	size_t	start;
 	int		type;
 
 	start = *i;
-	while (data->buf[*i] != '\"')
+	while (data->buf[*i] != c)
 		++*i;
 	if (*i != start)
 	{
@@ -15,10 +15,10 @@ static void	check_dquote(t_input *data, size_t *i)
 		data->node_tmp = ft_token_new(type, data->value);
 		ft_token_back(&data->args, data->node_tmp);
 	}
-	if (data->buf[*i] && data->buf[*i] == '\"')
+	if (data->buf[*i] && data->buf[*i] == c)
 	{
-		type = QUOTE_D;
-		data->value = ft_strdup("\"");
+		type = c;
+		data->value = ft_strndup(data->buf + start - 1, 1);
 		data->node_tmp = ft_token_new(type, data->value);
 		ft_token_back(&data->args, data->node_tmp);
 		++*i;
@@ -83,8 +83,8 @@ static void	check_next(t_input *data, size_t *i)
 	data->node_tmp = ft_token_new(type, data->value);
 	ft_token_back(&data->args, data->node_tmp);
 	++*i;
-	if (data->buf[*i - 1] == '\"')
-		check_dquote(data, i);
+	if (data->buf[*i - 1] == '\"' || data->buf[*i - 1] == '\'')
+		check_quote(data, i, data->buf[*i - 1]);
 }
 
 void	create_token(t_input *data)
