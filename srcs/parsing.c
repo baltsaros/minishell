@@ -12,34 +12,53 @@ int	get_len_cmd(char **str)
 
 t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 {
-	elem->cmd = init_cmd(elem);
+	elem->cmd = init_cmd(args);
 	if (!elem->cmd)
 		return (NULL);
+
 	elem->len_cmd = get_len_cmd(elem->cmd);
 	while (args && args->type != PIPE)
 	{
-		if (redirection_check(args, elem) == 1)
-			return (NULL);
-		if (args->next && args->next->type == PIPE)
-		{
-			if (!args->next->next || is_the_next_is_word(args->next) == 1)
-				return (print_syntax_error_cmd(args->next));
-			elem->pipe = 1;
-		}
-		args = args->next;
+	 	if (redirection_check(args, elem) == 1)
+	 		return (NULL);
+	 	if (args->next && args->next->type == PIPE)
+	 	{
+	 		if (!args->next->next || is_the_next_is_word(args->next) == 1)
+	 			return (print_syntax_error_cmd(args->next));
+	 		elem->pipe = 1;
+	 	}
+	 	args = args->next;
 	}
 	return (elem);
+}
+
+void	update_tokens(t_node *args)
+{
+	while (args)
+	{
+		if (args->type == QUOTE)
+		{
+			args = args->next;
+			while (args && args->type != QUOTE)
+			{
+				args->type = WORD;
+				args = args->next;
+			}
+		}
+		if (!args)
+			break ;
+		args = args->next;
+	}
 }
 
 t_cmd	*init_elem(t_node *args)
 {
 	t_cmd	*elem;
 
+	update_tokens(args);
+	//ft_token_print(args);
 	elem = init_empty_elem();
 	if (!elem)
-		return (NULL);
-	elem->argument_buf = get_args(args);
-	if (!elem->argument_buf)
 		return (NULL);
 	elem = fill_elem(args, elem);
 	if (!elem)

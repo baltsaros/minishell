@@ -6,92 +6,76 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/11 00:04:48 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/11 13:57:47 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-char    *str_variable(char  *str, t_node *args)
+int	get_size_cmd(t_node	*args)
 {
-	char	*value;
-	
-	if (args->next)
+	int	i;
+
+	i = 0;
+	while (args && (args->type == WORD
+		|| args->type == DOLLAR 
+		|| args->type == EQUAL 
+		|| args->type == QUOTE_D
+		|| args->type == QUOTE))
 	{
+		if (args->type == DOLLAR && (args->next && args->next->type == DOLLAR))
+		{
+			i++;
+			args = args->next;
+		}
+		else if (args->type != QUOTE_D && args->type != QUOTE)
+			i++;
 		args = args->next;
-		value = getenv(args->value);
-		if (!value)
-			return (str);
-		str = ft_strjoin_free(str, value);
-		if (!str)
-			return (NULL);
-		str = ft_strjoin_free(str, " ");
-		if (!str)
-			return (NULL);
 	}
-	else
-		return (NULL);
-    return (str);
+	return (i);
 }
 
-char	*str_other(char	*str, t_node *args)
+char	*get_env_variable(char *arg)
 {
-	str = ft_strjoin_free(str, args->value);
-	if (!str)
-		return (NULL);
-	args = args->next;
-	str = ft_strjoin_free(str, args->value);
+	char	*str;
+
+	str = getenv(arg);
 	if (!str)
 		return (NULL);
 	return (str);
 }
 
-char    *str_word(char *str, t_node *args)
+char	**init_cmd(t_node	*args)
 {
-    str = ft_strjoin_free(str, args->value);
-	if (!str)
-        return (NULL);
-	str = ft_strjoin_free(str, " ");
+	int		size;
+	int		i;
+	char	**str;
+	
+	size = get_size_cmd(args);
+	i = 0;
+	str = (char	**) malloc ((size + 1) * sizeof(char *));
 	if (!str)
 		return (NULL);
-    return (str);
-}
-
-char	*get_args(t_node	*args)
-{
-	char	*str;
-
-	str = ft_strdup("");
-	if (!str)
-		return (NULL);
-	while (args && (args->type == WORD || args->type == DOLLAR
-		|| args->type == QUOTE_D || args->type == EQUAL))
+	while (args && i != size)
 	{
-		if (args->type == DOLLAR && !ft_strncmp(args->next->value, "?", 2))
+		if (args->type != QUOTE_D && args->type != QUOTE)
 		{
-			str = str_other(str, args);
-			if (!str)
-				return (NULL);
-			args = args->next;
+			if (args->type == DOLLAR && (args->next && args->next->type == DOLLAR))
+			{
+				args = args->next;
+				str[i] = get_env_variable(args->value);
+			}
+			else
+			{
+				str[i] = ft_strdup(args->value);
+				if (!str[i])
+					return (NULL);
+			}
+			i++;
 		}
-		else if (args->type == DOLLAR && (args->next && args->next->type == DOLLAR))
-		{
-            str = str_variable(str, args);
-            if (!str)
-                return (NULL);
-			args = args->next;
-		}
-		else if (args->type != QUOTE_D)
-		{
-			str = str_word(str, args);
-            if (!str)
-                return (NULL);
-		}
-		if (args->next)
-			args = args->next;
-		else
-			break ;
+		args = args->next;
 	}
+	str[i] = NULL;
 	return (str);
 }
 
