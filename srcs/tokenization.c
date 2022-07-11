@@ -1,6 +1,6 @@
 #include "../include/minishell.h"
 
-static void	check_quote(t_input *data, size_t *i, char c)
+static void	check_quotes(t_input *data, size_t *i, char c)
 {
 	size_t	start;
 	int		type;
@@ -84,7 +84,7 @@ static void	check_next(t_input *data, size_t *i)
 	ft_token_back(&data->args, data->node_tmp);
 	++*i;
 	if (data->buf[*i - 1] == '\"' || data->buf[*i - 1] == '\'')
-		check_quote(data, i, data->buf[*i - 1]);
+		check_quotes(data, i, data->buf[*i - 1]);
 }
 
 void	create_token(t_input *data)
