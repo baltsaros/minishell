@@ -31,7 +31,7 @@ static void    check_asterisk(t_input *data)
 
     i = 0;
     data->node_tmp = data->args;
-    while (data->buf[i])
+    while (data->node_tmp)
     {
         while (data->node_tmp->next && data->node_tmp->type != ASTER)
             data->node_tmp = data->node_tmp->next;
