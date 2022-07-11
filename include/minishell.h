@@ -156,21 +156,13 @@ void	ft_free_cmd(t_cmd *cmd);
 // utils
 char	*ft_strndup(char const *str, size_t size);
 int		error_check(int input, char *str, int n);
-char	*ft_strjoin_free(char *rest, char *buf);
-char	*ft_charjoin_free(char *line, char b);
-
-char	**get_address(char *cmd[], char *envp[]);
-char	*access_check(char *cmd[], char *envp[]);
-void	ft_execve(char *argv[], t_input *data);
-int		ft_open(char *file, int par);
+int		ft_strstr(char *str, char *to_find);
+int		check_charset(char c, char *charset);
+void	increase_shlvl(t_input *data);
 
 char	**ft_split_space(char const *s, char *charset);
 int		get_next_line(char **line);
 int		get_next_line_hd(char **line);
-int		ft_strstr(char *str, char *to_find);
-int		check_charset(char c, char *charset);
-int		check_envp(char *c, t_env *envp_n, int n);
-void	increase_shlvl(t_input *data);
 
 // minishell
 void	prompt(t_input *data);
@@ -192,6 +184,13 @@ void	ft_heredoc(char *limiter, t_cmd *elem);
 void	ft_fork(char *argv[], t_input *data);
 int		execute(t_input *data);
 
+// execute_utils
+char	*ft_strjoin_free(char *rest, char *buf);
+char	*ft_charjoin_free(char *line, char b);
+char	**get_address(char *cmd[], char *envp[]);
+char	*access_check(char *cmd[], char *envp[]);
+void	ft_execve(char *argv[], t_input *data);
+
 // builtins
 int		yo_pwd(t_input *data);
 int		yo_cd(t_input *data);
@@ -200,6 +199,9 @@ int		yo_export(t_input *data);
 int		yo_env(t_input *data);
 int		yo_unset(t_input *data);
 int		yo_exit(t_input *data);
+
+// yo_export_utils
+void	add_envp(t_input *data, char *type, char *value);
 
 //signals
 void	signal_handler(int signo, siginfo_t *info, void	*context);

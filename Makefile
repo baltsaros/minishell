@@ -10,14 +10,13 @@ NAME		= minishell
 
 SRC_DIR		= srcs
 SRC_FILES	= minishell.c \
-				minishell_utils.c \
+				minishell_utils_1.c \
+				minishell_utils_2.c \
 				nodes_1.c \
 				nodes_2.c \
 				alloc_check.c \
 				ft_free.c \
 				ft_split_space.c \
-				get_next_line.c \
-				get_next_line_hd.c \
 				parsing_utils.c \
 				parsing_utils_2.c \
 				check_input.c \
@@ -26,8 +25,10 @@ SRC_FILES	= minishell.c \
 				wildcard.c \
 				parsing.c \
 				execute.c \
+				execute_utils.c \
 				signals.c \
 				yo_export.c \
+				yo_export_utils.c \
 				yo_echo.c \
 				yo_cd.c \
 				yo_env.c \

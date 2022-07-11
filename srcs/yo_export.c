@@ -1,39 +1,11 @@
 #include "../include/minishell.h"
 
-static void	add_envp(t_input *data, char *type, char *value)
-{
-	int		size;
-	char	**tmp;
-
-	size = 0;
-	data->i = 0;
-	while (data->envp[size])
-		size++;
-	tmp = (char **)malloc(sizeof(*tmp) * (size + 2));
-	alloc_check(tmp);
-	while (data->envp[data->i])
-	{
-		tmp[data->i] = data->envp[data->i];
-		data->i++;
-	}
-	if (value)
-	{
-		data->tmp = ft_strjoin(type, "=");
-		tmp[data->i] = ft_strjoin_free(data->tmp, value);
-	}
-	else
-		tmp[data->i] = ft_strdup(type);
-	// alloc_check_small(tmp[data->i]);
-	tmp[data->i + 1] = NULL;
-	data->envp = tmp;
-	type = NULL;
-	value = NULL;
-}
 
 static int	check_duplicate(t_input *data, char *type, char *value)
 {
 	data->envp_tmp = data->envp_n;
-	while (data->envp_tmp && ft_strncmp(data->envp_tmp->type, type, ft_strlen(type) + 1))
+	while (data->envp_tmp && ft_strncmp(data->envp_tmp->type, type
+		, ft_strlen(type) + 1))
 		data->envp_tmp = data->envp_tmp->next;
 	if (!data->envp_tmp)
 		return (0);
@@ -60,6 +32,26 @@ static void	print_envp(t_env *envp)
 	}
 }
 
+static void	export_var(t_input *data, int *i)
+{
+	data->type = ft_strdup(data->cmds->cmd[*i]);
+	if (!data->cmds->cmd[*i + 1])
+		data->value = NULL;
+	else if (data->cmds->cmd[*i + 1] && data->cmds->cmd[*i + 1][0] == '=')
+	{
+		if (data->cmds->cmd[*i + 2])
+		{
+			data->value = ft_strdup(data->cmds->cmd[*i + 2]);
+			++(*i);
+		}
+		else
+			data->value = ft_strdup("");
+		++(*i);
+	}
+	else
+		data->value = NULL;
+}
+
 int	yo_export(t_input *data)
 {
 	int	i;
@@ -72,22 +64,7 @@ int	yo_export(t_input *data)
 	i = 1;
 	while (data->cmds->cmd[i])
 	{
-		data->type = ft_strdup(data->cmds->cmd[i]);
-		if (!data->cmds->cmd[i + 1])
-			data->value = NULL;
-		else if (data->cmds->cmd[i + 1] && data->cmds->cmd[i + 1][0] == '=')
-		{
-			if (data->cmds->cmd[i + 2])
-			{
-				data->value = ft_strdup(data->cmds->cmd[i + 2]);
-				++i;
-			}
-			else
-				data->value = ft_strdup("");
-			++i;
-		}
-		else
-			data->value = NULL;
+		export_var(data, &i);
 		if (!check_duplicate(data, data->type, data->value))
 		{
 			data->envp_tmp = ft_envp_new(data->type, data->value);

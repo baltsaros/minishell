@@ -36,7 +36,7 @@ static void	copy_envp(t_input *data, char *envp[])
 	data->i = 0;
 	while (envp[data->i])
 	{
-		data->envp[data->i] = envp[data->i];
+		data->envp[data->i] = ft_strdup(envp[data->i]);
 		data->i++;
 	}
 	data->envp[data->i] = NULL;
@@ -65,7 +65,7 @@ void	envp_init(t_input *data, char *envp[])
 	data->node_tmp = NULL;
 	data->builtins = builtins;
 	create_envp(data, data->envp);
-	//ft_envp_print(data->envp_n);
+	// ft_envp_print(data->envp_n);
 }
 
 void	data_init(t_input *data)
@@ -78,5 +78,5 @@ void	data_init(t_input *data)
 	data->args = NULL;
 	create_token(data);
 	data->argc = ft_token_size(data->args);
-	ft_token_print(data->args);
+	// ft_token_print(data->args);
 }

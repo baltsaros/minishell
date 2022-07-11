@@ -1,5 +1,21 @@
 #include "../include/minishell.h"
 
+static int	check_envp(char *c, t_env *envp_n, int n)
+{
+	if (!envp_n)
+		return (0);
+	while (envp_n)
+	{
+		if (!ft_strncmp(c, envp_n->type, n))
+		{
+			envp_n = ft_envp_del(envp_n);
+			return (1);
+		}
+		envp_n = envp_n->next;
+	}
+	return (0);
+}
+
 static void	remove_envp(t_input *data, char *type)
 {
 	int		size;
@@ -13,17 +29,18 @@ static void	remove_envp(t_input *data, char *type)
 	alloc_check(tmp);
 	while (data->envp[data->i] && ft_strncmp(data->envp[data->i], type, ft_strlen(type)))
 	{
-		tmp[data->i] = data->envp[data->i];
+		tmp[data->i] = ft_strdup(data->envp[data->i]);
 		data->i++;
 	}
-	free(data->envp[data->i]);
+	// free(data->envp[data->i]);
 	data->i++;
 	while (data->envp[data->i])
 	{
-		tmp[data->i] = data->envp[data->i];
+		tmp[data->i] = ft_strdup(data->envp[data->i]);
 		data->i++;
 	}
 	tmp[data->i] = NULL;
+	ft_free(data->envp);
 	data->envp = tmp;
 }
 
