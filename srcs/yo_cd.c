@@ -8,6 +8,7 @@ int	yo_cd(t_input *data)
 	{
 		data->status = 1;
 		perror("cd");
+		return (data->status);
 	}
 	return (0);
 }

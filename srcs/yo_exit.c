@@ -50,6 +50,7 @@ int	yo_exit(t_input *data)
 {
 	ft_free_envp(data->envp_n);
 	ft_free_token(data->args);
+	ft_free(data->envp);
 	// if (data->wild)
 	// 	ft_free_token(data->wild);
 	// ft_free_cmd(data->cmds);
