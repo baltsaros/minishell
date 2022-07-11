@@ -29,7 +29,7 @@ void	prompt(t_input *data)
 			add_history(data->buf);
 			check_field(&data->buf, data);
 			data_init(data);
-			asterisks(data);
+			// asterisks(data);
 			if (parsing(data) == 0)
 			{
 				execute(data);

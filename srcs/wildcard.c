@@ -20,7 +20,8 @@ static void	find_files_error(t_input *data, char *str)
 	ft_token_back(&data->cmds->wild, data->node_tmp);
 }
 
-static void	find_files_some(t_input *data, struct dirent *fname)
+static void	find_files_some(t_input *data, struct dirent *fname
+	, char *before, char *after)
 {
 	while (fname)
 	{
@@ -56,7 +57,7 @@ static void	find_files(t_input *data, char *str, struct dirent *fname)
 	else if (!before && after)
 		find_files_error(data, str);
 	else if (before)
-		find_files_some(data, fname);
+		find_files_some(data, fname, before, after);
 }
 
 void	asterisks(t_input *data)
