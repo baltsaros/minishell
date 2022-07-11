@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/11 18:19:35 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/11 18:25:08 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,16 @@ int	get_size_cmd(t_node	*args)
 
 	i = 0;
 	while (args && (args->type == WORD
-		|| args->type == DOLLAR 
-		|| args->type == EQUAL 
-		|| args->type == QUOTE_D
-		|| args->type == QUOTE))
+		|| args->type == DOLLAR || args->type == EQUAL 
+		|| args->type == QUOTE_D || args->type == QUOTE))
 	{
 		if (args->type == DOLLAR && (args->next && args->next->type == DOLLAR))
 		{
 			i++;
 			args = args->next;
 		}
-		else if (args->type == DOLLAR)
-		{
-			if ((args->next && args->next->type != QUOTE) || !args->next)
-				i++;
-		}
+		else if (args->type == DOLLAR && ((args->next && args->next->type != QUOTE) || !args->next))
+			i++;
 		else if (args->type != QUOTE_D && args->type != QUOTE && args->type != DOLLAR)
 			i++;
 		args = args->next;
