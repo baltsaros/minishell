@@ -16,14 +16,17 @@ SRC_FILES	= minishell.c \
 				alloc_check.c \
 				ft_free.c \
 				ft_split_space.c \
-				signals.c \
-				execute.c \
 				get_next_line.c \
 				get_next_line_hd.c \
 				parsing_utils.c \
 				parsing_utils_2.c \
+				check_input.c \
+				data_init.c \
+				tokenization.c \
 				wildcard.c \
 				parsing.c \
+				execute.c \
+				signals.c \
 				yo_export.c \
 				yo_echo.c \
 				yo_cd.c \

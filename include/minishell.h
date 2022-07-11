@@ -113,7 +113,6 @@ typedef struct s_input
 	int				argc;
 	int				in;
 	int				out;
-	char			**argv;
 	char			**envp;
 	t_env			*envp_n;
 	t_node			*args;
@@ -189,6 +188,16 @@ void	increase_shlvl(t_input *data);
 
 // minishell
 void	main_process(t_input data);
+
+// check_input
+int		check_field(char **buf, t_input *data);
+
+// data_init
+void	envp_init(t_input *data, char *envp[]);
+void	data_init(t_input *data);
+
+// tokenization
+void	create_token(t_input *data);
 
 // execute
 int		pipex(t_input *data, t_cmd *cmds);
