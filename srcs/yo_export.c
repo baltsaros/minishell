@@ -60,7 +60,7 @@ static void	print_envp(t_env *envp)
 	}
 }
 
-int		yo_export(t_input *data)
+int	yo_export(t_input *data)
 {
 	int	i;
 

@@ -21,6 +21,7 @@ static void	create_envp(t_input *data, char *envp[])
 		ft_envp_back(&data->envp_n, data->envp_tmp);
 		++i;
 	}
+	data->envp_len = i;
 }
 
 static void	copy_envp(t_input *data, char *envp[])

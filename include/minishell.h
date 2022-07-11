@@ -106,6 +106,7 @@ typedef struct s_input
 	int				in;
 	int				out;
 	char			**envp;
+	int				envp_len;
 	t_env			*envp_n;
 	t_node			*args;
 	t_cmd			*cmds;
