@@ -64,3 +64,20 @@ int	check_field(char **buf, t_input *data)
 		read_after_pipe(buf, ">", '|');
 	return (0);
 }
+
+int	is_right_buf(char *buf)
+{
+	int	i;
+
+	i = 0;
+	if (buf[0] == '\0')
+		return (1);
+	while (buf[i])
+	{
+		if (buf[i] != ' ' && buf[i] != '\t' && buf[i] != '\n'
+			&& buf[i] != '\v' && buf[i] != '\f' && buf[i] != '\r')
+			return (0);
+		i++;
+	}
+	return (1);
+}

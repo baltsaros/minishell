@@ -21,6 +21,7 @@
 # include <stdbool.h>
 // # include "../libft/libft.h"
 
+// global var
 pid_t	g_pid;
 
 // enum for tokens
@@ -51,20 +52,10 @@ enum tokens
 	IN_FILE		= 6,
 	OUT_FILE	= 7,
 	ARG			= 8,
+	TRU			= 10,
+	FALS		= 11,
 	BRACES_L	= 123,	// {
 	BRACES_R	= 125	// }
-};
-
-enum builtins
-{
-	BI_ECHO		= 10,
- 	BI_CD 		= 11,
- 	BI_PWD		= 12,
- 	BI_EXPORT	= 13,
- 	BI_UNSET	= 14,
- 	BI_ENV		= 15,
- 	BI_EXIT		= 16,
- 	BI_ECHON	= 17
 };
 
 // struct for tokens (+ wildcard) linked lists
@@ -116,6 +107,7 @@ typedef struct s_input
 	int				in;
 	int				out;
 	char			**envp;
+	int				envp_len;
 	t_env			*envp_n;
 	t_node			*args;
 	t_cmd			*cmds;
@@ -134,13 +126,6 @@ struct builtin
 	int		(*func)(t_input *data);
 };
 
-typedef	struct s_env_var
-{
-	char	*name;
-	char	*value;
-}	t_env_var;
-
-// global var
 
 // allocation check
 void	alloc_check(char **str);
@@ -192,6 +177,7 @@ void	prompt(t_input *data);
 
 // check_input
 int		check_field(char **buf, t_input *data);
+int		is_right_buf(char *buf);
 
 // data_init
 void	envp_init(t_input *data, char *envp[]);

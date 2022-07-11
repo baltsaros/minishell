@@ -21,6 +21,7 @@ static void	create_envp(t_input *data, char *envp[])
 		ft_envp_back(&data->envp_n, data->envp_tmp);
 		++i;
 	}
+	data->envp_len = i;
 }
 
 static void	copy_envp(t_input *data, char *envp[])
@@ -77,5 +78,5 @@ void	data_init(t_input *data)
 	data->args = NULL;
 	create_token(data);
 	data->argc = ft_token_size(data->args);
-	//ft_token_print(data->args);
+	ft_token_print(data->args);
 }

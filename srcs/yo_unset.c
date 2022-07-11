@@ -27,14 +27,12 @@ static void	remove_envp(t_input *data, char *type)
 	data->envp = tmp;
 }
 
-int		yo_unset(t_input *data)
+int	yo_unset(t_input *data)
 {
-	// t_env	*tmp;
-	int		i;
-	int		len;
+	int	i;
+	int	len;
 
 	i = 1;
-	// tmp = data->envp_n;
 	while (data->cmds->cmd[i])
 	{
 		len = ft_strlen(data->cmds->cmd[i]) + 1;
@@ -44,17 +42,3 @@ int		yo_unset(t_input *data)
 	}
 	return (0);
 }
-
-	// while (data->cmds->cmd[i])
-	// {
-	// 	if (check_envp(data->cmds->cmd[i], data->envp_n
-	// 		, ft_strlen(data->cmds->cmd[i]) + 1))
-	// 	{
-	// 		while (ft_strncmp(data->cmds->cmd[i], tmp->type
-	// 			, ft_strlen(data->cmds->cmd[i]) + 1))
-	// 			tmp = tmp->next;
-	// 		tmp = ft_envp_del(tmp);
-	// 		remove_envp(data, data->cmds->cmd[i]);
-	// 	}
-	// 	++i;
-	// }
