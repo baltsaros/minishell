@@ -23,6 +23,7 @@ static void	remove_envp(t_input *data, char *type)
 
 	size = 0;
 	data->i = 0;
+	data->j = 0;
 	while (data->envp[size])
 		size++;
 	tmp = (char **)malloc(sizeof(*tmp) * size);
@@ -32,11 +33,10 @@ static void	remove_envp(t_input *data, char *type)
 		tmp[data->i] = ft_strdup(data->envp[data->i]);
 		data->i++;
 	}
-	// free(data->envp[data->i]);
-	data->i++;
-	while (data->envp[data->i])
+	data->j++;
+	while (data->envp[data->i + data->j])
 	{
-		tmp[data->i] = ft_strdup(data->envp[data->i]);
+		tmp[data->i] = ft_strdup(data->envp[data->i + data->j]);
 		data->i++;
 	}
 	tmp[data->i] = NULL;
@@ -55,7 +55,6 @@ int	yo_unset(t_input *data)
 		len = ft_strlen(data->cmds->cmd[i]) + 1;
 		if (check_envp(data->cmds->cmd[i], data->envp_n, len))
 			remove_envp(data, data->cmds->cmd[i]);
-			// printf("delete %d\n", i);
 		++i;
 	}
 	return (0);
