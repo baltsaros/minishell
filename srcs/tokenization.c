@@ -57,7 +57,8 @@ static void	check_dollar(t_input *data)
 	if (data->node_tmp && data->node_tmp->next
 		&& data->node_tmp->type == DOLLAR)
 	{
-		if (data->buf[i + 1] && data->buf[i + 1] != ' ')
+		if (data->buf[i + 1] && data->buf[i + 1] != ' '
+			&& data->buf[i + 1] != '\'')
 			data->node_tmp->next->type = DOLLAR;
 	}
 }
