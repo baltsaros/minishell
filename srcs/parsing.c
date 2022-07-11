@@ -1,15 +1,5 @@
 #include "../include/minishell.h"
 
-int	get_len_cmd(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
 t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 {
 	elem->cmd = init_cmd(args);

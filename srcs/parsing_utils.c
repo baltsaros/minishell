@@ -82,3 +82,13 @@ int	init_out(t_node *args, t_cmd *elem)
 	}
 	return (1);
 }
+
+int	get_len_cmd(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
