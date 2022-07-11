@@ -2,9 +2,9 @@
 
 static void	create_envp(t_input *data, char *envp[])
 {
-	int		i;
-	int		start;
-	int		end;
+	int	i;
+	int	start;
+	int	end;
 
 	i = 0;
 	while (envp[i])
@@ -69,7 +69,7 @@ void	envp_init(t_input *data, char *envp[])
 
 void	data_init(t_input *data)
 {
-	int		i;
+	int	i;
 
 	if (!data->buf || !*data->buf)
 		return ;
@@ -78,7 +78,6 @@ void	data_init(t_input *data)
 	data->in = 0;
 	data->out = 1;
 	data->args = NULL;
-	data->wild = NULL;
 	create_token(data);
 	data->argc = ft_token_size(data->args);
 	// ft_token_print(data->args);

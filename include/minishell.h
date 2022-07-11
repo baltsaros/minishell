@@ -67,7 +67,7 @@ enum builtins
  	BI_ECHON	= 17
 };
 
-// struct for token (+ wildcard) linked lists
+// struct for tokens (+ wildcard) linked lists
 typedef struct s_node
 {
 	int				type;
@@ -77,6 +77,7 @@ typedef struct s_node
 	struct s_node	*prev;
 }	t_node;
 
+// struct for commands
 typedef struct s_cmd
 {
 	char			**cmd;
@@ -88,10 +89,12 @@ typedef struct s_cmd
  	int				out;
 	char			*out_arg;
 	int				pipe;
+	t_node			*wild;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
  }	t_cmd;
 
+// linked list for environmental variables
 typedef struct s_env
 {
 	char			*type;
@@ -117,7 +120,6 @@ typedef struct s_input
 	t_env			*envp_n;
 	t_node			*args;
 	t_cmd			*cmds;
-	t_node			*wild;
 	char			*buf;
 	struct builtin	*builtins;
 	int				status;
@@ -187,7 +189,7 @@ int		check_envp(char *c, t_env *envp_n, int n);
 void	increase_shlvl(t_input *data);
 
 // minishell
-void	main_process(t_input data);
+void	prompt(t_input *data);
 
 // check_input
 int		check_field(char **buf, t_input *data);
@@ -217,20 +219,19 @@ int		yo_exit(t_input *data);
 //signals
 void	signal_handler(int signo, siginfo_t *info, void	*context);
 
-// others
+// wildcard
 void	asterisks(t_input *data);
-void	find_files(t_input *data, t_node *tmp, struct dirent *fname);
 
 //syntax checker
 int		is_the_next_is_word(t_node *args);
-t_cmd 	*print_syntax_error_cmd(t_node *args);
-int   	print_syntax_error_bool(t_node *args);
+t_cmd	*print_syntax_error_cmd(t_node *args);
+int		print_syntax_error_bool(t_node *args);
 
 // parsing
 int	parsing(t_input *data);
 
 // parsing_utils
-t_node 	*next_elem(t_node *args);
+t_node	*next_elem(t_node *args);
 t_cmd	*init_empty_elem(void);
 int		init_in(t_node *args, t_cmd *elem);
 int		init_out(t_node *args, t_cmd *elem);

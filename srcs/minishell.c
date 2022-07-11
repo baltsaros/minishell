@@ -29,6 +29,7 @@ void	prompt(t_input *data)
 			add_history(data->buf);
 			check_field(&data->buf, data);
 			data_init(data);
+			asterisks(data);
 			if (parsing(data) == 0)
 			{
 				execute(data);
@@ -38,7 +39,6 @@ void	prompt(t_input *data)
 			else
 				ft_free_token(data->args);
 		}
-		//asterisks(&data);
 	}
 }
 
