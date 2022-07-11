@@ -32,31 +32,10 @@ t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 	return (elem);
 }
 
-void	update_tokens(t_node *args)
-{
-	while (args)
-	{
-		if (args->type == QUOTE)
-		{
-			args = args->next;
-			while (args && args->type != QUOTE)
-			{
-				args->type = WORD;
-				args = args->next;
-			}
-		}
-		if (!args)
-			break ;
-		args = args->next;
-	}
-}
-
 t_cmd	*init_elem(t_node *args)
 {
 	t_cmd	*elem;
 
-	update_tokens(args);
-	//ft_token_print(args);
 	elem = init_empty_elem();
 	if (!elem)
 		return (NULL);
