@@ -55,6 +55,7 @@ int	yo_unset(t_input *data)
 		len = ft_strlen(data->cmds->cmd[i]) + 1;
 		if (check_envp(data->cmds->cmd[i], data->envp_n, len))
 			remove_envp(data, data->cmds->cmd[i]);
+			// printf("delete %d\n", i);
 		++i;
 	}
 	return (0);
