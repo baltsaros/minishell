@@ -12,9 +12,9 @@ void	prompt(t_input *data)
 			add_history(data->buf);
 			check_field(&data->buf, data);
 			data_init(data);
-			// asterisks(data);
 			if (parsing(data) == 0)
 			{
+			//	asterisks(data);
 			//	execute(data);
 			//	ft_free_token(data->args);
 			//	ft_free_cmd(data->cmds);

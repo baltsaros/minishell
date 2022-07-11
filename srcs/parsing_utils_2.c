@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/11 18:36:31 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/11 20:40:32 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,12 @@ int	get_size_cmd(t_node	*args)
 	i = 0;
 	while (args && (args->type == WORD
 		|| args->type == DOLLAR || args->type == EQUAL 
-		|| args->type == QUOTE_D || args->type == QUOTE))
+		|| args->type == QUOTE_D || args->type == QUOTE
+		|| args->type == WORD_AST || args->type == ASTER))
 	{
-		if (args->type == DOLLAR
+		if (args->type == ASTER)
+			i++;
+		else if (args->type == DOLLAR
 			&& (args->next && args->next->type == DOLLAR))
 		{
 			i++;
@@ -31,7 +34,7 @@ int	get_size_cmd(t_node	*args)
 			&& ((args->next && args->next->type != QUOTE) || !args->next))
 			i++;
 		else if (args->type != QUOTE_D && args->type != QUOTE
-			&& args->type != DOLLAR)
+			&& args->type != DOLLAR && args->type != WORD_AST)
 			i++;
 		args = args->next;
 	}
@@ -63,7 +66,30 @@ char	**init_cmd(t_node	*args)
 	{
 		if (args->type != QUOTE_D && args->type != QUOTE)
 		{
-			if (args->type == DOLLAR && (args->next && args->next->type == DOLLAR))
+			if (args->type == ASTER)
+			{
+				str[i] = ft_strdup("");
+				if (!str[i])
+					return (NULL);
+				if (args->prev && args->prev->type == WORD_AST)
+				{
+					str[i] = ft_strjoin_free(str[i], args->prev->value);
+					if (!str[i])
+						return (NULL);
+				}
+				str[i] = ft_strjoin_free(str[i], args->value);
+				if (!str[i])
+					return (NULL);
+				if (args->next && args->next->type == WORD_AST)
+				{
+					args = args->next;
+					str[i] = ft_strjoin_free(str[i], args->value);
+					if (!str[i])
+						return (NULL);
+				}
+				i++;
+			}
+			else if (args->type == DOLLAR && (args->next && args->next->type == DOLLAR))
 			{
 				args = args->next;
 				str[i] = get_env_variable(args->value);
@@ -76,7 +102,7 @@ char	**init_cmd(t_node	*args)
 					return (NULL);
 				i++;
 			}
-			else if (args->type != DOLLAR)
+			else if (args->type != DOLLAR && args->type != WORD_AST)
 			{
 				str[i] = ft_strdup(args->value);
 				if (!str[i])
