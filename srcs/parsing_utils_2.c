@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/11 18:25:08 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/11 18:27:12 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,12 @@ char	**init_cmd(t_node	*args)
 				str[i] = get_env_variable(args->value);
 				i++;
 			}
-			else if (args->type == DOLLAR)
+			else if (args->type == DOLLAR && ((args->next && args->next->type != QUOTE) || !args->next))
 			{
-				if ((args->next && args->next->type != QUOTE) || !args->next)
-				{
-					str[i] = ft_strdup(args->value);
-					if (!str[i])
-						return (NULL);
-					i++;
-				}
+				str[i] = ft_strdup(args->value);
+				if (!str[i])
+					return (NULL);
+				i++;
 			}
 			else if (args->type != DOLLAR)
 			{
