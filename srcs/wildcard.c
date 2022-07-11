@@ -1,56 +1,85 @@
 #include "../include/minishell.h"
 
-void	find_files(t_input *data, t_node *tmp, struct dirent *fname)
+static void	find_files_all(t_input *data, struct dirent *fname)
 {
-	if ((!tmp->prev || tmp->prev->type != WORD_AST)
-		&& (!tmp->next || tmp->next->type != WORD_AST))
+	while (fname)
 	{
-		while (fname)
-		{
-			data->tmp = ft_strdup(fname->d_name);
-			data->node_tmp = ft_token_new(ASTER, data->tmp);
-			ft_token_back(&data->wild, data->node_tmp);
-			fname = readdir(data->dir);
-		}	
+		data->tmp = ft_strdup(fname->d_name);
+		data->node_tmp = ft_token_new(ASTER, data->tmp);
+		ft_token_back(&data->cmds->wild, data->node_tmp);
+		fname = readdir(data->dir);
 	}
-	else if (tmp->prev && tmp->prev->type == WORD_AST)
+}
+
+static void	find_files_error(t_input *data, char *str)
+{
+	write(2, "ls: ", 4);
+	write(2, str, ft_strlen(str));
+	write(2, ": No such file or directory\n", 28);
+	data->node_tmp = ft_token_new(-1, NULL);
+	ft_token_back(&data->cmds->wild, data->node_tmp);
+}
+
+static void	find_files_some(t_input *data, struct dirent *fname
+	, char *before, char *after)
+{
+	while (fname)
 	{
-		while (fname)
+		if (!ft_strncmp(fname->d_name, before, ft_strlen(before)))
 		{
-			if (!ft_strncmp(fname->d_name, tmp->prev->value, ft_strlen(tmp->prev->value)))
+			if (!after || (after && ft_strstr(fname->d_name, after)))
 			{
-				if (!tmp->next || (tmp->next && tmp->next->type == WORD_AST
-					&& ft_strstr(fname->d_name, tmp->next->value)))
-				{
-					data->tmp = ft_strdup(fname->d_name);
-					data->node_tmp = ft_token_new(ASTER, data->tmp);
-					ft_token_back(&data->wild, data->node_tmp);
-				}
+				data->tmp = ft_strdup(fname->d_name);
+				data->node_tmp = ft_token_new(ASTER, data->tmp);
+				ft_token_back(&data->cmds->wild, data->node_tmp);
 			}
-			fname = readdir(data->dir);
 		}
+		fname = readdir(data->dir);
 	}
+}
+
+static void	find_files(t_input *data, char *str, struct dirent *fname)
+{
+	char	*before;
+	char	*after;
+
+	data->i = 0;
+	before = NULL;
+	after = NULL;
+	while (str[data->i] != '*')
+		data->i++;
+	if (data->i > 0)
+		before = ft_strndup(str, data->i);
+	if (str[data->i + 1])
+		after = ft_strdup(str + data->i + 1);
+	if (!before && !after)
+		find_files_all(data, fname);
+	else if (!before && after)
+		find_files_error(data, str);
+	else if (before)
+		find_files_some(data, fname, before, after);
 }
 
 void	asterisks(t_input *data)
 {
-	t_node			*tmp;
 	struct dirent	*fname;
+	size_t			i;
 
 	data->dir = opendir(".");
+	data->cmds->wild = NULL;
 	if (!data->dir)
 	{
 		perror("opendir");
 		exit (EXIT_FAILURE);
 	}
-	fname = NULL;
-	tmp = data->args;
-	while (tmp && tmp->type != ASTER)
-		tmp = tmp->next;
-	if (!tmp)
-		return ;
+	i = 0;
 	fname = readdir(data->dir);
-	find_files(data, tmp, fname);
+	while (data->cmds->cmd[i])
+	{
+		if (ft_strchr(data->cmds->cmd[i], '*'))
+			find_files(data, data->cmds->cmd[i], fname);
+		++i;
+	}
 	closedir(data->dir);
-	// ft_token_print(data->wild);
+	ft_token_print(data->cmds->wild);
 }
