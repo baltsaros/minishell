@@ -31,16 +31,21 @@ static void	check_asterisk(t_input *data)
 
 	i = 0;
 	data->node_tmp = data->args;
-	while (data->node_tmp->next && data->node_tmp->type != ASTER)
-		data->node_tmp = data->node_tmp->next;
-	while (data->buf[i] && data->buf[i] != '*')
-		++i;
-	if (data->node_tmp->type == ASTER)
+	while (data->node_tmp)
 	{
-		if (data->buf[i - 1] && data->buf[i - 1] != ' ')
-			data->node_tmp->prev->type = WORD_AST;
-		if (data->buf[i + 1] && data->buf[i + 1] != ' ')
-			data->node_tmp->next->type = WORD_AST;
+		while (data->node_tmp->next && data->node_tmp->type != ASTER)
+			data->node_tmp = data->node_tmp->next;
+		while (data->buf[i] && data->buf[i] != '*')
+			++i;
+		if (data->node_tmp->type == ASTER)
+		{
+			if (data->buf[i - 1] && data->buf[i - 1] != ' ')
+				data->node_tmp->prev->type = WORD_AST;
+			if (data->buf[i + 1] && data->buf[i + 1] != ' ')
+				data->node_tmp->next->type = WORD_AST;
+		}
+		++i;
+		data->node_tmp = data->node_tmp->next;
 	}
 }
 
