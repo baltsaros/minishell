@@ -5,7 +5,6 @@ t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 	elem->cmd = init_cmd(args);
 	if (!elem->cmd)
 		return (NULL);
-
 	elem->len_cmd = get_len_cmd(elem->cmd);
 	while (args && args->type != PIPE)
 	{

@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/11 18:27:12 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/11 18:36:31 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,17 @@ int	get_size_cmd(t_node	*args)
 		|| args->type == DOLLAR || args->type == EQUAL 
 		|| args->type == QUOTE_D || args->type == QUOTE))
 	{
-		if (args->type == DOLLAR && (args->next && args->next->type == DOLLAR))
+		if (args->type == DOLLAR
+			&& (args->next && args->next->type == DOLLAR))
 		{
 			i++;
 			args = args->next;
 		}
-		else if (args->type == DOLLAR && ((args->next && args->next->type != QUOTE) || !args->next))
+		else if (args->type == DOLLAR
+			&& ((args->next && args->next->type != QUOTE) || !args->next))
 			i++;
-		else if (args->type != QUOTE_D && args->type != QUOTE && args->type != DOLLAR)
+		else if (args->type != QUOTE_D && args->type != QUOTE
+			&& args->type != DOLLAR)
 			i++;
 		args = args->next;
 	}
