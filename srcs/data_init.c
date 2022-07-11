@@ -69,11 +69,8 @@ void	envp_init(t_input *data, char *envp[])
 
 void	data_init(t_input *data)
 {
-	int	i;
-
 	if (!data->buf || !*data->buf)
 		return ;
-	i = 0;
 	data->status = 0;
 	data->in = 0;
 	data->out = 1;

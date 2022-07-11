@@ -1,22 +1,5 @@
 #include "../include/minishell.h"
 
-int	is_right_buf(char	*buf)
-{
-	int	i;
-
-	i = 0;
-	if (buf[0] == '\0')
-		return (1);
-	while (buf[i])
-	{
-		if (buf[i] != ' ' && buf[i] != '\t' && buf[i] != '\n'
-			&& buf[i] != '\v' && buf[i] != '\f' && buf[i] != '\r')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
 void	prompt(t_input *data)
 {
 	while (1)

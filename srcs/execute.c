@@ -98,6 +98,5 @@ int	execute(t_input *data)
 			g_pid = data->pid;
 		waitpid(data->pid, &data->status, 0);
 	}
-	// kill(data->pid, 15);
 	return (0);
 }
