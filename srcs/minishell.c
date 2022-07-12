@@ -6,7 +6,9 @@ void	prompt(t_input *data)
 	{
 		data->buf = readline("minishell$ ");
 		if (!data->buf)
+		{
 			yo_exit(data);
+		}
 		else if (is_right_buf(data->buf) != 1)
 		{
 			add_history(data->buf);
