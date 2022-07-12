@@ -21,9 +21,6 @@
 # include <stdbool.h>
 // # include "../libft/libft.h"
 
-// global var
-pid_t	g_pid;
-
 // enum for tokens
 enum e_tokens
 {
@@ -200,7 +197,7 @@ int		yo_exit(t_input *data);
 void	add_envp(t_input *data, char *type, char *value);
 
 //signals
-void	signal_handler(int signo, siginfo_t *info, void	*context);
+void	signal_handling(int	signo);
 
 // wildcard
 void	asterisks(t_input *data, t_cmd *cmds);
