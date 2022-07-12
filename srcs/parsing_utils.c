@@ -40,6 +40,8 @@ int	init_in(t_node *args, t_cmd *elem)
 {
 	if (args->type == REDIR_HD)
 	{
+		if (signal(SIGINT, SIG_IGN) == SIG_ERR || signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+			printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
 		args = args->next;
 		elem->delim = ft_strdup(args->value);
 		if (!elem->delim)

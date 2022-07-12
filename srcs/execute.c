@@ -21,7 +21,7 @@ int	check_builtin(t_input *data, t_cmd *cmds)
 
 void	ft_fork(char *argv[], t_input *data)
 {
-	int		fd[2];
+	int	fd[2];
 
 	error_check(pipe(fd), "In pipe ", 9);
 	data->pid = fork();
@@ -29,22 +29,23 @@ void	ft_fork(char *argv[], t_input *data)
 	if (data->pid == 0)
 	{
 		error_check(dup2(fd[1], STDOUT_FILENO), "In Dup2_ch ", 12);
-		close(data->cmds->in);
-		close(fd[0]);
 		if (check_builtin(data, data->cmds))
-			exit(data->status);
+			exit (data->status);
 		else
+		{
+			close(data->cmds->in);
+			close(fd[0]);
 			ft_execve(argv, data);
+		}
 	}
 	waitpid(data->pid, NULL, 0);
 	error_check(dup2(fd[0], STDIN_FILENO), "In Dup2_pr ", 12);
-	close(data->cmds->out);
 	close(fd[1]);
 }
 
 void	ft_heredoc(char *limiter, t_cmd *elem)
 {
-	char	*line;
+	char				*line;
 
 	elem->in = open("heredoc.tmp", O_RDWR | O_CREAT | O_APPEND, 0777);
 	error_check(elem->in, "In Open heredoc ", 17);
@@ -65,24 +66,28 @@ void	ft_heredoc(char *limiter, t_cmd *elem)
 	unlink("heredoc.tmp");
 }
 
-int	pipex(t_input *data, t_cmd *cmds)
+int	pipex(t_input *data)
 {
-	error_check(dup2(cmds->in, STDIN_FILENO), "In Dup2_in ", 12);
-	while (cmds->pipe == 1)
+	error_check(dup2(data->cmds->in, STDIN_FILENO), "In Dup2_inP ", 13);
+	while (data->cmds->pipe == 1)
 	{
-		ft_fork(cmds->cmd, data);
-		cmds = cmds->next;
+		ft_fork(data->cmds->cmd, data);
+		data->cmds = data->cmds->next;
 	}
-	error_check(dup2(cmds->out, STDOUT_FILENO), "In Dup2_out ", 13);
-	if (!check_builtin(data, cmds))
-		ft_execve(cmds->cmd, data);
-	close(cmds->in);
-	close(cmds->out);
+	error_check(dup2(data->cmds->out, STDOUT_FILENO), "In Dup2_outP ", 14);
+	if (check_builtin(data, data->cmds))
+		exit(data->status);
+	else
+		ft_execve(data->cmds->cmd, data);
+	close(data->cmds->in);
+	close(data->cmds->out);
 	return (0);
 }
 
 int	execute(t_input *data)
 {
+	if (signal(SIGINT, SIG_IGN) == SIG_ERR || signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+		printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
 	if (!data->buf || !*data->buf)
 		return (0);
 	if (data->cmds->pipe == 1 || !check_builtin(data, data->cmds))
@@ -90,14 +95,19 @@ int	execute(t_input *data)
 		data->pid = fork();
 		if (data->pid == 0)
 		{
+			if (signal(SIGINT, SIG_DFL) == SIG_ERR || signal(SIGQUIT, SIG_DFL) == SIG_ERR)
+			 	printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
 			if (data->cmds->pipe == 1)
-				pipex(data, data->cmds);
+				pipex(data);
 			else
+			{
+				error_check(dup2(data->cmds->in, STDIN_FILENO),
+					"In Dup2_in ", 12);
+				error_check(dup2(data->cmds->out, STDOUT_FILENO),
+					"In Dup2_out ", 13);
 				ft_execve(data->cmds->cmd, data);
+			}
 		}
-		else
-			g_pid = data->pid;
 		waitpid(data->pid, &data->status, 0);
-	}
-	return (0);
+	}	return (0);
 }

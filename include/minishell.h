@@ -21,9 +21,6 @@
 # include <stdbool.h>
 // # include "../libft/libft.h"
 
-// global var
-pid_t	g_pid;
-
 // enum for tokens
 enum e_tokens
 {
@@ -48,11 +45,6 @@ enum e_tokens
 	AMPER		= 38,	// &
 	APOST		= 44,	// `
 	BACKSL		= 92,	// '\'
-	// CMD			= 4,
-	FLAGS		= 5,
-	IN_FILE		= 6,
-	OUT_FILE	= 7,
-	ARG			= 8,
 	TRU			= 10,
 	FALS		= 11,
 	BRACES_L	= 123,	// {
@@ -180,7 +172,7 @@ void	data_init(t_input *data);
 void	create_token(t_input *data);
 
 // execute
-int		pipex(t_input *data, t_cmd *cmds);
+int		pipex(t_input *data);
 void	ft_heredoc(char *limiter, t_cmd *elem);
 void	ft_fork(char *argv[], t_input *data);
 int		execute(t_input *data);
@@ -205,7 +197,7 @@ int		yo_exit(t_input *data);
 void	add_envp(t_input *data, char *type, char *value);
 
 //signals
-void	signal_handler(int signo, siginfo_t *info, void	*context);
+void	signal_handling(int	signo);
 
 // wildcard
 void	asterisks(t_input *data);
