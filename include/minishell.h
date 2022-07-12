@@ -29,7 +29,8 @@ enum e_tokens
 {
 	DOLLAR		= 36,	// $
 	WORD		= 2,
-	WORD_AST	= 3,	// *
+	WORD_AST_B	= 3,	// *
+	WORD_AST	= 4,	// *
 	QUOTE		= 39,	// '
 	QUOTE_D		= 34,	// "
 	REDIR_OUT	= 62,	// >
@@ -47,7 +48,7 @@ enum e_tokens
 	AMPER		= 38,	// &
 	APOST		= 44,	// `
 	BACKSL		= 92,	// '\'
-	CMD			= 4,
+	// CMD			= 4,
 	FLAGS		= 5,
 	IN_FILE		= 6,
 	OUT_FILE	= 7,

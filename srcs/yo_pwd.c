@@ -12,6 +12,9 @@ int	yo_pwd(t_input *data)
 		perror("pwd");
 	}
 	else
-		write (data->cmds->out, ret, ft_strlen(ret));
+	{
+		write(data->cmds->out, ret, ft_strlen(ret));
+		write(data->cmds->out, "\n", 1);
+	}
 	return (0);
 }

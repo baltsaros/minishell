@@ -40,7 +40,7 @@ static void	check_asterisk(t_input *data)
 		if (data->node_tmp->type == ASTER)
 		{
 			if (data->buf[i - 1] && data->buf[i - 1] != ' ')
-				data->node_tmp->prev->type = WORD_AST;
+				data->node_tmp->prev->type = WORD_AST_B;
 			if (data->buf[i + 1] && data->buf[i + 1] != ' ')
 				data->node_tmp->next->type = WORD_AST;
 		}
