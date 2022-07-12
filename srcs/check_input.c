@@ -12,7 +12,7 @@ static int	read_after_pipe(char **buf, char *msg, char c)
 		if (!ft_strchr(tmp, c))
 		{
 			free(tmp);
-			break;
+			break ;
 		}
 		free(tmp);
 	}
@@ -31,7 +31,7 @@ static int	read_after(char **buf, char *msg, char c)
 		if (ft_strchr(tmp, c))
 		{
 			free(tmp);
-			break;
+			break ;
 		}
 		free(tmp);
 	}
@@ -58,7 +58,7 @@ int	check_field(char **buf, t_input *data)
 	}
 	if (quote && quote % 2 != 0)
 		read_after(buf, "quote>", '\'');
-	else if (quote_d &&quote_d % 2 != 0)
+	else if (quote_d && quote_d % 2 != 0)
 		read_after(buf, "dquote>", '\"');
 	if (tmp[data->i - 1] == '|')
 		read_after_pipe(buf, ">", '|');

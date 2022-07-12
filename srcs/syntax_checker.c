@@ -1,9 +1,9 @@
 #include "../include/minishell.h"
 
-int		is_the_next_is_word(t_node *args)
+int	is_the_next_is_word(t_node *args)
 {
 	t_node	*elem;
-	
+
 	elem = args;
 	if (elem->next->type != WORD)
 		return (1);
@@ -27,7 +27,7 @@ t_cmd	*print_syntax_error_cmd(t_node *args)
 	return (NULL);
 }
 
-int		print_syntax_error_bool(t_node *args)
+int	print_syntax_error_bool(t_node *args)
 {
 	if (!args->next)
 	{

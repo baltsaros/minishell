@@ -12,6 +12,8 @@ void	prompt(t_input *data)
 			add_history(data->buf);
 			check_field(&data->buf, data);
 			data_init(data);
+			// ft_envp_print(data->envp_n);
+			// ft_token_print(data->args);
 			// asterisks(data);
 			if (parsing(data) == 0)
 			{

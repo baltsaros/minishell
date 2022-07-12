@@ -2,8 +2,8 @@
 
 void	signal_handler(int signo, siginfo_t *info, void	*context)
 {
-	int status;
-	int status_wait;
+	int	status;
+	int	status_wait;
 
 	(void)info;
 	(void)context;

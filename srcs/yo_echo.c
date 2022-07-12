@@ -28,7 +28,6 @@ static void	echo_without_flag(t_cmd *com)
 
 int	yo_echo(t_input *data)
 {
-
 	if (!data->cmds->cmd[1])
 		write(data->cmds->out, "\n", 1);
 	else if (strncmp(data->cmds->cmd[1], "-n", 2) == 0)
