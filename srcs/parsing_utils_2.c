@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/12 16:16:26 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/12 16:55:47 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	get_size_cmd(t_node	*args)
 	int	i;
 
 	i = 0;
-	while (args && is_right_type(args) == 0)
+	while (args)
 	{
 		if (args->type == ASTER)
 			i++;
@@ -42,11 +42,18 @@ int	get_size_cmd(t_node	*args)
 		else if (args->type == DOLLAR
 			&& ((args->next && args->next->type != QUOTE) || !args->next))
 			i++;
-		else if (args->type != QUOTE_D && args->type != QUOTE
-			&& args->type != DOLLAR && args->type != WORD_AST)
+		else if (args->type == WORD && args->prev)
+		{
+			if (args->prev->type != REDIR_AP && args->prev->type != REDIR_HD)
+				i++;
+		}
+		else if (args->type == WORD)
 			i++;
 		args = args->next;
 	}
+
+	printf("I: %d\n", i);
+
 	return (i);
 }
 
@@ -128,7 +135,17 @@ char	**init_cmd(t_node	*args)
 					return (NULL);
 				i++;
 			}
-			else if (args->type != DOLLAR && args->type != WORD_AST && args->type != WORD_AST_B)
+			else if (args->type == WORD && args->prev)
+			{
+				if (args->prev->type != REDIR_AP && args->prev->type != REDIR_HD)
+				{
+					str[i] = ft_strdup(args->value);
+					if (!str[i])
+						return (NULL);
+					i++;
+				}
+			}
+			else if (args->type == WORD)
 			{
 				str[i] = ft_strdup(args->value);
 				if (!str[i])
