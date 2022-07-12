@@ -48,6 +48,8 @@ static int	check_amount(t_input *data)
 
 int	yo_exit(t_input *data)
 {
+	if (!data->buf)
+		exit(1);
 	ft_free_envp(data->envp_n);
 	ft_free_token(data->args);
 	ft_free(data->envp);
