@@ -48,11 +48,6 @@ enum e_tokens
 	AMPER		= 38,	// &
 	APOST		= 44,	// `
 	BACKSL		= 92,	// '\'
-	// CMD			= 4,
-	FLAGS		= 5,
-	IN_FILE		= 6,
-	OUT_FILE	= 7,
-	ARG			= 8,
 	TRU			= 10,
 	FALS		= 11,
 	BRACES_L	= 123,	// {

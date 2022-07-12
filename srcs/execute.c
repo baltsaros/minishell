@@ -1,13 +1,13 @@
 #include "../include/minishell.h"
 
-int	check_builtin(t_input *data, t_cmd *cmds)
+int	check_builtin(t_input *data, char **cmd)
 {
 	int	i;
 
 	i = 0;
 	while (i < 7)
 	{
-		if (ft_strncmp(cmds->cmd[0], data->builtins[i].name
+		if (ft_strncmp(cmd[0], data->builtins[i].name
 				, ft_strlen(data->builtins[i].name) + 1))
 			++i;
 		else
@@ -29,16 +29,21 @@ void	ft_fork(char *argv[], t_input *data)
 	if (data->pid == 0)
 	{
 		error_check(dup2(fd[1], STDOUT_FILENO), "In Dup2_ch ", 12);
-		close(data->cmds->in);
-		close(fd[0]);
-		if (check_builtin(data, data->cmds))
-			exit(data->status);
+		// close(data->cmds->in);
+		if (check_builtin(data, data->cmds->cmd))
+		{
+			error_check(dup2(fd[0], STDIN_FILENO), "In Dup2_pr ", 12);
+			exit (data->status);
+		}
 		else
+		{
+			close(data->cmds->in);
+			close(fd[0]);
 			ft_execve(argv, data);
+		}
 	}
 	waitpid(data->pid, NULL, 0);
 	error_check(dup2(fd[0], STDIN_FILENO), "In Dup2_pr ", 12);
-	close(data->cmds->out);
 	close(fd[1]);
 }
 
@@ -74,7 +79,7 @@ int	pipex(t_input *data, t_cmd *cmds)
 		cmds = cmds->next;
 	}
 	error_check(dup2(cmds->out, STDOUT_FILENO), "In Dup2_out ", 13);
-	if (!check_builtin(data, cmds))
+	if (!check_builtin(data, cmds->cmd))	
 		ft_execve(cmds->cmd, data);
 	close(cmds->in);
 	close(cmds->out);
@@ -85,7 +90,7 @@ int	execute(t_input *data)
 {
 	if (!data->buf || !*data->buf)
 		return (0);
-	if (data->cmds->pipe == 1 || !check_builtin(data, data->cmds))
+	if (data->cmds->pipe == 1 || !check_builtin(data, data->cmds->cmd))
 	{
 		data->pid = fork();
 		if (data->pid == 0)
@@ -93,7 +98,13 @@ int	execute(t_input *data)
 			if (data->cmds->pipe == 1)
 				pipex(data, data->cmds);
 			else
+			{
+				error_check(dup2(data->cmds->in, STDIN_FILENO),
+					"In Dup2_in ", 12);
+				error_check(dup2(data->cmds->out, STDOUT_FILENO),
+					"In Dup2_out ", 13);
 				ft_execve(data->cmds->cmd, data);
+			}
 		}
 		else
 			g_pid = data->pid;
