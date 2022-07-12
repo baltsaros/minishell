@@ -12,7 +12,8 @@ t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 	 		return (NULL);
 	 	if (args->next && args->next->type == PIPE)
 	 	{
-	 		if (!args->next->next || is_the_next_is_word(args->next) == 1)
+	 		if (!args->next->next) 
+			//|| is_the_next_is_word(args->next) == 1)
 	 			return (print_syntax_error_cmd(args->next));
 	 		elem->pipe = 1;
 	 	}

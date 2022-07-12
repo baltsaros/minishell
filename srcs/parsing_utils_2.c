@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/12 19:43:18 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/12 20:51:21 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ int	get_size_cmd(t_node	*args)
 				&& args->prev->type != REDIR_IN && args->prev->type != REDIR_OUT)
 				i++;
 		}
-		else if (args->type == WORD || args->type == AND || args->type == OR)
+		else if (args->type == WORD || args->type == AND
+			|| args->type == OR || args->type == EQUAL)
 			i++;
 		args = args->next;
 	}
@@ -135,7 +136,8 @@ char	**init_cmd(t_node	*args)
 					i++;
 				}
 			}
-			else if (args->type == WORD || args->type == AND || args->type == OR)
+			else if (args->type == WORD || args->type == AND
+				|| args->type == OR || args->type == EQUAL)
 			{
 				str[i] = ft_strdup(args->value);
 				if (!str[i])
@@ -153,14 +155,16 @@ int	redirection_check(t_node *args, t_cmd *elem)
 {
 	if (args->value[0] == '<')
 	{
-		if (!args->next || is_the_next_is_word(args) == 1)
+		if (!args->next)
+		//|| is_the_next_is_word(args) == 1)
 			return (print_syntax_error_bool(args));
 		if (init_in(args, elem) == 1)
 			return (1);
 	}
 	else if (args->value[0] == '>')
 	{
-		if (!args->next || is_the_next_is_word(args) == 1)
+		if (!args->next) 
+		//|| is_the_next_is_word(args) == 1)
 			return (print_syntax_error_bool(args));
 		if (init_out(args, elem) == 1)
 			return (1);
