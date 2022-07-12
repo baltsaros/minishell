@@ -22,7 +22,6 @@
 // # include "../libft/libft.h"
 
 // global var
-pid_t	g_pid;
 
 // enum for tokens
 enum e_tokens
