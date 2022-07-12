@@ -16,9 +16,9 @@ void	prompt(t_input *data)
 			ft_token_print(data->args);
 			if (parsing(data) == 0)
 			{
-				// asterisks(data);
+				//asterisks(data);
 				//execute(data);
-				ft_free_token(data->args);
+				//ft_free_token(data->args);
 				ft_free_cmd(data->cmds);
 			}
 			else
