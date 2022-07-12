@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/12 15:49:18 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/12 16:11:54 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int	get_size_cmd(t_node	*args)
 		|| args->type == DOLLAR || args->type == EQUAL 
 		|| args->type == QUOTE_D || args->type == QUOTE
 		|| args->type == WORD_AST || args->type == ASTER
-		|| args->type == WORD_AST_B))
+		|| args->type == WORD_AST_B || args->type == OR
+		|| args->type == AND))
 	{
 		if (args->type == ASTER)
 			i++;
