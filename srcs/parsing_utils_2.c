@@ -6,23 +6,11 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/12 19:07:36 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/12 19:43:18 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-int	is_right_type(t_node *args)
-{
-	if (args->type == WORD
-		|| args->type == DOLLAR || args->type == EQUAL 
-		|| args->type == QUOTE_D || args->type == QUOTE
-		|| args->type == WORD_AST || args->type == ASTER
-		|| args->type == WORD_AST_B || args->type == OR
-		|| args->type == AND)
-		return (0);
-	return (1);
-}
 
 int	get_size_cmd(t_node	*args)
 {
