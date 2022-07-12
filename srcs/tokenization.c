@@ -55,21 +55,23 @@ static void	check_dollar(t_input *data)
 
 	i = 0;
 	data->node_tmp = data->args;
-	while (data->node_tmp->next && data->node_tmp->type != DOLLAR)
+	while (data->node_tmp)
+	{
+		while (data->node_tmp->next && data->node_tmp->type != DOLLAR)
+			data->node_tmp = data->node_tmp->next;
+		while (data->buf[i] && data->buf[i] != '$')
+			++i;
+		if (data->buf[i + 1] && data->buf[i + 1] == ' ')
+			data->node_tmp->type = WORD;
+		if (data->node_tmp && data->node_tmp->next
+			&& data->node_tmp->type == DOLLAR)
+		{
+			if (data->buf[i + 1] && data->buf[i + 1] != ' '
+				&& data->buf[i + 1] != '\'')
+				data->node_tmp->next->type = DOLLAR;
+		}
 		data->node_tmp = data->node_tmp->next;
-	while (data->buf[i] && data->buf[i] != '$')
 		++i;
-	if (data->buf[i + 1] && data->buf[i + 1] == ' ')
-	{
-		data->node_tmp->type = WORD;
-		return ;
-	}
-	if (data->node_tmp && data->node_tmp->next
-		&& data->node_tmp->type == DOLLAR)
-	{
-		if (data->buf[i + 1] && data->buf[i + 1] != ' '
-			&& data->buf[i + 1] != '\'')
-			data->node_tmp->next->type = DOLLAR;
 	}
 }
 
