@@ -25,11 +25,12 @@
 pid_t	g_pid;
 
 // enum for tokens
-enum tokens
+enum e_tokens
 {
 	DOLLAR		= 36,	// $
 	WORD		= 2,
-	WORD_AST	= 3,	// *
+	WORD_AST_B	= 3,	// *
+	WORD_AST	= 4,	// *
 	QUOTE		= 39,	// '
 	QUOTE_D		= 34,	// "
 	REDIR_OUT	= 62,	// >
@@ -47,7 +48,7 @@ enum tokens
 	AMPER		= 38,	// &
 	APOST		= 44,	// `
 	BACKSL		= 92,	// '\'
-	CMD			= 4,
+	// CMD			= 4,
 	FLAGS		= 5,
 	IN_FILE		= 6,
 	OUT_FILE	= 7,
@@ -74,15 +75,15 @@ typedef struct s_cmd
 	char			**cmd;
 	int				len_cmd;
 	char			*delim;
- 	int				in;
+	int				in;
 	char			*in_arg;
- 	int				out;
+	int				out;
 	char			*out_arg;
 	int				pipe;
 	t_node			*wild;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
- }	t_cmd;
+}	t_cmd;
 
 // linked list for environmental variables
 typedef struct s_env
@@ -96,36 +97,35 @@ typedef struct s_env
 // global structure
 typedef struct s_input
 {
-	int				i;
-	int				j;
-	char			*tmp;
-	char			*type;
-	char			*value;
-	t_env			*envp_tmp;
-	t_node			*node_tmp;
-	int				argc;
-	int				in;
-	int				out;
-	char			**envp;
-	int				envp_len;
-	t_env			*envp_n;
-	t_node			*args;
-	t_cmd			*cmds;
-	char			*buf;
-	struct builtin	*builtins;
-	int				status;
-	DIR				*dir;
-	pid_t			pid;
-	char			**line;
+	int					i;
+	int					j;
+	char				*tmp;
+	char				*type;
+	char				*value;
+	t_env				*envp_tmp;
+	t_node				*node_tmp;
+	int					argc;
+	int					in;
+	int					out;
+	char				**envp;
+	int					envp_len;
+	t_env				*envp_n;
+	t_node				*args;
+	t_cmd				*cmds;
+	char				*buf;
+	struct s_builtin	*builtins;
+	int					status;
+	DIR					*dir;
+	pid_t				pid;
+	char				**line;
 }	t_input;
 
 // struct for builins functions
-struct builtin
+struct s_builtin
 {
 	char	*name;
 	int		(*func)(t_input *data);
 };
-
 
 // allocation check
 void	alloc_check(char **str);
@@ -152,6 +152,7 @@ void	ft_free(char *str[]);
 t_node	*ft_free_token(t_node *node);
 t_env	*ft_free_envp(t_env *node);
 void	ft_free_cmd(t_cmd *cmd);
+void	ft_free_node_elems(t_env *tmp);
 
 // utils
 char	*ft_strndup(char const *str, size_t size);
@@ -215,7 +216,7 @@ t_cmd	*print_syntax_error_cmd(t_node *args);
 int		print_syntax_error_bool(t_node *args);
 
 // parsing
-int	parsing(t_input *data);
+int		parsing(t_input *data);
 
 // parsing_utils
 t_node	*next_elem(t_node *args);
@@ -229,6 +230,6 @@ int		redirection_check(t_node *args, t_cmd *elem);
 char	**init_cmd(t_node	*args);
 
 // Readline functions
-void	rl_replace_line (const char *text, int clear_undo);
+void	rl_replace_line(const char *text, int clear_undo);
 
 #endif

@@ -1,6 +1,6 @@
 #include "../include/minishell.h"
 
-t_node *next_elem(t_node *args)
+t_node	*next_elem(t_node *args)
 {
 	t_node	*next_elem;
 
@@ -40,7 +40,7 @@ int	init_in(t_node *args, t_cmd *elem)
 {
 	if (args->type == REDIR_HD)
 	{
-		args =  args->next;
+		args = args->next;
 		elem->delim = ft_strdup(args->value);
 		if (!elem->delim)
 			return (1);

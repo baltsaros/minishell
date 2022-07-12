@@ -29,24 +29,24 @@ static void    check_asterisk(t_input *data)
 {
     int    i;
 
-    i = 0;
-    data->node_tmp = data->args;
-    while (data->node_tmp)
-    {
-        while (data->node_tmp->next && data->node_tmp->type != ASTER)
-            data->node_tmp = data->node_tmp->next;
-        while (data->buf[i] && data->buf[i] != '*')
-            ++i;
-        if (data->node_tmp->type == ASTER)
-        {
-            if (data->buf[i - 1] && data->buf[i - 1] != ' ')
-                data->node_tmp->prev->type = WORD_AST;
-            if (data->buf[i + 1] && data->buf[i + 1] != ' ')
-                data->node_tmp->next->type = WORD_AST;
-        }
-        ++i;
-        data->node_tmp = data->node_tmp->next;
-    }
+	i = 0;
+	data->node_tmp = data->args;
+	while (data->node_tmp)
+	{
+		while (data->node_tmp->next && data->node_tmp->type != ASTER)
+			data->node_tmp = data->node_tmp->next;
+		while (data->buf[i] && data->buf[i] != '*')
+			++i;
+		if (data->node_tmp->type == ASTER)
+		{
+			if (data->buf[i - 1] && data->buf[i - 1] != ' ')
+				data->node_tmp->prev->type = WORD_AST_B;
+			if (data->buf[i + 1] && data->buf[i + 1] != ' ')
+				data->node_tmp->next->type = WORD_AST;
+		}
+		++i;
+		data->node_tmp = data->node_tmp->next;
+	}
 }
 
 static void	check_dollar(t_input *data)
@@ -55,21 +55,23 @@ static void	check_dollar(t_input *data)
 
 	i = 0;
 	data->node_tmp = data->args;
-	while (data->node_tmp->next && data->node_tmp->type != DOLLAR)
+	while (data->node_tmp)
+	{
+		while (data->node_tmp->next && data->node_tmp->type != DOLLAR)
+			data->node_tmp = data->node_tmp->next;
+		while (data->buf[i] && data->buf[i] != '$')
+			++i;
+		if (data->buf[i + 1] && data->buf[i + 1] == ' ')
+			data->node_tmp->type = WORD;
+		if (data->node_tmp && data->node_tmp->next
+			&& data->node_tmp->type == DOLLAR)
+		{
+			if (data->buf[i + 1] && data->buf[i + 1] != ' '
+				&& data->buf[i + 1] != '\'')
+				data->node_tmp->next->type = DOLLAR;
+		}
 		data->node_tmp = data->node_tmp->next;
-	while (data->buf[i] && data->buf[i] != '$')
 		++i;
-	if (data->buf[i + 1] && data->buf[i + 1] == ' ')
-	{
-		data->node_tmp->type = WORD;
-		return ;
-	}
-	if (data->node_tmp && data->node_tmp->next
-		&& data->node_tmp->type == DOLLAR)
-	{
-		if (data->buf[i + 1] && data->buf[i + 1] != ' '
-			&& data->buf[i + 1] != '\'')
-			data->node_tmp->next->type = DOLLAR;
 	}
 }
 

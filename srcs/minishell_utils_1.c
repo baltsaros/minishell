@@ -82,7 +82,6 @@ int	check_charset(char c, char *charset)
 	unsigned int	i;
 
 	i = 0;
-	
 	if (!charset)
 		return (0);
 	while (charset[i])

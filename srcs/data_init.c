@@ -29,7 +29,7 @@ static void	copy_envp(t_input *data, char *envp[])
 	int	size;
 
 	size = 0;
-	while(envp[size])
+	while (envp[size])
 		++size;
 	data->envp = (char **)malloc(sizeof(*data->envp) * (size + 1));
 	alloc_check(data->envp);
@@ -44,16 +44,15 @@ static void	copy_envp(t_input *data, char *envp[])
 
 void	envp_init(t_input *data, char *envp[])
 {
-	static struct builtin builtins[] =
-	{
-		{"pwd", &yo_pwd},
-		{"cd", &yo_cd},
-		{"echo", &yo_echo},
-		{"export", &yo_export},
-		{"env", &yo_env},
-		{"unset", &yo_unset},
-		{"exit", &yo_exit}
-	};
+	static struct s_builtin	builtins[] = {
+	{"pwd", &yo_pwd},
+	{"cd", &yo_cd},
+	{"echo", &yo_echo},
+	{"export", &yo_export},
+	{"env", &yo_env},
+	{"unset", &yo_unset},
+	{"exit", &yo_exit}};
+
 	copy_envp(data, envp);
 	data->envp_n = NULL;
 	data->type = NULL;
@@ -65,7 +64,6 @@ void	envp_init(t_input *data, char *envp[])
 	data->node_tmp = NULL;
 	data->builtins = builtins;
 	create_envp(data, data->envp);
-	// ft_envp_print(data->envp_n);
 }
 
 void	data_init(t_input *data)
@@ -78,5 +76,4 @@ void	data_init(t_input *data)
 	data->args = NULL;
 	create_token(data);
 	data->argc = ft_token_size(data->args);
-	ft_token_print(data->args);
 }

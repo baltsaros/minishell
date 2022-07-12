@@ -56,3 +56,11 @@ void	ft_free_cmd(t_cmd *cmd)
 		cmd = tmp;
 	}
 }
+
+void	ft_free_node_elems(t_env *tmp)
+{
+	free(tmp->type);
+	if (tmp->value)
+		free(tmp->value);
+	free(tmp);
+}

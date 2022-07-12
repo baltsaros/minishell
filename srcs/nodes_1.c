@@ -15,8 +15,8 @@ t_node	*ft_token_new(int type, char *value)
 
 void	ft_token_back(t_node **node, t_node *new)
 {
-	t_node *tmp;
-	
+	t_node	*tmp;
+
 	tmp = NULL;
 	if (!node || !new)
 		return ;

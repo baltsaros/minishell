@@ -1,11 +1,10 @@
 #include "../include/minishell.h"
 
-
 static int	check_duplicate(t_input *data, char *type, char *value)
 {
 	data->envp_tmp = data->envp_n;
-	while (data->envp_tmp && ft_strncmp(data->envp_tmp->type, type
-		, ft_strlen(type) + 1))
+	while (data->envp_tmp && ft_strncmp(data->envp_tmp->type,
+			type, ft_strlen(type) + 1))
 		data->envp_tmp = data->envp_tmp->next;
 	if (!data->envp_tmp)
 		return (0);

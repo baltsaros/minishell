@@ -59,7 +59,7 @@ char	**get_address(char *cmd[], char *envp[])
 	i = 0;
 	while (ft_strncmp("PATH=", envp[i], 5))
 		++i;
-	envp[i] = ft_strjoin(envp[i], ":.");
+	envp[i] = ft_strjoin_free(envp[i], ":.");
 	env = ft_split(envp[i] + 5, ':');
 	alloc_check(env);
 	i = 0;
