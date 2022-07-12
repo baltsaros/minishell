@@ -204,7 +204,7 @@ void	add_envp(t_input *data, char *type, char *value);
 void	signal_handler(int signo, siginfo_t *info, void	*context);
 
 // wildcard
-void	asterisks(t_input *data);
+void	asterisks(t_input *data, t_cmd *cmds);
 
 //syntax checker
 int		is_the_next_is_word(t_node *args);

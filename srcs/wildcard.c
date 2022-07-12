@@ -60,7 +60,7 @@ static void	find_files(t_input *data, char *str, struct dirent *fname)
 		find_files_some(data, fname, before, after);
 }
 
-void	asterisks(t_input *data)
+void	asterisks(t_input *data, t_cmd *cmds)
 {
 	struct dirent	*fname;
 	size_t			i;
@@ -74,12 +74,12 @@ void	asterisks(t_input *data)
 	}
 	i = 0;
 	fname = readdir(data->dir);
-	while (data->cmds->cmd[i])
+	while (cmds->cmd[i])
 	{
-		if (ft_strchr(data->cmds->cmd[i], '*'))
-			find_files(data, data->cmds->cmd[i], fname);
+		if (ft_strchr(cmds->cmd[i], '*'))
+			find_files(data, cmds->cmd[i], fname);
 		++i;
 	}
 	closedir(data->dir);
-	ft_token_print(data->cmds->wild);
+	ft_token_print(cmds->wild);
 }
