@@ -25,6 +25,24 @@ static size_t	check_str(char const *s, char *charset)
 	return (n);
 }
 
+static void	find_end(char const *s, size_t *start, size_t *end, char *charset)
+{
+	while (s[*start + *end] && check_charset(s[*start + *end], charset))
+		++start;
+	while (s[*start + *end] && !check_charset(s[*start + *end], charset)
+		&& s[*start + *end] != '"' && s[*start + *end] != '\'')
+		++(*end);
+	if (s[*start + *end] && (s[*start + *end] == '"'
+			|| s[*start + *end] == '\''))
+	{
+		++(*end);
+		while (s[*start + *end] && s[*start + *end] != '"'
+			&& s[*start + *end] != '\'')
+			++(*end);
+		++(*end);
+	}
+}
+
 static char	**ft_create_str(char **spl, char const *s, int i, char *charset)
 {
 	size_t	start;
@@ -34,17 +52,7 @@ static char	**ft_create_str(char **spl, char const *s, int i, char *charset)
 	while (s[start])
 	{
 		end = 0;
-		while (s[start + end] && check_charset(s[start + end], charset))
-			++start;
-		while (s[start + end] && !check_charset(s[start + end], charset) && s[start + end] != '"' && s[start + end] != '\'')
-			++end;
-		if (s[start + end] && (s[start + end] == '"' || s[start + end] == '\''))
-		{
-			++end;
-			while (s[start + end] && s[start + end] != '"' && s[start + end] != '\'')
-				++end;
-			++end;
-		}
+		find_end(s, &start, &end, charset);
 		if (end > 0)
 		{
 			spl[i] = ft_strndup(s + start, end);

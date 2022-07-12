@@ -7,12 +7,6 @@ void	alloc_check(char **str)
 		write(2, "Allocation failed\n", 18);
 		exit(1);
 	}
-	if ((!str[0]))
-	{
-		write(2, "Invalid arg\n", 12);
-		ft_free(str);
-		exit(1);
-	}
 }
 
 void	alloc_check_small(void *str)

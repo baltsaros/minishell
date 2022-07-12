@@ -8,7 +8,7 @@ int	check_builtin(t_input *data, t_cmd *cmds)
 	while (i < 7)
 	{
 		if (ft_strncmp(cmds->cmd[0], data->builtins[i].name
-			, ft_strlen(data->builtins[i].name) + 1))
+				, ft_strlen(data->builtins[i].name) + 1))
 			++i;
 		else
 		{
@@ -22,23 +22,23 @@ int	check_builtin(t_input *data, t_cmd *cmds)
 void	ft_fork(char *argv[], t_input *data)
 {
 	int		fd[2];
-	int		pid;
 
 	error_check(pipe(fd), "In pipe ", 9);
-	pid = fork();
-	error_check(pid, "In fork ", 9);
-	if (pid == 0)
+	data->pid = fork();
+	error_check(data->pid, "In fork ", 9);
+	if (data->pid == 0)
 	{
 		error_check(dup2(fd[1], STDOUT_FILENO), "In Dup2_ch ", 12);
-		// close(data->cmds->in);
+		close(data->cmds->in);
 		close(fd[0]);
 		if (check_builtin(data, data->cmds))
 			exit(data->status);
 		else
 			ft_execve(argv, data);
 	}
-	waitpid(pid, NULL, 0);
+	waitpid(data->pid, NULL, 0);
 	error_check(dup2(fd[0], STDIN_FILENO), "In Dup2_pr ", 12);
+	close(data->cmds->out);
 	close(fd[1]);
 }
 
@@ -50,8 +50,8 @@ void	ft_heredoc(char *limiter, t_cmd *elem)
 	error_check(elem->in, "In Open heredoc ", 17);
 	while (get_next_line_hd(&line))
 	{
-		if (ft_strncmp(limiter, line, ft_strlen(limiter)) == 0 &&
-			ft_strlen(limiter) == (ft_strlen(line) - 1))
+		if (ft_strncmp(limiter, line, ft_strlen(limiter)) == 0
+			&& ft_strlen(limiter) == (ft_strlen(line) - 1))
 		{
 			free(line);
 			break ;
@@ -83,22 +83,21 @@ int	pipex(t_input *data, t_cmd *cmds)
 
 int	execute(t_input *data)
 {
-	int	pid;
-
-	pid = 0;
 	if (!data->buf || !*data->buf)
 		return (0);
 	if (data->cmds->pipe == 1 || !check_builtin(data, data->cmds))
 	{
-		pid = fork();
-		if (pid == 0)
+		data->pid = fork();
+		if (data->pid == 0)
 		{
 			if (data->cmds->pipe == 1)
 				pipex(data, data->cmds);
 			else
 				ft_execve(data->cmds->cmd, data);
 		}
-		waitpid(pid, &data->status, 0);
+		else
+			g_pid = data->pid;
+		waitpid(data->pid, &data->status, 0);
 	}
 	return (0);
 }

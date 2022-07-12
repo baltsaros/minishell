@@ -15,8 +15,8 @@ t_env	*ft_envp_new(char *type, char *value)
 
 void	ft_envp_back(t_env **node, t_env *new)
 {
-	t_env *tmp;
-	
+	t_env	*tmp;
+
 	tmp = NULL;
 	if (!node || !new)
 		return ;
@@ -56,9 +56,7 @@ t_env	*ft_envp_del(t_env *node)
 		node = node->next;
 		node->prev = NULL;
 	}
-	free(tmp->type);
-	free(tmp->value);
-	free(tmp);
+	ft_free_node_elems(tmp);
 	return (node);
 }
 
