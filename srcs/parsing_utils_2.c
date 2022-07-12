@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/12 16:55:47 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/12 16:57:59 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ int	get_size_cmd(t_node	*args)
 			i++;
 		else if (args->type == WORD && args->prev)
 		{
-			if (args->prev->type != REDIR_AP && args->prev->type != REDIR_HD)
+			if (args->prev->type != REDIR_AP && args->prev->type != REDIR_HD
+				&& args->prev->type != REDIR_IN && args->prev->type != REDIR_OUT)
 				i++;
 		}
 		else if (args->type == WORD)
@@ -137,7 +138,8 @@ char	**init_cmd(t_node	*args)
 			}
 			else if (args->type == WORD && args->prev)
 			{
-				if (args->prev->type != REDIR_AP && args->prev->type != REDIR_HD)
+				if (args->prev->type != REDIR_AP && args->prev->type != REDIR_HD
+					&& args->prev->type != REDIR_IN && args->prev->type != REDIR_OUT)
 				{
 					str[i] = ft_strdup(args->value);
 					if (!str[i])
