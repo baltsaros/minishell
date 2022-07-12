@@ -6,70 +6,114 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/07 16:14:50 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/12 11:33:14 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-char    *str_other(char  *str, t_node *args)
+int	get_size_cmd(t_node	*args)
 {
-	if (args->next)
+	int	i;
+
+	i = 0;
+	while (args && (args->type == WORD
+		|| args->type == DOLLAR || args->type == EQUAL 
+		|| args->type == QUOTE_D || args->type == QUOTE
+		|| args->type == WORD_AST || args->type == ASTER
+		|| args->type == WORD_AST_B))
 	{
-		args = args->next;
-		if (args->type == WORD)
+		if (args->type == ASTER)
+			i++;
+		else if (args->type == DOLLAR
+			&& (args->next && args->next->type == DOLLAR))
 		{
-			str = ft_strjoin_free(str, getenv(args->value));
-			if (!str)
-				return (NULL);
-			str = ft_strjoin_free(str, " ");
-			if (!str)
-				return (NULL);
+			i++;
+			args = args->next;
 		}
+		else if (args->type == DOLLAR
+			&& ((args->next && args->next->type != QUOTE) || !args->next))
+			i++;
+		else if (args->type != QUOTE_D && args->type != QUOTE
+			&& args->type != DOLLAR && args->type != WORD_AST)
+			i++;
+		args = args->next;
 	}
-	else
-		return (NULL);
-    return (str);
+	return (i);
 }
 
-char    *str_word(char *str, t_node *args)
-{
-    str = ft_strjoin_free(str, args->value);
-	if (!str)
-        return (NULL);
-	str = ft_strjoin_free(str, " ");
-	if (!str)
-		return (NULL);
-    return (str);
-}
-
-char	*get_args(t_node	*args)
+char	*get_env_variable(char *arg)
 {
 	char	*str;
 
-	str = ft_strdup("");
+	str = getenv(arg);
 	if (!str)
 		return (NULL);
-	while (args && (args->type == WORD || args->type == DOLLAR || args->type == QUOTE_D || args->type == EQUAL))
+	return (str);
+}
+
+char	**init_cmd(t_node	*args)
+{
+	int		size;
+	int		i;
+	char	**str;
+	
+	size = get_size_cmd(args);
+	i = 0;
+	str = (char	**) malloc ((size + 1) * sizeof(char *));
+	if (!str)
+		return (NULL);
+	while (args && i != size)
 	{
-		if (args->type == DOLLAR)
+		if (args->type != QUOTE_D && args->type != QUOTE)
 		{
-            str = str_other(str, args);
-            if (!str)
-                return (NULL);
-			args = args->next;
+			if (args->type == ASTER)
+			{
+				str[i] = ft_strdup("");
+				if (!str[i])
+					return (NULL);
+				if (args->prev && args->prev->type == WORD_AST_B)
+				{
+					str[i] = ft_strjoin_free(str[i], args->prev->value);
+					if (!str[i])
+						return (NULL);
+				}
+				str[i] = ft_strjoin_free(str[i], args->value);
+				if (!str[i])
+					return (NULL);
+				if (args->next && args->next->type == WORD_AST)
+				{
+					args = args->next;
+					str[i] = ft_strjoin_free(str[i], args->value);
+					if (!str[i])
+						return (NULL);
+				}
+				i++;
+			}
+			else if (args->type == DOLLAR && (args->next && args->next->type == DOLLAR))
+			{
+				args = args->next;
+				str[i] = get_env_variable(args->value);
+				i++;
+			}
+			else if (args->type == DOLLAR && ((args->next && args->next->type != QUOTE) || !args->next))
+			{
+				str[i] = ft_strdup(args->value);
+				if (!str[i])
+					return (NULL);
+				i++;
+			}
+			else if (args->type != DOLLAR && args->type != WORD_AST && args->type != WORD_AST_B)
+			{
+				str[i] = ft_strdup(args->value);
+				if (!str[i])
+					return (NULL);
+				i++;
+			}
 		}
-		else if (args->type != QUOTE_D)
-		{
-			str = str_word(str, args);
-            if (!str)
-                return (NULL);
-		}
-		if (args->next)
-			args = args->next;
-		else
-			break ;
+		args = args->next;
 	}
+	str[i] = NULL;
 	return (str);
 }
 
