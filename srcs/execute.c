@@ -1,13 +1,13 @@
 #include "../include/minishell.h"
 
-int	check_builtin(t_input *data, char **cmd)
+int	check_builtin(t_input *data, t_cmd *cmds)
 {
 	int	i;
 
 	i = 0;
 	while (i < 7)
 	{
-		if (ft_strncmp(cmd[0], data->builtins[i].name
+		if (ft_strncmp(cmds->cmd[0], data->builtins[i].name
 				, ft_strlen(data->builtins[i].name) + 1))
 			++i;
 		else
@@ -21,7 +21,7 @@ int	check_builtin(t_input *data, char **cmd)
 
 void	ft_fork(char *argv[], t_input *data)
 {
-	int		fd[2];
+	int	fd[2];
 
 	error_check(pipe(fd), "In pipe ", 9);
 	data->pid = fork();
@@ -29,12 +29,8 @@ void	ft_fork(char *argv[], t_input *data)
 	if (data->pid == 0)
 	{
 		error_check(dup2(fd[1], STDOUT_FILENO), "In Dup2_ch ", 12);
-		// close(data->cmds->in);
-		if (check_builtin(data, data->cmds->cmd))
-		{
-			error_check(dup2(fd[0], STDIN_FILENO), "In Dup2_pr ", 12);
+		if (check_builtin(data, data->cmds))
 			exit (data->status);
-		}
 		else
 		{
 			close(data->cmds->in);
@@ -70,19 +66,21 @@ void	ft_heredoc(char *limiter, t_cmd *elem)
 	unlink("heredoc.tmp");
 }
 
-int	pipex(t_input *data, t_cmd *cmds)
+int	pipex(t_input *data)
 {
-	error_check(dup2(cmds->in, STDIN_FILENO), "In Dup2_in ", 12);
-	while (cmds->pipe == 1)
+	error_check(dup2(data->cmds->in, STDIN_FILENO), "In Dup2_inP ", 13);
+	while (data->cmds->pipe == 1)
 	{
-		ft_fork(cmds->cmd, data);
-		cmds = cmds->next;
+		ft_fork(data->cmds->cmd, data);
+		data->cmds = data->cmds->next;
 	}
-	error_check(dup2(cmds->out, STDOUT_FILENO), "In Dup2_out ", 13);
-	if (!check_builtin(data, cmds->cmd))	
-		ft_execve(cmds->cmd, data);
-	close(cmds->in);
-	close(cmds->out);
+	error_check(dup2(data->cmds->out, STDOUT_FILENO), "In Dup2_outP ", 14);
+	if (check_builtin(data, data->cmds))
+		exit(data->status);
+	else
+		ft_execve(data->cmds->cmd, data);
+	close(data->cmds->in);
+	close(data->cmds->out);
 	return (0);
 }
 
@@ -90,13 +88,13 @@ int	execute(t_input *data)
 {
 	if (!data->buf || !*data->buf)
 		return (0);
-	if (data->cmds->pipe == 1 || !check_builtin(data, data->cmds->cmd))
+	if (data->cmds->pipe == 1 || !check_builtin(data, data->cmds))
 	{
 		data->pid = fork();
 		if (data->pid == 0)
 		{
 			if (data->cmds->pipe == 1)
-				pipex(data, data->cmds);
+				pipex(data);
 			else
 			{
 				error_check(dup2(data->cmds->in, STDIN_FILENO),

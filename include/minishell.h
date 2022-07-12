@@ -176,7 +176,7 @@ void	data_init(t_input *data);
 void	create_token(t_input *data);
 
 // execute
-int		pipex(t_input *data, t_cmd *cmds);
+int		pipex(t_input *data);
 void	ft_heredoc(char *limiter, t_cmd *elem);
 void	ft_fork(char *argv[], t_input *data);
 int		execute(t_input *data);
