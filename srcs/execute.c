@@ -81,6 +81,12 @@ int	pipex(t_input *data, t_cmd *cmds)
 	return (0);
 }
 
+void	my_handler(int signo)
+{
+	printf("Hee hee\n");
+	//kill(0, signo);
+}
+
 int	execute(t_input *data)
 {
 	if (signal(SIGINT, SIG_IGN) == SIG_ERR || signal(SIGQUIT, SIG_IGN) == SIG_ERR)
@@ -92,8 +98,9 @@ int	execute(t_input *data)
 		data->pid = fork();
 		if (data->pid == 0)
 		{
-			if (signal(SIGINT, SIG_DFL) == SIG_ERR || signal(SIGQUIT, SIG_DFL) == SIG_ERR)
-				printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
+			// if (signal(SIGINT, SIG_DFL) == SIG_ERR || signal(SIGQUIT, SIG_DFL) == SIG_ERR)
+			// 	printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
+			signal(SIGINT, my_handler);
 			if (data->cmds->pipe == 1)
 				pipex(data, data->cmds);
 			else
@@ -101,5 +108,6 @@ int	execute(t_input *data)
 		}
 		waitpid(data->pid, &data->status, 0);
 	}
+	//write(1, "\n", 1);
 	return (0);
 }
