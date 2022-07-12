@@ -205,6 +205,7 @@ void	add_envp(t_input *data, char *type, char *value);
 
 //signals
 void	signal_handler(int signo, siginfo_t *info, void	*context);
+void	signal_handler_heredoc(int signo, siginfo_t *info, void	*context);
 
 // wildcard
 void	asterisks(t_input *data);
