@@ -81,19 +81,9 @@ int	pipex(t_input *data, t_cmd *cmds)
 	return (0);
 }
 
-void	sig_test(int signo)
-{
-	(void)signo;
-	write(1, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-}
-
 int	execute(t_input *data)
 {
-	if (signal(SIGINT, SIG_IGN) == SIG_ERR
-		|| signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+	if (signal(SIGINT, SIG_IGN) == SIG_ERR || signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 		printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
 	if (!data->buf || !*data->buf)
 		return (0);
@@ -102,10 +92,7 @@ int	execute(t_input *data)
 		data->pid = fork();
 		if (data->pid == 0)
 		{
-			if (signal(SIGINT, SIG_DFL) != SIG_ERR
-				&& signal(SIGQUIT, SIG_DFL) != SIG_ERR)
-				write(1, "\n", 1);
-			else
+			if (signal(SIGINT, SIG_DFL) == SIG_ERR || signal(SIGQUIT, SIG_DFL) == SIG_ERR)
 				printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
 			if (data->cmds->pipe == 1)
 				pipex(data, data->cmds);
