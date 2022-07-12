@@ -35,7 +35,7 @@ void	prompt(t_input *data)
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	t_input 			data;
+	t_input	data;
 	
 	(void)argv;
 	if (argc != 1)

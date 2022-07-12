@@ -5,6 +5,8 @@ static void	show_rvalue(char **str, int status)
 	if (!ft_strncmp(*str, "$?", 3))
 	{
 		free(*str);
+		if (status > 128)
+			status = (status >> 8) & 0xff;
 		*str = ft_itoa(status);
 	}
 }

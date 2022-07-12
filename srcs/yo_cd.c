@@ -8,7 +8,7 @@ int	yo_cd(t_input *data)
 	{
 		data->status = 1;
 		perror("cd");
-		return (g_status);
+		return (data->status);
 	}
-	return (g_status);
+	return (0);
 }

@@ -96,9 +96,7 @@ char	*access_check(char *cmd[], t_input *data)
 	{
 		write(2, "command not found\n", 19);
 		ft_free(env);
-		ft_free(cmd);
 		data->status = 127;
-		printf("ds - %d\n",data->status);
 		exit(data->status);
 	}
 	ret = ft_strdup(env[i]);
@@ -123,7 +121,6 @@ void	ft_execve(char **argv, t_input *data)
 	if (execve(path, argv, data->envp) < 0)
 	{
 		perror("Execve error");
-		ft_free(argv);
 		free(path);
 		data->status = 127;
 		exit(data->status);

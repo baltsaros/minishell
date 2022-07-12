@@ -65,8 +65,8 @@ int	parsing(t_input *data)
 	if (!data->cmds)
 		return (1);
 	
-	t_cmd	*tmp;
-	tmp = data->cmds;
+	// t_cmd	*tmp;
+	// tmp = data->cmds;
 	// while (data->cmds)
 	// {
 	// 	for (int i = 0; tmp->cmd[i]; i++)

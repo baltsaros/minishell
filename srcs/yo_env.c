@@ -11,7 +11,7 @@ int	yo_env(t_input *data)
 		write(2, "env: ", 5);
 		write(2, data->cmds->cmd[1], ft_strlen(data->cmds->cmd[1]));
 		write(2, ": No such file or directory\n", 28);
-		return (g_status);
+		return (data->status);
 	}
 	data->i = 0;
 	while (tmp && data->i < data->envp_len)
