@@ -98,7 +98,7 @@ int	execute(t_input *data)
 			if (signal(SIGINT, SIG_DFL) == SIG_ERR || signal(SIGQUIT, SIG_DFL) == SIG_ERR)
 			 	printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
 			if (data->cmds->pipe == 1)
-				pipex(data);
+				data->status = pipex(data);
 			else
 			{
 				error_check(dup2(data->cmds->in, STDIN_FILENO),

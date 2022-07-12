@@ -2,6 +2,7 @@
 
 void	prompt(t_input *data)
 {
+	data->status = 0;
 	while (1)
 	{
 		if (signal(SIGINT, signal_handling) == SIG_ERR

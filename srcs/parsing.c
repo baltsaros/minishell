@@ -64,19 +64,22 @@ int	parsing(t_input *data)
 	data->cmds = parse_cmd(data);
 	if (!data->cmds)
 		return (1);
+	
+	t_cmd	*tmp;
+	tmp = data->cmds;
 	// while (data->cmds)
 	// {
-	// 	for (int i = 0; data->cmds->cmd[i]; i++)
-	// 		printf("cmd[%d]: %s\n", i, data->cmds->cmd[i]);
-	// 	printf("len_cmd: %d\n", data->cmds->len_cmd);
-	// 	printf("delim: %s\n", data->cmds->delim);
-	// 	printf("in: %d\n", data->cmds->in);
-	// 	printf("in arg: %s\n", data->cmds->in_arg);
-	// 	printf("out: %d\n", data->cmds->out);
-	// 	printf("out arg: %s\n", data->cmds->out_arg);
-	// 	printf("pipe: %d\n", data->cmds->pipe);
+	// 	for (int i = 0; tmp->cmd[i]; i++)
+	// 		printf("cmd[%d]: %s\n", i, tmp->cmd[i]);
+	// 	printf("len_cmd: %d\n", tmp->len_cmd);
+	// 	printf("delim: %s\n", tmp->delim);
+	// 	printf("in: %d\n", tmp->in);
+	// 	printf("in arg: %s\n", tmp->in_arg);
+	// 	printf("out: %d\n", tmp->out);
+	// 	printf("out arg: %s\n", tmp->out_arg);
+	// 	printf("pipe: %d\n", tmp->pipe);
 	// 	printf("[NEXT]\n");
-	// 	data->cmds = data->cmds->next;
+	// 	tmp = tmp->next;
 	// }
 	return (0);
 }

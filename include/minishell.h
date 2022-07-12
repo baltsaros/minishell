@@ -21,6 +21,9 @@
 # include <stdbool.h>
 // # include "../libft/libft.h"
 
+// global var
+int	g_status;
+
 // enum for tokens
 enum e_tokens
 {
@@ -86,7 +89,7 @@ typedef struct s_env
 	struct s_env	*prev;
 }	t_env;
 
-// global structure
+// main structure
 typedef struct s_input
 {
 	int					i;
@@ -181,7 +184,7 @@ int		execute(t_input *data);
 char	*ft_strjoin_free(char *rest, char *buf);
 char	*ft_charjoin_free(char *line, char b);
 char	**get_address(char *cmd[], char *envp[]);
-char	*access_check(char *cmd[], char *envp[]);
+char	*access_check(char *cmd[], t_input *data);
 void	ft_execve(char *argv[], t_input *data);
 
 // builtins
