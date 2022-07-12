@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/12 11:29:11 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/12 11:33:14 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ int	get_size_cmd(t_node	*args)
 	while (args && (args->type == WORD
 		|| args->type == DOLLAR || args->type == EQUAL 
 		|| args->type == QUOTE_D || args->type == QUOTE
-		|| args->type == WORD_AST || args->type == ASTER))
+		|| args->type == WORD_AST || args->type == ASTER
+		|| args->type == WORD_AST_B))
 	{
 		if (args->type == ASTER)
 			i++;
@@ -71,7 +72,7 @@ char	**init_cmd(t_node	*args)
 				str[i] = ft_strdup("");
 				if (!str[i])
 					return (NULL);
-				if (args->prev && args->prev->type == WORD_AST)
+				if (args->prev && args->prev->type == WORD_AST_B)
 				{
 					str[i] = ft_strjoin_free(str[i], args->prev->value);
 					if (!str[i])
@@ -102,7 +103,7 @@ char	**init_cmd(t_node	*args)
 					return (NULL);
 				i++;
 			}
-			else if (args->type != DOLLAR && args->type != WORD_AST)
+			else if (args->type != DOLLAR && args->type != WORD_AST && args->type != WORD_AST_B)
 			{
 				str[i] = ft_strdup(args->value);
 				if (!str[i])
