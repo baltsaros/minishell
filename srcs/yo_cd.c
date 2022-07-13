@@ -6,8 +6,8 @@ int	yo_cd(t_input *data)
 		return (0);
 	else if (chdir(data->cmds->cmd[1]))
 	{
-		data->status = 1;
 		perror("cd");
+		data->status = errno;
 		return (data->status);
 	}
 	return (0);

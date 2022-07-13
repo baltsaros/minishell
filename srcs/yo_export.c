@@ -3,8 +3,7 @@
 static int	check_duplicate(t_input *data, char *type, char *value)
 {
 	data->envp_tmp = data->envp_n;
-	while (data->envp_tmp && ft_strncmp(data->envp_tmp->type,
-			type, ft_strlen(type) + 1))
+	while (data->envp_tmp && ft_strcmp(data->envp_tmp->type, type))
 		data->envp_tmp = data->envp_tmp->next;
 	if (!data->envp_tmp)
 		return (0);
@@ -55,6 +54,7 @@ int	yo_export(t_input *data)
 {
 	int	i;
 
+	data->status = 0;
 	if (data->cmds->len_cmd == 1)
 	{
 		print_envp(data->envp_n);

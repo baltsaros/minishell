@@ -7,7 +7,8 @@ int	get_next_line_hd(char **line)
 
 	*line = ft_calloc(1, sizeof(char));
 	if (!line | !*line)
-		error_check(-1, "In gnl ", 8);
+		return (0);
+		// error_check(-1, "In gnl ", 8, data);
 	r_bytes = 1;
 	while (r_bytes > 0)
 	{
@@ -31,7 +32,8 @@ int	get_next_line(char **line)
 
 	*line = ft_calloc(1, sizeof(char));
 	if (!line | !*line)
-		error_check(-1, "In gnl ", 8);
+		return (0);
+		// error_check(-1, "In gnl ", 8, data);
 	r_bytes = 1;
 	while (r_bytes > 0)
 	{
@@ -46,4 +48,14 @@ int	get_next_line(char **line)
 		alloc_check_small(*line);
 	}
 	return (r_bytes);
+}
+
+int	ft_strcmp(char *s1, char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s1[i] && s2[i] && (s1[i] == s2[i]))
+		++i;
+	return (s1[i] - s2[i]);
 }

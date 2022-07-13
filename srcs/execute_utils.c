@@ -51,7 +51,7 @@ char	*ft_charjoin_free(char *line, char b)
 	return (unis);
 }
 
-char	**get_address(char *cmd[], char *envp[])
+char	**get_address(char *cmd[], char *envp[], t_input *data)
 {
 	char	**env;
 	int		i;
@@ -71,7 +71,7 @@ char	**get_address(char *cmd[], char *envp[])
 		{
 			ft_free(env);
 			ft_free(cmd);
-			error_check(-1, "In ft_strjoin ", 15);
+			error_check(-1, "In ft_strjoin ", 15, data);
 		}
 		++i;
 	}
@@ -84,7 +84,7 @@ char	*access_check(char *cmd[], t_input *data)
 	int		i;
 	char	*ret;
 
-	env = get_address(cmd, data->envp);
+	env = get_address(cmd, data->envp, data);
 	i = 1;
 	while (access(env[i], X_OK) != 0)
 	{
@@ -94,14 +94,15 @@ char	*access_check(char *cmd[], t_input *data)
 	}
 	if (env[i] && access(env[i], X_OK) < 0)
 	{
-		write(2, "command not found\n", 19);
+		write(2, cmd[0], ft_strlen(cmd[0]));
+		write(2, ": command not found\n", 20);
 		ft_free(env);
 		data->status = 127;
 		exit(data->status);
 	}
 	ret = ft_strdup(env[i]);
 	if (!ret)
-		error_check(-1, "In strdup ", 11);
+		error_check(-1, "In strdup ", 11, data);
 	ft_free(env);
 	return (ret);
 }
@@ -112,17 +113,19 @@ void	ft_execve(char **argv, t_input *data)
 
 	if (!argv || !argv[0])
 	{
-		write(2, "parse error near ""\n", 19);
+		write(2, "YAMSP-1.6: parse error\n", 23);
 		exit(1);
 	}
 	if (!ft_strncmp(argv[0], "./minishell", 12))
 		increase_shlvl(data);
 	path = access_check(argv, data);
+	data->status = 0;
 	if (execve(path, argv, data->envp) < 0)
 	{
-		perror("Execve error");
+		write(2, "YAMSP-1.6: ", 11);
+		perror("execve error");
+		data->status = errno;
 		free(path);
-		data->status = 127;
 		exit(data->status);
 	}
 }

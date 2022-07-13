@@ -26,5 +26,6 @@ int	yo_env(t_input *data)
 		tmp = tmp->next;
 		data->i++;
 	}
+	data->status = 0;
 	return (0);
 }

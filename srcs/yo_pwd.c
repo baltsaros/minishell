@@ -8,13 +8,14 @@ int	yo_pwd(t_input *data)
 	ret = getcwd(NULL, 0);
 	if (!ret)
 	{
-		data->status = 1;
 		perror("pwd");
+		data->status = errno;
 	}
 	else
 	{
 		write(data->cmds->out, ret, ft_strlen(ret));
 		write(data->cmds->out, "\n", 1);
+		data->status = 0;
 	}
 	return (0);
 }

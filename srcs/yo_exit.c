@@ -8,7 +8,7 @@ static int	ft_isdigit_sign(int c)
 		return (0);
 }
 
-static int	check_nonumeric(t_input *data)
+static int	check_nonnumeric(t_input *data)
 {
 	if (!data->cmds->cmd[1])
 	{
@@ -56,7 +56,7 @@ int	yo_exit(t_input *data)
 	// if (data->wild)
 	// 	ft_free_token(data->wild);
 	// ft_free_cmd(data->cmds);
-	if (!check_nonumeric(data))
+	if (!check_nonnumeric(data))
 		exit(data->status);
 	if (!check_amount(data))
 		exit(data->status);

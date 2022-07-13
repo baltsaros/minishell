@@ -47,5 +47,6 @@ int	yo_echo(t_input *data)
 		echo_with_flag(data->cmds, data->status);
 	else
 		echo_without_flag(data->cmds, data->status);
-	return (data->status);
+	data->status = 0;
+	return (0);
 }

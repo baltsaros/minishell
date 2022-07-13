@@ -161,6 +161,7 @@ void	increase_shlvl(t_input *data);
 char	**ft_split_space(char const *s, char *charset);
 int		get_next_line(char **line);
 int		get_next_line_hd(char **line);
+int		ft_strcmp(char *s1, char *s2);
 
 // minishell
 void	prompt(t_input *data);
@@ -185,7 +186,7 @@ int		execute(t_input *data);
 // execute_utils
 char	*ft_strjoin_free(char *rest, char *buf);
 char	*ft_charjoin_free(char *line, char b);
-char	**get_address(char *cmd[], char *envp[]);
+char	**get_address(char *cmd[], char *envp[], t_input *data);
 char	*access_check(char *cmd[], t_input *data);
 void	ft_execve(char *argv[], t_input *data);
 

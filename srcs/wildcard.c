@@ -16,6 +16,7 @@ static void	find_files_error(t_input *data, char *str)
 	write(2, "ls: ", 4);
 	write(2, str, ft_strlen(str));
 	write(2, ": No such file or directory\n", 28);
+	data->status = 2;
 	data->node_tmp = ft_token_new(-1, NULL);
 	ft_token_back(&data->cmds->wild, data->node_tmp);
 }
@@ -25,7 +26,7 @@ static void	find_files_some(t_input *data, struct dirent *fname
 {
 	while (fname)
 	{
-		if (!ft_strncmp(fname->d_name, before, ft_strlen(before)))
+		if (!ft_strcmp(fname->d_name, before))
 		{
 			if (!after || (after && ft_strstr(fname->d_name, after)))
 			{
@@ -69,7 +70,9 @@ void	asterisks(t_input *data, t_cmd *cmds)
 	data->cmds->wild = NULL;
 	if (!data->dir)
 	{
+		write(2, "YAMSP-1.6: ", 11);
 		perror("opendir");
+		data->status = errno;
 		exit (EXIT_FAILURE);
 	}
 	i = 0;
