@@ -88,8 +88,8 @@ void	tokenization(t_input *data)
 		if (check_charset(data->buf[i], "\"$\'&<>=*|(){}"))
 			check_next(data, &i);
 	}
-	check_asterisk(data);
-	check_dollar(data);
+	// check_asterisk(data);
+	// check_dollar(data);
 }
 
 void	data_init(t_input *data)
