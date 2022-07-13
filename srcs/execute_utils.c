@@ -78,13 +78,13 @@ char	**get_address(char *cmd[], char *envp[])
 	return (env);
 }
 
-char	*access_check(char *cmd[], char *envp[])
+char	*access_check(char *cmd[], t_input *data)
 {
 	char	**env;
 	int		i;
 	char	*ret;
 
-	env = get_address(cmd, envp);
+	env = get_address(cmd, data->envp);
 	i = 1;
 	while (access(env[i], X_OK) != 0)
 	{
@@ -96,8 +96,8 @@ char	*access_check(char *cmd[], char *envp[])
 	{
 		write(2, "command not found\n", 19);
 		ft_free(env);
-		ft_free(cmd);
-		exit(127);
+		data->status = 127;
+		exit(data->status);
 	}
 	ret = ft_strdup(env[i]);
 	if (!ret)
@@ -117,12 +117,12 @@ void	ft_execve(char **argv, t_input *data)
 	}
 	if (!ft_strncmp(argv[0], "./minishell", 12))
 		increase_shlvl(data);
-	path = access_check(argv, data->envp);
+	path = access_check(argv, data);
 	if (execve(path, argv, data->envp) < 0)
 	{
 		perror("Execve error");
-		ft_free(argv);
 		free(path);
-		exit(127);
+		data->status = 127;
+		exit(data->status);
 	}
 }

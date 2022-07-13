@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/07/12 20:51:21 by mthiry           ###   ########.fr       */
+=======
+/*   Updated: 2022/07/13 13:09:08 by abuzdin          ###   ########.fr       */
+>>>>>>> new_lexer
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +81,7 @@ char	**init_cmd(t_node	*args)
 				str[i] = ft_strdup("");
 				if (!str[i])
 					return (NULL);
-				if (args->prev && args->prev->type == WORD_AST_B)
+				if (args->prev && args->prev->type == WORD_AST)
 				{
 					str[i] = ft_strjoin_free(str[i], args->prev->value);
 					if (!str[i])
