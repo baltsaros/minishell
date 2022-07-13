@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/13 23:48:27 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/14 00:20:53 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,19 @@ int	get_size_cmd(t_node	*args)
 			|| args->type == OR || args->type == EQUAL))
 			i++;
 		else if (args->type == DOLLAR
-			&& (args->next && args->next->type == DOLLAR))
+			&& (args->next && args->next->type == WORD))
 		{
-			i++;
-			args = args->next;
+			if ((args->prev && args->prev->type != WORD)
+				&& (args->prev->prev && args->prev->prev->type != DOLLAR))
+			{
+				i++;
+				args = args->next;
+			}
+			else if (!args->prev || !args->prev->prev)
+			{
+				i++;
+				args = args->next;
+			}
 		}
 		else if (args->type == DOLLAR
 			&& ((args->next && args->next->type != QUOTE) || !args->next))
@@ -178,7 +187,7 @@ char	**init_cmd(t_node	*args)
 				i++;
 			}
 			else if (args->type == DOLLAR
-				&& (args->next && args->next->type == DOLLAR))
+				&& (args->next && args->next->type == WORD))
 			{
 				if (!ft_strncmp(args->next->value, "?", 2))
 				{
