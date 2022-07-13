@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/12 15:49:18 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/13 13:09:08 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	get_size_cmd(t_node	*args)
 		|| args->type == DOLLAR || args->type == EQUAL 
 		|| args->type == QUOTE_D || args->type == QUOTE
 		|| args->type == WORD_AST || args->type == ASTER
-		|| args->type == WORD_AST_B))
+		|| args->type == WORD_AST))
 	{
 		if (args->type == ASTER)
 			i++;
@@ -72,7 +72,7 @@ char	**init_cmd(t_node	*args)
 				str[i] = ft_strdup("");
 				if (!str[i])
 					return (NULL);
-				if (args->prev && args->prev->type == WORD_AST_B)
+				if (args->prev && args->prev->type == WORD_AST)
 				{
 					str[i] = ft_strjoin_free(str[i], args->prev->value);
 					if (!str[i])
@@ -120,7 +120,7 @@ char	**init_cmd(t_node	*args)
 					return (NULL);
 				i++;
 			}
-			else if (args->type != DOLLAR && args->type != WORD_AST && args->type != WORD_AST_B)
+			else if (args->type != DOLLAR && args->type != WORD_AST)
 			{
 				str[i] = ft_strdup(args->value);
 				if (!str[i])

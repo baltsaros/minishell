@@ -12,9 +12,12 @@ void	check_quotes(t_input *data, size_t *i, char c)
 	size_t	start;
 
 	start = *i;
-	while (data->buf[*i] && data->buf[*i] != c
-			&& data->buf[*i] != '$')
+	while (data->buf[*i] && data->buf[*i] != c)
+	{
+		if (data->buf[*i] == '$' && c == '\"')
+			break ;
 		++(*i);
+	}
 	if (*i != start)
 		create_token(data, data->buf + start, *i - start, WORD);
 	if (data->buf[*i] && data->buf[*i] == c)
@@ -62,7 +65,7 @@ void	check_dollar(t_input *data)
 		if (tmp && tmp->type == DOLLAR)
 		{
 			if (tmp->next && (tmp->next->type == WSPACE
-					|| tmp->next->type == QUOTE))
+					|| (tmp->next->type == QUOTE && tmp->value[0] != '$')))
 				tmp->type = WORD;
 			if (tmp->next && tmp->next->type != WSPACE
 					&& tmp->next->type != QUOTE && tmp->next->type != QUOTE_D)
