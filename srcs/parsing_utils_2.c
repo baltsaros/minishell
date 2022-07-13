@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/14 00:20:53 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/14 00:40:13 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,6 @@ int	get_size_cmd(t_node	*args)
 	{
 		if (args->type == ASTER)
 			i++;
-		else if ((args->type == WORD && (args->prev && args->prev->type != DOLLAR))
-			|| (args->type == WORD || args->type == AND
-			|| args->type == OR || args->type == EQUAL))
-			i++;
 		else if (args->type == DOLLAR
 			&& (args->next && args->next->type == WORD))
 		{
@@ -72,6 +68,16 @@ int	get_size_cmd(t_node	*args)
 				args = args->next;
 			}
 		}
+		else if (args->type == WORD)
+		{
+			if (args->prev && args->prev->type != DOLLAR)
+				i++;
+			else if (!args->prev)
+				i++;
+		}
+		else if (args->type == AND
+			|| args->type == OR || args->type == EQUAL)
+			i++;
 		else if (args->type == DOLLAR
 			&& ((args->next && args->next->type != QUOTE) || !args->next))
 			i++;
@@ -206,14 +212,14 @@ char	**init_cmd(t_node	*args)
 				}
 				i++;
 			}
-			else if (args->type == DOLLAR
-				&& ((args->next && args->next->type != QUOTE) || !args->next))
-			{
-				str[i] = ft_strjoin_free(str[i], args->value);
-				if (!str[i])
-					return (NULL);
-				i++;
-			}
+			// else if (args->type == DOLLAR
+			// 	&& ((args->next && args->next->type != QUOTE) || !args->next))
+			// {
+			// 	str[i] = ft_strjoin_free(str[i], args->value);
+			// 	if (!str[i])
+			// 		return (NULL);
+			// 	i++;
+			// }
 			else
 				free(str[i]);
 		}
