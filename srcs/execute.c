@@ -102,9 +102,9 @@ int	execute(t_input *data)
 			else
 			{
 				error_check(dup2(data->cmds->in, STDIN_FILENO),
-					"In Dup2_in ", 12);
+					"In Dup2_in ", 12, data);
 				error_check(dup2(data->cmds->out, STDOUT_FILENO),
-					"In Dup2_out ", 13);
+					"In Dup2_out ", 13, data);
 				ft_execve(data->cmds->cmd, data);
 				close(data->cmds->in);
 				close(data->cmds->out);

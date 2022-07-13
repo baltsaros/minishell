@@ -19,6 +19,7 @@
 # include <readline/history.h>
 # include <libft.h>
 # include <stdbool.h>
+# include <errno.h>
 // # include "../libft/libft.h"
 
 // global var
@@ -152,7 +153,7 @@ void	ft_free_node_elems(t_env *tmp);
 
 // utils
 char	*ft_strndup(char const *str, size_t size);
-int		error_check(int input, char *str, int n);
+int		error_check(int input, char *str, int n, t_input *data);
 int		ft_strstr(char *str, char *to_find);
 int		check_charset(char c, char *charset);
 void	increase_shlvl(t_input *data);

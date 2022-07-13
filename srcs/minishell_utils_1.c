@@ -18,13 +18,14 @@ char	*ft_strndup(char const *str, size_t size)
 	return (dest);
 }
 
-int	error_check(int input, char *str, int n)
+int	error_check(int input, char *str, int n, t_input *data)
 {
 	if (input < 0)
 	{
 		write(2, str, n);
 		perror("something went wrong");
-		exit (EXIT_FAILURE);
+		data->status = errno;
+		exit (errno);
 	}
 	return (input);
 }
