@@ -6,11 +6,43 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/13 22:53:49 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/13 23:48:27 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+int	is_between_d_quote(t_node	*args)
+{
+	int	i;
+	int	j;
+	int	count;
+
+	i = 0;
+	j = 0;
+	count = 0;
+	while (args->prev)
+	{
+		i++;
+		args = args->prev;
+	}
+	while (args && i != j)
+	{
+		if (args->type == QUOTE_D)
+			count++;
+		j++;
+		args = args->next;
+	}
+	while (args)
+	{
+		if (args->type == QUOTE_D)
+			count++;
+		args = args->next;
+	}
+	if (count == 2)
+		return (0);
+	return (1);
+}
 
 int	get_size_cmd(t_node	*args)
 {
@@ -83,8 +115,6 @@ char	**init_cmd(t_node	*args)
 				return (NULL);
 			if (args->type == ASTER)
 			{
-				if (!str[i])
-					return (NULL);
 				if (args->prev && args->prev->type == WORD_AST)
 				{
 					str[i] = ft_strjoin_free(str[i], args->prev->value);
@@ -150,8 +180,21 @@ char	**init_cmd(t_node	*args)
 			else if (args->type == DOLLAR
 				&& (args->next && args->next->type == DOLLAR))
 			{
-				args = args->next;
-				str[i] = get_env_variable(args->value);
+				if (!ft_strncmp(args->next->value, "?", 2))
+				{
+					str[i] = ft_strjoin_free(str[i], args->value);
+					if (!str[i])
+						return (NULL);
+					args = args->next;
+					str[i] = ft_strjoin_free(str[i], args->value);
+					if (!str[i])
+						return (NULL); 
+				}
+				else
+				{
+					args = args->next;
+					str[i] = get_env_variable(args->value);
+				}
 				i++;
 			}
 			else if (args->type == DOLLAR
