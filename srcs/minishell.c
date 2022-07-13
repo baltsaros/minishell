@@ -8,7 +8,7 @@ void	prompt(t_input *data)
 		if (signal(SIGINT, signal_handling) == SIG_ERR
 			|| signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 			printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
-		data->buf = readline("minishell$ ");
+		data->buf = readline("YAMSP-1.6$ ");
 		if (!data->buf)
 		{
 			yo_exit(data);

@@ -22,7 +22,7 @@ static int	check_nonumeric(t_input *data)
 		if (!ft_isdigit_sign(data->cmds->cmd[1][data->i]))
 		{
 			write(data->cmds->out, "exit\n", 5);
-			write(2, "minishell: exit: ", 17);
+			write(2, "YAMSP-1.6: exit: ", 17);
 			write(2, data->cmds->cmd[1], ft_strlen(data->cmds->cmd[1]));
 			write(2, ": numeric argument required\n", 28);
 			data->status = 2;
@@ -38,7 +38,7 @@ static int	check_amount(t_input *data)
 	if (data->cmds->len_cmd > 2)
 	{
 		write(data->cmds->out, "exit\n", 5);
-		write(2, "minishell: exit: ", 17);
+		write(2, "YAMSP-1.6: exit: ", 17);
 		write(2, "too many arguments\n", 19);
 		data->status = 1;
 		return (0);
