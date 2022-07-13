@@ -24,6 +24,7 @@ t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 
 t_cmd	*init_elem(t_node *args)
 {
+	(void)args;
 	t_cmd	*elem;
 
 	elem = init_empty_elem();

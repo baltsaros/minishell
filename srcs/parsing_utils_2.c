@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/13 16:53:05 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/13 22:47:57 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@ int	get_size_cmd(t_node	*args)
 	{
 		if (args->type == ASTER)
 			i++;
+		else if ((args->type == WORD && (args->prev && args->prev->type != DOLLAR))
+			|| (args->type == WORD || args->type == AND
+			|| args->type == OR || args->type == EQUAL))
+			i++;
 		else if (args->type == DOLLAR
 			&& (args->next && args->next->type == DOLLAR))
 		{
@@ -30,15 +34,17 @@ int	get_size_cmd(t_node	*args)
 		else if (args->type == DOLLAR
 			&& ((args->next && args->next->type != QUOTE) || !args->next))
 			i++;
-		else if (args->type == WORD && args->prev)
+		if ((args->prev && args->prev->type == QUOTE_D) && (args->next && args->next->type == QUOTE_D))
 		{
-			if (args->prev->type != REDIR_AP && args->prev->type != REDIR_HD
-				&& args->prev->type != REDIR_IN && args->prev->type != REDIR_OUT)
-				i++;
+			if (args->prev->prev && (args->prev->prev->type == WORD
+		 		|| args->prev->prev->type == AND || args->prev->prev->type == OR 
+				|| args->prev->prev->type == EQUAL))
+		 		i--;
+			if (args->next->next && (args->next->next->type == WORD
+				|| args->next->next->type == AND || args->next->next->type == OR 
+				|| args->next->next->type == EQUAL))
+				i--;
 		}
-		else if (args->type == WORD || args->type == AND
-			|| args->type == OR || args->type == EQUAL)
-			i++;
 		args = args->next;
 	}
 
@@ -72,9 +78,11 @@ char	**init_cmd(t_node	*args)
 	{
 		if (args->type != QUOTE_D && args->type != QUOTE)
 		{
+			str[i] = ft_strdup("");
+			if (!str[i])
+				return (NULL);
 			if (args->type == ASTER)
 			{
-				str[i] = ft_strdup("");
 				if (!str[i])
 					return (NULL);
 				if (args->prev && args->prev->type == WORD_AST)
@@ -95,57 +103,70 @@ char	**init_cmd(t_node	*args)
 				}
 				i++;
 			}
-			else if (args->type == DOLLAR && (args->next && args->next->type == DOLLAR))
+			else if ((args->type == WORD && (args->prev && args->prev->type != DOLLAR))
+				|| ((args->type == WORD || args->type == AND || args->type == OR 
+				|| args->type == EQUAL) 
+				&& ((args->prev && args->prev->type == QUOTE_D)
+				&& (args->next && args->next->type == QUOTE_D))))
 			{
-				if (!ft_strncmp(args->next->value, "?", 2))
+				if (args->prev && args->prev->type == QUOTE_D)
 				{
-					str[i] = ft_strdup("");
-					if (!str[i])
-						return (NULL);
-					str[i] = ft_strjoin_free(str[i], args->value);
-					if (!str[i])
-						return (NULL);
-					args = args->next;
-					str[i] = ft_strjoin_free(str[i], args->value);
-					if (!str[i])
-						return (NULL);
-					i++;
+					if (args->prev->prev && (args->prev->prev->type == WORD
+						|| args->prev->prev->type == AND || args->prev->prev->type == OR 
+						|| args->prev->prev->type == EQUAL))
+					{
+						str[i] = ft_strjoin_free(str[i], args->prev->prev->value);
+						if (!str[i])
+							return (NULL);
+					}
 				}
-				else
+				str[i] = ft_strjoin_free(str[i], args->value);
+				if (!str[i])
+					return (NULL);
+				if (args->next && args->next->type == QUOTE_D)
 				{
-					args = args->next;
-					str[i] = get_env_variable(args->value);
-					i++;
+					if (args->next->next && (args->next->next->type == WORD
+						|| args->next->next->type == AND || args->next->next->type == OR 
+						|| args->next->next->type == EQUAL))
+					{
+						args = args->next;
+						str[i] = ft_strjoin_free(str[i], args->next->value);
+						if (!str[i])
+							return (NULL);
+					}
 				}
+				i++;
 			}
-			else if (args->type == DOLLAR && ((args->next && args->next->type != QUOTE) || !args->next))
+			else if ((args->type == WORD && (args->prev && args->prev->type != DOLLAR))
+				|| ((args->type == WORD || args->type == AND || args->type == OR 
+				|| args->type == EQUAL) 
+				&& ((!args->prev || args->prev->type != QUOTE_D) && (!args->next || args->next->type != QUOTE_D))))
 			{
-				str[i] = ft_strdup(args->value);
+				str[i] = ft_strjoin_free(str[i], args->value);
 				if (!str[i])
 					return (NULL);
 				i++;
 			}
-			else if (args->type == WORD && args->prev)
+			else if (args->type == DOLLAR
+				&& (args->next && args->next->type == DOLLAR))
 			{
-				if (args->prev->type != REDIR_AP && args->prev->type != REDIR_HD
-					&& args->prev->type != REDIR_IN && args->prev->type != REDIR_OUT)
-				{
-					str[i] = ft_strdup(args->value);
-					if (!str[i])
-						return (NULL);
-					i++;
-				}
+				args = args->next;
+				str[i] = get_env_variable(args->value);
+				i++;
 			}
-			else if (args->type == WORD || args->type == AND
-				|| args->type == OR || args->type == EQUAL)
+			else if (args->type == DOLLAR
+				&& ((args->next && args->next->type != QUOTE) || !args->next))
 			{
-				str[i] = ft_strdup(args->value);
+				str[i] = ft_strjoin_free(str[i], args->value);
 				if (!str[i])
 					return (NULL);
 				i++;
 			}
+			else
+				free(str[i]);
 		}
-		args = args->next;
+		if (args->next)
+			args = args->next;
 	}
 	str[i] = NULL;
 	return (str);
