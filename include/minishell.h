@@ -31,6 +31,7 @@ enum e_tokens
 	WORD		= 2,
 	WORD_AST_B	= 3,	// *
 	WORD_AST	= 4,	// *
+	WORD_NOSPC	= 5,
 	QUOTE		= 39,	// '
 	QUOTE_D		= 34,	// "
 	REDIR_OUT	= 62,	// >

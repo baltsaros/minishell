@@ -3,25 +3,31 @@
 static void	check_quotes(t_input *data, size_t *i, char c)
 {
 	size_t	start;
-	int		type;
 
 	start = *i;
-	while (data->buf[*i] != c)
-		++*i;
+	while (data->buf[*i] && data->buf[*i] != c)
+		++(*i);
 	if (*i != start)
 	{
-		type = WORD;
 		data->value = ft_strndup(data->buf + start, *i - start);
-		data->node_tmp = ft_token_new(type, data->value);
+		data->node_tmp = ft_token_new(WORD, data->value);
 		ft_token_back(&data->args, data->node_tmp);
 	}
 	if (data->buf[*i] && data->buf[*i] == c)
 	{
-		type = c;
 		data->value = ft_strndup(data->buf + start - 1, 1);
-		data->node_tmp = ft_token_new(type, data->value);
+		data->node_tmp = ft_token_new((int)c, data->value);
 		ft_token_back(&data->args, data->node_tmp);
-		++*i;
+		++(*i);
+	}
+	start = *i;
+	while (data->buf[*i] && ft_isalnum(data->buf[*i]))
+		++(*i);
+	if (*i != start)
+	{
+		data->value = ft_strndup(data->buf + start, *i - start);
+		data->node_tmp = ft_token_new(WORD_NOSPC, data->value);
+		ft_token_back(&data->args, data->node_tmp);
 	}
 }
 
@@ -89,13 +95,13 @@ static void	check_next(t_input *data, size_t *i)
 	{
 		data->value = ft_strndup(data->buf + *i, 2);
 		type += 100;
-		++*i;
+		++(*i);
 	}
 	else
 		data->value = ft_strndup(data->buf + *i, 1);
 	data->node_tmp = ft_token_new(type, data->value);
 	ft_token_back(&data->args, data->node_tmp);
-	++*i;
+	++(*i);
 	if (data->buf[*i - 1] == '\"' || data->buf[*i - 1] == '\'')
 		check_quotes(data, i, data->buf[*i - 1]);
 }
@@ -115,9 +121,11 @@ void	create_token(t_input *data)
 		while (data->buf[i] && !check_charset(data->buf[i]
 				, "\"$\'&<>=*| \f\n\r\t\v(){}"))
 			++i;
+		type = WORD;
+		if ((data->buf[i] == '\'' || data->buf[i] == '\"') && ft_isalnum(data->buf[i - 1]))
+			type = WORD_NOSPC;
 		if (i != start)
 		{
-			type = WORD;
 			data->value = ft_strndup(data->buf + start, i - start);
 			data->node_tmp = ft_token_new(type, data->value);
 			ft_token_back(&data->args, data->node_tmp);
