@@ -217,16 +217,19 @@ int		print_syntax_error_bool(t_node *args);
 
 // parsing
 int		parsing(t_input *data);
+t_cmd	*parse_cmd(t_input *data);
+t_cmd	*init_elem(t_node *args);
+t_cmd	*fill_elem(t_node	*args, t_cmd *elem);
+t_cmd	*init_empty_elem(void);
 
 // parsing_utils
 t_node	*next_elem(t_node *args);
-t_cmd	*init_empty_elem(void);
 int		init_in(t_node *args, t_cmd *elem);
 int		init_out(t_node *args, t_cmd *elem);
 int		get_len_cmd(char **str);
+int		redirection_check(t_node *args, t_cmd *elem);
 
 // parsing_utils_2
-int		redirection_check(t_node *args, t_cmd *elem);
 char	**init_cmd(t_node	*args);
 
 // Readline functions

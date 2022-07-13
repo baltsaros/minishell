@@ -1,5 +1,25 @@
 #include "../include/minishell.h"
 
+t_cmd	*init_empty_elem(void)
+{
+	t_cmd	*elem;
+
+	elem = (t_cmd *) malloc (sizeof(t_cmd));
+	if (!elem)
+		return (NULL);
+	elem->cmd = NULL;
+	elem->len_cmd = 0;
+	elem->delim = NULL;
+	elem->in = 0;
+	elem->in_arg = NULL;
+	elem->out = 1;
+	elem->out_arg = NULL;
+	elem->pipe = -1;
+	elem->next = NULL;
+	elem->prev = NULL;
+	return (elem);
+}
+
 t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 {
 	elem->cmd = init_cmd(args);

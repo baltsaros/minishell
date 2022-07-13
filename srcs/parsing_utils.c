@@ -1,5 +1,26 @@
 #include "../include/minishell.h"
 
+int	redirection_check(t_node *args, t_cmd *elem)
+{
+	if (args->value[0] == '<')
+	{
+		if (!args->next)
+		//|| is_the_next_is_word(args) == 1)
+			return (print_syntax_error_bool(args));
+		if (init_in(args, elem) == 1)
+			return (1);
+	}
+	else if (args->value[0] == '>')
+	{
+		if (!args->next) 
+		//|| is_the_next_is_word(args) == 1)
+			return (print_syntax_error_bool(args));
+		if (init_out(args, elem) == 1)
+			return (1);
+	}
+	return (0);
+}
+
 t_node	*next_elem(t_node *args)
 {
 	t_node	*next_elem;
@@ -14,26 +35,6 @@ t_node	*next_elem(t_node *args)
 			break ;
 	}
 	return (next_elem);
-}
-
-t_cmd	*init_empty_elem(void)
-{
-	t_cmd	*elem;
-
-	elem = (t_cmd *) malloc (sizeof(t_cmd));
-	if (!elem)
-		return (NULL);
-	elem->cmd = NULL;
-	elem->len_cmd = 0;
-	elem->delim = NULL;
-	elem->in = 0;
-	elem->in_arg = NULL;
-	elem->out = 1;
-	elem->out_arg = NULL;
-	elem->pipe = -1;
-	elem->next = NULL;
-	elem->prev = NULL;
-	return (elem);
 }
 
 int	init_in(t_node *args, t_cmd *elem)

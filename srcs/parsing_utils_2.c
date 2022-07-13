@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/13 22:47:57 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/13 22:53:49 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,25 +170,4 @@ char	**init_cmd(t_node	*args)
 	}
 	str[i] = NULL;
 	return (str);
-}
-
-int	redirection_check(t_node *args, t_cmd *elem)
-{
-	if (args->value[0] == '<')
-	{
-		if (!args->next)
-		//|| is_the_next_is_word(args) == 1)
-			return (print_syntax_error_bool(args));
-		if (init_in(args, elem) == 1)
-			return (1);
-	}
-	else if (args->value[0] == '>')
-	{
-		if (!args->next) 
-		//|| is_the_next_is_word(args) == 1)
-			return (print_syntax_error_bool(args));
-		if (init_out(args, elem) == 1)
-			return (1);
-	}
-	return (0);
 }
