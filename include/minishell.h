@@ -29,9 +29,8 @@ enum e_tokens
 {
 	DOLLAR		= 36,	// $
 	WORD		= 2,
-	WORD_AST_B	= 3,	// *
+	WSPACE		= 3,
 	WORD_AST	= 4,	// *
-	WORD_NOSPC	= 5,
 	QUOTE		= 39,	// '
 	QUOTE_D		= 34,	// "
 	REDIR_OUT	= 62,	// >
@@ -169,11 +168,16 @@ int		check_field(char **buf, t_input *data);
 int		is_right_buf(char *buf);
 
 // data_init
-void	envp_init(t_input *data, char *envp[]);
+void	tokenization(t_input *data);
 void	data_init(t_input *data);
+void	envp_init(t_input *data, char *envp[]);
 
 // tokenization
-void	create_token(t_input *data);
+void	create_token(t_input *data, char *str, int len, int type);
+void	check_quotes(t_input *data, size_t *i, char c);
+void	check_asterisk(t_input *data);
+void	check_dollar(t_input *data);
+void	check_next(t_input *data, size_t *i);
 
 // execute
 int		pipex(t_input *data);
