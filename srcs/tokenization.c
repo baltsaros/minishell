@@ -96,6 +96,6 @@ void	check_next(t_input *data, size_t *i)
 	data->node_tmp = ft_token_new(type, data->value);
 	ft_token_back(&data->args, data->node_tmp);
 	++(*i);
-	if (data->buf[*i - 1] == '\"' || data->buf[*i - 1] == '\'')
-		check_quotes(data, i, data->buf[*i - 1]);
+	// if (data->buf[*i - 1] == '\"' || data->buf[*i - 1] == '\'')
+	// 	check_quotes(data, i, data->buf[*i - 1]);
 }
