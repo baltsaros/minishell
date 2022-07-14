@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/14 14:19:24 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/14 14:50:16 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	is_between_d_quote(t_node	*args)
 	count = 0;
 	if (args->type == QUOTE_D)
 		return (1);
-	while (args->prev && args->type != QUOTE_D)
+	while (args->prev && args->type != QUOTE_D && args->type != PIPE)
 		args = args->prev;
 	if (args->type == QUOTE_D)
 		count++;
@@ -29,7 +29,7 @@ int	is_between_d_quote(t_node	*args)
 		args = args->next;
 	else
 		return (1);
-	while (args && args->type != QUOTE_D)
+	while (args && args->type != QUOTE_D && args->type != PIPE)
 		args = args->next;
 	if (args && args->type == QUOTE_D)
 		count++;
@@ -43,7 +43,7 @@ int	get_size_cmd(t_node	*args)
 	int	i;
 
 	i = 0;
-	while (args)
+	while (args && args->type != PIPE)
 	{
 		if (args->type == ASTER)
 			i++;
@@ -142,7 +142,7 @@ char	**init_cmd(t_node	*args)
 	str = (char	**) malloc ((size + 1) * sizeof(char *));
 	if (!str)
 		return (NULL);
-	while (args && i != size)
+	while (args && i != size && args->type != PIPE)
 	{
 		if (args->type != QUOTE_D && args->type != QUOTE)
 		{
