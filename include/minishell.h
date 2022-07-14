@@ -5,21 +5,20 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <signal.h>
-# include <sys/types.h>
 # include <dirent.h>
-# include <sys/ioctl.h>
 # include <sys/types.h>
-# include <sys/stat.h>
 # include <sys/wait.h>
 # include <fcntl.h>
-# include <termios.h>
-# include <curses.h>
-# include <term.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <libft.h>
 # include <stdbool.h>
 # include <errno.h>
+// # include <sys/stat.h>
+// # include <sys/ioctl.h>
+// # include <termios.h>
+// # include <curses.h>
+// # include <term.h>
 // # include "../libft/libft.h"
 
 // global var
@@ -158,8 +157,6 @@ int		error_check(int input, char *str, int n, t_input *data);
 int		ft_strstr(char *str, char *to_find);
 int		check_charset(char c, char *charset);
 void	increase_shlvl(t_input *data);
-
-int		get_next_line(char **line, t_input *data);
 int		ft_strcmp(char *s1, char *s2);
 void	*ms_malloc(size_t n, t_input *data);
 char	*ms_strdup(const char *s, t_input *data);
