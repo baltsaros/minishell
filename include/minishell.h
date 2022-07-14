@@ -56,6 +56,12 @@ enum e_tokens
 	BRACES_R	= 125,	// }
 };
 
+enum e_simplier_tokens
+{
+	ENV_VA 		= 37, 	// Example: $PATH
+	ASTER_WORD	= 5		// Example: t*.c
+};
+
 // struct for tokens (+ wildcard) linked lists
 typedef struct s_node
 {
@@ -243,5 +249,8 @@ void	rl_replace_line(const char *text, int clear_undo);
 
 // messages
 void	too_many_argv(void);
+
+// Token Simplification
+int token_simplification(t_input *data);
 
 #endif
