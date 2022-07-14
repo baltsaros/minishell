@@ -58,6 +58,7 @@ t_node  *update_next_and_prev(t_node *elem)
     t_node  *tmp;
 
     tmp = elem->next;
+	(void)tmp;
     if (elem->next->next)
     {
         second_tmp = elem->next->next;
@@ -79,6 +80,7 @@ t_node  *update_prev_and_next(t_node *elem)
     t_node  *tmp;
 
     tmp = elem->prev;
+	(void)tmp;
     if (elem->prev->prev)
     {
         second_tmp = elem->prev->prev;

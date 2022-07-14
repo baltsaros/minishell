@@ -44,6 +44,7 @@ int token_simplification(t_input *data)
     t_node  *elem;
 
     elem = quote_transformation(data);
+    (void)elem;
     // elem = data->args;
     // while (elem)
     // {
