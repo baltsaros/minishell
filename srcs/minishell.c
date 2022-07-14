@@ -7,7 +7,8 @@ void	prompt(t_input *data)
 		if (signal(SIGINT, signal_handling) == SIG_ERR
 			|| signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 			printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
-		data->buf = readline("YAMSP-1.6$ ");
+		// data->buf = readline("YAMSP-1.6$ ");
+		data->buf = readline(data->prompt);
 		if (!data->buf)
 			yo_exit(data);
 		else if (is_right_buf(data->buf) != 1)
@@ -40,6 +41,7 @@ int	main(int argc, char *argv[], char *envp[])
 	}
 	g_status = 0;
 	envp_init(&data, envp);
+	data.prompt = ms_strdup("YAMSP-1.6$ ", &data);
 	prompt(&data);
 	return ((g_status >> 8) & 0xff);
 }

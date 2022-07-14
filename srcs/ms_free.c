@@ -67,4 +67,5 @@ void	ms_free_all(t_input *data)
 		ms_free_cmd(data->cmds);
 	if (data->envp)
 		ms_free(data->envp);
+	free(data->prompt);
 }

@@ -97,6 +97,7 @@ typedef struct s_input
 	int					j;
 	size_t				k;
 	char				*tmp;
+	char				*prompt;
 	char				*type;
 	char				*value;
 	t_env				*envp_tmp;
