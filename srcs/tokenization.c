@@ -80,7 +80,7 @@ void	check_next(t_input *data, size_t *i)
 	int	type;
 	int	next;
 
-	type = check_charset(data->buf[*i], "\"$\'&<>=*|(){}");
+	type = check_charset(data->buf[*i], "\"$\'&<>=*|(){}/");
 	if (!data->buf[*i + 1])
 		next = 0;
 	else

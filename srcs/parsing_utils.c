@@ -58,6 +58,7 @@ int	init_in(t_node *args, t_cmd *elem)
 		if (!elem->in_arg)
 			return (1);
 		elem->in = open(elem->in_arg, O_RDONLY);
+		error_check(elem->in, "[ERROR]: Wrong File Descriptor\n", 31);
 		return (0);
 	}
 	return (1);
@@ -72,6 +73,7 @@ int	init_out(t_node *args, t_cmd *elem)
 		if (!elem->out_arg)
 			return (1);
 		elem->out = open(elem->out_arg, O_WRONLY | O_CREAT | O_APPEND, 00644);
+		error_check(elem->out, "[ERROR]: Wrong File Descriptor\n", 31);
 		return (0);
 	}
 	else if (args->type == REDIR_OUT)
@@ -81,6 +83,7 @@ int	init_out(t_node *args, t_cmd *elem)
 		if (!elem->out_arg)
 			return (1);
 		elem->out = open(elem->out_arg, O_WRONLY | O_CREAT | O_TRUNC, 00644);
+		error_check(elem->out, "[ERROR]: Wrong File Descriptor\n", 31);
 		return (0);
 	}
 	return (1);
