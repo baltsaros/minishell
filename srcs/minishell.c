@@ -10,9 +10,7 @@ void	prompt(t_input *data)
 			printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
 		data->buf = readline("YAMSP-1.6$ ");
 		if (!data->buf)
-		{
 			yo_exit(data);
-		}
 		else if (is_right_buf(data->buf) != 1)
 		{
 			add_history(data->buf);
@@ -20,16 +18,13 @@ void	prompt(t_input *data)
 			data_init(data);
 			// ms_envp_print(data->envp_n);
 			// ms_token_print(data->args);
-			if (parsing(data) == 0)
-			{
-				// asterisks(data);
-				execute(data);
-				ms_free_token(data->args);
-				// ms_free_cmd(data->cmds);
-			}
-			//else
-			//	ms_free_token(data->args);
+			parsing(data);
+			// asterisks(data);
+			execute(data);
+			ms_free_token(data->args);
+			// ms_free_cmd(data->cmds);
 		}
+		free(data->buf);
 	}
 }
 

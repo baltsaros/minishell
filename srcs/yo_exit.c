@@ -49,7 +49,10 @@ static int	check_amount(t_input *data)
 int	yo_exit(t_input *data)
 {
 	if (!data->buf)
-		exit(1);
+	{
+		g_status = 1;
+		exit(g_status);
+	}
 	ms_free_envp(data->envp_n);
 	ms_free_token(data->args);
 	ms_free(data->envp);
