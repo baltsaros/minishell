@@ -1,5 +1,23 @@
 #include "../include/minishell.h"
 
+t_cmd	*init_empty_elem(t_input *data)
+{
+	t_cmd	*elem;
+
+	elem = ms_malloc(sizeof(t_cmd), data);
+	elem->cmd = NULL;
+	elem->len_cmd = 0;
+	elem->delim = NULL;
+	elem->in = 0;
+	elem->in_arg = NULL;
+	elem->out = 1;
+	elem->out_arg = NULL;
+	elem->pipe = -1;
+	elem->next = NULL;
+	elem->prev = NULL;
+	return (elem);
+}
+
 t_cmd	*fill_elem(t_node *args, t_cmd *elem, t_input *data)
 {
 	elem->cmd = init_cmd(args, data);
@@ -12,7 +30,8 @@ t_cmd	*fill_elem(t_node *args, t_cmd *elem, t_input *data)
 	 		return (NULL);
 	 	if (args->next && args->next->type == PIPE)
 	 	{
-	 		if (!args->next->next || is_the_next_is_word(args->next) == 1)
+	 		if (!args->next->next) 
+			//|| is_the_next_is_word(args->next) == 1)
 	 			return (print_syntax_error_cmd(args->next));
 	 		elem->pipe = 1;
 	 	}
@@ -23,9 +42,10 @@ t_cmd	*fill_elem(t_node *args, t_cmd *elem, t_input *data)
 
 t_cmd	*init_elem(t_node *args, t_input *data)
 {
+	(void)args;
 	t_cmd	*elem;
 
-	elem = init_empty_elem();
+	elem = init_empty_elem(data);
 	if (!elem)
 		return (NULL);
 	elem = fill_elem(args, elem, data);
@@ -64,9 +84,10 @@ int	parsing(t_input *data)
 	data->cmds = parse_cmd(data);
 	if (!data->cmds)
 		return (1);
+
 	// t_cmd	*tmp;
 	// tmp = data->cmds;
-	// while (data->cmds)
+	// while (tmp)
 	// {
 	// 	for (int i = 0; tmp->cmd[i]; i++)
 	// 		printf("cmd[%d]: %s\n", i, tmp->cmd[i]);

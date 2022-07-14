@@ -30,9 +30,8 @@ enum e_tokens
 {
 	DOLLAR		= 36,	// $
 	WORD		= 2,
-	WORD_AST_B	= 3,	// *
+	WSPACE		= 3,
 	WORD_AST	= 4,	// *
-	WORD_NOSPC	= 5,
 	QUOTE		= 39,	// '
 	QUOTE_D		= 34,	// "
 	REDIR_OUT	= 62,	// >
@@ -50,6 +49,7 @@ enum e_tokens
 	AMPER		= 38,	// &
 	APOST		= 44,	// `
 	BACKSL		= 92,	// '\'
+	SLASH		= 47,	// '/'
 	TRU			= 10,
 	FALS		= 11,
 	BRACES_L	= 123,	// {
@@ -172,11 +172,16 @@ int		check_field(char **buf, t_input *data);
 int		is_right_buf(char *buf);
 
 // data_init
-void	envp_init(t_input *data, char *envp[]);
+void	tokenization(t_input *data);
 void	data_init(t_input *data);
+void	envp_init(t_input *data, char *envp[]);
 
 // tokenization
-void	create_token(t_input *data);
+void	create_token(t_input *data, char *str, int len, int type);
+void	check_quotes(t_input *data, size_t *i, char c);
+void	check_asterisk(t_input *data);
+void	check_dollar(t_input *data);
+void	check_next(t_input *data, size_t *i);
 
 // execute
 int		pipex(t_input *data);
@@ -216,16 +221,19 @@ int		print_syntax_error_bool(t_node *args);
 
 // parsing
 int		parsing(t_input *data);
+t_cmd	*parse_cmd(t_input *data);
+t_cmd	*init_elem(t_node *args, t_input *data);
+t_cmd	*fill_elem(t_node	*args, t_cmd *elem, t_input *data);
+t_cmd	*init_empty_elem(t_input *data);
 
 // parsing_utils
 t_node	*next_elem(t_node *args);
-t_cmd	*init_empty_elem(void);
 int		init_in(t_node *args, t_cmd *elem, t_input *data);
 int		init_out(t_node *args, t_cmd *elem, t_input *data);
 int		get_len_cmd(char **str);
+int		redirection_check(t_node *args, t_cmd *elem, t_input *data);
 
 // parsing_utils_2
-int		redirection_check(t_node *args, t_cmd *elem, t_input *data);
 char	**init_cmd(t_node	*args, t_input *data);
 
 // Readline functions

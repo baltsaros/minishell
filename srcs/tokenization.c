@@ -1,90 +1,84 @@
 #include "../include/minishell.h"
 
-static void	check_quotes(t_input *data, size_t *i, char c)
+void	create_token(t_input *data, char *str, int len, int type)
+{
+	data->value = ms_strndup(str, len, data);
+	data->node_tmp = ms_token_new(type, data->value, data);
+	ms_token_back(&data->args, data->node_tmp);
+}
+
+void	check_quotes(t_input *data, size_t *i, char c)
 {
 	data->k = *i;
 	while (data->buf[*i] && data->buf[*i] != c)
-		++(*i);
-	if (*i != data->k)
 	{
-		data->value = ms_strndup(data->buf + data->k, *i - data->k, data);
-		data->node_tmp = ms_token_new(WORD, data->value, data);
-		ms_token_back(&data->args, data->node_tmp);
+		if (data->buf[*i] == '$' && c == '\"')
+			break ;
+		++(*i);
 	}
+	if (*i != data->k)
+		create_token(data, data->buf + data->k, *i - data->k, WORD);
 	if (data->buf[*i] && data->buf[*i] == c)
 	{
-		data->value = ms_strndup(data->buf + data->k - 1, 1, data);
-		data->node_tmp = ms_token_new((int)c, data->value, data);
-		ms_token_back(&data->args, data->node_tmp);
+		create_token(data, data->buf + *i, 1, (int)c);
 		++(*i);
 	}
-	data->k = *i;
-	while (data->buf[*i] && ft_isalnum(data->buf[*i]))
+	else if (data->buf[*i] && data->buf[*i] == '$')
+	{
+		create_token(data, "$", 1, DOLLAR);
 		++(*i);
-	if (*i != data->k)
-	{
-		data->value = ms_strndup(data->buf + data->k, *i - data->k, data);
-		data->node_tmp = ms_token_new(WORD_NOSPC, data->value, data);
-		ms_token_back(&data->args, data->node_tmp);
+		check_quotes(data, i, c);
 	}
 }
 
-static void	check_asterisk(t_input *data)
+void	check_asterisk(t_input *data)
 {
-	int	i;
+	t_node	*tmp;
 
-	i = 0;
-	data->node_tmp = data->args;
-	while (data->node_tmp)
+	tmp = data->args;
+	while (tmp)
 	{
-		while (data->node_tmp->next && data->node_tmp->type != ASTER)
-			data->node_tmp = data->node_tmp->next;
-		while (data->buf[i] && data->buf[i] != '*')
-			++i;
-		if (data->node_tmp->type == ASTER)
+		while (tmp->next && tmp->type != ASTER)
+			tmp = tmp->next;
+		if (tmp && tmp->type == ASTER)
 		{
-			if (data->buf[i - 1] && data->buf[i - 1] != ' ')
-				data->node_tmp->prev->type = WORD_AST_B;
-			if (data->buf[i + 1] && data->buf[i + 1] != ' ')
-				data->node_tmp->next->type = WORD_AST;
+			if (tmp->prev && tmp->prev->type == WORD)
+				tmp->prev->type = WORD_AST;
+			if (tmp->next && tmp->next->type == WORD)
+				tmp->next->type = WORD_AST;
 		}
-		++i;
-		data->node_tmp = data->node_tmp->next;
+		tmp = tmp->next;
 	}
 }
 
-static void	check_dollar(t_input *data)
+void	check_dollar(t_input *data)
 {
-	int	i;
+	t_node	*tmp;
 
-	i = 0;
-	data->node_tmp = data->args;
-	while (data->node_tmp)
+	tmp = data->args;
+	while (tmp)
 	{
-		while (data->node_tmp->next && data->node_tmp->type != DOLLAR)
-			data->node_tmp = data->node_tmp->next;
-		while (data->buf[i] && data->buf[i] != '$')
-			++i;
-		if (data->buf[i + 1] && data->buf[i + 1] == ' ')
-			data->node_tmp->type = WORD;
-		if (data->node_tmp && data->node_tmp->next
-			&& data->node_tmp->type == DOLLAR)
+		while (tmp->next && tmp->type != DOLLAR)
+			tmp = tmp->next;
+		if (tmp && tmp->type == DOLLAR)
 		{
-			if (data->buf[i + 1] && data->buf[i + 1] != ' '
-				&& data->buf[i + 1] != '\'')
-				data->node_tmp->next->type = DOLLAR;
+			if (tmp->next && (tmp->next->type == WSPACE
+					|| (tmp->next->type == QUOTE && tmp->value[0] != '$')))
+				tmp->type = WORD;
+			if (tmp->next && tmp->next->type != WSPACE
+					&& tmp->next->type != QUOTE && tmp->next->type != QUOTE_D)
+				tmp->next->type = DOLLAR;
 		}
-		data->node_tmp = data->node_tmp->next;
-		++i;
+		tmp = tmp->next;
 	}
 }
 
-static void	check_next(t_input *data, size_t *i)
+void	check_next(t_input *data, size_t *i)
 {
 	int	type;
 	int	next;
 
-	type = check_charset(data->buf[*i], "\"$\'&<>=*|(){}");
+	type = check_charset(data->buf[*i], "\"$\'&<>=*|/(){}");
 	if (!data->buf[*i + 1])
 		next = 0;
 	else
@@ -100,37 +94,6 @@ static void	check_next(t_input *data, size_t *i)
 	data->node_tmp = ms_token_new(type, data->value, data);
 	ms_token_back(&data->args, data->node_tmp);
 	++(*i);
-	if (data->buf[*i - 1] == '\"' || data->buf[*i - 1] == '\'')
-		check_quotes(data, i, data->buf[*i - 1]);
-}
-
-void	create_token(t_input *data)
-{
-	size_t	i;
-	int		type;
-
-	i = 0;
-	while (data->buf[i])
-	{
-		while (check_charset(data->buf[i], " \f\n\r\t\v"))
-			++i;
-		data->k = i;
-		while (data->buf[i] && !check_charset(data->buf[i]
-				, "\"$\'&<>=*| \f\n\r\t\v(){}"))
-			++i;
-		type = WORD;
-		if ((data->buf[i] == '\'' || data->buf[i] == '\"')
-			&& ft_isalnum(data->buf[i - 1]))
-			type = WORD_NOSPC;
-		if (i != data->k)
-		{
-			data->value = ms_strndup(data->buf + data->k, i - data->k, data);
-			data->node_tmp = ms_token_new(type, data->value, data);
-			ms_token_back(&data->args, data->node_tmp);
-		}
-		if (check_charset(data->buf[i], "\"$\'&<>=*|(){}"))
-			check_next(data, &i);
-	}
-	check_asterisk(data);
-	check_dollar(data);
+	// if (data->buf[*i - 1] == '\"' || data->buf[*i - 1] == '\'')
+	// 	check_quotes(data, i, data->buf[*i - 1]);
 }

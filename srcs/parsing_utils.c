@@ -1,5 +1,26 @@
 #include "../include/minishell.h"
 
+int	redirection_check(t_node *args, t_cmd *elem, t_input *data)
+{
+	if (args->value[0] == '<')
+	{
+		if (!args->next)
+		//|| is_the_next_is_word(args) == 1)
+			return (print_syntax_error_bool(args));
+		if (init_in(args, elem, data) == 1)
+			return (1);
+	}
+	else if (args->value[0] == '>')
+	{
+		if (!args->next) 
+		//|| is_the_next_is_word(args) == 1)
+			return (print_syntax_error_bool(args));
+		if (init_out(args, elem, data) == 1)
+			return (1);
+	}
+	return (0);
+}
+
 t_node	*next_elem(t_node *args)
 {
 	t_node	*next_elem;
@@ -16,26 +37,6 @@ t_node	*next_elem(t_node *args)
 	return (next_elem);
 }
 
-t_cmd	*init_empty_elem(void)
-{
-	t_cmd	*elem;
-
-	elem = (t_cmd *) malloc (sizeof(t_cmd));
-	if (!elem)
-		return (NULL);
-	elem->cmd = NULL;
-	elem->len_cmd = 0;
-	elem->delim = NULL;
-	elem->in = 0;
-	elem->in_arg = NULL;
-	elem->out = 1;
-	elem->out_arg = NULL;
-	elem->pipe = -1;
-	elem->next = NULL;
-	elem->prev = NULL;
-	return (elem);
-}
-
 int	init_in(t_node *args, t_cmd *elem, t_input *data)
 {
 	if (args->type == REDIR_HD)
@@ -43,9 +44,7 @@ int	init_in(t_node *args, t_cmd *elem, t_input *data)
 		if (signal(SIGINT, SIG_IGN) == SIG_ERR || signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 			printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
 		args = args->next;
-		elem->delim = ft_strdup(args->value);
-		if (!elem->delim)
-			return (1);
+		elem->delim = ms_strdup(args->value, data);
 		ms_heredoc(elem->delim, elem, data);
 		elem->in_arg = "heredoc.tmp";
 		return (0);
@@ -53,9 +52,7 @@ int	init_in(t_node *args, t_cmd *elem, t_input *data)
 	else if (args->type == REDIR_IN)
 	{
 		args = args->next;
-		elem->in_arg = ft_strdup(args->value);
-		if (!elem->in_arg)
-			return (1);
+		elem->in_arg = ms_strdup(args->value, data);
 		elem->in = open(elem->in_arg, O_RDONLY);
 		return (0);
 	}
@@ -68,18 +65,14 @@ int	init_out(t_node *args, t_cmd *elem, t_input *data)
 	if (args->type == REDIR_AP)
 	{
 		args = args->next;
-		elem->out_arg = ft_strdup(args->value);
-		if (!elem->out_arg)
-			return (1);
+		elem->out_arg = ms_strdup(args->value, data);
 		elem->out = open(elem->out_arg, O_WRONLY | O_CREAT | O_APPEND, 00644);
 		return (0);
 	}
 	else if (args->type == REDIR_OUT)
 	{
 		args = args->next;
-		elem->out_arg = ft_strdup(args->value);
-		if (!elem->out_arg)
-			return (1);
+		elem->out_arg = ms_strdup(args->value, data);
 		elem->out = open(elem->out_arg, O_WRONLY | O_CREAT | O_TRUNC, 00644);
 		return (0);
 	}
