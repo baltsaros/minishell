@@ -34,7 +34,7 @@
 // 	data->argc = argc;
 // 	data->argv = argv;
 // 	data->envp = envp;
-// 	data->status = 0;
+// 	g_status = 0;
 // 	data->envp_n = NULL;
 // 	create_envp(data, envp);
 // 	printf("node print\n");
@@ -59,7 +59,7 @@ int	main(int argc, char *argv[], char *envp[])
 	// 	++i;
 	// }
 	// ft_free(data.argv);
-	ft_heredoc("end");
+	ms_heredoc("end");
 	// system("leaks out");
 	return (0);
 }

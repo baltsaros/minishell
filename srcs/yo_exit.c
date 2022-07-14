@@ -8,12 +8,12 @@ static int	ft_isdigit_sign(int c)
 		return (0);
 }
 
-static int	check_nonumeric(t_input *data)
+static int	check_nonnumeric(t_input *data)
 {
 	if (!data->cmds->cmd[1])
 	{
 		write(data->cmds->out, "exit\n", 5);
-		data->status = 0;
+		g_status = 0;
 		return (0);
 	}
 	data->i = 0;
@@ -25,7 +25,7 @@ static int	check_nonumeric(t_input *data)
 			write(2, "YAMSP-1.6: exit: ", 17);
 			write(2, data->cmds->cmd[1], ft_strlen(data->cmds->cmd[1]));
 			write(2, ": numeric argument required\n", 28);
-			data->status = 2;
+			g_status = 2;
 			return (0);
 		}
 		data->i++;
@@ -40,7 +40,7 @@ static int	check_amount(t_input *data)
 		write(data->cmds->out, "exit\n", 5);
 		write(2, "YAMSP-1.6: exit: ", 17);
 		write(2, "too many arguments\n", 19);
-		data->status = 1;
+		g_status = 1;
 		return (0);
 	}
 	return (1);
@@ -49,17 +49,21 @@ static int	check_amount(t_input *data)
 int	yo_exit(t_input *data)
 {
 	if (!data->buf)
-		exit(1);
-	ft_free_envp(data->envp_n);
-	ft_free_token(data->args);
-	ft_free(data->envp);
+	{
+		g_status = 1;
+		exit(g_status);
+	}
+	ms_free_envp(data->envp_n);
+	ms_free_token(data->args);
+	ms_free(data->envp);
 	// if (data->wild)
-	// 	ft_free_token(data->wild);
-	// ft_free_cmd(data->cmds);
-	if (!check_nonumeric(data))
-		exit(data->status);
+	// 	ms_free_token(data->wild);
+	// ms_free_cmd(data->cmds);
+	if (!check_nonnumeric(data))
+		exit(g_status);
 	if (!check_amount(data))
-		exit(data->status);
+		exit(g_status);
+	g_status = ft_atoi(data->cmds->cmd[1]);
 	write(data->cmds->out, "exit\n", 5);
-	exit (data->status);
+	exit (g_status);
 }

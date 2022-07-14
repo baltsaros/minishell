@@ -1,11 +1,10 @@
 #include "../include/minishell.h"
 
-t_env	*ft_envp_new(char *type, char *value)
+t_env	*ms_envp_new(char *type, char *value, t_input *data)
 {
 	t_env	*node;
 
-	node = malloc(sizeof(t_env));
-	alloc_check_small(node);
+	node = ms_malloc(sizeof(t_env), data);
 	node->type = type;
 	node->value = value;
 	node->next = NULL;
@@ -13,7 +12,7 @@ t_env	*ft_envp_new(char *type, char *value)
 	return (node);
 }
 
-void	ft_envp_back(t_env **node, t_env *new)
+void	ms_envp_back(t_env **node, t_env *new)
 {
 	t_env	*tmp;
 
@@ -33,7 +32,7 @@ void	ft_envp_back(t_env **node, t_env *new)
 	}
 }
 
-t_env	*ft_envp_del(t_env *node)
+t_env	*ms_envp_del(t_env *node)
 {
 	t_env	*tmp;
 
@@ -56,13 +55,13 @@ t_env	*ft_envp_del(t_env *node)
 		node = node->next;
 		node->prev = NULL;
 	}
-	ft_free_node_elems(tmp);
+	ms_free_node_elems(tmp);
 	return (node);
 }
 
-void	ft_envp_print(t_env *node)
+void	ms_envp_print(t_env *node)
 {
-	int		i;
+	int	i;
 
 	if (!node)
 	{
@@ -80,7 +79,7 @@ void	ft_envp_print(t_env *node)
 	}
 }
 
-int	ft_envp_size(t_env *node)
+int	ms_envp_size(t_env *node)
 {
 	int	i;
 

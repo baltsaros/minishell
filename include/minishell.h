@@ -19,10 +19,11 @@
 # include <readline/history.h>
 # include <libft.h>
 # include <stdbool.h>
+# include <errno.h>
 // # include "../libft/libft.h"
 
 // global var
-// int	g_status;
+int	g_status;
 
 // enum for tokens
 enum e_tokens
@@ -48,6 +49,7 @@ enum e_tokens
 	AMPER		= 38,	// &
 	APOST		= 44,	// `
 	BACKSL		= 92,	// '\'
+	SLASH		= 47,	// '/'
 	TRU			= 10,
 	FALS		= 11,
 	BRACES_L	= 123,	// {
@@ -94,6 +96,7 @@ typedef struct s_input
 {
 	int					i;
 	int					j;
+	size_t				k;
 	char				*tmp;
 	char				*type;
 	char				*value;
@@ -109,7 +112,6 @@ typedef struct s_input
 	t_cmd				*cmds;
 	char				*buf;
 	struct s_builtin	*builtins;
-	int					status;
 	DIR					*dir;
 	pid_t				pid;
 	char				**line;
@@ -129,36 +131,38 @@ void	alloc_check_token(t_node *new, t_node **node);
 void	alloc_check_envp(t_env *new, t_env **node);
 
 // tokens
-t_node	*ft_token_new(int type, char *value);
-void	ft_token_back(t_node **node, t_node *new);
-t_node	*ft_token_del(t_node *node);
-void	ft_token_print(t_node *node);
-int		ft_token_size(t_node *node);
+t_node	*ms_token_new(int type, char *value, t_input *data);
+void	ms_token_back(t_node **node, t_node *new);
+t_node	*ms_token_del(t_node *node);
+void	ms_token_print(t_node *node);
+int		ms_token_size(t_node *node);
 
 // envp tokens
-t_env	*ft_envp_new(char *type, char *value);
-void	ft_envp_back(t_env **node, t_env *new);
-t_env	*ft_envp_del(t_env *node);
-void	ft_envp_print(t_env *node);
-int		ft_envp_size(t_env *node);
+t_env	*ms_envp_new(char *type, char *value, t_input *data);
+void	ms_envp_back(t_env **node, t_env *new);
+t_env	*ms_envp_del(t_env *node);
+void	ms_envp_print(t_env *node);
+int		ms_envp_size(t_env *node);
 
 // free
-void	ft_free(char *str[]);
-t_node	*ft_free_token(t_node *node);
-t_env	*ft_free_envp(t_env *node);
-void	ft_free_cmd(t_cmd *cmd);
-void	ft_free_node_elems(t_env *tmp);
+void	ms_free(char *str[]);
+t_node	*ms_free_token(t_node *node);
+t_env	*ms_free_envp(t_env *node);
+void	ms_free_cmd(t_cmd *cmd);
+void	ms_free_node_elems(t_env *tmp);
+void	ms_free_all(t_input *data);
 
 // utils
-char	*ft_strndup(char const *str, size_t size);
-int		error_check(int input, char *str, int n);
+char	*ms_strndup(char const *str, size_t size, t_input *data);
+int		error_check(int input, char *str, int n, t_input *data);
 int		ft_strstr(char *str, char *to_find);
 int		check_charset(char c, char *charset);
 void	increase_shlvl(t_input *data);
 
-char	**ft_split_space(char const *s, char *charset);
-int		get_next_line(char **line);
-int		get_next_line_hd(char **line);
+int		get_next_line(char **line, t_input *data);
+int		ft_strcmp(char *s1, char *s2);
+void	*ms_malloc(size_t n, t_input *data);
+char	*ms_strdup(const char *s, t_input *data);
 
 // minishell
 void	prompt(t_input *data);
@@ -181,16 +185,18 @@ void	check_next(t_input *data, size_t *i);
 
 // execute
 int		pipex(t_input *data);
-void	ft_heredoc(char *limiter, t_cmd *elem);
-void	ft_fork(char *argv[], t_input *data);
+void	ms_heredoc(char *limiter, t_cmd *elem, t_input *data);
+void	ms_fork(char *argv[], t_input *data);
 int		execute(t_input *data);
 
 // execute_utils
-char	*ft_strjoin_free(char *rest, char *buf);
-char	*ft_charjoin_free(char *line, char b);
-char	**get_address(char *cmd[], char *envp[]);
+char	*ms_strjoin_free(char *rest, char *buf, t_input *data);
+char	*ms_charjoin_free(char *line, char b, t_input *data);
+char	**get_address(char *cmd[], char *envp[], t_input *data);
 char	*access_check(char *cmd[], t_input *data);
-void	ft_execve(char *argv[], t_input *data);
+void	ms_execve(char *argv[], t_input *data);
+void	set_std(t_input *data, int in, int out);
+void	close_fds(int fd1, int f2);
 
 // builtins
 int		yo_pwd(t_input *data);
@@ -205,7 +211,7 @@ int		yo_exit(t_input *data);
 void	add_envp(t_input *data, char *type, char *value);
 
 //signals
-void	signal_handling(int	signo);
+void	signal_handling(int signo);
 
 // wildcard
 void	asterisks(t_input *data, t_cmd *cmds);
@@ -218,21 +224,24 @@ int		print_syntax_error_bool(t_node *args);
 // parsing
 int		parsing(t_input *data);
 t_cmd	*parse_cmd(t_input *data);
-t_cmd	*init_elem(t_node *args);
-t_cmd	*fill_elem(t_node	*args, t_cmd *elem);
-t_cmd	*init_empty_elem(void);
+t_cmd	*init_elem(t_node *args, t_input *data);
+t_cmd	*fill_elem(t_node *args, t_cmd *elem, t_input *data);
+t_cmd	*init_empty_elem(t_input *data);
 
 // parsing_utils
 t_node	*next_elem(t_node *args);
-int		init_in(t_node *args, t_cmd *elem);
-int		init_out(t_node *args, t_cmd *elem);
+int		init_in(t_node *args, t_cmd *elem, t_input *data);
+int		init_out(t_node *args, t_cmd *elem, t_input *data);
 int		get_len_cmd(char **str);
-int		redirection_check(t_node *args, t_cmd *elem);
+int		redirection_check(t_node *args, t_cmd *elem, t_input *data);
 
 // parsing_utils_2
-char	**init_cmd(t_node	*args);
+char	**init_cmd(t_node *args, t_input *data);
 
 // Readline functions
 void	rl_replace_line(const char *text, int clear_undo);
+
+// messages
+void	too_many_argv(void);
 
 #endif

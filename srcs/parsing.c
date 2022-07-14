@@ -1,12 +1,10 @@
 #include "../include/minishell.h"
 
-t_cmd	*init_empty_elem(void)
+t_cmd	*init_empty_elem(t_input *data)
 {
 	t_cmd	*elem;
 
-	elem = (t_cmd *) malloc (sizeof(t_cmd));
-	if (!elem)
-		return (NULL);
+	elem = ms_malloc(sizeof(t_cmd), data);
 	elem->cmd = NULL;
 	elem->len_cmd = 0;
 	elem->delim = NULL;
@@ -20,15 +18,15 @@ t_cmd	*init_empty_elem(void)
 	return (elem);
 }
 
-t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
+t_cmd	*fill_elem(t_node *args, t_cmd *elem, t_input *data)
 {
-	elem->cmd = init_cmd(args);
+	elem->cmd = init_cmd(args, data);
 	if (!elem->cmd)
 		return (NULL);
 	elem->len_cmd = get_len_cmd(elem->cmd);
 	while (args && args->type != PIPE)
 	{
-	 	if (redirection_check(args, elem) == 1)
+	 	if (redirection_check(args, elem, data) == 1)
 	 		return (NULL);
 	 	if (args->next && args->next->type == PIPE)
 	 	{
@@ -42,15 +40,15 @@ t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 	return (elem);
 }
 
-t_cmd	*init_elem(t_node *args)
+t_cmd	*init_elem(t_node *args, t_input *data)
 {
 	(void)args;
 	t_cmd	*elem;
 
-	elem = init_empty_elem();
+	elem = init_empty_elem(data);
 	if (!elem)
 		return (NULL);
-	elem = fill_elem(args, elem);
+	elem = fill_elem(args, elem, data);
 	if (!elem)
 		return (NULL);
 	return (elem);
@@ -62,7 +60,7 @@ t_cmd	*parse_cmd(t_input *data)
 	t_cmd	*arg;
 	t_cmd	*new_con;
 
-	first_elem = init_elem(data->args);
+	first_elem = init_elem(data->args, data);
 	if (!first_elem)
 		return (NULL);
 	arg = first_elem;
@@ -71,7 +69,7 @@ t_cmd	*parse_cmd(t_input *data)
 		data->args = next_elem(data->args);
 		if (!data->args || !data->args->next)
 			break ;
-		new_con = init_elem(data->args);
+		new_con = init_elem(data->args, data);
 		if (!new_con)
 			return (NULL);
 		new_con->prev = arg;
@@ -86,19 +84,22 @@ int	parsing(t_input *data)
 	data->cmds = parse_cmd(data);
 	if (!data->cmds)
 		return (1);
-	while (data->cmds)
-	{
-		for (int i = 0; data->cmds->cmd[i]; i++)
-			printf("cmd[%d]: %s\n", i, data->cmds->cmd[i]);
-		printf("len_cmd: %d\n", data->cmds->len_cmd);
-		printf("delim: %s\n", data->cmds->delim);
-		printf("in: %d\n", data->cmds->in);
-		printf("in arg: %s\n", data->cmds->in_arg);
-		printf("out: %d\n", data->cmds->out);
-		printf("out arg: %s\n", data->cmds->out_arg);
-		printf("pipe: %d\n", data->cmds->pipe);
-		printf("[NEXT]\n");
-		data->cmds = data->cmds->next;
-	}
+
+	// t_cmd	*tmp;
+	// tmp = data->cmds;
+	// while (tmp)
+	// {
+	// 	for (int i = 0; tmp->cmd[i]; i++)
+	// 		printf("cmd[%d]: %s\n", i, tmp->cmd[i]);
+	// 	printf("len_cmd: %d\n", tmp->len_cmd);
+	// 	printf("delim: %s\n", tmp->delim);
+	// 	printf("in: %d\n", tmp->in);
+	// 	printf("in arg: %s\n", tmp->in_arg);
+	// 	printf("out: %d\n", tmp->out);
+	// 	printf("out arg: %s\n", tmp->out_arg);
+	// 	printf("pipe: %d\n", tmp->pipe);
+	// 	printf("[NEXT]\n");
+	// 	tmp = tmp->next;
+	// }
 	return (0);
 }

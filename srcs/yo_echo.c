@@ -8,6 +8,7 @@ static void	show_rvalue(char **str, int status)
 		if (status > 128)
 			status = (status >> 8) & 0xff;
 		*str = ft_itoa(status);
+		alloc_check_small(*str);
 	}
 }
 
@@ -44,8 +45,9 @@ int	yo_echo(t_input *data)
 	if (!data->cmds->cmd[1])
 		write(data->cmds->out, "\n", 1);
 	else if (strncmp(data->cmds->cmd[1], "-n", 2) == 0)
-		echo_with_flag(data->cmds, data->status);
+		echo_with_flag(data->cmds, g_status);
 	else
-		echo_without_flag(data->cmds, data->status);
-	return (data->status);
+		echo_without_flag(data->cmds, g_status);
+	g_status = 0;
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/14 14:50:16 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/14 14:53:02 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,7 @@ int	get_size_cmd(t_node	*args)
 		}
 		args = args->next;
 	}
-
-	printf("I: %d\n", i);
-
+	// printf("I: %d\n", i);
 	return (i);
 }
 
@@ -131,7 +129,7 @@ char	*init_aster_word(t_node	*args, char *str)
 	return (str);
 }
 
-char	**init_cmd(t_node	*args)
+char	**init_cmd(t_node *args, t_input *data)
 {
 	int		size;
 	int		i;
@@ -139,16 +137,12 @@ char	**init_cmd(t_node	*args)
 	
 	size = get_size_cmd(args);
 	i = 0;
-	str = (char	**) malloc ((size + 1) * sizeof(char *));
-	if (!str)
-		return (NULL);
+	str = ms_malloc((size + 1) * sizeof(char *), data);
 	while (args && i != size && args->type != PIPE)
 	{
 		if (args->type != QUOTE_D && args->type != QUOTE)
 		{
-			str[i] = ft_strdup("");
-			if (!str[i])
-				return (NULL);
+			str[i] = ms_strdup("", data);
 			if (args->type == ASTER)
 			{
 				str[i] = init_aster_word(args, str[i]);

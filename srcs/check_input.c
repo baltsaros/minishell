@@ -1,14 +1,14 @@
 #include "../include/minishell.h"
 
-static int	read_after_pipe(char **buf, char *msg, char c)
+static int	check_pipe(char **buf, char *msg, char c, t_input *data)
 {
 	char	*tmp;
 
 	while (1)
 	{
 		tmp = readline(msg);
-		*buf = ft_charjoin_free(*buf, '\n');
-		*buf = ft_strjoin_free(*buf, tmp);
+		*buf = ms_charjoin_free(*buf, '\n', data);
+		*buf = ms_strjoin_free(*buf, tmp, data);
 		if (!ft_strchr(tmp, c))
 		{
 			free(tmp);
@@ -19,15 +19,15 @@ static int	read_after_pipe(char **buf, char *msg, char c)
 	return (0);
 }
 
-static int	read_after(char **buf, char *msg, char c)
+static int	read_after(char **buf, char *msg, char c, t_input *data)
 {
 	char	*tmp;
 
 	while (1)
 	{
 		tmp = readline(msg);
-		*buf = ft_charjoin_free(*buf, '\n');
-		*buf = ft_strjoin_free(*buf, tmp);
+		*buf = ms_charjoin_free(*buf, '\n', data);
+		*buf = ms_strjoin_free(*buf, tmp, data);
 		if (ft_strchr(tmp, c))
 		{
 			free(tmp);
@@ -57,11 +57,11 @@ int	check_field(char **buf, t_input *data)
 		++data->i;
 	}
 	if (quote && quote % 2 != 0)
-		read_after(buf, "quote>", '\'');
+		read_after(buf, "quote> ", '\'', data);
 	else if (quote_d && quote_d % 2 != 0)
-		read_after(buf, "dquote>", '\"');
+		read_after(buf, "dquote> ", '\"', data);
 	if (tmp[data->i - 1] == '|')
-		read_after_pipe(buf, ">", '|');
+		check_pipe(buf, "> ", '|', data);
 	return (0);
 }
 

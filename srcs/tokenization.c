@@ -2,24 +2,22 @@
 
 void	create_token(t_input *data, char *str, int len, int type)
 {
-	data->value = ft_strndup(str, len);
-	data->node_tmp = ft_token_new(type, data->value);
-	ft_token_back(&data->args, data->node_tmp);
+	data->value = ms_strndup(str, len, data);
+	data->node_tmp = ms_token_new(type, data->value, data);
+	ms_token_back(&data->args, data->node_tmp);
 }
 
 void	check_quotes(t_input *data, size_t *i, char c)
 {
-	size_t	start;
-
-	start = *i;
+	data->k = *i;
 	while (data->buf[*i] && data->buf[*i] != c)
 	{
 		if (data->buf[*i] == '$' && c == '\"')
 			break ;
 		++(*i);
 	}
-	if (*i != start)
-		create_token(data, data->buf + start, *i - start, WORD);
+	if (*i != data->k)
+		create_token(data, data->buf + data->k, *i - data->k, WORD);
 	if (data->buf[*i] && data->buf[*i] == c)
 	{
 		create_token(data, data->buf + *i, 1, (int)c);
@@ -68,7 +66,7 @@ void	check_dollar(t_input *data)
 					|| (tmp->next->type == QUOTE && tmp->value[0] != '$')))
 				tmp->type = WORD;
 			if (tmp->next && tmp->next->type != WSPACE
-					&& tmp->next->type != QUOTE && tmp->next->type != QUOTE_D)
+				&& tmp->next->type != QUOTE && tmp->next->type != QUOTE_D)
 				tmp->next->type = DOLLAR;
 		}
 		tmp = tmp->next;
@@ -80,21 +78,21 @@ void	check_next(t_input *data, size_t *i)
 	int	type;
 	int	next;
 
-	type = check_charset(data->buf[*i], "\"$\'&<>=*|(){}");
+	type = check_charset(data->buf[*i], "\"$\'&<>=*|/(){}");
 	if (!data->buf[*i + 1])
 		next = 0;
 	else
 		next = check_charset(data->buf[*i + 1], "<>|&");
 	if (type == next)
 	{
-		data->value = ft_strndup(data->buf + *i, 2);
+		data->value = ms_strndup(data->buf + *i, 2, data);
 		type += 100;
 		++(*i);
 	}
 	else
-		data->value = ft_strndup(data->buf + *i, 1);
-	data->node_tmp = ft_token_new(type, data->value);
-	ft_token_back(&data->args, data->node_tmp);
+		data->value = ms_strndup(data->buf + *i, 1, data);
+	data->node_tmp = ms_token_new(type, data->value, data);
+	ms_token_back(&data->args, data->node_tmp);
 	++(*i);
 	// if (data->buf[*i - 1] == '\"' || data->buf[*i - 1] == '\'')
 	// 	check_quotes(data, i, data->buf[*i - 1]);

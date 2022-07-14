@@ -1,13 +1,13 @@
 #include "../include/minishell.h"
 
-int	redirection_check(t_node *args, t_cmd *elem)
+int	redirection_check(t_node *args, t_cmd *elem, t_input *data)
 {
 	if (args->value[0] == '<')
 	{
 		if (!args->next)
 		//|| is_the_next_is_word(args) == 1)
 			return (print_syntax_error_bool(args));
-		if (init_in(args, elem) == 1)
+		if (init_in(args, elem, data) == 1)
 			return (1);
 	}
 	else if (args->value[0] == '>')
@@ -15,7 +15,7 @@ int	redirection_check(t_node *args, t_cmd *elem)
 		if (!args->next) 
 		//|| is_the_next_is_word(args) == 1)
 			return (print_syntax_error_bool(args));
-		if (init_out(args, elem) == 1)
+		if (init_out(args, elem, data) == 1)
 			return (1);
 	}
 	return (0);
@@ -37,26 +37,22 @@ t_node	*next_elem(t_node *args)
 	return (next_elem);
 }
 
-int	init_in(t_node *args, t_cmd *elem)
+int	init_in(t_node *args, t_cmd *elem, t_input *data)
 {
 	if (args->type == REDIR_HD)
 	{
 		if (signal(SIGINT, SIG_IGN) == SIG_ERR || signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 			printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
 		args = args->next;
-		elem->delim = ft_strdup(args->value);
-		if (!elem->delim)
-			return (1);
-		ft_heredoc(elem->delim, elem);
+		elem->delim = ms_strdup(args->value, data);
+		ms_heredoc(elem->delim, elem, data);
 		elem->in_arg = "heredoc.tmp";
 		return (0);
 	}
 	else if (args->type == REDIR_IN)
 	{
 		args = args->next;
-		elem->in_arg = ft_strdup(args->value);
-		if (!elem->in_arg)
-			return (1);
+		elem->in_arg = ms_strdup(args->value, data);
 		elem->in = open(elem->in_arg, O_RDONLY);
 		error_check(elem->in, "[ERROR]: Wrong File Descriptor\n", 31);
 		return (0);
@@ -64,14 +60,13 @@ int	init_in(t_node *args, t_cmd *elem)
 	return (1);
 }
 
-int	init_out(t_node *args, t_cmd *elem)
+int	init_out(t_node *args, t_cmd *elem, t_input *data)
 {
+	(void)data;
 	if (args->type == REDIR_AP)
 	{
 		args = args->next;
-		elem->out_arg = ft_strdup(args->value);
-		if (!elem->out_arg)
-			return (1);
+		elem->out_arg = ms_strdup(args->value, data);
 		elem->out = open(elem->out_arg, O_WRONLY | O_CREAT | O_APPEND, 00644);
 		error_check(elem->out, "[ERROR]: Wrong File Descriptor\n", 31);
 		return (0);
@@ -79,9 +74,7 @@ int	init_out(t_node *args, t_cmd *elem)
 	else if (args->type == REDIR_OUT)
 	{
 		args = args->next;
-		elem->out_arg = ft_strdup(args->value);
-		if (!elem->out_arg)
-			return (1);
+		elem->out_arg = ms_strdup(args->value, data);
 		elem->out = open(elem->out_arg, O_WRONLY | O_CREAT | O_TRUNC, 00644);
 		error_check(elem->out, "[ERROR]: Wrong File Descriptor\n", 31);
 		return (0);
