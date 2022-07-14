@@ -52,7 +52,6 @@ enum e_tokens
 	FALS		= 11,
 	BRACES_L	= 123,	// {
 	BRACES_R	= 125,	// }
-	SLASH		= 93	// /
 };
 
 // struct for tokens (+ wildcard) linked lists

@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/14 13:49:32 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/14 14:19:24 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,27 @@ char	*get_env_variable(char *arg)
 	return (str);
 }
 
+char	*init_aster_word(t_node	*args, char *str)
+{
+	if (args->prev && args->prev->type == WORD_AST)
+	{
+		str = ft_strjoin_free(str, args->prev->value);
+		if (!str)
+			return (NULL);
+	}
+	str = ft_strjoin_free(str, args->value);
+	if (!str)
+		return (NULL);
+	if (args->next && args->next->type == WORD_AST)
+	{
+		args = args->next;
+		str = ft_strjoin_free(str, args->value);
+		if (!str)
+			return (NULL);
+	}
+	return (str);
+}
+
 char	**init_cmd(t_node	*args)
 {
 	int		size;
@@ -125,67 +146,45 @@ char	**init_cmd(t_node	*args)
 	{
 		if (args->type != QUOTE_D && args->type != QUOTE)
 		{
-			str[i] = ft_strdup("Salut");
+			str[i] = ft_strdup("");
 			if (!str[i])
 				return (NULL);
-			// if (args->type == ASTER)
-			// {
-			// 	if (args->prev && args->prev->type == WORD_AST)
-			// 	{
-			// 		str[i] = ft_strjoin_free(str[i], args->prev->value);
-			// 		if (!str[i])
-			// 			return (NULL);
-			// 	}
-			// 	str[i] = ft_strjoin_free(str[i], args->value);
-			// 	if (!str[i])
-			// 		return (NULL);
-			// 	if (args->next && args->next->type == WORD_AST)
-			// 	{
-			// 		args = args->next;
-			// 		str[i] = ft_strjoin_free(str[i], args->value);
-			// 		if (!str[i])
-			// 			return (NULL);
-			// 	}
-			// 	i++;
-			// }
-			// else if ((args->type == WORD && (args->prev && args->prev->type != DOLLAR))
-			// 	|| ((args->type == WORD || args->type == AND || args->type == OR 
-			// 	|| args->type == EQUAL) 
-			// 	&& ((args->prev && args->prev->type == QUOTE_D)
-			// 	&& (args->next && args->next->type == QUOTE_D))))
-			// {
-			// 	if (args->prev && args->prev->type == QUOTE_D)
-			// 	{
-			// 		if (args->prev->prev && (args->prev->prev->type == WORD
-			// 			|| args->prev->prev->type == AND || args->prev->prev->type == OR 
-			// 			|| args->prev->prev->type == EQUAL))
-			// 		{
-			// 			str[i] = ft_strjoin_free(str[i], args->prev->prev->value);
-			// 			if (!str[i])
-			// 				return (NULL);
-			// 		}
-			// 	}
-			// 	str[i] = ft_strjoin_free(str[i], args->value);
-			// 	if (!str[i])
-			// 		return (NULL);
-			// 	if (args->next && args->next->type == QUOTE_D)
-			// 	{
-			// 		if (args->next->next && (args->next->next->type == WORD
-			// 			|| args->next->next->type == AND || args->next->next->type == OR 
-			// 			|| args->next->next->type == EQUAL))
-			// 		{
-			// 			args = args->next;
-			// 			str[i] = ft_strjoin_free(str[i], args->next->value);
-			// 			if (!str[i])
-			// 				return (NULL);
-			// 		}
-			// 	}
-			// 	i++;
-			// }
-			// else if ((args->type == WORD && (args->prev && args->prev->type != DOLLAR))
-			// 	|| ((args->type == WORD || args->type == AND || args->type == OR 
-			// 	|| args->type == EQUAL) 
-			// 	&& ((!args->prev || args->prev->type != QUOTE_D) && (!args->next || args->next->type != QUOTE_D))))
+			if (args->type == ASTER)
+			{
+				str[i] = init_aster_word(args, str[i]);
+				if (!str[i])
+					return (NULL);
+				i++;
+			}
+			if (args->type == WORD && (args->next && args->next->type == QUOTE_D))
+			{
+				str[i] = ft_strjoin_free(str[i], args->value);
+				if (!str[i])
+					return (NULL);
+				args = args->next;
+				if (args->next)
+				{
+					args = args->next;
+					while (args && args->type != QUOTE_D)
+					{
+						str[i] = ft_strjoin_free(str[i], args->value);
+						if (!str[i])
+							return (NULL);
+						args = args->next;
+					}
+					if (args->type == QUOTE_D && args->next)
+					{
+						args = args->next;
+						str[i] = ft_strjoin_free(str[i], args->value);
+						if (!str[i])
+							return (NULL);
+					}
+					i++;
+				}
+				else
+					i++;
+			}
+			// else if ()
 			// {
 			// 	str[i] = ft_strjoin_free(str[i], args->value);
 			// 	if (!str[i])
@@ -223,7 +222,6 @@ char	**init_cmd(t_node	*args)
 			else
 				free(str[i]);
 		}
-		i++;
 		args = args->next;
 	}
 	str[i] = NULL;
