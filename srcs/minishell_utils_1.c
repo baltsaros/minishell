@@ -18,12 +18,13 @@ char	*ms_strndup(char const *str, size_t size, t_input *data)
 
 int	error_check(int input, char *str, int n, t_input *data)
 {
+	(void)data;
 	if (input < 0)
 	{
 		write(2, "YAMSP-1.6: ", 11);
 		write(2, str, n);
 		perror("something went wrong");
-		data->status = errno;
+		g_status = errno;
 		exit (errno);
 	}
 	return (input);

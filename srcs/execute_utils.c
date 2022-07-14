@@ -88,8 +88,8 @@ char	*access_check(char *cmd[], t_input *data)
 		write(2, cmd[0], ft_strlen(cmd[0]));
 		write(2, ": command not found\n", 20);
 		ms_free(env);
-		data->status = 127;
-		exit(data->status);
+		g_status = 127;
+		exit(g_status);
 	}
 	ret = ms_strdup(env[i], data);
 	ms_free(env);
@@ -108,13 +108,13 @@ void	ms_execve(char **argv, t_input *data)
 	if (!ft_strncmp(argv[0], "./minishell", 12))
 		increase_shlvl(data);
 	path = access_check(argv, data);
-	data->status = 0;
+	g_status = 0;
 	if (execve(path, argv, data->envp) < 0)
 	{
 		write(2, "YAMSP-1.6: ", 11);
 		perror("execve error");
-		data->status = errno;
+		g_status = errno;
 		free(path);
-		exit(data->status);
+		exit(g_status);
 	}
 }

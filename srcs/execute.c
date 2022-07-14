@@ -29,7 +29,7 @@ void	ms_fork(char *argv[], t_input *data)
 	{
 		error_check(dup2(fd[1], STDOUT_FILENO), "In Dup2_ch ", 12, data);
 		if (check_builtin(data, data->cmds))
-			exit(data->status);
+			exit(g_status);
 		else
 		{
 			close(data->cmds->in);
@@ -78,12 +78,12 @@ int	pipex(t_input *data)
 	}
 	error_check(dup2(data->cmds->out, STDOUT_FILENO), "In dup2_outP ", 14, data);
 	if (check_builtin(data, data->cmds))
-		exit(data->status);
+		exit(g_status);
 	else
 		ms_execve(data->cmds->cmd, data);
 	close(data->cmds->in);
 	close(data->cmds->out);
-	data->status = 0;
+	g_status = 0;
 	return (0);
 }
 
@@ -114,6 +114,6 @@ int	execute(t_input *data)
 				close(data->cmds->out);
 			}
 		}
-		waitpid(data->pid, &data->status, 0);
+		waitpid(data->pid, &g_status, 0);
 	}	return (0);
 }

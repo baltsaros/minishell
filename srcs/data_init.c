@@ -69,7 +69,7 @@ void	data_init(t_input *data)
 {
 	if (!data->buf || !*data->buf)
 		return ;
-	// data->status = 0;
+	// g_status = 0;
 	data->in = 0;
 	data->out = 1;
 	data->args = NULL;

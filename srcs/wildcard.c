@@ -16,7 +16,7 @@ static void	find_files_error(t_input *data, char *str)
 	write(2, "ls: ", 4);
 	write(2, str, ft_strlen(str));
 	write(2, ": No such file or directory\n", 28);
-	data->status = 2;
+	g_status = 2;
 	data->node_tmp = ms_token_new(-1, NULL, data);
 	ms_token_back(&data->cmds->wild, data->node_tmp);
 }
@@ -72,7 +72,7 @@ void	asterisks(t_input *data, t_cmd *cmds)
 	{
 		write(2, "YAMSP-1.6: ", 11);
 		perror("opendir");
-		data->status = errno;
+		g_status = errno;
 		exit(errno);
 	}
 	i = 0;

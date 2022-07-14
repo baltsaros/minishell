@@ -42,8 +42,8 @@ void	*ms_malloc(size_t n, t_input *data)
 		write(2, "YAMSP-1.6: ", 11);
 		write(2, "allocation failed\n", 18);
 		ms_free_all(data);
-		data->status = 1;
-		exit(data->status);
+		g_status = 1;
+		exit(g_status);
 	}
 	return (ptr);
 }

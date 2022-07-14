@@ -45,9 +45,9 @@ int	yo_echo(t_input *data)
 	if (!data->cmds->cmd[1])
 		write(data->cmds->out, "\n", 1);
 	else if (strncmp(data->cmds->cmd[1], "-n", 2) == 0)
-		echo_with_flag(data->cmds, data->status);
+		echo_with_flag(data->cmds, g_status);
 	else
-		echo_without_flag(data->cmds, data->status);
-	data->status = 0;
+		echo_without_flag(data->cmds, g_status);
+	g_status = 0;
 	return (0);
 }

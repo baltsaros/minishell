@@ -54,7 +54,7 @@ int	yo_export(t_input *data)
 {
 	int	i;
 
-	data->status = 0;
+	g_status = 0;
 	if (data->cmds->len_cmd == 1)
 	{
 		print_envp(data->envp_n);

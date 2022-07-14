@@ -34,7 +34,7 @@
 // 	data->argc = argc;
 // 	data->argv = argv;
 // 	data->envp = envp;
-// 	data->status = 0;
+// 	g_status = 0;
 // 	data->envp_n = NULL;
 // 	create_envp(data, envp);
 // 	printf("node print\n");

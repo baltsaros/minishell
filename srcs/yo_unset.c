@@ -57,6 +57,6 @@ int	yo_unset(t_input *data)
 			remove_envp(data, data->cmds->cmd[i]);
 		++i;
 	}
-	data->status = 0;
+	g_status = 0;
 	return (0);
 }
