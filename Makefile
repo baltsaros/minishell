@@ -37,6 +37,8 @@ SRC_FILES	= minishell.c \
 				yo_exit.c \
 				yo_pwd.c \
 				token_simplification.c \
+				token_simplification_utils.c \
+				quote_transformation.c \
 				syntax_checker.c
 SRCS		= $(notdir $(SRC_FILES))
 
