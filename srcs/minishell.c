@@ -36,11 +36,11 @@ void	prompt(t_input *data)
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_input	data;
-	
+
 	(void)argv;
 	if (argc != 1)
 		exit(EXIT_FAILURE);
 	envp_init(&data, envp);
 	prompt(&data);
-	return ((data.status >> 8) & 0xff);
+	return ((g_status >> 8) & 0xff);
 }

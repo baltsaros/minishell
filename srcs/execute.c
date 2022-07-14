@@ -76,7 +76,8 @@ int	pipex(t_input *data)
 		ms_fork(data->cmds->cmd, data);
 		data->cmds = data->cmds->next;
 	}
-	error_check(dup2(data->cmds->out, STDOUT_FILENO), "In dup2_outP ", 14, data);
+	error_check(dup2(data->cmds->out, STDOUT_FILENO),
+		"In dup2_outP ", 14, data);
 	if (check_builtin(data, data->cmds))
 		exit(g_status);
 	else
@@ -89,7 +90,8 @@ int	pipex(t_input *data)
 
 int	execute(t_input *data)
 {
-	if (signal(SIGINT, SIG_IGN) == SIG_ERR || signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+	if (signal(SIGINT, SIG_IGN) == SIG_ERR
+			|| signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 		printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
 	if (!data->buf || !*data->buf)
 		return (0);
@@ -99,8 +101,9 @@ int	execute(t_input *data)
 		error_check(data->pid, "In fork ", 9, data);
 		if (data->pid == 0)
 		{
-			if (signal(SIGINT, SIG_DFL) == SIG_ERR || signal(SIGQUIT, SIG_DFL) == SIG_ERR)
-			 	printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
+			if (signal(SIGINT, SIG_DFL) == SIG_ERR
+					|| signal(SIGQUIT, SIG_DFL) == SIG_ERR)
+				printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
 			if (data->cmds->pipe == 1)
 				pipex(data);
 			else
@@ -115,5 +118,6 @@ int	execute(t_input *data)
 			}
 		}
 		waitpid(data->pid, &g_status, 0);
-	}	return (0);
+	}
+	return (0);
 }

@@ -96,6 +96,7 @@ typedef struct s_input
 {
 	int					i;
 	int					j;
+	size_t				k;
 	char				*tmp;
 	char				*type;
 	char				*value;
@@ -111,7 +112,6 @@ typedef struct s_input
 	t_cmd				*cmds;
 	char				*buf;
 	struct s_builtin	*builtins;
-	int					status;
 	DIR					*dir;
 	pid_t				pid;
 	char				**line;
