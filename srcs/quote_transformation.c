@@ -48,11 +48,8 @@ t_node  *jump_after_quote(t_node    *elem)
     return (NULL);
 }
 
-t_node  *get_all_between_quote(t_node *elem, t_input  *data, int type)
+t_node  *get_all_between_quote(t_node *elem, t_input  *data, t_node *tmp, int type)
 {
-    t_node  *tmp;
-
-    tmp = elem->next->next;
     elem->value = ms_strdup("", data);
     elem->value = ms_strjoin_free(elem->value, tmp->value, data);
     if (!elem->value)
@@ -90,13 +87,13 @@ t_node  *quote_transformation(t_input   *data)
                 elem->type = WORD;
                 if (elem->next->next && elem->next->next->type != QUOTE_D)
                 {
-                    elem = get_all_between_quote(elem, data, QUOTE_D);
+                    elem = get_all_between_quote(elem, data, elem->next->next, QUOTE_D);
                     if (!elem)
                         return (NULL);
                 }
                 else if (elem->next->next && elem->next->next->type != QUOTE)
                 {
-                    elem = get_all_between_quote(elem, data, QUOTE);
+                    elem = get_all_between_quote(elem, data, elem->next->next, QUOTE);
                     if (!elem)
                         return (NULL);
                 }
@@ -132,6 +129,9 @@ t_node  *quote_transformation(t_input   *data)
             if (elem->next && elem->next->type != QUOTE_D)
             {
                 printf("GO\n");
+                elem = get_all_between_quote(elem, data, elem, QUOTE);
+                if (!elem)
+                    return (NULL);
             }
             else
             {
