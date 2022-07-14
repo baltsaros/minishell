@@ -21,7 +21,7 @@ int	error_check(int input, char *str, int n, t_input *data)
 	(void)data;
 	if (input < 0)
 	{
-		write(2, "YAMSP-1.6: ", 11);
+		write(2, "YAMSP: ", 7);
 		write(2, str, n);
 		perror("something went wrong");
 		g_status = errno;

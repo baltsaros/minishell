@@ -19,7 +19,7 @@ void	prompt(t_input *data)
 			// ms_token_print(data->args);
 			parsing(data);
 			// asterisks(data);
-			//execute(data);
+			execute(data);
 			ms_free_token(data->args);
 			// ms_free_cmd(data->cmds);
 		}
