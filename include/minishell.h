@@ -231,4 +231,7 @@ char	**init_cmd(t_node	*args, t_input *data);
 // Readline functions
 void	rl_replace_line(const char *text, int clear_undo);
 
+// messages
+void	too_many_argv(void);
+
 #endif

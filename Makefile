@@ -24,6 +24,7 @@ SRC_FILES	= minishell.c \
 				wildcard.c \
 				parsing.c \
 				execute.c \
+				messages.c \
 				execute_utils.c \
 				signals.c \
 				yo_export.c \

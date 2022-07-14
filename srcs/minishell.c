@@ -39,7 +39,10 @@ int	main(int argc, char *argv[], char *envp[])
 
 	(void)argv;
 	if (argc != 1)
+	{
+		too_many_argv();
 		exit(EXIT_FAILURE);
+	}
 	envp_init(&data, envp);
 	prompt(&data);
 	return ((g_status >> 8) & 0xff);
