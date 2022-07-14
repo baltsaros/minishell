@@ -32,9 +32,10 @@ int	main(int argc, char *argv[], char *envp[])
 	t_input	data;
 
 	(void)argv;
+	welcome();
 	if (argc != 1)
 	{
-		too_many_argv();
+		invalid_argv();
 		exit(EXIT_FAILURE);
 	}
 	g_status = 0;

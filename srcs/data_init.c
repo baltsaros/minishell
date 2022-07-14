@@ -100,4 +100,8 @@ void	data_init(t_input *data)
 	data->args = NULL;
 	tokenization(data);
 	data->argc = ms_token_size(data->args);
+	if (data->argc == 1 && !ft_strcmp(data->buf, "secret"))
+		secret_mode();
+	else if (data->argc == 1 && !ft_strcmp(data->buf, "uwu"))
+		uwu_mode();
 }

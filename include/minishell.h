@@ -239,6 +239,9 @@ char	**init_cmd(t_node *args, t_input *data);
 void	rl_replace_line(const char *text, int clear_undo);
 
 // messages
-void	too_many_argv(void);
+void	invalid_argv(void);
+void	welcome(void);
+void	secret_mode(void);
+void	uwu_mode(void);
 
 #endif
