@@ -59,7 +59,7 @@ int	main(int argc, char *argv[], char *envp[])
 	// 	++i;
 	// }
 	// ft_free(data.argv);
-	ft_heredoc("end");
+	ms_heredoc("end");
 	// system("leaks out");
 	return (0);
 }

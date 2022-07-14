@@ -1,14 +1,14 @@
 #include "../include/minishell.h"
 
-t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
+t_cmd	*fill_elem(t_node *args, t_cmd *elem, t_input *data)
 {
-	elem->cmd = init_cmd(args);
+	elem->cmd = init_cmd(args, data);
 	if (!elem->cmd)
 		return (NULL);
 	elem->len_cmd = get_len_cmd(elem->cmd);
 	while (args && args->type != PIPE)
 	{
-	 	if (redirection_check(args, elem) == 1)
+	 	if (redirection_check(args, elem, data) == 1)
 	 		return (NULL);
 	 	if (args->next && args->next->type == PIPE)
 	 	{
@@ -21,14 +21,14 @@ t_cmd	*fill_elem(t_node	*args, t_cmd *elem)
 	return (elem);
 }
 
-t_cmd	*init_elem(t_node *args)
+t_cmd	*init_elem(t_node *args, t_input *data)
 {
 	t_cmd	*elem;
 
 	elem = init_empty_elem();
 	if (!elem)
 		return (NULL);
-	elem = fill_elem(args, elem);
+	elem = fill_elem(args, elem, data);
 	if (!elem)
 		return (NULL);
 	return (elem);
@@ -40,7 +40,7 @@ t_cmd	*parse_cmd(t_input *data)
 	t_cmd	*arg;
 	t_cmd	*new_con;
 
-	first_elem = init_elem(data->args);
+	first_elem = init_elem(data->args, data);
 	if (!first_elem)
 		return (NULL);
 	arg = first_elem;
@@ -49,7 +49,7 @@ t_cmd	*parse_cmd(t_input *data)
 		data->args = next_elem(data->args);
 		if (!data->args || !data->args->next)
 			break ;
-		new_con = init_elem(data->args);
+		new_con = init_elem(data->args, data);
 		if (!new_con)
 			return (NULL);
 		new_con->prev = arg;

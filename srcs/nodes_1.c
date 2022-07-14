@@ -62,7 +62,7 @@ t_node	*ms_token_del(t_node *node)
 
 void	ms_token_print(t_node *node)
 {
-	int		i;
+	int	i;
 
 	if (!node)
 	{

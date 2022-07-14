@@ -32,18 +32,18 @@ static void	print_envp(t_env *envp)
 
 static void	export_var(t_input *data, int *i)
 {
-	data->type = ft_strdup(data->cmds->cmd[*i]);
+	data->type = ms_strdup(data->cmds->cmd[*i], data);
 	if (!data->cmds->cmd[*i + 1])
 		data->value = NULL;
 	else if (data->cmds->cmd[*i + 1] && data->cmds->cmd[*i + 1][0] == '=')
 	{
 		if (data->cmds->cmd[*i + 2])
 		{
-			data->value = ft_strdup(data->cmds->cmd[*i + 2]);
+			data->value = ms_strdup(data->cmds->cmd[*i + 2], data);
 			++(*i);
 		}
 		else
-			data->value = ft_strdup("");
+			data->value = ms_strdup("", data);
 		++(*i);
 	}
 	else

@@ -1,6 +1,6 @@
 #include "../include/minishell.h"
 
-char	*ms_strjoin_free(char *rest, char *buf)
+char	*ms_strjoin_free(char *rest, char *buf, t_input *data)
 {
 	char	*unis;
 	size_t	i;
@@ -8,9 +8,8 @@ char	*ms_strjoin_free(char *rest, char *buf)
 
 	if (!rest || !buf)
 		return (0);
-	unis = malloc(sizeof(*unis) * (ft_strlen(rest) + ft_strlen(buf) + 1));
-	if (!unis)
-		return (0);
+	data->i = ft_strlen(rest) + ft_strlen(buf) + 1;
+	unis = ms_malloc(sizeof(*unis) * data->i, data);
 	i = 0;
 	while (rest[i])
 	{
@@ -28,7 +27,7 @@ char	*ms_strjoin_free(char *rest, char *buf)
 	return (unis);
 }
 
-char	*ms_charjoin_free(char *line, char b)
+char	*ms_charjoin_free(char *line, char b, t_input *data)
 {
 	size_t	i;
 	char	*unis;
@@ -36,9 +35,7 @@ char	*ms_charjoin_free(char *line, char b)
 	i = 0;
 	while (line[i])
 		++i;
-	unis = malloc(sizeof(*unis) * (i + 2));
-	if (!unis)
-		return (0);
+	unis = ms_malloc(sizeof(*unis) * (i + 2), data);
 	i = 0;
 	while (line[i])
 	{
@@ -59,20 +56,14 @@ char	**get_address(char *cmd[], char *envp[], t_input *data)
 	i = 0;
 	while (ft_strncmp("PATH=", envp[i], 5))
 		++i;
-	envp[i] = ms_strjoin_free(envp[i], ":.");
+	envp[i] = ms_strjoin_free(envp[i], ":.", data);
 	env = ft_split(envp[i] + 5, ':');
 	alloc_check(env);
 	i = 0;
 	while (env[i])
 	{
-		env[i] = ms_strjoin_free(env[i], "/");
-		env[i] = ms_strjoin_free(env[i], cmd[0]);
-		if (!env[i])
-		{
-			ms_free(env);
-			ms_free(cmd);
-			error_check(-1, "In ft_strjoin ", 15, data);
-		}
+		env[i] = ms_strjoin_free(env[i], "/", data);
+		env[i] = ms_strjoin_free(env[i], cmd[0], data);
 		++i;
 	}
 	return (env);
@@ -100,14 +91,12 @@ char	*access_check(char *cmd[], t_input *data)
 		data->status = 127;
 		exit(data->status);
 	}
-	ret = ft_strdup(env[i]);
-	if (!ret)
-		error_check(-1, "In strdup ", 11, data);
+	ret = ms_strdup(env[i], data);
 	ms_free(env);
 	return (ret);
 }
 
-void	ft_execve(char **argv, t_input *data)
+void	ms_execve(char **argv, t_input *data)
 {
 	char	*path;
 

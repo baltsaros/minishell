@@ -35,7 +35,7 @@ static void	copy_envp(t_input *data, char *envp[])
 	data->i = 0;
 	while (envp[data->i])
 	{
-		data->envp[data->i] = ft_strdup(envp[data->i]);
+		data->envp[data->i] = ms_strdup(envp[data->i], data);
 		data->i++;
 	}
 	data->envp[data->i] = NULL;

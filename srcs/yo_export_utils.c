@@ -10,16 +10,17 @@ void	add_envp(t_input *data, char *type, char *value)
 	tmp = ms_malloc((sizeof(*tmp) * (size + 2)), data);
 	while (data->envp[data->i])
 	{
-		tmp[data->i] = ft_strdup(data->envp[data->i]);
+		tmp[data->i] = ms_strdup(data->envp[data->i], data);
 		data->i++;
 	}
 	if (value)
 	{
 		data->tmp = ft_strjoin(type, "=");
-		tmp[data->i] = ms_strjoin_free(data->tmp, value);
+		alloc_check_small(data->tmp);
+		tmp[data->i] = ms_strjoin_free(data->tmp, value, data);
 	}
 	else
-		tmp[data->i] = ft_strdup(type);
+		tmp[data->i] = ms_strdup(type, data);
 	tmp[data->i + 1] = NULL;
 	ms_free(data->envp);
 	data->envp = tmp;

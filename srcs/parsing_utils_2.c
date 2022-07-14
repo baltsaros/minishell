@@ -6,13 +6,13 @@
 /*   By: abuzdin <abuzdin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/14 10:00:15 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/14 10:26:36 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	get_size_cmd(t_node	*args)
+int	get_size_cmd(t_node *args)
 {
 	int	i;
 
@@ -52,7 +52,7 @@ char	*get_env_variable(char *arg)
 	return (str);
 }
 
-char	**init_cmd(t_node	*args)
+char	**init_cmd(t_node *args, t_input *data)
 {
 	int		size;
 	int		i;
@@ -74,17 +74,17 @@ char	**init_cmd(t_node	*args)
 					return (NULL);
 				if (args->prev && args->prev->type == WORD_AST_B)
 				{
-					str[i] = ms_strjoin_free(str[i], args->prev->value);
+					str[i] = ms_strjoin_free(str[i], args->prev->value, data);
 					if (!str[i])
 						return (NULL);
 				}
-				str[i] = ms_strjoin_free(str[i], args->value);
+				str[i] = ms_strjoin_free(str[i], args->value, data);
 				if (!str[i])
 					return (NULL);
 				if (args->next && args->next->type == WORD_AST)
 				{
 					args = args->next;
-					str[i] = ms_strjoin_free(str[i], args->value);
+					str[i] = ms_strjoin_free(str[i], args->value, data);
 					if (!str[i])
 						return (NULL);
 				}
@@ -97,11 +97,11 @@ char	**init_cmd(t_node	*args)
 					str[i] = ft_strdup("");
 					if (!str[i])
 						return (NULL);
-					str[i] = ms_strjoin_free(str[i], args->value);
+					str[i] = ms_strjoin_free(str[i], args->value, data);
 					if (!str[i])
 						return (NULL);
 					args = args->next;
-					str[i] = ms_strjoin_free(str[i], args->value);
+					str[i] = ms_strjoin_free(str[i], args->value, data);
 					if (!str[i])
 						return (NULL);
 					i++;
@@ -134,20 +134,20 @@ char	**init_cmd(t_node	*args)
 	return (str);
 }
 
-int	redirection_check(t_node *args, t_cmd *elem)
+int	redirection_check(t_node *args, t_cmd *elem, t_input *data)
 {
 	if (args->value[0] == '<')
 	{
 		if (!args->next || is_the_next_is_word(args) == 1)
 			return (print_syntax_error_bool(args));
-		if (init_in(args, elem) == 1)
+		if (init_in(args, elem, data) == 1)
 			return (1);
 	}
 	else if (args->value[0] == '>')
 	{
 		if (!args->next || is_the_next_is_word(args) == 1)
 			return (print_syntax_error_bool(args));
-		if (init_out(args, elem) == 1)
+		if (init_out(args, elem, data) == 1)
 			return (1);
 	}
 	return (0);

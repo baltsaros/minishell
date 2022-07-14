@@ -8,6 +8,7 @@ static void	show_rvalue(char **str, int status)
 		if (status > 128)
 			status = (status >> 8) & 0xff;
 		*str = ft_itoa(status);
+		alloc_check_small(*str);
 	}
 }
 

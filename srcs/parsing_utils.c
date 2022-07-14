@@ -36,7 +36,7 @@ t_cmd	*init_empty_elem(void)
 	return (elem);
 }
 
-int	init_in(t_node *args, t_cmd *elem)
+int	init_in(t_node *args, t_cmd *elem, t_input *data)
 {
 	if (args->type == REDIR_HD)
 	{
@@ -46,7 +46,7 @@ int	init_in(t_node *args, t_cmd *elem)
 		elem->delim = ft_strdup(args->value);
 		if (!elem->delim)
 			return (1);
-		ft_heredoc(elem->delim, elem);
+		ms_heredoc(elem->delim, elem, data);
 		elem->in_arg = "heredoc.tmp";
 		return (0);
 	}
@@ -62,8 +62,9 @@ int	init_in(t_node *args, t_cmd *elem)
 	return (1);
 }
 
-int	init_out(t_node *args, t_cmd *elem)
+int	init_out(t_node *args, t_cmd *elem, t_input *data)
 {
+	(void)data;
 	if (args->type == REDIR_AP)
 	{
 		args = args->next;

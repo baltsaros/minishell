@@ -159,9 +159,10 @@ int		ft_strstr(char *str, char *to_find);
 int		check_charset(char c, char *charset);
 void	increase_shlvl(t_input *data);
 
-int		get_next_line(char **line);
+int		get_next_line(char **line, t_input *data);
 int		ft_strcmp(char *s1, char *s2);
 void	*ms_malloc(size_t n, t_input *data);
+char	*ms_strdup(const char *s, t_input *data);
 
 // minishell
 void	prompt(t_input *data);
@@ -179,16 +180,16 @@ void	create_token(t_input *data);
 
 // execute
 int		pipex(t_input *data);
-void	ft_heredoc(char *limiter, t_cmd *elem);
-void	ft_fork(char *argv[], t_input *data);
+void	ms_heredoc(char *limiter, t_cmd *elem, t_input *data);
+void	ms_fork(char *argv[], t_input *data);
 int		execute(t_input *data);
 
 // execute_utils
-char	*ms_strjoin_free(char *rest, char *buf);
-char	*ms_charjoin_free(char *line, char b);
+char	*ms_strjoin_free(char *rest, char *buf, t_input *data);
+char	*ms_charjoin_free(char *line, char b, t_input *data);
 char	**get_address(char *cmd[], char *envp[], t_input *data);
 char	*access_check(char *cmd[], t_input *data);
-void	ft_execve(char *argv[], t_input *data);
+void	ms_execve(char *argv[], t_input *data);
 
 // builtins
 int		yo_pwd(t_input *data);
@@ -219,13 +220,13 @@ int		parsing(t_input *data);
 // parsing_utils
 t_node	*next_elem(t_node *args);
 t_cmd	*init_empty_elem(void);
-int		init_in(t_node *args, t_cmd *elem);
-int		init_out(t_node *args, t_cmd *elem);
+int		init_in(t_node *args, t_cmd *elem, t_input *data);
+int		init_out(t_node *args, t_cmd *elem, t_input *data);
 int		get_len_cmd(char **str);
 
 // parsing_utils_2
-int		redirection_check(t_node *args, t_cmd *elem);
-char	**init_cmd(t_node	*args);
+int		redirection_check(t_node *args, t_cmd *elem, t_input *data);
+char	**init_cmd(t_node	*args, t_input *data);
 
 // Readline functions
 void	rl_replace_line(const char *text, int clear_undo);

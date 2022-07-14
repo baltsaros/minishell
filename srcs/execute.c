@@ -18,7 +18,7 @@ int	check_builtin(t_input *data, t_cmd *cmds)
 	return (0);
 }
 
-void	ft_fork(char *argv[], t_input *data)
+void	ms_fork(char *argv[], t_input *data)
 {
 	int	fd[2];
 
@@ -34,7 +34,7 @@ void	ft_fork(char *argv[], t_input *data)
 		{
 			close(data->cmds->in);
 			close(fd[0]);
-			ft_execve(argv, data);
+			ms_execve(argv, data);
 		}
 	}
 	waitpid(data->pid, NULL, 0);
@@ -42,16 +42,16 @@ void	ft_fork(char *argv[], t_input *data)
 	close(fd[1]);
 }
 
-void	ft_heredoc(char *limiter, t_cmd *elem)
+void	ms_heredoc(char *limiter, t_cmd *elem, t_input *data)
 {
 	char	*line;
 
 	elem->in = open("heredoc.tmp", O_RDWR | O_CREAT | O_APPEND, 0777);
-	// error_check(elem->in, "In Open heredoc ", 17);
+	error_check(elem->in, "In Open heredoc ", 17, data);
 	line = readline("> ");
 	while (line)
 	{
-		line = ms_strjoin_free(line, "\n");
+		line = ms_strjoin_free(line, "\n", data);
 		if (ft_strncmp(limiter, line, ft_strlen(limiter)) == 0
 			&& ft_strlen(limiter) == (ft_strlen(line) - 1))
 		{
@@ -64,7 +64,7 @@ void	ft_heredoc(char *limiter, t_cmd *elem)
 	}
 	close(elem->in);
 	elem->in = open("heredoc.tmp", O_RDONLY);
-	// error_check(elem->in, "In Open heredoc ", 17, data);
+	error_check(elem->in, "In Open heredoc ", 17, data);
 	unlink("heredoc.tmp");
 }
 
@@ -73,14 +73,14 @@ int	pipex(t_input *data)
 	error_check(dup2(data->cmds->in, STDIN_FILENO), "In dup2_inP ", 13, data);
 	while (data->cmds->pipe == 1)
 	{
-		ft_fork(data->cmds->cmd, data);
+		ms_fork(data->cmds->cmd, data);
 		data->cmds = data->cmds->next;
 	}
 	error_check(dup2(data->cmds->out, STDOUT_FILENO), "In dup2_outP ", 14, data);
 	if (check_builtin(data, data->cmds))
 		exit(data->status);
 	else
-		ft_execve(data->cmds->cmd, data);
+		ms_execve(data->cmds->cmd, data);
 	close(data->cmds->in);
 	close(data->cmds->out);
 	data->status = 0;
@@ -109,7 +109,7 @@ int	execute(t_input *data)
 					"In Dup2_in ", 12, data);
 				error_check(dup2(data->cmds->out, STDOUT_FILENO),
 					"In Dup2_out ", 13, data);
-				ft_execve(data->cmds->cmd, data);
+				ms_execve(data->cmds->cmd, data);
 				close(data->cmds->in);
 				close(data->cmds->out);
 			}

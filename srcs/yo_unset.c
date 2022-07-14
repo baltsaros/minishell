@@ -26,18 +26,17 @@ static void	remove_envp(t_input *data, char *type)
 	data->j = 0;
 	while (data->envp[size])
 		size++;
-	tmp = (char **)malloc(sizeof(*tmp) * size);
-	alloc_check(tmp);
+	tmp = ms_malloc(sizeof(*tmp) * size, data);
 	while (data->envp[data->i] && ft_strncmp(data->envp[data->i],
 			type, ft_strlen(type)))
 	{
-		tmp[data->i] = ft_strdup(data->envp[data->i]);
+		tmp[data->i] = ms_strdup(data->envp[data->i], data);
 		data->i++;
 	}
 	data->j++;
 	while (data->envp[data->i + data->j])
 	{
-		tmp[data->i] = ft_strdup(data->envp[data->i + data->j]);
+		tmp[data->i] = ms_strdup(data->envp[data->i + data->j], data);
 		data->i++;
 	}
 	tmp[data->i] = NULL;

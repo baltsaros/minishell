@@ -61,7 +61,7 @@ t_env	*ms_envp_del(t_env *node)
 
 void	ms_envp_print(t_env *node)
 {
-	int		i;
+	int	i;
 
 	if (!node)
 	{

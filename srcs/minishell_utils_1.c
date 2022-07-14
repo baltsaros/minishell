@@ -36,14 +36,16 @@ void	increase_shlvl(t_input *data)
 	i = 0;
 	while (data->envp[i] && ft_strncmp(data->envp[i], "SHLVL", 5))
 		i++;
-	data->tmp = ft_strdup(data->envp[i] + 6);
+	data->tmp = ms_strdup(data->envp[i] + 6, data);
 	data->value = ms_strndup(data->envp[i], 6, data);
 	data->i = ft_atoi(data->tmp);
 	data->i++;
 	free(data->tmp);
 	data->tmp = ft_itoa(data->i);
+	alloc_check_small(data->tmp);
 	free(data->envp[i]);
 	data->envp[i] = ft_strjoin(data->value, data->tmp);
+	alloc_check_small(data->envp[i]);
 	free(data->value);
 	free(data->tmp);
 }
