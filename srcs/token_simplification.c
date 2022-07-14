@@ -119,7 +119,6 @@ int token_simplification(t_input *data)
     elem = data->args;
     while (elem)
     {
-        printf("Readed: %s\n", elem->value);
         if (elem->type == DOLLAR)
         {
             elem = dollar_token_simplification(elem, data);
@@ -147,14 +146,11 @@ int token_simplification(t_input *data)
             break ;
         elem = elem->next;
     }
-    printf("END: %s\n", elem->value);
     if (elem->prev)
     {
         while (elem->prev)
             elem = elem->prev;
-        printf("ELEM PREV EXIST\n");
     }
-    // data->args = elem;
     ms_token_print(data->args);
     return (0);
 }
