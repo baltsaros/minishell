@@ -25,7 +25,8 @@ SRC_FILES	= minishell.c \
 				parsing.c \
 				execute.c \
 				messages.c \
-				execute_utils.c \
+				execute_utils_1.c \
+				execute_utils_2.c \
 				signals.c \
 				yo_export.c \
 				yo_export_utils.c \

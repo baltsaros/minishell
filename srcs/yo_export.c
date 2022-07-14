@@ -14,18 +14,25 @@ static int	check_duplicate(t_input *data, char *type, char *value)
 	return (1);
 }
 
-static void	print_envp(t_env *envp)
+static void	print_envp(t_input *data, t_env *envp)
 {
 	t_env	*tmp;
+	int		len;
 
 	tmp = NULL;
 	tmp = envp;
 	while (tmp)
 	{
+		len = ft_strlen(tmp->type);
+		write(data->cmds->out, "declare -x ", 11);
+		write(data->cmds->out, tmp->type, len);
 		if (tmp->value)
-			printf("declare -x %s=\"%s\"\n", tmp->type, tmp->value);
-		else
-			printf("declare -x %s\n", tmp->type);
+		{
+			write(data->cmds->out, "=", 1);
+			len = ft_strlen(tmp->value);
+			write(data->cmds->out, tmp->value, len);
+		}
+		write(data->cmds->out, "\n", 1);
 		tmp = tmp->next;
 	}
 }
@@ -57,7 +64,7 @@ int	yo_export(t_input *data)
 	g_status = 0;
 	if (data->cmds->len_cmd == 1)
 	{
-		print_envp(data->envp_n);
+		print_envp(data, data->envp_n);
 		return (0);
 	}
 	i = 1;

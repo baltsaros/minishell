@@ -66,7 +66,7 @@ void	check_dollar(t_input *data)
 					|| (tmp->next->type == QUOTE && tmp->value[0] != '$')))
 				tmp->type = WORD;
 			if (tmp->next && tmp->next->type != WSPACE
-					&& tmp->next->type != QUOTE && tmp->next->type != QUOTE_D)
+				&& tmp->next->type != QUOTE && tmp->next->type != QUOTE_D)
 				tmp->next->type = DOLLAR;
 		}
 		tmp = tmp->next;

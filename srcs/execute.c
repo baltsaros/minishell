@@ -82,8 +82,7 @@ int	pipex(t_input *data)
 		exit(g_status);
 	else
 		ms_execve(data->cmds->cmd, data);
-	close(data->cmds->in);
-	close(data->cmds->out);
+	close_fds(data->cmds->in, data->cmds->out);
 	g_status = 0;
 	return (0);
 }
@@ -91,7 +90,7 @@ int	pipex(t_input *data)
 int	execute(t_input *data)
 {
 	if (signal(SIGINT, SIG_IGN) == SIG_ERR
-			|| signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+		|| signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 		printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
 	if (!data->buf || !*data->buf)
 		return (0);
@@ -102,19 +101,15 @@ int	execute(t_input *data)
 		if (data->pid == 0)
 		{
 			if (signal(SIGINT, SIG_DFL) == SIG_ERR
-					|| signal(SIGQUIT, SIG_DFL) == SIG_ERR)
+				|| signal(SIGQUIT, SIG_DFL) == SIG_ERR)
 				printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
 			if (data->cmds->pipe == 1)
 				pipex(data);
 			else
 			{
-				error_check(dup2(data->cmds->in, STDIN_FILENO),
-					"In Dup2_in ", 12, data);
-				error_check(dup2(data->cmds->out, STDOUT_FILENO),
-					"In Dup2_out ", 13, data);
+				set_std(data, 1, 1);
 				ms_execve(data->cmds->cmd, data);
-				close(data->cmds->in);
-				close(data->cmds->out);
+				close_fds(data->cmds->in, data->cmds->out);
 			}
 		}
 		waitpid(data->pid, &g_status, 0);

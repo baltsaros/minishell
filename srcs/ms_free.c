@@ -57,14 +57,6 @@ void	ms_free_cmd(t_cmd *cmd)
 	}
 }
 
-void	ms_free_node_elems(t_env *tmp)
-{
-	free(tmp->type);
-	if (tmp->value)
-		free(tmp->value);
-	free(tmp);
-}
-
 void	ms_free_all(t_input *data)
 {
 	if (data->envp_n)

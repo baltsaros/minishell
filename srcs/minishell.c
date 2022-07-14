@@ -2,7 +2,6 @@
 
 void	prompt(t_input *data)
 {
-	g_status = 0;
 	while (1)
 	{
 		if (signal(SIGINT, signal_handling) == SIG_ERR
@@ -38,6 +37,7 @@ int	main(int argc, char *argv[], char *envp[])
 		too_many_argv();
 		exit(EXIT_FAILURE);
 	}
+	g_status = 0;
 	envp_init(&data, envp);
 	prompt(&data);
 	return ((g_status >> 8) & 0xff);

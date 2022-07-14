@@ -4,7 +4,6 @@
 #define W "\x1B[37m"
 #define Y "\x1B[33m"
 
-
 void	too_many_argv(void)
 {
 	printf("__________________________________________\n");

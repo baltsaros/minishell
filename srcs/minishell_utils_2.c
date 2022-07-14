@@ -67,3 +67,11 @@ char	*ms_strdup(const char *s, t_input *data)
 	dest[i] = '\0';
 	return (dest);
 }
+
+void	ms_free_node_elems(t_env *tmp)
+{
+	free(tmp->type);
+	if (tmp->value)
+		free(tmp->value);
+	free(tmp);
+}

@@ -195,6 +195,8 @@ char	*ms_charjoin_free(char *line, char b, t_input *data);
 char	**get_address(char *cmd[], char *envp[], t_input *data);
 char	*access_check(char *cmd[], t_input *data);
 void	ms_execve(char *argv[], t_input *data);
+void	set_std(t_input *data, int in, int out);
+void	close_fds(int fd1, int f2);
 
 // builtins
 int		yo_pwd(t_input *data);
@@ -209,7 +211,7 @@ int		yo_exit(t_input *data);
 void	add_envp(t_input *data, char *type, char *value);
 
 //signals
-void	signal_handling(int	signo);
+void	signal_handling(int signo);
 
 // wildcard
 void	asterisks(t_input *data, t_cmd *cmds);
@@ -223,7 +225,7 @@ int		print_syntax_error_bool(t_node *args);
 int		parsing(t_input *data);
 t_cmd	*parse_cmd(t_input *data);
 t_cmd	*init_elem(t_node *args, t_input *data);
-t_cmd	*fill_elem(t_node	*args, t_cmd *elem, t_input *data);
+t_cmd	*fill_elem(t_node *args, t_cmd *elem, t_input *data);
 t_cmd	*init_empty_elem(t_input *data);
 
 // parsing_utils
@@ -234,7 +236,7 @@ int		get_len_cmd(char **str);
 int		redirection_check(t_node *args, t_cmd *elem, t_input *data);
 
 // parsing_utils_2
-char	**init_cmd(t_node	*args, t_input *data);
+char	**init_cmd(t_node *args, t_input *data);
 
 // Readline functions
 void	rl_replace_line(const char *text, int clear_undo);
