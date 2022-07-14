@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/12 15:49:18 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/14 10:00:15 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,17 @@ char	**init_cmd(t_node	*args)
 					return (NULL);
 				if (args->prev && args->prev->type == WORD_AST_B)
 				{
-					str[i] = ft_strjoin_free(str[i], args->prev->value);
+					str[i] = ms_strjoin_free(str[i], args->prev->value);
 					if (!str[i])
 						return (NULL);
 				}
-				str[i] = ft_strjoin_free(str[i], args->value);
+				str[i] = ms_strjoin_free(str[i], args->value);
 				if (!str[i])
 					return (NULL);
 				if (args->next && args->next->type == WORD_AST)
 				{
 					args = args->next;
-					str[i] = ft_strjoin_free(str[i], args->value);
+					str[i] = ms_strjoin_free(str[i], args->value);
 					if (!str[i])
 						return (NULL);
 				}
@@ -97,11 +97,11 @@ char	**init_cmd(t_node	*args)
 					str[i] = ft_strdup("");
 					if (!str[i])
 						return (NULL);
-					str[i] = ft_strjoin_free(str[i], args->value);
+					str[i] = ms_strjoin_free(str[i], args->value);
 					if (!str[i])
 						return (NULL);
 					args = args->next;
-					str[i] = ft_strjoin_free(str[i], args->value);
+					str[i] = ms_strjoin_free(str[i], args->value);
 					if (!str[i])
 						return (NULL);
 					i++;

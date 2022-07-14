@@ -5,8 +5,8 @@ static void	find_files_all(t_input *data, struct dirent *fname)
 	while (fname)
 	{
 		data->tmp = ft_strdup(fname->d_name);
-		data->node_tmp = ft_token_new(ASTER, data->tmp);
-		ft_token_back(&data->cmds->wild, data->node_tmp);
+		data->node_tmp = ms_token_new(ASTER, data->tmp, data);
+		ms_token_back(&data->cmds->wild, data->node_tmp);
 		fname = readdir(data->dir);
 	}
 }
@@ -17,8 +17,8 @@ static void	find_files_error(t_input *data, char *str)
 	write(2, str, ft_strlen(str));
 	write(2, ": No such file or directory\n", 28);
 	data->status = 2;
-	data->node_tmp = ft_token_new(-1, NULL);
-	ft_token_back(&data->cmds->wild, data->node_tmp);
+	data->node_tmp = ms_token_new(-1, NULL, data);
+	ms_token_back(&data->cmds->wild, data->node_tmp);
 }
 
 static void	find_files_some(t_input *data, struct dirent *fname
@@ -31,8 +31,8 @@ static void	find_files_some(t_input *data, struct dirent *fname
 			if (!after || (after && ft_strstr(fname->d_name, after)))
 			{
 				data->tmp = ft_strdup(fname->d_name);
-				data->node_tmp = ft_token_new(ASTER, data->tmp);
-				ft_token_back(&data->cmds->wild, data->node_tmp);
+				data->node_tmp = ms_token_new(ASTER, data->tmp, data);
+				ms_token_back(&data->cmds->wild, data->node_tmp);
 			}
 		}
 		fname = readdir(data->dir);
@@ -50,7 +50,7 @@ static void	find_files(t_input *data, char *str, struct dirent *fname)
 	while (str[data->i] != '*')
 		data->i++;
 	if (data->i > 0)
-		before = ft_strndup(str, data->i);
+		before = ms_strndup(str, data->i, data);
 	if (str[data->i + 1])
 		after = ft_strdup(str + data->i + 1);
 	if (!before && !after)
@@ -84,5 +84,5 @@ void	asterisks(t_input *data, t_cmd *cmds)
 		++i;
 	}
 	closedir(data->dir);
-	ft_token_print(cmds->wild);
+	ms_token_print(cmds->wild);
 }

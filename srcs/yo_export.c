@@ -66,8 +66,8 @@ int	yo_export(t_input *data)
 		export_var(data, &i);
 		if (!check_duplicate(data, data->type, data->value))
 		{
-			data->envp_tmp = ft_envp_new(data->type, data->value);
-			ft_envp_back(&data->envp_n, data->envp_tmp);
+			data->envp_tmp = ms_envp_new(data->type, data->value, data);
+			ms_envp_back(&data->envp_n, data->envp_tmp);
 			add_envp(data, data->type, data->value);
 		}
 		++i;

@@ -1,13 +1,11 @@
 #include "../include/minishell.h"
 
-char	*ft_strndup(char const *str, size_t size)
+char	*ms_strndup(char const *str, size_t size, t_input *data)
 {
 	char	*dest;
 	size_t	i;
 
-	dest = malloc(sizeof(*dest) * (size + 1));
-	if (!dest)
-		return (NULL);
+	dest = ms_malloc((sizeof(*dest) * (size + 1)), data);
 	i = 0;
 	while (str[i] && i < size)
 	{
@@ -39,17 +37,13 @@ void	increase_shlvl(t_input *data)
 	while (data->envp[i] && ft_strncmp(data->envp[i], "SHLVL", 5))
 		i++;
 	data->tmp = ft_strdup(data->envp[i] + 6);
-	alloc_check_small(data->tmp);
-	data->value = ft_strndup(data->envp[i], 6);
-	alloc_check_small(data->value);
+	data->value = ms_strndup(data->envp[i], 6, data);
 	data->i = ft_atoi(data->tmp);
 	data->i++;
 	free(data->tmp);
 	data->tmp = ft_itoa(data->i);
-	alloc_check_small(data->tmp);
 	free(data->envp[i]);
 	data->envp[i] = ft_strjoin(data->value, data->tmp);
-	alloc_check_small(data->envp[i]);
 	free(data->value);
 	free(data->tmp);
 }

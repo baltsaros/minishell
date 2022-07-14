@@ -26,7 +26,7 @@ void	alloc_check_token(t_node *new, t_node **node)
 	{
 		write(2, "YAMSP-1.6: ", 11);
 		write(2, "allocation failed\n", 18);
-		*node = ft_free_token(*node);
+		*node = ms_free_token(*node);
 		exit(1);
 	}
 }
@@ -37,7 +37,7 @@ void	alloc_check_envp(t_env *new, t_env **node)
 	{
 		write(2, "YAMSP-1.6: ", 11);
 		write(2, "allocation failed\n", 18);
-		*node = ft_free_envp(*node);
+		*node = ms_free_envp(*node);
 		exit(1);
 	}
 }

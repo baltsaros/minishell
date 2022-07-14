@@ -50,12 +50,12 @@ int	yo_exit(t_input *data)
 {
 	if (!data->buf)
 		exit(1);
-	ft_free_envp(data->envp_n);
-	ft_free_token(data->args);
-	ft_free(data->envp);
+	ms_free_envp(data->envp_n);
+	ms_free_token(data->args);
+	ms_free(data->envp);
 	// if (data->wild)
-	// 	ft_free_token(data->wild);
-	// ft_free_cmd(data->cmds);
+	// 	ms_free_token(data->wild);
+	// ms_free_cmd(data->cmds);
 	if (!check_nonnumeric(data))
 		exit(data->status);
 	if (!check_amount(data))

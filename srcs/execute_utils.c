@@ -1,6 +1,6 @@
 #include "../include/minishell.h"
 
-char	*ft_strjoin_free(char *rest, char *buf)
+char	*ms_strjoin_free(char *rest, char *buf)
 {
 	char	*unis;
 	size_t	i;
@@ -28,7 +28,7 @@ char	*ft_strjoin_free(char *rest, char *buf)
 	return (unis);
 }
 
-char	*ft_charjoin_free(char *line, char b)
+char	*ms_charjoin_free(char *line, char b)
 {
 	size_t	i;
 	char	*unis;
@@ -59,18 +59,18 @@ char	**get_address(char *cmd[], char *envp[], t_input *data)
 	i = 0;
 	while (ft_strncmp("PATH=", envp[i], 5))
 		++i;
-	envp[i] = ft_strjoin_free(envp[i], ":.");
+	envp[i] = ms_strjoin_free(envp[i], ":.");
 	env = ft_split(envp[i] + 5, ':');
 	alloc_check(env);
 	i = 0;
 	while (env[i])
 	{
-		env[i] = ft_strjoin_free(env[i], "/");
-		env[i] = ft_strjoin_free(env[i], cmd[0]);
+		env[i] = ms_strjoin_free(env[i], "/");
+		env[i] = ms_strjoin_free(env[i], cmd[0]);
 		if (!env[i])
 		{
-			ft_free(env);
-			ft_free(cmd);
+			ms_free(env);
+			ms_free(cmd);
 			error_check(-1, "In ft_strjoin ", 15, data);
 		}
 		++i;
@@ -96,14 +96,14 @@ char	*access_check(char *cmd[], t_input *data)
 	{
 		write(2, cmd[0], ft_strlen(cmd[0]));
 		write(2, ": command not found\n", 20);
-		ft_free(env);
+		ms_free(env);
 		data->status = 127;
 		exit(data->status);
 	}
 	ret = ft_strdup(env[i]);
 	if (!ret)
 		error_check(-1, "In strdup ", 11, data);
-	ft_free(env);
+	ms_free(env);
 	return (ret);
 }
 

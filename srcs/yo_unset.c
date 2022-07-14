@@ -8,7 +8,7 @@ static int	check_envp(char *c, t_env *envp_n, int n)
 	{
 		if (!ft_strncmp(c, envp_n->type, n))
 		{
-			envp_n = ft_envp_del(envp_n);
+			envp_n = ms_envp_del(envp_n);
 			return (1);
 		}
 		envp_n = envp_n->next;
@@ -41,7 +41,7 @@ static void	remove_envp(t_input *data, char *type)
 		data->i++;
 	}
 	tmp[data->i] = NULL;
-	ft_free(data->envp);
+	ms_free(data->envp);
 	data->envp = tmp;
 }
 

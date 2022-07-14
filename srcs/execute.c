@@ -51,7 +51,7 @@ void	ft_heredoc(char *limiter, t_cmd *elem)
 	line = readline("> ");
 	while (line)
 	{
-		line = ft_strjoin_free(line, "\n");
+		line = ms_strjoin_free(line, "\n");
 		if (ft_strncmp(limiter, line, ft_strlen(limiter)) == 0
 			&& ft_strlen(limiter) == (ft_strlen(line) - 1))
 		{

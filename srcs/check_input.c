@@ -7,8 +7,8 @@ static int	read_after_pipe(char **buf, char *msg, char c)
 	while (1)
 	{
 		tmp = readline(msg);
-		*buf = ft_charjoin_free(*buf, '\n');
-		*buf = ft_strjoin_free(*buf, tmp);
+		*buf = ms_charjoin_free(*buf, '\n');
+		*buf = ms_strjoin_free(*buf, tmp);
 		if (!ft_strchr(tmp, c))
 		{
 			free(tmp);
@@ -26,8 +26,8 @@ static int	read_after(char **buf, char *msg, char c)
 	while (1)
 	{
 		tmp = readline(msg);
-		*buf = ft_charjoin_free(*buf, '\n');
-		*buf = ft_strjoin_free(*buf, tmp);
+		*buf = ms_charjoin_free(*buf, '\n');
+		*buf = ms_strjoin_free(*buf, tmp);
 		if (ft_strchr(tmp, c))
 		{
 			free(tmp);

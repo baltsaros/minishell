@@ -9,15 +9,15 @@ static void	check_quotes(t_input *data, size_t *i, char c)
 		++(*i);
 	if (*i != start)
 	{
-		data->value = ft_strndup(data->buf + start, *i - start);
-		data->node_tmp = ft_token_new(WORD, data->value);
-		ft_token_back(&data->args, data->node_tmp);
+		data->value = ms_strndup(data->buf + start, *i - start, data);
+		data->node_tmp = ms_token_new(WORD, data->value, data);
+		ms_token_back(&data->args, data->node_tmp);
 	}
 	if (data->buf[*i] && data->buf[*i] == c)
 	{
-		data->value = ft_strndup(data->buf + start - 1, 1);
-		data->node_tmp = ft_token_new((int)c, data->value);
-		ft_token_back(&data->args, data->node_tmp);
+		data->value = ms_strndup(data->buf + start - 1, 1, data);
+		data->node_tmp = ms_token_new((int)c, data->value, data);
+		ms_token_back(&data->args, data->node_tmp);
 		++(*i);
 	}
 	start = *i;
@@ -25,9 +25,9 @@ static void	check_quotes(t_input *data, size_t *i, char c)
 		++(*i);
 	if (*i != start)
 	{
-		data->value = ft_strndup(data->buf + start, *i - start);
-		data->node_tmp = ft_token_new(WORD_NOSPC, data->value);
-		ft_token_back(&data->args, data->node_tmp);
+		data->value = ms_strndup(data->buf + start, *i - start, data);
+		data->node_tmp = ms_token_new(WORD_NOSPC, data->value, data);
+		ms_token_back(&data->args, data->node_tmp);
 	}
 }
 
@@ -93,14 +93,14 @@ static void	check_next(t_input *data, size_t *i)
 		next = check_charset(data->buf[*i + 1], "<>|&");
 	if (type == next)
 	{
-		data->value = ft_strndup(data->buf + *i, 2);
+		data->value = ms_strndup(data->buf + *i, 2, data);
 		type += 100;
 		++(*i);
 	}
 	else
-		data->value = ft_strndup(data->buf + *i, 1);
-	data->node_tmp = ft_token_new(type, data->value);
-	ft_token_back(&data->args, data->node_tmp);
+		data->value = ms_strndup(data->buf + *i, 1, data);
+	data->node_tmp = ms_token_new(type, data->value, data);
+	ms_token_back(&data->args, data->node_tmp);
 	++(*i);
 	if (data->buf[*i - 1] == '\"' || data->buf[*i - 1] == '\'')
 		check_quotes(data, i, data->buf[*i - 1]);
@@ -126,9 +126,9 @@ void	create_token(t_input *data)
 			type = WORD_NOSPC;
 		if (i != start)
 		{
-			data->value = ft_strndup(data->buf + start, i - start);
-			data->node_tmp = ft_token_new(type, data->value);
-			ft_token_back(&data->args, data->node_tmp);
+			data->value = ms_strndup(data->buf + start, i - start, data);
+			data->node_tmp = ms_token_new(type, data->value, data);
+			ms_token_back(&data->args, data->node_tmp);
 		}
 		if (check_charset(data->buf[i], "\"$\'&<>=*|(){}"))
 			check_next(data, &i);
