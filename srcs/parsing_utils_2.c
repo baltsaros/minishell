@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/14 14:53:02 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/14 15:02:57 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,21 +108,21 @@ char	*get_env_variable(char *arg)
 	return (str);
 }
 
-char	*init_aster_word(t_node	*args, char *str)
+char	*init_aster_word(t_node	*args, char *str, t_input *data)
 {
 	if (args->prev && args->prev->type == WORD_AST)
 	{
-		str = ft_strjoin_free(str, args->prev->value);
+		str = ms_strjoin_free(str, args->prev->value, data);;
 		if (!str)
 			return (NULL);
 	}
-	str = ft_strjoin_free(str, args->value);
+	str = ms_strjoin_free(str, args->value, data);
 	if (!str)
 		return (NULL);
 	if (args->next && args->next->type == WORD_AST)
 	{
 		args = args->next;
-		str = ft_strjoin_free(str, args->value);
+		str = ms_strjoin_free(str, args->value, data);
 		if (!str)
 			return (NULL);
 	}
@@ -145,14 +145,14 @@ char	**init_cmd(t_node *args, t_input *data)
 			str[i] = ms_strdup("", data);
 			if (args->type == ASTER)
 			{
-				str[i] = init_aster_word(args, str[i]);
+				str[i] = init_aster_word(args, str[i], data);
 				if (!str[i])
 					return (NULL);
 				i++;
 			}
 			if (args->type == WORD && (args->next && args->next->type == QUOTE_D))
 			{
-				str[i] = ft_strjoin_free(str[i], args->value);
+				str[i] = ms_strjoin_free(str[i], args->value, data);
 				if (!str[i])
 					return (NULL);
 				args = args->next;
@@ -161,7 +161,7 @@ char	**init_cmd(t_node *args, t_input *data)
 					args = args->next;
 					while (args && args->type != QUOTE_D)
 					{
-						str[i] = ft_strjoin_free(str[i], args->value);
+						str[i] = ms_strjoin_free(str[i], args->value, data);
 						if (!str[i])
 							return (NULL);
 						args = args->next;
@@ -169,7 +169,7 @@ char	**init_cmd(t_node *args, t_input *data)
 					if (args->type == QUOTE_D && args->next)
 					{
 						args = args->next;
-						str[i] = ft_strjoin_free(str[i], args->value);
+						str[i] = ms_strjoin_free(str[i], args->value, data);
 						if (!str[i])
 							return (NULL);
 					}
@@ -178,33 +178,33 @@ char	**init_cmd(t_node *args, t_input *data)
 				else
 					i++;
 			}
-			// else if ()
-			// {
-			// 	str[i] = ft_strjoin_free(str[i], args->value);
-			// 	if (!str[i])
-			// 		return (NULL);
-			// 	i++;
-			// }
-			// else if (args->type == DOLLAR
-			// 	&& (args->next && args->next->type == WORD))
-			// {
-			// 	if (!ft_strncmp(args->next->value, "?", 2))
-			// 	{
-			// 		str[i] = ft_strjoin_free(str[i], args->value);
-			// 		if (!str[i])
-			// 			return (NULL);
-			// 		args = args->next;
-			// 		str[i] = ft_strjoin_free(str[i], args->value);
-			// 		if (!str[i])
-			// 			return (NULL); 
-			// 	}
-			// 	else
-			// 	{
-			// 		args = args->next;
-			// 		str[i] = get_env_variable(args->value);
-			// 	}
-			// 	i++;
-			// }
+			else if (args->type == WORD)
+			{
+				str[i] = ms_strjoin_free(str[i], args->value, data);
+				if (!str[i])
+					return (NULL);
+				i++;
+			}
+			else if (args->type == DOLLAR
+				&& (args->next && args->next->type == WORD))
+			{
+				if (!ft_strncmp(args->next->value, "?", 2))
+				{
+					str[i] = ms_strjoin_free(str[i], args->value, data);
+					if (!str[i])
+						return (NULL);
+					args = args->next;
+					str[i] = ms_strjoin_free(str[i], args->value, data);
+					if (!str[i])
+						return (NULL); 
+				}
+				else
+				{
+					args = args->next;
+					str[i] = get_env_variable(args->value);
+				}
+				i++;
+			}
 			// else if (args->type == DOLLAR
 			// 	&& ((args->next && args->next->type != QUOTE) || !args->next))
 			// {
