@@ -33,12 +33,12 @@ int	main(int argc, char *argv[], char *envp[])
 	t_input	data;
 
 	(void)argv;
-	welcome();
 	if (argc != 1)
 	{
 		invalid_argv();
 		exit(EXIT_FAILURE);
 	}
+	welcome();
 	g_status = 0;
 	envp_init(&data, envp);
 	data.prompt = ms_strdup("YAMSP-1.6$ ", &data);
