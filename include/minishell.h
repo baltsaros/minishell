@@ -244,5 +244,6 @@ void	invalid_argv(void);
 void	welcome(void);
 void	secret_mode(void);
 void	uwu_mode(void);
+void	normal_mode(void);
 
 #endif
