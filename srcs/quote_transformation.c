@@ -7,6 +7,7 @@ t_node  *fusion_all_between_d_quote(t_node *elem, t_input *data)
     if (elem->type == DOLLAR)
         return (elem);
     tmp = elem->next;
+    elem->type = WORD;
     while (tmp && (tmp->type != DOLLAR && tmp->type != QUOTE_D))
     {
         if (tmp->type == WORD && (tmp->prev && tmp->prev->type == DOLLAR))
