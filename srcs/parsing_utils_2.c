@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/15 16:24:53 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/15 17:32:53 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,6 @@ int	get_size_cmd(t_node	*args)
 	return (i);
 }
 
-char	*get_env_variable(char *arg)
-{
-	char	*str;
-	
-	str = getenv(arg);
-	if (!str)
-		return (NULL);
-	return (str);
-}
-
 char	**init_cmd(t_node *args, t_input *data)
 {
 	int		size;
@@ -58,7 +48,6 @@ char	**init_cmd(t_node *args, t_input *data)
 	str = ms_malloc((size + 1) * sizeof(char *), data);
 	while (args && args->type != PIPE)
 	{
-		// i != size
 		if (args->type != QUOTE_D && args->type != QUOTE)
 		{
 			str[i] = ms_strdup("", data);
@@ -71,13 +60,13 @@ char	**init_cmd(t_node *args, t_input *data)
 			{
 				if ((args->prev && args->prev->type != ENV_VA) || !args->prev)
 				{
-					str[i] = ms_strdup(get_env_variable(args->value + 1), data);
+					str[i] = ms_strdup(getenv(args->value + 1), data);
 					i++;
 				}
 				else
 				{
 					i--;
-					str[i] = ms_strjoin_free(str[i], get_env_variable(args->value + 1), data);
+					str[i] = ms_strjoin_free(str[i], getenv(args->value + 1), data);
 					if (!str[i])
 						return (NULL);
 					i++;
@@ -88,13 +77,13 @@ char	**init_cmd(t_node *args, t_input *data)
 			{
 				if (args->prev && (args->prev->type == QUOTE_D || args->prev->type == QUOTE))
 				{
-					str[i] = ms_strdup(get_env_variable(args->value + 1), data);
+					str[i] = ms_strdup(getenv(args->value + 1), data);
 					i++;
 				}
 				else
 				{
 					i--;
-					str[i] = ms_strjoin_free(str[i], get_env_variable(args->value + 1), data);
+					str[i] = ms_strjoin_free(str[i], getenv(args->value + 1), data);
 					if (!str[i])
 						return (NULL);
 					i++;
