@@ -59,7 +59,10 @@ enum e_tokens
 enum e_simplier_tokens
 {
 	ENV_VA 		= 37, 	// Example: $PATH
-	ASTER_WORD	= 5		// Example: t*.c
+	ASTER_WORD	= 5,	// Example: t*.c
+	IN_ARG		= 130,
+	OUT_ARG		= 131,
+	EXECUTABLE	= 132
 };
 
 // struct for tokens (+ wildcard) linked lists

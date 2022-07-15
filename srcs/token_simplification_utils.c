@@ -81,8 +81,11 @@ t_node  *update_prev_and_next(t_node *elem)
 
     tmp = elem->prev;
 	(void)tmp;
+	printf("VALUE IN UPDATE PREV: %s\n", elem->value);
+	printf("VALUE IN UPDATE PREVPREV: %s\n", tmp->value);
     if (elem->prev->prev)
     {
+		printf("ici\n");
         second_tmp = elem->prev->prev;
         elem->prev = second_tmp;
         second_tmp->next = elem;
@@ -90,6 +93,7 @@ t_node  *update_prev_and_next(t_node *elem)
     }
     else
     {
+		printf("La\n");
         elem->prev = NULL;
         // free tmp
     }
