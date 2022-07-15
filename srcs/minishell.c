@@ -2,12 +2,13 @@
 
 void	prompt(t_input *data)
 {
+	data->status = 0;
 	while (1)
 	{
 		if (signal(SIGINT, signal_handling) == SIG_ERR
 			|| signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 			printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
-		data->buf = readline("minishell$ ");
+		data->buf = readline("YAMSP-1.6$ ");
 		if (!data->buf)
 		{
 			yo_exit(data);
@@ -18,13 +19,13 @@ void	prompt(t_input *data)
 			check_field(&data->buf, data);
 			data_init(data);
 			// ft_envp_print(data->envp_n);
-			// ft_token_print(data->args);
+			ft_token_print(data->args);
 			if (parsing(data) == 0)
 			{
-				//asterisks(data);
+				// asterisks(data);
 				execute(data);
-				//ft_free_token(data->args);
-				//ft_free_cmd(data->cmds);
+				ft_free_token(data->args);
+				// ft_free_cmd(data->cmds);
 			}
 			//else
 			//	ft_free_token(data->args);
@@ -34,7 +35,7 @@ void	prompt(t_input *data)
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	t_input 			data;
+	t_input	data;
 	
 	(void)argv;
 	if (argc != 1)

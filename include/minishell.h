@@ -21,12 +21,15 @@
 # include <stdbool.h>
 // # include "../libft/libft.h"
 
+// global var
+// int	g_status;
+
 // enum for tokens
 enum e_tokens
 {
 	DOLLAR		= 36,	// $
 	WORD		= 2,
-	WORD_AST_B	= 3,	// *
+	WSPACE		= 3,
 	WORD_AST	= 4,	// *
 	QUOTE		= 39,	// '
 	QUOTE_D		= 34,	// "
@@ -86,7 +89,7 @@ typedef struct s_env
 	struct s_env	*prev;
 }	t_env;
 
-// global structure
+// main structure
 typedef struct s_input
 {
 	int					i;
@@ -165,11 +168,16 @@ int		check_field(char **buf, t_input *data);
 int		is_right_buf(char *buf);
 
 // data_init
-void	envp_init(t_input *data, char *envp[]);
+void	tokenization(t_input *data);
 void	data_init(t_input *data);
+void	envp_init(t_input *data, char *envp[]);
 
 // tokenization
-void	create_token(t_input *data);
+void	create_token(t_input *data, char *str, int len, int type);
+void	check_quotes(t_input *data, size_t *i, char c);
+void	check_asterisk(t_input *data);
+void	check_dollar(t_input *data);
+void	check_next(t_input *data, size_t *i);
 
 // execute
 int		pipex(t_input *data);
@@ -181,7 +189,7 @@ int		execute(t_input *data);
 char	*ft_strjoin_free(char *rest, char *buf);
 char	*ft_charjoin_free(char *line, char b);
 char	**get_address(char *cmd[], char *envp[]);
-char	*access_check(char *cmd[], char *envp[]);
+char	*access_check(char *cmd[], t_input *data);
 void	ft_execve(char *argv[], t_input *data);
 
 // builtins
@@ -200,7 +208,7 @@ void	add_envp(t_input *data, char *type, char *value);
 void	signal_handling(int	signo);
 
 // wildcard
-void	asterisks(t_input *data);
+void	asterisks(t_input *data, t_cmd *cmds);
 
 //syntax checker
 int		is_the_next_is_word(t_node *args);

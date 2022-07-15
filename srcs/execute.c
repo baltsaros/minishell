@@ -106,6 +106,8 @@ int	execute(t_input *data)
 				error_check(dup2(data->cmds->out, STDOUT_FILENO),
 					"In Dup2_out ", 13);
 				ft_execve(data->cmds->cmd, data);
+				close(data->cmds->in);
+				close(data->cmds->out);
 			}
 		}
 		waitpid(data->pid, &data->status, 0);

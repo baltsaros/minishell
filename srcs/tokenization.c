@@ -1,81 +1,81 @@
 #include "../include/minishell.h"
 
-static void	check_quotes(t_input *data, size_t *i, char c)
+void	create_token(t_input *data, char *str, int len, int type)
+{
+	data->value = ft_strndup(str, len);
+	data->node_tmp = ft_token_new(type, data->value);
+	ft_token_back(&data->args, data->node_tmp);
+}
+
+void	check_quotes(t_input *data, size_t *i, char c)
 {
 	size_t	start;
-	int		type;
 
 	start = *i;
-	while (data->buf[*i] != c)
-		++*i;
-	if (*i != start)
+	while (data->buf[*i] && data->buf[*i] != c)
 	{
-		type = WORD;
-		data->value = ft_strndup(data->buf + start, *i - start);
-		data->node_tmp = ft_token_new(type, data->value);
-		ft_token_back(&data->args, data->node_tmp);
+		if (data->buf[*i] == '$' && c == '\"')
+			break ;
+		++(*i);
 	}
+	if (*i != start)
+		create_token(data, data->buf + start, *i - start, WORD);
 	if (data->buf[*i] && data->buf[*i] == c)
 	{
-		type = c;
-		data->value = ft_strndup(data->buf + start - 1, 1);
-		data->node_tmp = ft_token_new(type, data->value);
-		ft_token_back(&data->args, data->node_tmp);
-		++*i;
+		create_token(data, data->buf + *i, 1, (int)c);
+		++(*i);
 	}
-}
-
-static void    check_asterisk(t_input *data)
-{
-    int    i;
-
-	i = 0;
-	data->node_tmp = data->args;
-	while (data->node_tmp)
+	else if (data->buf[*i] && data->buf[*i] == '$')
 	{
-		while (data->node_tmp->next && data->node_tmp->type != ASTER)
-			data->node_tmp = data->node_tmp->next;
-		while (data->buf[i] && data->buf[i] != '*')
-			++i;
-		if (data->node_tmp->type == ASTER)
-		{
-			if (data->buf[i - 1] && data->buf[i - 1] != ' ')
-				data->node_tmp->prev->type = WORD_AST_B;
-			if (data->buf[i + 1] && data->buf[i + 1] != ' ')
-				data->node_tmp->next->type = WORD_AST;
-		}
-		++i;
-		data->node_tmp = data->node_tmp->next;
+		create_token(data, "$", 1, DOLLAR);
+		++(*i);
+		check_quotes(data, i, c);
 	}
 }
 
-static void	check_dollar(t_input *data)
+void	check_asterisk(t_input *data)
 {
-	int	i;
+	t_node	*tmp;
 
-	i = 0;
-	data->node_tmp = data->args;
-	while (data->node_tmp)
+	tmp = data->args;
+	while (tmp)
 	{
-		while (data->node_tmp->next && data->node_tmp->type != DOLLAR)
-			data->node_tmp = data->node_tmp->next;
-		while (data->buf[i] && data->buf[i] != '$')
-			++i;
-		if (data->buf[i + 1] && data->buf[i + 1] == ' ')
-			data->node_tmp->type = WORD;
-		if (data->node_tmp && data->node_tmp->next
-			&& data->node_tmp->type == DOLLAR)
+		while (tmp->next && tmp->type != ASTER)
+			tmp = tmp->next;
+		if (tmp && tmp->type == ASTER)
 		{
-			if (data->buf[i + 1] && data->buf[i + 1] != ' '
-				&& data->buf[i + 1] != '\'')
-				data->node_tmp->next->type = DOLLAR;
+			if (tmp->prev && tmp->prev->type == WORD)
+				tmp->prev->type = WORD_AST;
+			if (tmp->next && tmp->next->type == WORD)
+				tmp->next->type = WORD_AST;
 		}
-		data->node_tmp = data->node_tmp->next;
-		++i;
+		tmp = tmp->next;
 	}
 }
 
-static void	check_next(t_input *data, size_t *i)
+void	check_dollar(t_input *data)
+{
+	t_node	*tmp;
+
+	tmp = data->args;
+	while (tmp)
+	{
+		while (tmp->next && tmp->type != DOLLAR)
+			tmp = tmp->next;
+		if (tmp && tmp->type == DOLLAR)
+		{
+			if (tmp->next && (tmp->next->type == WSPACE
+					|| (tmp->next->type == QUOTE && tmp->value[0] != '$')))
+				tmp->type = WORD;
+			if (tmp->next && tmp->next->type != WSPACE
+					&& tmp->next->type != QUOTE && tmp->next->type != QUOTE_D)
+				tmp->next->type = DOLLAR;
+		}
+		tmp = tmp->next;
+	}
+}
+
+void	check_next(t_input *data, size_t *i)
 {
 	int	type;
 	int	next;
@@ -89,42 +89,13 @@ static void	check_next(t_input *data, size_t *i)
 	{
 		data->value = ft_strndup(data->buf + *i, 2);
 		type += 100;
-		++*i;
+		++(*i);
 	}
 	else
 		data->value = ft_strndup(data->buf + *i, 1);
 	data->node_tmp = ft_token_new(type, data->value);
 	ft_token_back(&data->args, data->node_tmp);
-	++*i;
-	if (data->buf[*i - 1] == '\"' || data->buf[*i - 1] == '\'')
-		check_quotes(data, i, data->buf[*i - 1]);
-}
-
-void	create_token(t_input *data)
-{
-	size_t	i;
-	size_t	start;
-	int		type;
-
-	i = 0;
-	while (data->buf[i])
-	{
-		while (check_charset(data->buf[i], " \f\n\r\t\v"))
-			++i;
-		start = i;
-		while (data->buf[i] && !check_charset(data->buf[i]
-				, "\"$\'&<>=*| \f\n\r\t\v(){}"))
-			++i;
-		if (i != start)
-		{
-			type = WORD;
-			data->value = ft_strndup(data->buf + start, i - start);
-			data->node_tmp = ft_token_new(type, data->value);
-			ft_token_back(&data->args, data->node_tmp);
-		}
-		if (check_charset(data->buf[i], "\"$\'&<>=*|(){}"))
-			check_next(data, &i);
-	}
-	check_asterisk(data);
-	check_dollar(data);
+	++(*i);
+	// if (data->buf[*i - 1] == '\"' || data->buf[*i - 1] == '\'')
+	// 	check_quotes(data, i, data->buf[*i - 1]);
 }
