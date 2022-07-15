@@ -47,7 +47,7 @@ t_node  *word_transformation_simplification(t_node *elem, t_input *data)
     {
         if (!is_between_d_quote(elem) || !is_between_quote(elem))
         {
-            if (elem->type != ENV_VA && elem->prev && elem->prev->type == QUOTE_D)
+            if (elem->type != ENV_VA && !is_between_d_quote(elem) && elem->prev->type == QUOTE_D)
             {
                 if (elem->prev->prev && elem->prev->prev->type != WSPACE && elem->prev->prev->type != ENV_VA)
                 {
@@ -57,7 +57,7 @@ t_node  *word_transformation_simplification(t_node *elem, t_input *data)
                     update_prev_and_next(elem->prev);
                 }
             }
-            else if (elem->type != ENV_VA && elem->prev && elem->prev->type == QUOTE)
+            else if (elem->type != ENV_VA && !is_between_quote(elem) && elem->prev->type == QUOTE)
             {
                 if (elem->prev->prev && elem->prev->prev->type != WSPACE && elem->prev->prev->type != ENV_VA)
                 {
@@ -67,7 +67,7 @@ t_node  *word_transformation_simplification(t_node *elem, t_input *data)
                     update_prev_and_next(elem->prev);
                 }
             }
-            if (elem->type != ENV_VA && elem->next && elem->next->type == QUOTE_D)
+            if (elem->type != ENV_VA && !is_between_d_quote(elem) && elem->next->type == QUOTE_D)
             {
                 if (elem->next->next && elem->next->next->type != WSPACE && elem->next->next->type != ENV_VA)
                 {
@@ -77,7 +77,7 @@ t_node  *word_transformation_simplification(t_node *elem, t_input *data)
                     update_next_and_prev(elem->next);
                 }
             }
-            else if (elem->type != ENV_VA && elem->next && elem->next->type == QUOTE)
+            else if (elem->type != ENV_VA && !is_between_quote(elem) && elem->next->type == QUOTE)
             {
                 if (elem->next->next && elem->next->next->type != WSPACE && elem->next->next->type != ENV_VA)
                 {
