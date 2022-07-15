@@ -9,7 +9,7 @@ t_node  *fusion_all_between_d_quote(t_node *elem, t_input *data)
     tmp = elem->next;
     while (tmp && (tmp->type != DOLLAR && tmp->type != QUOTE_D))
     {
-        if (tmp->type == WORD && tmp->prev && tmp->prev->type != DOLLAR)
+        if (tmp->type == WORD && (tmp->prev && tmp->prev->type == DOLLAR))
             break ;
         elem->value = ms_strjoin_free(elem->value, tmp->value, data);
         if (!elem->value)
