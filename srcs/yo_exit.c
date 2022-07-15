@@ -53,12 +53,7 @@ int	yo_exit(t_input *data)
 		g_status = 1;
 		exit(g_status);
 	}
-	ms_free_envp(data->envp_n);
-	ms_free_token(data->args);
-	ms_free(data->envp);
-	// if (data->wild)
-	// 	ms_free_token(data->wild);
-	// ms_free_cmd(data->cmds);
+	ms_free_all(data);
 	if (!check_nonnumeric(data))
 		exit(g_status);
 	if (!check_amount(data))

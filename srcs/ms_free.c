@@ -63,8 +63,8 @@ void	ms_free_all(t_input *data)
 		ms_free_envp(data->envp_n);
 	if (data->args)
 		ms_free_token(data->args);
-	if (data->cmds)
-		ms_free_cmd(data->cmds);
+	// if (data->cmds)
+	// 	ms_free_cmd(data->cmds);
 	if (data->envp)
 		ms_free(data->envp);
 	free(data->prompt);
