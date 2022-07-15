@@ -93,8 +93,6 @@ void	tokenization(t_input *data)
 
 void	data_init(t_input *data)
 {
-	if (!data->buf || !*data->buf)
-		return ;
 	data->in = 0;
 	data->out = 1;
 	data->args = NULL;

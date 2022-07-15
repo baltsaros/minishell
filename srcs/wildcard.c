@@ -13,7 +13,6 @@ static void	find_files_all(t_input *data, struct dirent *fname)
 
 static void	find_files_error(t_input *data, char *str)
 {
-	
 	write(2, "ls: ", 4);
 	write(2, str, ft_strlen(str));
 	write(2, ": No such file or directory\n", 28);
