@@ -53,22 +53,22 @@ int token_simplification(t_input *data)
             if (!elem)
                 return (1);
         }
-        // else if (elem->type == ASTER)
-        // {
-        //     if (elem->prev && elem->prev->type == WORD_AST)
-        //     {
-        //         elem = aster_before_token_simplification(elem->prev, data);
-        //         if (!elem)
-        //             return (1);
-        //     }
-        //     else if (elem->next && elem->next->type == WORD_AST)
-        //     {
-        //         elem = aster_after_token_simplification(elem, data);
-        //         if (!elem)
-        //             return (1);
-        //     }
-        //     data->args = elem;
-        // }
+        else if (elem->type == ASTER)
+        {
+            if (elem->prev && elem->prev->type == WORD_AST)
+            {
+                elem = aster_before_token_simplification(elem->prev, data);
+                if (!elem)
+                    return (1);
+            }
+            else if (elem->next && elem->next->type == WORD_AST)
+            {
+                elem = aster_after_token_simplification(elem, data);
+                if (!elem)
+                    return (1);
+            }
+            data->args = elem;
+        }
         if (!elem->next)
             break ;
         elem = elem->next;
