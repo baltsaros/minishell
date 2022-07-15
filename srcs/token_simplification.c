@@ -41,8 +41,6 @@ t_node  *aster_before_token_simplification(t_node *elem, t_input  *data)
 
 t_node  *word_transformation_simplification(t_node *elem, t_input *data)
 {
-    (void)elem;
-    (void)data;
     while (elem)
     {
         if (!is_between_d_quote(elem) || !is_between_quote(elem))
@@ -144,6 +142,9 @@ int token_simplification(t_input *data)
     elem = word_transformation_simplification(elem, data);
     if (!elem)
         return (1);
+
+    printf("ELEM  VALUE: %s\n", elem->value);
+
     ms_token_print(data->args);
     return (0);
 }
