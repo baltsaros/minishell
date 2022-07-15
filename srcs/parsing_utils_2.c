@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/15 15:28:45 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/15 16:24:53 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int	get_size_cmd(t_node	*args)
 			else
 				i++;
 		}
+		if (args->type == ENV_VA && args->prev && args->prev->type == ENV_VA)
+			i--;
 		args = args->next;
 	}
 	printf("I: %d\n", i);
@@ -38,7 +40,7 @@ int	get_size_cmd(t_node	*args)
 char	*get_env_variable(char *arg)
 {
 	char	*str;
-
+	
 	str = getenv(arg);
 	if (!str)
 		return (NULL);
@@ -54,8 +56,9 @@ char	**init_cmd(t_node *args, t_input *data)
 	size = get_size_cmd(args);
 	i = 0;
 	str = ms_malloc((size + 1) * sizeof(char *), data);
-	while (args && i != size && args->type != PIPE)
+	while (args && args->type != PIPE)
 	{
+		// i != size
 		if (args->type != QUOTE_D && args->type != QUOTE)
 		{
 			str[i] = ms_strdup("", data);
@@ -63,6 +66,39 @@ char	**init_cmd(t_node *args, t_input *data)
 			{
 				str[i] = ms_strdup(args->value, data);
 				i++;
+			}
+			else if (args->type == ENV_VA)
+			{
+				if ((args->prev && args->prev->type != ENV_VA) || !args->prev)
+				{
+					str[i] = ms_strdup(get_env_variable(args->value + 1), data);
+					i++;
+				}
+				else
+				{
+					i--;
+					str[i] = ms_strjoin_free(str[i], get_env_variable(args->value + 1), data);
+					if (!str[i])
+						return (NULL);
+					i++;
+				}
+			}
+			else if (args->type == ENV_VA 
+				&& (!is_between_d_quote(args) || !is_between_quote(args)))
+			{
+				if (args->prev && (args->prev->type == QUOTE_D || args->prev->type == QUOTE))
+				{
+					str[i] = ms_strdup(get_env_variable(args->value + 1), data);
+					i++;
+				}
+				else
+				{
+					i--;
+					str[i] = ms_strjoin_free(str[i], get_env_variable(args->value + 1), data);
+					if (!str[i])
+						return (NULL);
+					i++;
+				}
 			}
 		}
 		args = args->next;
