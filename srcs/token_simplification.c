@@ -44,42 +44,40 @@ int token_simplification(t_input *data)
     t_node  *elem;
 
     elem = quote_transformation(data);
-    (void)elem;
-    // elem = data->args;
-    // while (elem)
-    // {
-    //     if (elem->type == DOLLAR)
-    //     {
-    //         elem = dollar_token_simplification(elem, data);
-    //         if (!elem)
-    //             return (1);
-    //         data->args = elem;
-    //     }
-    //     else if (elem->type == ASTER)
-    //     {
-    //         if (elem->prev && elem->prev->type == WORD_AST)
-    //         {
-    //             elem = aster_before_token_simplification(elem->prev, data);
-    //             if (!elem)
-    //                 return (1);
-    //         }
-    //         else if (elem->next && elem->next->type == WORD_AST)
-    //         {
-    //             elem = aster_after_token_simplification(elem, data);
-    //             if (!elem)
-    //                 return (1);
-    //         }
-    //         data->args = elem;
-    //     }
-    //     if (!elem->next)
-    //         break ;
-    //     elem = elem->next;
-    // }
-    // if (elem->prev)
-    // {
-    //     while (elem->prev)
-    //         elem = elem->prev;
-    // }
-    // ms_token_print(data->args);
+    elem = data->args;
+    while (elem)
+    {
+        if (elem->type == DOLLAR)
+        {
+            elem = dollar_token_simplification(elem, data);
+            if (!elem)
+                return (1);
+        }
+        // else if (elem->type == ASTER)
+        // {
+        //     if (elem->prev && elem->prev->type == WORD_AST)
+        //     {
+        //         elem = aster_before_token_simplification(elem->prev, data);
+        //         if (!elem)
+        //             return (1);
+        //     }
+        //     else if (elem->next && elem->next->type == WORD_AST)
+        //     {
+        //         elem = aster_after_token_simplification(elem, data);
+        //         if (!elem)
+        //             return (1);
+        //     }
+        //     data->args = elem;
+        // }
+        if (!elem->next)
+            break ;
+        elem = elem->next;
+    }
+    if (elem->prev)
+    {
+        while (elem->prev)
+            elem = elem->prev;
+    }
+    ms_token_print(data->args);
     return (0);
 }
