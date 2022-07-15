@@ -119,7 +119,7 @@ int	execute(t_input *data)
 			}
 		}
 		waitpid(data->pid, &g_status, 0);
-		if (WIFSIGNALED(data->pid))
+		if (WIFSIGNALED(data->pid) && g_status)
 			g_status += 128;
 	}
 	return (0);
