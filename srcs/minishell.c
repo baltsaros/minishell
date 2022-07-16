@@ -14,7 +14,7 @@ void	prompt(t_input *data)
 		else if (is_right_buf(data->buf) != 1)
 		{
 			add_history(data->buf);
-			check_field(&data->buf, data);
+			check_field(data, data->buf);
 			data_init(data);
 			// ms_envp_print(data->envp_n);
 			// ms_token_print(data->args);

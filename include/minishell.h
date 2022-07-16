@@ -166,7 +166,7 @@ char	*ms_strdup(const char *s, t_input *data);
 void	prompt(t_input *data);
 
 // check_input
-int		check_field(char **buf, t_input *data);
+void	check_field(t_input *data, char *str);
 int		is_right_buf(char *buf);
 
 // data_init
