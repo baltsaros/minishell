@@ -39,51 +39,19 @@ t_node  *aster_before_token_simplification(t_node *elem, t_input  *data)
     return (elem);
 }
 
-t_node  *word_transformation_simplification(t_node *elem, t_input *data)
+t_node  *env_va_fusion(t_node   *elem, t_input  *data)
 {
+    (void)data;
     while (elem)
     {
-        if (!is_between_d_quote(elem) || !is_between_quote(elem))
+        if (elem->type == ENV_VA && elem->next && elem->next->type == ENV_VA)
         {
-            if (elem->type != ENV_VA && elem->prev->type == QUOTE_D)
+            while (elem && elem->next && elem->next->type == ENV_VA)
             {
-                if (elem->prev->prev && elem->prev->prev->type != WSPACE && elem->prev->prev->type != ENV_VA)
-                {
-                    elem->value = ms_strjoin_free(elem->prev->prev->value, elem->value, data);
-                    if (!elem->value)
-                        return (NULL);
-                    update_prev_and_next(elem->prev);
-                }
-            }
-            else if (elem->type != ENV_VA && elem->prev->type == QUOTE)
-            {
-                if (elem->prev->prev && elem->prev->prev->type != WSPACE && elem->prev->prev->type != ENV_VA)
-                {
-                    elem->value = ms_strjoin_free(elem->prev->prev->value, elem->value, data);
-                    if (!elem->value)
-                        return (NULL);
-                    update_prev_and_next(elem->prev);
-                }
-            }
-            if (elem->type != ENV_VA && elem->next->type == QUOTE_D)
-            {
-                if (elem->next->next && elem->next->next->type != WSPACE && elem->next->next->type != ENV_VA)
-                {
-                    elem->value = ms_strjoin_free(elem->value, elem->next->next->value, data);
-                    if (!elem->value)
-                        return (NULL);
-                    update_next_and_prev(elem->next);
-                }
-            }
-            else if (elem->type != ENV_VA && elem->next->type == QUOTE)
-            {
-                if (elem->next->next && elem->next->next->type != WSPACE && elem->next->next->type != ENV_VA)
-                {
-                    elem->value = ms_strjoin_free(elem->value, elem->next->next->value, data);
-                    if (!elem->value)
-                        return (NULL);
-                    update_next_and_prev(elem->next);
-                }
+                elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
+                if (!elem->value)
+                    return (NULL);
+                elem = update_next_and_prev(elem);
             }
         }
         if (!elem->next)
@@ -113,6 +81,7 @@ int token_simplification(t_input *data)
             elem = dollar_token_simplification(elem, data);
             if (!elem)
                 return (1);
+            elem->value = ms_strdup(getenv(elem->value + 1), data);
         }
         else if (elem->type == ASTER)
         {
@@ -130,6 +99,27 @@ int token_simplification(t_input *data)
             }
             data->args = elem;
         }
+        else if (elem->type == WORD && !ft_strncmp(elem->value, ".", 2))
+        {
+            printf("SALUT\n");
+            ms_strdup(elem->value, data);
+            if (elem->next && elem->next->type == SLASH)
+            {
+                ms_strjoin_free(elem->value, elem->next->value, data);
+                update_next_and_prev(elem);
+                if (elem->next && elem->type == WORD)
+                {
+                    elem->type = EXECUTABLE;
+                    ms_strjoin_free(elem->value, elem->next->next->value, data);
+                    update_next_and_prev(elem);
+                }
+                else if (elem->next && elem->type != WSPACE)
+                {
+                    ms_strjoin_free(elem->value, elem->next->next->value, data);
+                    update_next_and_prev(elem);
+                }
+            }
+        }
         if (!elem->next)
             break ;
         elem = elem->next;
@@ -139,12 +129,7 @@ int token_simplification(t_input *data)
         while (elem->prev)
             elem = elem->prev;
     }
-    elem = word_transformation_simplification(elem, data);
-    if (!elem)
-        return (1);
-
-    printf("ELEM  VALUE: %s\n", elem->value);
-
+    elem = env_va_fusion(elem, data);
     ms_token_print(data->args);
     return (0);
 }
