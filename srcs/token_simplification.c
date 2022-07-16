@@ -60,7 +60,7 @@ t_node  *aster_before_token_simplification(t_node *elem, t_input  *data)
     return (elem);
 }
 
-t_node  *word_total_fusion(t_node   *elem, t_input  *data)
+int word_total_fusion(t_node   *elem, t_input  *data)
 {
     while (elem)
     {
@@ -72,7 +72,7 @@ t_node  *word_total_fusion(t_node   *elem, t_input  *data)
             {
                 elem->value = ms_strjoin_free(elem->prev->value, elem->value, data);
                 if (!elem->value)
-                    return (NULL);
+                    return (1);
                 elem = update_prev_and_next(elem);
             }
         }
@@ -84,7 +84,7 @@ t_node  *word_total_fusion(t_node   *elem, t_input  *data)
             {
                 elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
                 if (!elem->value)
-                    return (NULL);
+                    return (1);
                 elem = update_next_and_prev(elem);
             }
         }
@@ -94,7 +94,7 @@ t_node  *word_total_fusion(t_node   *elem, t_input  *data)
             {
                 elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
                 if (!elem->value)
-                    return (NULL);
+                    return (1);
                 elem = update_next_and_prev(elem);
             }
         }
@@ -102,39 +102,49 @@ t_node  *word_total_fusion(t_node   *elem, t_input  *data)
             break ;
         elem = elem->next;
     }
-    if (elem->prev)
-    {
-        while (elem->prev)
-            elem = elem->prev;
-    }
-    return (elem);
+    return (0);
 }
 
-t_node  *word_quote_fusion(t_node *elem, t_input *data)
+int word_quote_fusion(t_node *elem, t_input *data)
 {
-    (void)data;
     while (elem)
     {
+        if (!is_between_d_quote(elem))
+        {
+            if (elem->next && elem->next->type == QUOTE_D)
+            {
+                if (elem->next->next && elem->next->next->type != WSPACE)
+                {
+                    elem->value = ms_strjoin_free(elem->value, elem->next->next->value, data);
+                    if (!elem->value)
+                        return (1);
+                    elem->next = update_next_and_prev(elem->next);
+                }
+            }
+            if (elem->prev && elem->prev->type == QUOTE_D)
+            {
+                if (elem->prev->prev && elem->prev->prev->type != WSPACE)
+                {
+                    elem->value = ms_strjoin_free(elem->prev->prev->value, elem->value, data);
+                    if (!elem->value)
+                        return (1);
+                    elem->prev = update_prev_and_next(elem->prev);
+                }
+            }
+        }
+        // else if (!is_between_quote(elem))
+        // {
+
+        // }
         if (!elem->next)
             break ;
         elem = elem->next;
     }
-    if (elem->prev)
-    {
-        while (elem->prev)
-            elem = elem->prev;
-    }
-    return (elem);
+    return (0);
 }
 
-int token_simplification(t_input *data)
+int general_simplification(t_node   *elem, t_input  *data)
 {
-    t_node  *elem;
-
-    elem = quote_transformation(data);
-    if (!elem)
-        return (1);
-    elem = data->args;
     while (elem)
     {
         if (elem->type == DOLLAR)
@@ -170,16 +180,21 @@ int token_simplification(t_input *data)
             break ;
         elem = elem->next;
     }
-    if (elem->prev)
-    {
-        while (elem->prev)
-            elem = elem->prev;
-    }
-    elem = word_total_fusion(elem, data);
-    if (!elem)
+    return (0);
+}
+
+int token_simplification(t_input *data)
+{
+    t_node  *elem;
+
+    elem = data->args;
+    if (quote_transformation(elem, data) == 1)
         return (1);
-    elem = word_quote_fusion(elem, data);
-    if (!elem)
+    if (general_simplification(elem, data) == 1)
+        return (1);
+    if (word_total_fusion(elem, data) == 1)
+        return (1);
+    if (word_quote_fusion(elem, data) == 1)
         return (1);
     ms_token_print(data->args);
     return (0);

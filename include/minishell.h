@@ -257,7 +257,7 @@ void	too_many_argv(void);
 int token_simplification(t_input *data);
 
 // Quote transformation
-t_node  *quote_transformation(t_input   *data);
+int quote_transformation(t_node *elem, t_input   *data);
 
 // Token Simplification Utils
 int	is_between_d_quote(t_node	*args);
