@@ -108,6 +108,23 @@ t_node  *word_total_fusion(t_node   *elem, t_input  *data)
     return (elem);
 }
 
+t_node  *word_quote_fusion(t_node *elem, t_input *data)
+{
+    (void)data;
+    while (elem)
+    {
+        if (!elem->next)
+            break ;
+        elem = elem->next;
+    }
+    if (elem->prev)
+    {
+        while (elem->prev)
+            elem = elem->prev;
+    }
+    return (elem);
+}
+
 int token_simplification(t_input *data)
 {
     t_node  *elem;
@@ -157,6 +174,9 @@ int token_simplification(t_input *data)
             elem = elem->prev;
     }
     elem = word_total_fusion(elem, data);
+    if (!elem)
+        return (1);
+    elem = word_quote_fusion(elem, data);
     if (!elem)
         return (1);
     ms_token_print(data->args);
