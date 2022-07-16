@@ -41,9 +41,19 @@ t_node  *aster_before_token_simplification(t_node *elem, t_input  *data)
 
 t_node  *env_va_fusion(t_node   *elem, t_input  *data)
 {
-    (void)data;
     while (elem)
     {
+        if (elem->prev && elem->prev->type != WSPACE)
+        {
+            while (elem && elem->prev && (elem->prev->type != WSPACE 
+                && elem->prev->type != QUOTE_D && elem->prev->type != QUOTE))
+            {
+                elem->value = ms_strjoin_free(elem->prev->value, elem->value, data);
+                if (!elem->value)
+                    return (NULL);
+                elem = update_prev_and_next(elem);
+            }
+        }
         if (elem->type == ENV_VA && elem->next && elem->next->type == ENV_VA)
         {
             while (elem && elem->next && elem->next->type == ENV_VA)
