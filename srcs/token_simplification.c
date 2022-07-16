@@ -64,7 +64,8 @@ t_node  *word_total_fusion(t_node   *elem, t_input  *data)
 {
     while (elem)
     {
-        if (elem->type != WSPACE && elem->prev && elem->prev->type != WSPACE)
+        if ((elem->type != WSPACE && elem->type != QUOTE && elem->type != QUOTE_D)
+            && elem->prev && elem->prev->type != WSPACE)
         {
             while (elem && elem->prev && (elem->prev->type != WSPACE 
                 && elem->prev->type != QUOTE_D && elem->prev->type != QUOTE))
@@ -75,7 +76,8 @@ t_node  *word_total_fusion(t_node   *elem, t_input  *data)
                 elem = update_prev_and_next(elem);
             }
         }
-        if (elem->type != WSPACE && elem->next && elem->next->type != WSPACE)
+        if ((elem->type != WSPACE && elem->type != QUOTE && elem->type != QUOTE_D)
+            && elem->next && elem->next->type != WSPACE)
         {
             while (elem && elem->next && (elem->next->type != WSPACE 
                 && elem->next->type != QUOTE_D && elem->next->type != QUOTE))
