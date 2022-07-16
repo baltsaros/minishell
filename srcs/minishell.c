@@ -16,7 +16,7 @@ void	prompt(t_input *data)
 			check_field(&data->buf, data);
 			data_init(data);
 			// ms_envp_print(data->envp_n);
-			//ms_token_print(data->args);
+			ms_token_print(data->args);
 
 			// In progress
 			token_simplification(data);
