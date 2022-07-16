@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/15 18:02:00 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/16 22:19:25 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,6 @@ int	get_size_cmd(t_node	*args)
 				i++;
 		}
 		if (args->type == ENV_VA && args->prev && args->prev->type == ENV_VA)
-			i--;
-		if (is_between_d_quote(args) && args->next && args->next->type == QUOTE_D)
-			i--;
-		if (is_between_quote(args) && args->next && args->next->type == QUOTE)
 			i--;
 		args = args->next;
 	}

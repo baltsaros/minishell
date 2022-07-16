@@ -20,7 +20,7 @@ void	prompt(t_input *data)
 
 			// In progress
 			token_simplification(data);
-			//parsing(data);
+			parsing(data);
 			
 			// asterisks(data);
 			//execute(data);
