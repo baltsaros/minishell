@@ -1,5 +1,26 @@
 #include "../include/minishell.h"
 
+t_node  *executable_token_simplification(t_node *elem, t_input *data)
+{
+    if (elem->next && elem->next->type == SLASH)
+    {
+        elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
+        update_next_and_prev(elem);
+        if (elem->next && elem->type == WORD)
+        {
+            elem->type = EXECUTABLE;
+            elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
+            update_next_and_prev(elem);
+        }
+        else if (elem->next && elem->type != WSPACE)
+        {
+            elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
+            update_next_and_prev(elem);
+        }
+    }
+    return (elem);
+}
+
 t_node  *dollar_token_simplification(t_node *elem, t_input  *data)
 {
     if (elem->next && elem->next->type == WORD)
@@ -122,22 +143,9 @@ int token_simplification(t_input *data)
         }
         else if (elem->type == WORD && !ft_strncmp(elem->value, ".", 2))
         {
-            if (elem->next && elem->next->type == SLASH)
-            {
-                elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-                update_next_and_prev(elem);
-                if (elem->next && elem->type == WORD)
-                {
-                    elem->type = EXECUTABLE;
-                    elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-                    update_next_and_prev(elem);
-                }
-                else if (elem->next && elem->type != WSPACE)
-                {
-                    elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-                    update_next_and_prev(elem);
-                }
-            }
+            elem = executable_token_simplification(elem, data);
+            if (!elem)
+                return (1);
         }
         if (!elem->next)
             break ;
@@ -149,6 +157,8 @@ int token_simplification(t_input *data)
             elem = elem->prev;
     }
     elem = word_total_fusion(elem, data);
+    if (!elem)
+        return (1);
     ms_token_print(data->args);
     return (0);
 }
