@@ -101,21 +101,19 @@ int token_simplification(t_input *data)
         }
         else if (elem->type == WORD && !ft_strncmp(elem->value, ".", 2))
         {
-            printf("SALUT\n");
-            ms_strdup(elem->value, data);
             if (elem->next && elem->next->type == SLASH)
             {
-                ms_strjoin_free(elem->value, elem->next->value, data);
+                elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
                 update_next_and_prev(elem);
                 if (elem->next && elem->type == WORD)
                 {
                     elem->type = EXECUTABLE;
-                    ms_strjoin_free(elem->value, elem->next->next->value, data);
+                    elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
                     update_next_and_prev(elem);
                 }
                 else if (elem->next && elem->type != WSPACE)
                 {
-                    ms_strjoin_free(elem->value, elem->next->next->value, data);
+                    elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
                     update_next_and_prev(elem);
                 }
             }
