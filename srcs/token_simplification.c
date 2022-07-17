@@ -128,8 +128,8 @@ int token_simplification(t_input *data)
         return (1);
     if (word_total_fusion(elem, data) == 1)
         return (1);
-    // if (word_quote_fusion(elem, data) == 1)
-    //     return (1);
+    if (word_quote_fusion(elem, data) == 1)
+        return (1);
     if (delete_useless_wspace(elem, data) == 1)
         return (1);
     ms_token_print(data->args);
