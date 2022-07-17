@@ -39,17 +39,9 @@ int quote_transformation(t_node *elem, t_input   *data)
     while (elem)
     {
         if (!is_between_d_quote(elem))
-        {
             elem = fusion_all_between_d_quote(elem, data);
-            if (!elem)
-                return (1);
-        }
         else if (!is_between_quote(elem))
-        {
             elem = fusion_all_between_quote(elem, data);
-            if (!elem)
-                return (1);
-        }
         if (!elem->next)
             break ;
         elem = elem->next;

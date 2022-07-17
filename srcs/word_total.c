@@ -2,6 +2,7 @@
 
 int fusion_with_prev_elem(t_node  *elem, t_input  *data)
 {
+    (void)data;
     while (elem && elem->prev && (elem->prev->type != WSPACE 
         && elem->prev->type != QUOTE_D && elem->prev->type != QUOTE))
     {
@@ -38,21 +39,12 @@ int word_total_fusion(t_node   *elem, t_input  *data)
     {
         if ((elem->type != WSPACE && elem->type != QUOTE && elem->type != QUOTE_D)
             && elem->prev && elem->prev->type != WSPACE)
-        {
-            if (fusion_with_prev_elem(elem, data) == 1)
-                return (1);
-        }
+            fusion_with_prev_elem(elem, data);
         if ((elem->type != WSPACE && elem->type != QUOTE && elem->type != QUOTE_D)
             && elem->next && elem->next->type != WSPACE)
-        {
-            if (fusion_with_next_elem(elem, data) == 1)
-                return (1);
-        }
+            fusion_with_next_elem(elem, data);
         if (elem->type == ENV_VA && elem->next && elem->next->type == ENV_VA)
-        {
-            if (fusion_env_va(elem, data) == 1)
-                return (1);
-        }
+            fusion_env_va(elem, data);
         if (!elem->next)
             break ;
         elem = elem->next;
