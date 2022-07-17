@@ -5,19 +5,16 @@ t_node  *executable_token_simplification(t_node *elem, t_input *data)
     if (elem->next && elem->next->type == SLASH)
     {
         elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-        // update_next_and_prev(elem);
         elem = ms_token_del(elem->next);
         if (elem->next && elem->type == WORD)
         {
             elem->type = EXECUTABLE;
             elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-            // update_next_and_prev(elem);
             elem = ms_token_del(elem->next);
         }
         else if (elem->next && elem->type != WSPACE)
         {
             elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-            // update_next_and_prev(elem);
             elem = ms_token_del(elem->next);
         }
     }
@@ -30,7 +27,6 @@ t_node  *dollar_token_simplification(t_node *elem, t_input  *data)
     {
         elem->type = ENV_VA;
         elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-        // elem = update_next_and_prev(elem);
         elem = ms_token_del(elem->next);
     }
     return (elem);
@@ -40,7 +36,6 @@ t_node  *aster_after_token_simplification(t_node *elem, t_input  *data)
 {
     elem->type = ASTER_WORD;
     elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-    // elem = update_next_and_prev(elem);
     elem = ms_token_del(elem->next);
     return (elem);
 }
@@ -49,7 +44,6 @@ t_node  *aster_before_token_simplification(t_node *elem, t_input  *data)
 {
     elem->type = ASTER_WORD;
     elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-    // elem = update_next_and_prev(elem);
     elem = ms_token_del(elem->next);
     if (elem->next)
         elem = aster_after_token_simplification(elem, data);
@@ -134,8 +128,10 @@ int token_simplification(t_input *data)
         return (1);
     if (word_total_fusion(elem, data) == 1)
         return (1);
+    printf("before word quote\n");
     if (word_quote_fusion(elem, data) == 1)
         return (1);
+    printf("before useless wspace\n");
     if (delete_useless_wspace(elem, data) == 1)
         return (1);
     ms_token_print(data->args);

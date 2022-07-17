@@ -9,7 +9,9 @@ int word_quote_fusion(t_node *elem, t_input *data)
 		elem = elem->next;
 	if (elem)
 		type = elem->type;
-	if (elem->next->type != type)
+	else if (!elem)
+		return (0);
+	if (elem->next && elem->next->type != type)
 		first = elem->next;
 	else
 		return (0);
@@ -31,7 +33,7 @@ int word_quote_fusion(t_node *elem, t_input *data)
 		first->value = ms_strjoin_free(first->value, elem->next->value, data);
 		ms_token_del(elem->next);
 	}
-	printf("elem type is %d, value is %s\n", elem->type, elem->value);
+	// printf("elem type is %d, value is %s\n", elem->type, elem->value);
 	return (0);
 }
 
