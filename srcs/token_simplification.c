@@ -69,6 +69,32 @@ int general_simplification(t_node   *elem, t_input  *data)
         }
         else if (elem->type == WORD && !ft_strncmp(elem->value, ".", 2))
             elem = executable_token_simplification(elem, data);
+        else if (elem->type == REDIR_OUT || elem->type == REDIR_AP)
+        {
+            if (elem->next && (elem->next && elem->next->type == WSPACE))
+            {
+                elem = elem->next;
+                if (elem->next && (elem->next->type != PIPE && elem->next->type != REDIR_IN && elem->next->type != REDIR_OUT 
+                    && elem->next->type != REDIR_HD && elem->next->type != REDIR_AP))
+                    elem->next->type = OUT_ARG;
+            }
+            else if (elem->next && (elem->next->type != PIPE && elem->next->type != REDIR_IN && elem->next->type != REDIR_OUT 
+                    && elem->next->type != REDIR_HD && elem->next->type != REDIR_AP))
+                    elem->next->type = OUT_ARG;
+        }
+        else if (elem->type == REDIR_IN || elem->type == REDIR_HD)
+        {
+            if (elem->next && (elem->next && elem->next->type == WSPACE))
+            {
+                elem = elem->next;
+                if (elem->next && (elem->next->type != PIPE && elem->next->type != REDIR_IN && elem->next->type != REDIR_OUT 
+                    && elem->next->type != REDIR_HD && elem->next->type != REDIR_AP))
+                    elem->next->type = IN_ARG;
+            }
+            else if (elem->next && (elem->next->type != PIPE && elem->next->type != REDIR_IN && elem->next->type != REDIR_OUT 
+                    && elem->next->type != REDIR_HD && elem->next->type != REDIR_AP))
+                    elem->next->type = IN_ARG;
+        }
         if (!elem->next)
             break ;
         elem = elem->next;
@@ -87,8 +113,8 @@ int token_simplification(t_input *data)
         return (1);
     if (word_total_fusion(elem, data) == 1)
         return (1);
-    if (word_quote_fusion(elem, data) == 1)
-        return (1);
+    // if (word_quote_fusion(elem, data) == 1)
+    //     return (1);
     ms_token_print(data->args);
     return (0);
 }
