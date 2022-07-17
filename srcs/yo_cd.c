@@ -6,6 +6,7 @@ int	yo_cd(t_input *data)
 		return (0);
 	else if (chdir(data->cmds->cmd[1]))
 	{
+		write(2, "YAMSP: ", 7);
 		perror("cd");
 		g_status = errno;
 		return (g_status);

@@ -5,21 +5,20 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <signal.h>
-# include <sys/types.h>
 # include <dirent.h>
-# include <sys/ioctl.h>
 # include <sys/types.h>
-# include <sys/stat.h>
 # include <sys/wait.h>
 # include <fcntl.h>
-# include <termios.h>
-# include <curses.h>
-# include <term.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <libft.h>
 # include <stdbool.h>
 # include <errno.h>
+// # include <sys/stat.h>
+// # include <sys/ioctl.h>
+// # include <termios.h>
+// # include <curses.h>
+// # include <term.h>
 // # include "../libft/libft.h"
 
 // global var
@@ -53,7 +52,7 @@ enum e_tokens
 	TRU			= 10,
 	FALS		= 11,
 	BRACES_L	= 123,	// {
-	BRACES_R	= 125,	// }
+	BRACES_R	= 125	// }
 };
 
 enum e_simplier_tokens
@@ -108,6 +107,7 @@ typedef struct s_input
 	int					j;
 	size_t				k;
 	char				*tmp;
+	char				*prompt;
 	char				*type;
 	char				*value;
 	t_env				*envp_tmp;
@@ -168,8 +168,6 @@ int		error_check(int input, char *str, int n, t_input *data);
 int		ft_strstr(char *str, char *to_find);
 int		check_charset(char c, char *charset);
 void	increase_shlvl(t_input *data);
-
-int		get_next_line(char **line, t_input *data);
 int		ft_strcmp(char *s1, char *s2);
 void	*ms_malloc(size_t n, t_input *data);
 char	*ms_strdup(const char *s, t_input *data);
@@ -178,7 +176,7 @@ char	*ms_strdup(const char *s, t_input *data);
 void	prompt(t_input *data);
 
 // check_input
-int		check_field(char **buf, t_input *data);
+void	check_field(t_input *data, char *str);
 int		is_right_buf(char *buf);
 
 // data_init
@@ -222,6 +220,7 @@ void	add_envp(t_input *data, char *type, char *value);
 
 //signals
 void	signal_handling(int signo);
+void	signal_fork(int	signo);
 
 // wildcard
 void	asterisks(t_input *data, t_cmd *cmds);
@@ -252,7 +251,11 @@ char	**init_cmd(t_node *args, t_input *data);
 void	rl_replace_line(const char *text, int clear_undo);
 
 // messages
-void	too_many_argv(void);
+void	invalid_argv(void);
+void	welcome(void);
+void	secret_mode(void);
+void	uwu_mode(void);
+void	normal_mode(void);
 
 // Token Simplification
 int token_simplification(t_input *data);

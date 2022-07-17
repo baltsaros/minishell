@@ -93,11 +93,27 @@ void	tokenization(t_input *data)
 
 void	data_init(t_input *data)
 {
-	if (!data->buf || !*data->buf)
-		return ;
 	data->in = 0;
 	data->out = 1;
 	data->args = NULL;
 	tokenization(data);
 	data->argc = ms_token_size(data->args);
+	if (data->argc == 1 && !ft_strcmp(data->buf, "secret"))
+	{
+		free(data->prompt);
+		data->prompt = ms_strdup("🤓 YAMSP-1.7 🤓 $ ", data);
+		secret_mode();
+	}
+	else if (data->argc == 1 && !ft_strcmp(data->buf, "uwu"))
+	{
+		free(data->prompt);
+		data->prompt = ms_strdup("😽 YAMSP-UwU 😽 $ ", data);
+		uwu_mode();
+	}
+	else if (data->argc == 1 && !ft_strcmp(data->buf, "normal"))
+	{
+		free(data->prompt);
+		data->prompt = ms_strdup("YAMSP-1.6$ ", data);
+		normal_mode();
+	}
 }

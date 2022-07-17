@@ -8,6 +8,7 @@ int	yo_pwd(t_input *data)
 	ret = getcwd(NULL, 0);
 	if (!ret)
 	{
+		write(2, "YAMSP: ", 7);
 		perror("pwd");
 		g_status = errno;
 	}

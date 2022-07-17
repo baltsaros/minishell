@@ -102,7 +102,7 @@ void	ms_execve(char **argv, t_input *data)
 
 	if (!argv || !argv[0])
 	{
-		write(2, "YAMSP-1.6: parse error\n", 23);
+		write(2, "YAMSP: parse error\n", 19);
 		exit(1);
 	}
 	if (!ft_strncmp(argv[0], "./minishell", 12))
@@ -111,7 +111,7 @@ void	ms_execve(char **argv, t_input *data)
 	g_status = 0;
 	if (execve(path, argv, data->envp) < 0)
 	{
-		write(2, "YAMSP-1.6: ", 11);
+		write(2, "YAMSP: ", 7);
 		perror("execve error");
 		g_status = errno;
 		free(path);
