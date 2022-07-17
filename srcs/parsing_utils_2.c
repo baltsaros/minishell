@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/16 22:44:15 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/17 12:20:33 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	get_size_cmd(t_node	*args)
 			i--;
 		if (args->type == IN_ARG || args->type == OUT_ARG)
 			i--;
+		if (args->type == DOLLAR || !args->value)
+			i--;
 		args = args->next;
 	}
 	printf("I: %d\n", i);
@@ -56,6 +58,7 @@ char	**init_cmd(t_node *args, t_input *data)
 			if (args->type == WORD || args->type == ASTER_WORD
 				|| args->type == EXECUTABLE || args->type == ENV_VA)
 			{
+				free(str[i]);
 				str[i] = ms_strdup(args->value, data);
 				i++;
 			}
