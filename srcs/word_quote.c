@@ -15,7 +15,7 @@ int word_quote_fusion(t_node *elem, t_input *data)
 		first = elem->next;
 	else
 		return (0);
-	if (elem->prev->type == WORD)
+	if (elem->prev && elem->prev->type == WORD)
 	{
 		first->value = ft_strjoin(elem->prev->value, first->value);
 		// elem = ms_token_del(elem->prev);
