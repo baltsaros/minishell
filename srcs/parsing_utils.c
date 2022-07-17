@@ -28,14 +28,11 @@ int	redirection_check(t_node *args, t_cmd *elem, t_input *data)
 			return (print_syntax_error_bool(args));
 		if (args->next && args->next->type == OUT_ARG)
 		{
-			printf("Heee heee\n");
 			if (init_out(args, elem, data) == 1)
 				return (1);
 		}
 		else if (args->next->next && args->next->next->type == OUT_ARG)
 		{
-			printf("Ousbek\n");
-			// args = args->next;
 			if (init_out(args, elem, data) == 1)
 				return (1);
 		}
