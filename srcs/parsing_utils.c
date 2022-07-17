@@ -35,7 +35,7 @@ int	redirection_check(t_node *args, t_cmd *elem, t_input *data)
 		else if (args->next->next && args->next->next->type == OUT_ARG)
 		{
 			printf("Ousbek\n");
-			args = args->next;
+			// args = args->next;
 			if (init_out(args, elem, data) == 1)
 				return (1);
 		}
