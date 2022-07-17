@@ -108,6 +108,21 @@ int general_simplification(t_node   *elem, t_input  *data)
     return (0);
 }
 
+int delete_useless_wspace(t_node *elem, t_input *data)
+{
+    (void)data;
+    while (elem)
+    {
+        if (elem->next && elem->next->type == WSPACE
+            && (is_between_d_quote(elem->next) && is_between_quote(elem->next)))
+            ms_token_del(elem->next);
+        if (!elem->next)
+            break ;
+        elem = elem->next;
+    }
+    return (0);
+}
+
 int token_simplification(t_input *data)
 {
     t_node  *elem;
@@ -120,6 +135,8 @@ int token_simplification(t_input *data)
     if (word_total_fusion(elem, data) == 1)
         return (1);
     if (word_quote_fusion(elem, data) == 1)
+        return (1);
+    if (delete_useless_wspace(elem, data) == 1)
         return (1);
     ms_token_print(data->args);
     return (0);
