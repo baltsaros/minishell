@@ -5,17 +5,17 @@ t_node  *executable_token_simplification(t_node *elem, t_input *data)
     if (elem->next && elem->next->type == SLASH)
     {
         elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-        update_next_and_prev(elem);
+        ms_token_del(elem->next);
         if (elem->next && elem->type == WORD)
         {
             elem->type = EXECUTABLE;
             elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-            update_next_and_prev(elem);
+            ms_token_del(elem->next);
         }
         else if (elem->next && elem->type != WSPACE)
         {
             elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-            update_next_and_prev(elem);
+            ms_token_del(elem->next);
         }
     }
     return (elem);
@@ -27,9 +27,7 @@ t_node  *dollar_token_simplification(t_node *elem, t_input  *data)
     {
         elem->type = ENV_VA;
         elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-        if (!elem->value)
-            return (NULL);
-        elem = update_next_and_prev(elem);
+        ms_token_del(elem->next);
     }
     return (elem);
 }
@@ -38,9 +36,7 @@ t_node  *aster_after_token_simplification(t_node *elem, t_input  *data)
 {
     elem->type = ASTER_WORD;
     elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-    if (!elem->value)
-        return (NULL);
-    elem = update_next_and_prev(elem);
+    ms_token_del(elem->next);
     return (elem);
 }
 
@@ -48,9 +44,7 @@ t_node  *aster_before_token_simplification(t_node *elem, t_input  *data)
 {
     elem->type = ASTER_WORD;
     elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-    if (!elem->value)
-        return (NULL);
-    elem = update_next_and_prev(elem);
+    ms_token_del(elem->next);
     if (elem->next)
     {
         elem = aster_after_token_simplification(elem, data);
