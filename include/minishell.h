@@ -262,8 +262,6 @@ int quote_transformation(t_node *elem, t_input   *data);
 // Token Simplification Utils
 int	is_between_d_quote(t_node	*args);
 int	is_between_quote(t_node	*args);
-t_node  *update_next_and_prev(t_node *elem);
-t_node  *update_prev_and_next(t_node *elem);
 
 // Word Quote
 int word_quote_fusion(t_node *elem, t_input *data);

@@ -30,8 +30,6 @@ t_node  *dollar_token_simplification(t_node *elem, t_input  *data)
     {
         elem->type = ENV_VA;
         elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-        if (!elem->value)
-            return (NULL);
         // elem = update_next_and_prev(elem);
         elem = ms_token_del(elem->next);
     }
@@ -42,8 +40,6 @@ t_node  *aster_after_token_simplification(t_node *elem, t_input  *data)
 {
     elem->type = ASTER_WORD;
     elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-    if (!elem->value)
-        return (NULL);
     // elem = update_next_and_prev(elem);
     elem = ms_token_del(elem->next);
     return (elem);
@@ -53,16 +49,10 @@ t_node  *aster_before_token_simplification(t_node *elem, t_input  *data)
 {
     elem->type = ASTER_WORD;
     elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-    if (!elem->value)
-        return (NULL);
     // elem = update_next_and_prev(elem);
     elem = ms_token_del(elem->next);
     if (elem->next)
-    {
         elem = aster_after_token_simplification(elem, data);
-        if (!elem)
-            return (NULL);
-    }
     return (elem);
 }
 
@@ -73,31 +63,43 @@ int general_simplification(t_node   *elem, t_input  *data)
         if (elem->type == DOLLAR)
         {
             elem = dollar_token_simplification(elem, data);
-            if (!elem)
-                return (1);
             elem->value = ms_strdup(getenv(elem->value + 1), data);
         }
         else if (elem->type == ASTER)
         {
             if (elem->prev && elem->prev->type == WORD_AST)
-            {
                 elem = aster_before_token_simplification(elem->prev, data);
-                if (!elem)
-                    return (1);
-            }
-            if (elem->next && elem->next->type == WORD_AST)
-            {
+            else if (elem->next && elem->next->type == WORD_AST)
                 elem = aster_after_token_simplification(elem, data);
-                if (!elem)
-                    return (1);
-            }
             data->args = elem;
         }
         else if (elem->type == WORD && !ft_strncmp(elem->value, ".", 2))
-        {
             elem = executable_token_simplification(elem, data);
-            if (!elem)
-                return (1);
+        else if (elem->type == REDIR_OUT || elem->type == REDIR_AP)
+        {
+            if (elem->next && (elem->next && elem->next->type == WSPACE))
+            {
+                elem = elem->next;
+                if (elem->next && (elem->next->type != PIPE && elem->next->type != REDIR_IN && elem->next->type != REDIR_OUT 
+                    && elem->next->type != REDIR_HD && elem->next->type != REDIR_AP))
+                    elem->next->type = OUT_ARG;
+            }
+            else if (elem->next && (elem->next->type != PIPE && elem->next->type != REDIR_IN && elem->next->type != REDIR_OUT 
+                    && elem->next->type != REDIR_HD && elem->next->type != REDIR_AP))
+                    elem->next->type = OUT_ARG;
+        }
+        else if (elem->type == REDIR_IN || elem->type == REDIR_HD)
+        {
+            if (elem->next && (elem->next && elem->next->type == WSPACE))
+            {
+                elem = elem->next;
+                if (elem->next && (elem->next->type != PIPE && elem->next->type != REDIR_IN && elem->next->type != REDIR_OUT 
+                    && elem->next->type != REDIR_HD && elem->next->type != REDIR_AP))
+                    elem->next->type = IN_ARG;
+            }
+            else if (elem->next && (elem->next->type != PIPE && elem->next->type != REDIR_IN && elem->next->type != REDIR_OUT 
+                    && elem->next->type != REDIR_HD && elem->next->type != REDIR_AP))
+                    elem->next->type = IN_ARG;
         }
         if (!elem->next)
             break ;
