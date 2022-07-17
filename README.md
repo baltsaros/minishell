@@ -1,3 +1,5 @@
+[WORK IN PROGRESS]
+
 ## **Project description** 
 This project is about creating a simple shell. Bash was used as a reference.
 
