@@ -59,6 +59,7 @@ enum e_tokens
 enum e_simplier_tokens
 {
 	ENV_VA 		= 37, 	// Example: $PATH
+	ENV_VA_BR	= 38,
 	ASTER_WORD	= 5,	// Example: t*.c
 	IN_ARG		= 130,
 	OUT_ARG		= 131,
@@ -262,6 +263,7 @@ int quote_transformation(t_node *elem, t_input   *data);
 // Token Simplification Utils
 int	is_between_d_quote(t_node	*args);
 int	is_between_quote(t_node	*args);
+int	is_between_braces(t_node	*args);
 
 // Word Quote
 int word_quote_fusion(t_node *elem, t_input *data);

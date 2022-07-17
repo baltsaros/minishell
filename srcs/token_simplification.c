@@ -29,6 +29,16 @@ t_node  *dollar_token_simplification(t_node *elem, t_input  *data)
         elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
         elem = ms_token_del(elem->next);
     }
+    if (elem->next && elem->next->type == BRACES_L)
+    {
+        if (elem->next->next && elem->next->next->type == WORD)
+        {
+        }
+        else if (elem->next->next && elem->next->next->type == BRACES_R)
+        {
+
+        }
+    }
     return (elem);
 }
 
@@ -54,18 +64,20 @@ int general_simplification(t_node   *elem, t_input  *data)
 {
     while (elem)
     {
-        if (elem->type == DOLLAR)
+        if (elem->type == ASTER)
         {
-            elem = dollar_token_simplification(elem, data);
-            elem->value = ms_strdup(getenv(elem->value + 1), data);
-        }
-        else if (elem->type == ASTER)
-        {
-            if (elem->prev && elem->prev->type == WORD_AST)
+            if (!is_between_d_quote(elem) || !is_between_quote(elem))
+                elem->type = WORD;
+            else if (elem->prev && elem->prev->type == WORD_AST)
                 elem = aster_before_token_simplification(elem->prev, data);
             else if (elem->next && elem->next->type == WORD_AST)
                 elem = aster_after_token_simplification(elem, data);
             data->args = elem;
+        }
+        else if (elem->type == DOLLAR)
+        {
+            elem = dollar_token_simplification(elem, data);
+            elem->value = ms_strdup(getenv(elem->value + 1), data);
         }
         else if (elem->type == WORD && !ft_strncmp(elem->value, ".", 2))
             elem = executable_token_simplification(elem, data);
