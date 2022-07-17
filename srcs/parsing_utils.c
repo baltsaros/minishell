@@ -2,7 +2,7 @@
 
 int	redirection_check(t_node *args, t_cmd *elem, t_input *data)
 {
-	if (args->value[0] == '<')
+	if (args->value && args->value[0] == '<')
 	{
 		if (!args->next)
 		//|| is_the_next_is_word(args) == 1)
@@ -10,7 +10,7 @@ int	redirection_check(t_node *args, t_cmd *elem, t_input *data)
 		if (init_in(args, elem, data) == 1)
 			return (1);
 	}
-	else if (args->value[0] == '>')
+	else if (args->value && args->value[0] == '>')
 	{
 		if (!args->next) 
 		//|| is_the_next_is_word(args) == 1)
