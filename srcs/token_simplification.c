@@ -80,23 +80,23 @@ t_node  *dollar_token_simplification(t_node *elem, t_input  *data)
     return (elem);
 }
 
-t_node  *aster_after_token_simplification(t_node *elem, t_input  *data)
-{
-    elem->type = ASTER_WORD;
-    elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-    elem = ms_token_del(elem->next);
-    return (elem);
-}
+// t_node  *aster_after_token_simplification(t_node *elem, t_input  *data)
+// {
+//     elem->type = ASTER_WORD;
+//     elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
+//     elem = ms_token_del(elem->next);
+//     return (elem);
+// }
 
-t_node  *aster_before_token_simplification(t_node *elem, t_input  *data)
-{
-    elem->type = ASTER_WORD;
-    elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-    elem = ms_token_del(elem->next);
-    if (elem->next)
-        elem = aster_after_token_simplification(elem, data);
-    return (elem);
-}
+// t_node  *aster_before_token_simplification(t_node *elem, t_input  *data)
+// {
+//     elem->type = ASTER_WORD;
+//     elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
+//     elem = ms_token_del(elem->next);
+//     if (elem->next)
+//         elem = aster_after_token_simplification(elem, data);
+//     return (elem);
+// }
 
 char    *get_between_braces(t_node  *elem)
 {
