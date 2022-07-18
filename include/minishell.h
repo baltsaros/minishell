@@ -59,6 +59,9 @@ enum e_simplier_tokens
 {
 	ENV_VA 		= 37, 	// Example: $PATH
 	ENV_VA_BR	= 38,
+	ENV_BR_EM	= 39,
+	ENV_P		= 40,
+	ENV_P_EM	= 41,
 	ASTER_WORD	= 5,	// Example: t*.c
 	IN_ARG		= 130,
 	OUT_ARG		= 131,
