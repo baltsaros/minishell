@@ -39,7 +39,7 @@ void	welcome(void)
 {
 	printf("%sWelcome to Yet Another MiniShell Project v. 1.6", O_C);
 	printf(" (YAMSP)!%s\n", N);
-	printf("%sIt is as beautiful as a shell 🐚 and has two", O_C);
+	printf("%sIt is as beautiful as a shell 🐚 and has two.", O_C);
 	printf(" extra modes%s\n", N);
 	printf("%sFeel free to explore our code and find how to", O_C);
 	printf(" activate them!%s\n", N);

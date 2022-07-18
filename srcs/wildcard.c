@@ -11,16 +11,6 @@ static void	find_files_all(t_input *data, struct dirent *fname)
 	}
 }
 
-static void	find_files_error(t_input *data, char *str)
-{
-	write(2, "ls: ", 4);
-	write(2, str, ft_strlen(str));
-	write(2, ": No such file or directory\n", 28);
-	g_status = 1;
-	data->node_tmp = ms_token_new(-1, NULL, data);
-	ms_token_back(&data->cmds->wild, data->node_tmp);
-}
-
 static void	find_files_some(t_input *data, struct dirent *fname
 	, char *before, char *after)
 {
@@ -56,9 +46,28 @@ static void	find_files(t_input *data, char *str, struct dirent *fname)
 	if (!before && !after)
 		find_files_all(data, fname);
 	else if (!before && after)
-		find_files_error(data, str);
+	{
+		data->node_tmp = ms_token_new(-1, NULL, data);
+		ms_token_back(&data->cmds->wild, data->node_tmp);
+	}
 	else if (before)
 		find_files_some(data, fname, before, after);
+}
+
+static int	check_node(t_input *data, char *str)
+{
+	t_node *tmp;
+
+	tmp = data->args;
+	while (tmp)
+	{
+		while (tmp->next && tmp->type != ASTER)
+			tmp = tmp->next;
+		if (tmp && tmp->type == ASTER && !ft_strcmp(tmp->value, str))
+			return (1);
+		tmp = tmp->next;
+	}
+	return (0);
 }
 
 void	asterisks(t_input *data, t_cmd *cmds)
@@ -79,7 +88,7 @@ void	asterisks(t_input *data, t_cmd *cmds)
 	fname = readdir(data->dir);
 	while (cmds->cmd[i])
 	{
-		if (ft_strchr(cmds->cmd[i], '*'))
+		if (ft_strchr(cmds->cmd[i], '*' && check_node(data, cmds->cmd[i])))
 			find_files(data, cmds->cmd[i], fname);
 		++i;
 	}
