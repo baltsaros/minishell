@@ -14,9 +14,12 @@ static void	find_files_all(t_input *data, struct dirent *fname)
 static void	find_files_some(t_input *data, struct dirent *fname
 	, char *before, char *after)
 {
+	int	len;
+
 	while (fname)
 	{
-		if (!ft_strcmp(fname->d_name, before))
+		len = ft_strlen(before);
+		if (!ft_strncmp(fname->d_name, before, len))
 		{
 			if (!after || (after && ft_strstr(fname->d_name, after)))
 			{
@@ -45,7 +48,7 @@ static void	find_files(t_input *data, char *str, struct dirent *fname)
 		after = ms_strdup(str + data->i + 1, data);
 	if (!before && !after)
 		find_files_all(data, fname);
-	else if (!before && after)
+	else if (before && !after)
 	{
 		data->node_tmp = ms_token_new(-1, NULL, data);
 		ms_token_back(&data->cmds->wild, data->node_tmp);
@@ -88,7 +91,7 @@ void	asterisks(t_input *data, t_cmd *cmds)
 	fname = readdir(data->dir);
 	while (cmds->cmd[i])
 	{
-		if (ft_strchr(cmds->cmd[i], '*' && check_node(data, cmds->cmd[i])))
+		if (ft_strchr(cmds->cmd[i], '*') && check_node(data, cmds->cmd[i]))
 			find_files(data, cmds->cmd[i], fname);
 		++i;
 	}
