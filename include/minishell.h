@@ -273,6 +273,13 @@ char    *get_between_braces(t_node  *elem, int type1, int type2);
 // Token Simplification Utils 2
 int 	delete_useless_wspace(t_node *elem, t_input *data);
 
+// Dollar simplification braces
+void    dollar_braces_2(t_node  *elem, t_input  *data);
+void    dollar_braces(t_node *elem,  t_input *data);
+void    dollar_p_2(t_node   *elem, t_input  *data);
+void    dollar_p(t_node *elem, t_input  *data);
+t_node  *dollar_token_simplification(t_node *elem, t_input  *data);
+
 // Word Quote
 int 	word_quote_fusion(t_node *elem, t_input *data);
 
