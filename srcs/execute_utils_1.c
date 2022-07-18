@@ -58,7 +58,7 @@ char	**get_address(char *cmd[], char *envp[], t_input *data)
 		++i;
 	envp[i] = ms_strjoin_free(envp[i], ":.", data);
 	env = ft_split(envp[i] + 5, ':');
-	alloc_check(env);
+	alloc_check_big(env, data);
 	i = 0;
 	while (env[i])
 	{

@@ -43,10 +43,10 @@ void	increase_shlvl(t_input *data)
 	data->i++;
 	free(data->tmp);
 	data->tmp = ft_itoa(data->i);
-	alloc_check_small(data->tmp);
+	alloc_check_small(data->tmp, data);
 	free(data->envp[i]);
 	data->envp[i] = ft_strjoin(data->value, data->tmp);
-	alloc_check_small(data->envp[i]);
+	alloc_check_small(data->envp[i], data);
 	free(data->value);
 	free(data->tmp);
 }

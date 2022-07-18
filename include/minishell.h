@@ -116,8 +116,6 @@ typedef struct s_input
 	t_env				*envp_tmp;
 	t_node				*node_tmp;
 	int					argc;
-	int					in;
-	int					out;
 	char				**envp;
 	int					envp_len;
 	t_env				*envp_n;
@@ -127,7 +125,6 @@ typedef struct s_input
 	struct s_builtin	*builtins;
 	DIR					*dir;
 	pid_t				pid;
-	char				**line;
 }	t_input;
 
 // struct for builins functions
@@ -138,8 +135,8 @@ struct s_builtin
 };
 
 // allocation check
-void	alloc_check(char **str);
-void	alloc_check_small(void *str);
+void	alloc_check_big(char **str, t_input *data);
+void	alloc_check_small(void *str, t_input *data);
 void	alloc_check_token(t_node *new, t_node **node);
 void	alloc_check_envp(t_env *new, t_env **node);
 

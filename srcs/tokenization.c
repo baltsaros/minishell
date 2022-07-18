@@ -34,19 +34,20 @@ void	check_quotes(t_input *data, size_t *i, char c)
 void	check_asterisk(t_input *data)
 {
 	t_node	*tmp;
+	int		type;
 
 	tmp = data->args;
 	while (tmp)
 	{
-		while (tmp->next && tmp->type != ASTER)
-			tmp = tmp->next;
-		if (tmp && tmp->type == ASTER)
+		if (tmp->type == QUOTE || tmp->type == QUOTE_D)
 		{
-			if (tmp->prev && tmp->prev->type == WORD)
-				tmp->prev->type = WORD_AST;
-			if (tmp->next && tmp->next->type == WORD)
-				tmp->next->type = WORD_AST;
+			type = tmp->type;
+			tmp = tmp->next;
+			while (tmp->next && tmp->type != type)
+				tmp = tmp->next;
 		}
+		if (ft_strchr(tmp->value, '*'))
+			tmp->type = ASTER;
 		tmp = tmp->next;
 	}
 }
@@ -78,7 +79,7 @@ void	check_next(t_input *data, size_t *i)
 	int	type;
 	int	next;
 
-	type = check_charset(data->buf[*i], "\"$\'&<>=*|/(){}");
+	type = check_charset(data->buf[*i], "\"$\'&<>=|/(){}");
 	if (!data->buf[*i + 1])
 		next = 0;
 	else

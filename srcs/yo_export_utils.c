@@ -16,7 +16,7 @@ void	add_envp(t_input *data, char *type, char *value)
 	if (value)
 	{
 		data->tmp = ft_strjoin(type, "=");
-		alloc_check_small(data->tmp);
+		alloc_check_small(data->tmp, data);
 		tmp[data->i] = ms_strjoin_free(data->tmp, value, data);
 	}
 	else

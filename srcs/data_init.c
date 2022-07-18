@@ -80,11 +80,11 @@ void	tokenization(t_input *data)
 			create_token(data, data->buf + start, i - start, WSPACE);
 		start = i;
 		while (data->buf[i] && !check_charset(data->buf[i]
-				, "\"$\'&<>=*| \f\n\r\t\v(){}/"))
+				, "\"$\'&<>=| \f\n\r\t\v(){}/"))
 			++i;
 		if (i != start)
 			create_token(data, data->buf + start, i - start, WORD);
-		if (check_charset(data->buf[i], "\"$\'&<>=*|(){}/"))
+		if (check_charset(data->buf[i], "\"$\'&<>=|(){}/"))
 			check_next(data, &i);
 	}
 	check_asterisk(data);
@@ -93,8 +93,6 @@ void	tokenization(t_input *data)
 
 void	data_init(t_input *data)
 {
-	data->in = 0;
-	data->out = 1;
 	data->args = NULL;
 	tokenization(data);
 	data->argc = ms_token_size(data->args);
