@@ -28,7 +28,9 @@ t_cmd	*print_syntax_error_cmd(t_node *args)
 		write(2, "newline", 7);
 		write(2, "'\n", 2);
 	}
-	else if (args->next->type != WORD)
+	else if (args->next->type != WORD && args->next != ASTER
+		&& args->next->type != ENV_VA && args->next->type != ENV_VA_BR 
+		&& args->next->type != ENV_P && args->next->type != IN_ARG && args->next->type != OUT_ARG && args->next != EXECUTABLE)
 	{
 		write(2, "[ERROR]: syntax error near unexpected token `", 45);
 		write(2, args->next->value, ft_strlen(args->value));
