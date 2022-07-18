@@ -17,7 +17,7 @@ void    dollar_management(t_node    *elem, t_input  *data)
     }  
 }
 
-void    out_arg_management(t_node    *elem, t_input  *data)
+void    out_arg_management(t_node    *elem)
 {
     if (elem->next && (elem->next && elem->next->type == WSPACE))
     {
@@ -31,7 +31,7 @@ void    out_arg_management(t_node    *elem, t_input  *data)
         elem->next->type = OUT_ARG;
 }
 
-void    in_arg_management(t_node    *elem, t_input  *data)
+void    in_arg_management(t_node    *elem)
 {
     if (elem->next && (elem->next && elem->next->type == WSPACE))
     {
@@ -54,9 +54,9 @@ int general_simplification(t_node   *elem, t_input  *data)
         else if (elem->type == WORD && !ft_strncmp(elem->value, ".", 2))
             elem = executable_token_simplification(elem, data);
         else if (elem->type == REDIR_OUT || elem->type == REDIR_AP)
-            out_arg_management(elem, data);
+            out_arg_management(elem);
         else if (elem->type == REDIR_IN || elem->type == REDIR_HD)
-            in_arg_management(elem, data);
+            in_arg_management(elem);
         if (!elem->next)
             break ;
         elem = elem->next;
