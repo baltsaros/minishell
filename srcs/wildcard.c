@@ -37,6 +37,7 @@ static void	find_files(t_input *data, char *str, struct dirent *fname)
 	data->i = 0;
 	before = NULL;
 	after = NULL;
+	printf("Grrr\n");
 	while (str[data->i] != '*')
 		data->i++;
 	if (data->i > 0)
@@ -88,7 +89,7 @@ void	asterisks(t_input *data, t_cmd *cmds)
 	fname = readdir(data->dir);
 	while (cmds->cmd[i])
 	{
-		if (ft_strchr(cmds->cmd[i], '*' && check_node(data, cmds->cmd[i])))
+		if (ft_strchr(cmds->cmd[i], '*') && check_node(data, cmds->cmd[i]))
 			find_files(data, cmds->cmd[i], fname);
 		++i;
 	}

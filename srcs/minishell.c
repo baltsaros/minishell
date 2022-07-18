@@ -20,12 +20,15 @@ void	prompt(t_input *data)
 
 			// In progress
 			token_simplification(data);
-			parsing(data);
-			
-			asterisks(data, data->cmds);
-			//execute(data);
-			//ms_free_token(data->args);
-			// ms_free_cmd(data->cmds);
+			if (parsing(data) != 1)
+			{
+				asterisks(data, data->cmds);
+				//execute(data);
+				//ms_free_token(data->args);
+				// ms_free_cmd(data->cmds);
+			}
+			// else
+				//ms_free_token(data->args);
 		}
 		free(data->buf);
 	}

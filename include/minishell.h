@@ -226,7 +226,8 @@ void	signal_fork(int	signo);
 void	asterisks(t_input *data, t_cmd *cmds);
 
 //syntax checker
-int		is_the_next_is_word(t_node *args);
+int		is_the_next_is_in_arg(t_node *args);
+int		is_the_next_is_out_arg(t_node *args);
 t_cmd	*print_syntax_error_cmd(t_node *args);
 int		print_syntax_error_bool(t_node *args);
 
