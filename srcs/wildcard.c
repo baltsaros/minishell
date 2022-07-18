@@ -15,6 +15,7 @@ static void	find_files_some(t_input *data, struct dirent *fname
 	, char *before, char *after)
 {
 	int	len;
+	
 	while (fname)
 	{
 		len = ft_strlen(before);
@@ -47,7 +48,7 @@ static void	find_files(t_input *data, char *str, struct dirent *fname)
 		after = ms_strdup(str + data->i + 1, data);
 	if (!before && !after)
 		find_files_all(data, fname);
-	else if (!before && after)
+	else if (before && !after)
 	{
 		data->node_tmp = ms_token_new(-1, NULL, data);
 		ms_token_back(&data->cmds->wild, data->node_tmp);
