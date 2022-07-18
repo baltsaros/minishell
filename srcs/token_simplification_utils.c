@@ -78,6 +78,8 @@ int get_braces_size(t_node  *elem, int type1, int type2)
     int i;
     int size;
 
+    i = 0;
+    size = 0;
     while (elem->value[i] != type1)
         i++;
     i++;
@@ -96,6 +98,7 @@ char    *get_between_braces(t_node  *elem, int type1, int type2)
     int     i;
     int     j;
 
+    printf("Heeeeeeeeeeee heeeeeeeeeeeeeeeeeeeeeee\n");
     size = get_braces_size(elem, type1, type2);
     i = 0;
     j = 0;

@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/17 20:30:00 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/18 18:48:44 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	get_size_cmd(t_node	*args)
 			i--;
 		args = args->next;
 	}
-	// printf("I: %d\n", i);
+	printf("I: %d\n", i);
 	return (i);
 }
 
@@ -55,8 +55,9 @@ char	**init_cmd(t_node *args, t_input *data)
 		if (args->type != QUOTE_D && args->type != QUOTE)
 		{
 			str[i] = ms_strdup("", data);
-			if (args->type == WORD || args->type == ASTER_WORD
-				|| args->type == EXECUTABLE || args->type == ENV_VA)
+			if (args->type == WORD || args->type == ASTER
+				|| args->type == EXECUTABLE || args->type == ENV_VA || args->type == ENV_VA_BR
+				|| args->type == ENV_P)
 			{
 				free(str[i]);
 				str[i] = ms_strdup(args->value, data);
