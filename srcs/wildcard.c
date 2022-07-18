@@ -14,9 +14,11 @@ static void	find_files_all(t_input *data, struct dirent *fname)
 static void	find_files_some(t_input *data, struct dirent *fname
 	, char *before, char *after)
 {
+	int	len;
 	while (fname)
 	{
-		if (!ft_strcmp(fname->d_name, before))
+		len = ft_strlen(before);
+		if (!ft_strncmp(fname->d_name, before, len))
 		{
 			if (!after || (after && ft_strstr(fname->d_name, after)))
 			{
@@ -37,7 +39,6 @@ static void	find_files(t_input *data, char *str, struct dirent *fname)
 	data->i = 0;
 	before = NULL;
 	after = NULL;
-	printf("Grrr\n");
 	while (str[data->i] != '*')
 		data->i++;
 	if (data->i > 0)
