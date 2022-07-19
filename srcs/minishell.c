@@ -17,16 +17,9 @@ void	prompt(t_input *data)
 			data_init(data);
 			token_simplification(data);
 			if (!parsing(data))
-			{
 				execute(data);
-				ms_free_token(data->args);
-				ms_free_cmd(data->cmds);
-			}
-			else
-			{
-				ms_free_token(data->args);
-				ms_free_cmd(data->cmds);
-			}
+			ms_free_token(data->args);
+			ms_free_cmd(data->cmds);
 		}
 		free(data->buf);
 	}
