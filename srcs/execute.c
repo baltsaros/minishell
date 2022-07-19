@@ -45,6 +45,7 @@ void	ms_heredoc(char *limiter, t_cmd *elem, t_input *data)
 {
 	char	*line;
 
+	signal(SIGINT, signal_hd);
 	elem->in = open("heredoc.tmp", O_RDWR | O_CREAT | O_APPEND, 0777);
 	error_check(elem->in, "In Open heredoc ", 17, data);
 	line = readline("> ");

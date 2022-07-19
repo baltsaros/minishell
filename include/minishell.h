@@ -218,7 +218,8 @@ void	add_envp(t_input *data, char *type, char *value);
 
 //signals
 void	signal_handling(int signo);
-void	signal_fork(int	signo);
+void	signal_fork(int signo);
+void	signal_hd(int signo);
 
 // wildcard
 void	asterisks(t_input *data, t_node *ast);

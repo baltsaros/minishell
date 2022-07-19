@@ -62,8 +62,17 @@ int	init_in(t_node *args, t_cmd *elem, t_input *data)
 	{
 		args = args->next;
 		elem->delim = ms_strdup(args->value, data);
-		ms_heredoc(elem->delim, elem, data);
+		data->pid = fork();
+		error_check(data->pid, "In fork ", 9, data);
+		if (data->pid == 0)
+			ms_heredoc(elem->delim, elem, data);
 		elem->in_arg = ms_strdup("heredoc.tmp", data);
+		waitpid(data->pid, &g_status, 0);
+		if (WEXITSTATUS(g_status) == 130)
+		{
+			unlink("heredoc.tmp");
+			return (1);
+		}
 		return (0);
 	}
 	else if (args->type == REDIR_IN)
@@ -79,7 +88,6 @@ int	init_in(t_node *args, t_cmd *elem, t_input *data)
 
 int	init_out(t_node *args, t_cmd *elem, t_input *data)
 {
-	(void)data;
 	if (args->type == REDIR_AP)
 	{
 		args = args->next;
