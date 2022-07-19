@@ -9,7 +9,7 @@ static int	check_pipe(char **buf, char *msg, char c, t_input *data)
 		tmp = readline(msg);
 		*buf = ms_charjoin_free(*buf, '\n', data);
 		*buf = ms_strjoin_free(*buf, tmp, data);
-		if (!ft_strchr(tmp, c))
+		if (!ft_strchr(tmp, c) || !ft_strcmp(tmp, "|"))
 		{
 			free(tmp);
 			break ;
