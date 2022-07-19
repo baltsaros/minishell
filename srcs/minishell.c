@@ -18,15 +18,9 @@ void	prompt(t_input *data)
 			// ms_token_print(data->args);
 			// ms_envp_print(data->envp_n);
 			token_simplification(data);
-			if (!parsing(data))
-			{
-				asterisks(data, data->cmds);
-				execute(data);
-				//ms_free_token(data->args);
-				// ms_free_cmd(data->cmds);
-			}
-			// else
-				//ms_free_token(data->args);
+			parsing(data);
+			execute(data);
+			// ms_free_token(data->args);
 		}
 		free(data->buf);
 	}

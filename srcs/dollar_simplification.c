@@ -11,7 +11,7 @@ void	dollar_braces_2(t_node *elem, t_input *data)
 	{
 		elem->type = ENV_VA_BR;
 		elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-		ms_token_del(elem->next);  
+		ms_token_del(elem->next);
 	}
 	else
 	{
@@ -19,7 +19,7 @@ void	dollar_braces_2(t_node *elem, t_input *data)
 		while (elem && elem->next && elem->type != WSPACE)
 		{
 			elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-			ms_token_del(elem->next);  
+			ms_token_del(elem->next);
 		}
 	}
 }
@@ -49,7 +49,7 @@ void	dollar_p_2(t_node *elem, t_input *data)
 	{
 		elem->type = ENV_P;
 		elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-		ms_token_del(elem->next);  
+		ms_token_del(elem->next);
 	}
 	else
 	{
@@ -57,7 +57,7 @@ void	dollar_p_2(t_node *elem, t_input *data)
 		while (elem && elem->next && elem->type != WSPACE)
 		{
 			elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-			ms_token_del(elem->next);  
+			ms_token_del(elem->next);
 		}
 	}
 }
