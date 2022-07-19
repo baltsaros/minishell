@@ -2,21 +2,42 @@
 
 int	redirection_check(t_node *args, t_cmd *elem, t_input *data)
 {
-	if (args->value[0] == '<')
+	if (args->value && args->value[0] == '<')
 	{
 		if (!args->next)
 		//|| is_the_next_is_word(args) == 1)
 			return (print_syntax_error_bool(args));
-		if (init_in(args, elem, data) == 1)
-			return (1);
+		if (args->next && args->next->type == IN_ARG)
+		{
+			if (init_in(args, elem, data) == 1)
+				return (1);
+		}
+		else if (args->next->next && args->next->next->type == IN_ARG)
+		{
+			args = args->next;
+			if (init_in(args, elem, data) == 1)
+				return (1);
+		}
+		else
+			return (print_syntax_error_bool(args));
 	}
-	else if (args->value[0] == '>')
+	else if (args->value && args->value[0] == '>')
 	{
 		if (!args->next) 
 		//|| is_the_next_is_word(args) == 1)
 			return (print_syntax_error_bool(args));
-		if (init_out(args, elem, data) == 1)
-			return (1);
+		if (args->next && args->next->type == OUT_ARG)
+		{
+			if (init_out(args, elem, data) == 1)
+				return (1);
+		}
+		else if (args->next->next && args->next->next->type == OUT_ARG)
+		{
+			if (init_out(args, elem, data) == 1)
+				return (1);
+		}
+		else
+			return (print_syntax_error_bool(args));
 	}
 	return (0);
 }

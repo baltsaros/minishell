@@ -55,6 +55,15 @@ enum e_tokens
 	BRACES_R	= 125	// }
 };
 
+enum e_simplier_tokens
+{
+	ENV_VA 		= 37, 	// Example: $PATH
+	ASTER_WORD	= 5,	// Example: t*.c
+	IN_ARG		= 130,
+	OUT_ARG		= 131,
+	EXECUTABLE	= 132
+};
+
 // struct for tokens (+ wildcard) linked lists
 typedef struct s_node
 {
@@ -242,5 +251,21 @@ void	welcome(void);
 void	secret_mode(void);
 void	uwu_mode(void);
 void	normal_mode(void);
+
+// Token Simplification
+int token_simplification(t_input *data);
+
+// Quote transformation
+int quote_transformation(t_node *elem, t_input   *data);
+
+// Token Simplification Utils
+int	is_between_d_quote(t_node	*args);
+int	is_between_quote(t_node	*args);
+
+// Word Quote
+int word_quote_fusion(t_node *elem, t_input *data);
+
+// Word Total
+int word_total_fusion(t_node   *elem, t_input  *data);
 
 #endif
