@@ -76,7 +76,6 @@ typedef struct s_cmd
 	int				out;
 	char			*out_arg;
 	int				pipe;
-	t_node			*wild;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 }	t_cmd;
@@ -210,7 +209,7 @@ void	signal_handling(int signo);
 void	signal_fork(int	signo);
 
 // wildcard
-void	asterisks(t_input *data, t_cmd *cmds);
+void	asterisks(t_input *data, t_node *ast);
 
 //syntax checker
 int		is_the_next_is_word(t_node *args);

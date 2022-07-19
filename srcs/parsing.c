@@ -55,15 +55,17 @@ t_cmd	*parse_cmd(t_input *data)
 	t_cmd	*first_elem;
 	t_cmd	*arg;
 	t_cmd	*new_con;
+	t_node	*tmp;
 
 	first_elem = init_elem(data->args, data);
 	arg = first_elem;
-	while (data->args)
+	tmp = data->args;
+	while (tmp)
 	{
-		data->args = next_elem(data->args);
-		if (!data->args || !data->args->next)
+		tmp = next_elem(tmp);
+		if (!tmp || !tmp->next)
 			break ;
-		new_con = init_elem(data->args, data);
+		new_con = init_elem(tmp, data);
 		new_con->prev = arg;
 		arg->next = new_con;
 		arg = arg->next;
