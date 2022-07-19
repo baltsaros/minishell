@@ -15,10 +15,10 @@ static void	create_envp(t_input *data, char *envp[])
 			++start;
 		while (envp[i][end])
 			++end;
-		data->type = ft_strndup(envp[i], start);
-		data->value = ft_strndup(envp[i] + start + 1, end - start - 1);
-		data->envp_tmp = ft_envp_new(data->type, data->value);
-		ft_envp_back(&data->envp_n, data->envp_tmp);
+		data->type = ms_strndup(envp[i], start, data);
+		data->value = ms_strndup(envp[i] + start + 1, end - start - 1, data);
+		data->envp_tmp = ms_envp_new(data->type, data->value, data);
+		ms_envp_back(&data->envp_n, data->envp_tmp);
 		++i;
 	}
 	data->envp_len = i;
@@ -31,12 +31,11 @@ static void	copy_envp(t_input *data, char *envp[])
 	size = 0;
 	while (envp[size])
 		++size;
-	data->envp = (char **)malloc(sizeof(*data->envp) * (size + 1));
-	alloc_check(data->envp);
+	data->envp = ms_malloc((sizeof(*data->envp) * (size + 1)), data);
 	data->i = 0;
 	while (envp[data->i])
 	{
-		data->envp[data->i] = ft_strdup(envp[data->i]);
+		data->envp[data->i] = ms_strdup(envp[data->i], data);
 		data->i++;
 	}
 	data->envp[data->i] = NULL;
@@ -81,25 +80,38 @@ void	tokenization(t_input *data)
 			create_token(data, data->buf + start, i - start, WSPACE);
 		start = i;
 		while (data->buf[i] && !check_charset(data->buf[i]
-				, "\"$\'&<>=*| \f\n\r\t\v(){}"))
+				, "\"$\'&<>=| \f\n\r\t\v(){}/"))
 			++i;
 		if (i != start)
 			create_token(data, data->buf + start, i - start, WORD);
-		if (check_charset(data->buf[i], "\"$\'&<>=*|(){}"))
+		if (check_charset(data->buf[i], "\"$\'&<>=|(){}/"))
 			check_next(data, &i);
 	}
-	// check_asterisk(data);
+	check_asterisk(data);
 	// check_dollar(data);
 }
 
 void	data_init(t_input *data)
 {
-	if (!data->buf || !*data->buf)
-		return ;
-	// data->status = 0;
-	data->in = 0;
-	data->out = 1;
 	data->args = NULL;
 	tokenization(data);
-	data->argc = ft_token_size(data->args);
+	data->argc = ms_token_size(data->args);
+	if (data->argc == 1 && !ft_strcmp(data->buf, "secret"))
+	{
+		free(data->prompt);
+		data->prompt = ms_strdup("🤓 YAMSP-1.7 🤓 $ ", data);
+		secret_mode();
+	}
+	else if (data->argc == 1 && !ft_strcmp(data->buf, "uwu"))
+	{
+		free(data->prompt);
+		data->prompt = ms_strdup("😽 YAMSP-UwU 😽 $ ", data);
+		uwu_mode();
+	}
+	else if (data->argc == 1 && !ft_strcmp(data->buf, "normal"))
+	{
+		free(data->prompt);
+		data->prompt = ms_strdup("YAMSP-1.6$ ", data);
+		normal_mode();
+	}
 }

@@ -1,11 +1,10 @@
 #include "../include/minishell.h"
 
-t_node	*ft_token_new(int type, char *value)
+t_node	*ms_token_new(int type, char *value, t_input *data)
 {
 	t_node	*node;
 
-	node = malloc(sizeof(t_node));
-	alloc_check_small(node);
+	node = ms_malloc(sizeof(t_node), data);
 	node->type = type;
 	node->value = value;
 	node->next = NULL;
@@ -13,7 +12,7 @@ t_node	*ft_token_new(int type, char *value)
 	return (node);
 }
 
-void	ft_token_back(t_node **node, t_node *new)
+void	ms_token_back(t_node **node, t_node *new)
 {
 	t_node	*tmp;
 
@@ -33,7 +32,7 @@ void	ft_token_back(t_node **node, t_node *new)
 	}
 }
 
-t_node	*ft_token_del(t_node *node)
+t_node	*ms_token_del(t_node *node)
 {
 	t_node	*tmp;
 
@@ -61,9 +60,9 @@ t_node	*ft_token_del(t_node *node)
 	return (node);
 }
 
-void	ft_token_print(t_node *node)
+void	ms_token_print(t_node *node)
 {
-	int		i;
+	int	i;
 
 	if (!node)
 	{
@@ -81,7 +80,7 @@ void	ft_token_print(t_node *node)
 	}
 }
 
-int	ft_token_size(t_node *node)
+int	ms_token_size(t_node *node)
 {
 	int	i;
 

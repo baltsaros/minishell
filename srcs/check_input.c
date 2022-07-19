@@ -1,14 +1,14 @@
 #include "../include/minishell.h"
 
-static int	read_after_pipe(char **buf, char *msg, char c)
+static int	check_pipe(char **buf, char *msg, char c, t_input *data)
 {
 	char	*tmp;
 
 	while (1)
 	{
 		tmp = readline(msg);
-		*buf = ft_charjoin_free(*buf, '\n');
-		*buf = ft_strjoin_free(*buf, tmp);
+		*buf = ms_charjoin_free(*buf, '\n', data);
+		*buf = ms_strjoin_free(*buf, tmp, data);
 		if (!ft_strchr(tmp, c))
 		{
 			free(tmp);
@@ -19,15 +19,15 @@ static int	read_after_pipe(char **buf, char *msg, char c)
 	return (0);
 }
 
-static int	read_after(char **buf, char *msg, char c)
+static int	read_after(char **buf, char *msg, char c, t_input *data)
 {
 	char	*tmp;
 
 	while (1)
 	{
 		tmp = readline(msg);
-		*buf = ft_charjoin_free(*buf, '\n');
-		*buf = ft_strjoin_free(*buf, tmp);
+		*buf = ms_charjoin_free(*buf, '\n', data);
+		*buf = ms_strjoin_free(*buf, tmp, data);
 		if (ft_strchr(tmp, c))
 		{
 			free(tmp);
@@ -38,31 +38,29 @@ static int	read_after(char **buf, char *msg, char c)
 	return (0);
 }
 
-int	check_field(char **buf, t_input *data)
+void	check_field(t_input *data, char *str)
 {
-	int		quote;
-	int		quote_d;
-	char	*tmp;
+	int		type;
 
+	type = 0;
 	data->i = 0;
-	quote = 0;
-	quote_d = 0;
-	tmp = *buf;
-	while (tmp[data->i])
+	while (str[data->i])
 	{
-		if (tmp[data->i] == '\'')
-			++quote;
-		else if (tmp[data->i] == '\"')
-			++quote_d;
-		++data->i;
+		if (str[data->i] == '\'' || str[data->i] == '\"')
+		{
+			type = str[data->i];
+			data->i++;
+			while (str[data->i] && str[data->i] != type)
+				data->i++;
+			if (!str[data->i] && type == '\'')
+				read_after(&data->buf, "quote> ", type, data);
+			else if (!str[data->i] && type == '\"')
+				read_after(&data->buf, "dquote> ", type, data);
+		}
+		data->i++;
 	}
-	if (quote && quote % 2 != 0)
-		read_after(buf, "quote>", '\'');
-	else if (quote_d && quote_d % 2 != 0)
-		read_after(buf, "dquote>", '\"');
-	if (tmp[data->i - 1] == '|')
-		read_after_pipe(buf, ">", '|');
-	return (0);
+	if (str[data->i - 1] == '|')
+		check_pipe(&data->buf, "> ", '|', data);
 }
 
 int	is_right_buf(char *buf)

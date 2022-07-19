@@ -1,5 +1,45 @@
 #include "../include/minishell.h"
 
+int	redirection_check(t_node *args, t_cmd *elem, t_input *data)
+{
+	if (args->value && args->value[0] == '<')
+	{
+		if (!args->next || is_the_next_is_in_arg(args) == 1)
+			return (print_syntax_error_bool(args));
+		if (args->next && args->next->type == IN_ARG)
+		{
+			if (init_in(args, elem, data) == 1)
+				return (1);
+		}
+		else if (args->next->next && args->next->next->type == IN_ARG)
+		{
+			args = args->next;
+			if (init_in(args, elem, data) == 1)
+				return (1);
+		}
+		else
+			return (print_syntax_error_bool(args));
+	}
+	else if (args->value && args->value[0] == '>')
+	{
+		if (!args->next || is_the_next_is_out_arg(args) == 1)
+			return (print_syntax_error_bool(args));
+		if (args->next && args->next->type == OUT_ARG)
+		{
+			if (init_out(args, elem, data) == 1)
+				return (1);
+		}
+		else if (args->next->next && args->next->next->type == OUT_ARG)
+		{
+			if (init_out(args, elem, data) == 1)
+				return (1);
+		}
+		else
+			return (print_syntax_error_bool(args));
+	}
+	return (0);
+}
+
 t_node	*next_elem(t_node *args)
 {
 	t_node	*next_elem;
@@ -16,70 +56,46 @@ t_node	*next_elem(t_node *args)
 	return (next_elem);
 }
 
-t_cmd	*init_empty_elem(void)
-{
-	t_cmd	*elem;
-
-	elem = (t_cmd *) malloc (sizeof(t_cmd));
-	if (!elem)
-		return (NULL);
-	elem->cmd = NULL;
-	elem->len_cmd = 0;
-	elem->delim = NULL;
-	elem->in = 0;
-	elem->in_arg = NULL;
-	elem->out = 1;
-	elem->out_arg = NULL;
-	elem->pipe = -1;
-	elem->next = NULL;
-	elem->prev = NULL;
-	return (elem);
-}
-
-int	init_in(t_node *args, t_cmd *elem)
+int	init_in(t_node *args, t_cmd *elem, t_input *data)
 {
 	if (args->type == REDIR_HD)
 	{
 		if (signal(SIGINT, SIG_IGN) == SIG_ERR || signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 			printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
 		args = args->next;
-		elem->delim = ft_strdup(args->value);
-		if (!elem->delim)
-			return (1);
-		ft_heredoc(elem->delim, elem);
+		elem->delim = ms_strdup(args->value, data);
+		ms_heredoc(elem->delim, elem, data);
 		elem->in_arg = "heredoc.tmp";
 		return (0);
 	}
 	else if (args->type == REDIR_IN)
 	{
 		args = args->next;
-		elem->in_arg = ft_strdup(args->value);
-		if (!elem->in_arg)
-			return (1);
+		elem->in_arg = ms_strdup(args->value, data);
 		elem->in = open(elem->in_arg, O_RDONLY);
+		error_check(elem->in, "[ERROR]: Wrong File Descriptor\n", 31, data);
 		return (0);
 	}
 	return (1);
 }
 
-int	init_out(t_node *args, t_cmd *elem)
+int	init_out(t_node *args, t_cmd *elem, t_input *data)
 {
+	(void)data;
 	if (args->type == REDIR_AP)
 	{
 		args = args->next;
-		elem->out_arg = ft_strdup(args->value);
-		if (!elem->out_arg)
-			return (1);
+		elem->out_arg = ms_strdup(args->value, data);
 		elem->out = open(elem->out_arg, O_WRONLY | O_CREAT | O_APPEND, 00644);
+		error_check(elem->out, "[ERROR]: Wrong File Descriptor\n", 31, data);
 		return (0);
 	}
 	else if (args->type == REDIR_OUT)
 	{
 		args = args->next;
-		elem->out_arg = ft_strdup(args->value);
-		if (!elem->out_arg)
-			return (1);
+		elem->out_arg = ms_strdup(args->value, data);
 		elem->out = open(elem->out_arg, O_WRONLY | O_CREAT | O_TRUNC, 00644);
+		error_check(elem->out, "[ERROR]: Wrong File Descriptor\n", 31, data);
 		return (0);
 	}
 	return (1);
