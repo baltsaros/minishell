@@ -82,6 +82,6 @@ int token_simplification(t_input *data)
         return (1);
     if (delete_useless_wspace(elem, data) == 1)
         return (1);
-    // ms_token_print(data->args);
+    ms_token_print(data->args);
     return (0);
 }

@@ -83,6 +83,8 @@ t_node  *dollar_token_simplification(t_node *elem, t_input  *data)
         elem->type = ENV_VA;
         elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
         ms_token_del(elem->next);
+        if (!ft_strncmp(elem->value, "$?", 3))
+            elem->type = DOLLAR_VAR;
     }
     else if (elem->next && elem->next->type == BRACES_L)
         dollar_braces(elem, data);

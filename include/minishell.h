@@ -62,6 +62,7 @@ enum e_simplier_tokens
 	ENV_BR_EM	= 39,
 	ENV_P		= 6,
 	ENV_P_EM	= 7,
+	DOLLAR_VAR 	= 8,
 	ASTER_WORD	= 5,	// Example: t*.c
 	IN_ARG		= 130,
 	OUT_ARG		= 131,
