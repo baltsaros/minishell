@@ -3,6 +3,7 @@
 int word_quote_fusion(t_node *elem, t_input *data)
 {
 	t_node	*first;
+	char	*str;
 	int		type;
 
 	while (elem && elem->type != QUOTE && elem->type != QUOTE_D)
@@ -17,9 +18,12 @@ int word_quote_fusion(t_node *elem, t_input *data)
 		return (0);
 	if (elem->prev && (elem->prev->type == WORD || elem->prev->type == ASTER))
 	{
+		str = ms_strdup(elem->value, data);
+		free(elem->value);
 		if (elem->prev->type == ASTER)
 			first->type = ASTER;
 		first->value = ft_strjoin(elem->prev->value, first->value);
+		free(str);
 		// elem = ms_token_del(elem->prev);
 		elem->prev->type = 0;
 
@@ -37,6 +41,5 @@ int word_quote_fusion(t_node *elem, t_input *data)
 		first->value = ms_strjoin_free(first->value, elem->next->value, data);
 		ms_token_del(elem->next);
 	}
-	// printf("elem type is %d, value is %s\n", elem->type, elem->value);
 	return (0);
 }

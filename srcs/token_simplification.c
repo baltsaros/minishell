@@ -6,10 +6,7 @@ void	dollar_management(t_node *elem, t_input *data)
 	if (elem->type == ENV_VA)
 		elem->value = ms_strdup(getenv(elem->value + 1), data);
 	else if (elem->type == ENV_VA_BR)
-	{
 		elem->value = ms_strdup(getenv(get_between_braces(elem, BRACES_L, BRACES_R)), data);
-		printf("Salut\n");
-	}
 	else if (elem->type == ENV_P)
 		elem->value = ms_strdup(get_between_braces(elem, BR_L, BR_R), data);
 	else if (elem->type == ENV_P_EM)

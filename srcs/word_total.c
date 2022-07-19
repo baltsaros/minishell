@@ -2,13 +2,17 @@
 
 int	fusion_with_prev_elem(t_node *elem, t_input *data)
 {
-	(void)data;
+	char	*str;
+
 	while (elem && elem->prev && (elem->prev->type != WSPACE 
 		&& elem->prev->type != QUOTE_D && elem->prev->type != QUOTE
 		&& elem->prev->type != REDIR_IN && elem->prev->type != REDIR_OUT
 		&& elem->prev->type != REDIR_HD && elem->prev->type != REDIR_AP))
 	{
-		elem->value = ft_strjoin(elem->prev->value, elem->value);
+		str = ms_strdup(elem->value, data);
+		free(elem->value);
+		elem->value = ft_strjoin(elem->prev->value, str);
+		free(str);
 		ms_token_del(elem->prev);
 	}
 	return (0);
