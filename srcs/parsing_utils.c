@@ -60,8 +60,6 @@ int	init_in(t_node *args, t_cmd *elem, t_input *data)
 {
 	if (args->type == REDIR_HD)
 	{
-		if (signal(SIGINT, SIG_IGN) == SIG_ERR || signal(SIGQUIT, SIG_IGN) == SIG_ERR)
-			printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
 		args = args->next;
 		elem->delim = ms_strdup(args->value, data);
 		ms_heredoc(elem->delim, elem, data);
