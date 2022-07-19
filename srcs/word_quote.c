@@ -16,8 +16,10 @@ void	word_quote_fusion_3(t_node *elem, t_node *first, t_input *data, int type)
 	}
 }
 
-void	word_quote_fusion_2(char	*str, t_node *first, t_input *data, t_node *elem)
+void	word_quote_fusion_2(t_node *first, t_input *data, t_node *elem)
 {
+	char	*str;
+
 	if (elem->prev && (elem->prev->type == WORD || elem->prev->type == ASTER))
 	{
 		str = ms_strdup(elem->value, data);
@@ -34,7 +36,6 @@ void	word_quote_fusion_2(char	*str, t_node *first, t_input *data, t_node *elem)
 int word_quote_fusion(t_node *elem, t_input *data)
 {
 	t_node	*first;
-	char	*str;
 	int		type;
 
 	while (elem && elem->type != QUOTE && elem->type != QUOTE_D)
@@ -47,7 +48,7 @@ int word_quote_fusion(t_node *elem, t_input *data)
 		first = elem->next;
 	else
 		return (0);
-	word_quote_fusion_2(str, first, data, elem);
+	word_quote_fusion_2(first, data, elem);
 	elem = elem->next->next;
 	word_quote_fusion_3(elem, first, data, type);
 	return (0);

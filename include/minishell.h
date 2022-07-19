@@ -137,8 +137,6 @@ struct s_builtin
 // allocation check
 void	alloc_check_big(char **str, t_input *data);
 void	alloc_check_small(void *str, t_input *data);
-void	alloc_check_token(t_node *new, t_node **node);
-void	alloc_check_envp(t_env *new, t_env **node);
 
 // tokens
 t_node	*ms_token_new(int type, char *value, t_input *data);
