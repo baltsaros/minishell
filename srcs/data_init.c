@@ -87,7 +87,9 @@ void	tokenization(t_input *data)
 		if (check_charset(data->buf[i], "\"$\'&<>=|(){}/"))
 			check_next(data, &i);
 	}
+	// ms_token_print(data->args);
 	check_asterisk(data);
+	// ms_token_print(data->args);
 	// check_dollar(data);
 }
 

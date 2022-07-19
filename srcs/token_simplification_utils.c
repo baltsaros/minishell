@@ -52,67 +52,67 @@ int	is_between_quote(t_node	*args)
 	return (1);
 }
 
-t_node  *executable_token_simplification(t_node *elem, t_input *data)
+t_node	*executable_token_simplification(t_node *elem, t_input *data)
 {
-    if (elem->next && elem->next->type == SLASH)
-    {
-        elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-        elem = ms_token_del(elem->next);
-        if (elem->next && elem->type == WORD)
-        {
-            elem->type = EXECUTABLE;
-            elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-            elem = ms_token_del(elem->next);
-        }
-        else if (elem->next && elem->type != WSPACE)
-        {
-            elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-            elem = ms_token_del(elem->next);
-        }
-    }
-    return (elem);
+	if (elem->next && elem->next->type == SLASH)
+	{
+		elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
+		elem = ms_token_del(elem->next);
+		if (elem->next && elem->type == WORD)
+		{
+			elem->type = EXECUTABLE;
+			elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
+			elem = ms_token_del(elem->next);
+		}
+		else if (elem->next && elem->type != WSPACE)
+		{
+			elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
+			elem = ms_token_del(elem->next);
+		}
+	}
+	return (elem);
 }
 
-int get_braces_size(t_node  *elem, int type1, int type2)
+int get_braces_size(t_node	*elem, int type1, int type2)
 {
-    int i;
-    int size;
+	int	i;
+	int	size;
 
-    i = 0;
-    size = 0;
-    while (elem->value[i] != type1)
-        i++;
-    i++;
-    while (elem->value[i] != type2)
-    {
-        size++;
-        i++;
-    }
-    return (size);
+	i = 0;
+	size = 0;
+	while (elem->value[i] != type1)
+		i++;
+	i++;
+	while (elem->value[i] != type2)
+	{
+		size++;
+		i++;
+	}
+	return (size);
 }
 
-char    *get_between_braces(t_node  *elem, int type1, int type2)
+char	*get_between_braces(t_node *elem, int type1, int type2)
 {
-    char    *str;
-    int     size;
-    int     i;
-    int     j;
+	char	*str;
+	int		size;
+	int		i;
+	int		j;
 
-    size = get_braces_size(elem, type1, type2);
-    i = 0;
-    j = 0;
-    str = (char *) malloc ((size + 1) * sizeof(char));
-    if (!str)
-        return (NULL);
-    while (elem->value[i] != type1)
-        i++;
-    i++;
-    while (elem->value[i] != type2)
-    {
-        str[j] = elem->value[i];
-        i++;
-        j++; 
-    }
-    str[j] = '\0';
-    return (str);
+	size = get_braces_size(elem, type1, type2);
+	i = 0;
+	j = 0;
+	str = (char *) malloc ((size + 1) * sizeof(char));
+	if (!str)
+		return (NULL);
+	while (elem->value[i] != type1)
+		i++;
+	i++;
+	while (elem->value[i] != type2)
+	{
+		str[j] = elem->value[i];
+		i++;
+		j++; 
+	}
+	str[j] = '\0';
+	return (str);
 }

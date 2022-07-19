@@ -1,21 +1,31 @@
 #include "../include/minishell.h"
 
-static void	find_files_all(t_input *data, struct dirent *fname)
+static void	find_files_all(t_input *data, t_node *ast, struct dirent *fname)
 {
+	char *tmp;
+
+	tmp = ms_strdup("", data);
 	while (fname)
 	{
-		data->tmp = ms_strdup(fname->d_name, data);
-		data->node_tmp = ms_token_new(ASTER, data->tmp, data);
-		ms_token_back(&data->cmds->wild, data->node_tmp);
+		tmp = ms_strjoin_free(tmp, fname->d_name, data);
 		fname = readdir(data->dir);
+		if (fname)
+			tmp = ms_strjoin_free(tmp, " ", data);
+	}
+	if (tmp[0])
+	{
+		free(ast->value);
+		ast->value = tmp;
 	}
 }
 
-static void	find_files_some(t_input *data, struct dirent *fname
+static char	*find_files_some(t_input *data, struct dirent *fname
 	, char *before, char *after)
 {
-	int	len;
-	
+	int		len;
+	char	*tmp;
+
+	tmp = ms_strdup("", data);
 	while (fname)
 	{
 		len = ft_strlen(before);
@@ -23,16 +33,40 @@ static void	find_files_some(t_input *data, struct dirent *fname
 		{
 			if (!after || (after && ft_strstr(fname->d_name, after)))
 			{
-				data->tmp = ms_strdup(fname->d_name, data);
-				data->node_tmp = ms_token_new(ASTER, data->tmp, data);
-				ms_token_back(&data->cmds->wild, data->node_tmp);
+				if (tmp[0])
+					tmp = ms_strjoin_free(tmp, " ", data);
+				tmp = ms_strjoin_free(tmp, fname->d_name, data);
 			}
 		}
 		fname = readdir(data->dir);
 	}
+	return (tmp);
 }
 
-static void	find_files(t_input *data, char *str, struct dirent *fname)
+static void find_files_after(t_input *data, struct dirent *fname,
+	t_node *ast, char *after)
+{
+	char	*tmp;
+
+	tmp = ms_strdup("", data);
+	while (fname)
+	{
+		if (ft_strstr(fname->d_name, after))
+		{
+			if (tmp[0])
+				tmp = ms_strjoin_free(tmp, " ", data);
+			tmp = ms_strjoin_free(tmp, fname->d_name, data);
+		}
+		fname = readdir(data->dir);
+	}
+	if (tmp[0])
+	{
+		free(ast->value);
+		ast->value = tmp;
+	}
+}
+
+static void	find_files(t_input *data, t_node *ast, struct dirent *fname)
 {
 	char	*before;
 	char	*after;
@@ -40,46 +74,32 @@ static void	find_files(t_input *data, char *str, struct dirent *fname)
 	data->i = 0;
 	before = NULL;
 	after = NULL;
-	while (str[data->i] != '*')
+	while (ast->value[data->i] != '*')
 		data->i++;
 	if (data->i > 0)
-		before = ms_strndup(str, data->i, data);
-	if (str[data->i + 1])
-		after = ms_strdup(str + data->i + 1, data);
+		before = ms_strndup(ast->value, data->i, data);
+	if (ast->value[data->i + 1])
+		after = ms_strdup(ast->value + data->i + 1, data);
 	if (!before && !after)
-		find_files_all(data, fname);
-	else if (before && !after)
+		find_files_all(data, ast, fname);
+	else if (!before && after)
+		find_files_after(data, fname, ast, after);
+	else
 	{
-		data->node_tmp = ms_token_new(-1, NULL, data);
-		ms_token_back(&data->cmds->wild, data->node_tmp);
+		data->tmp = find_files_some(data, fname, before, after);
+		if (data->tmp[0])
+		{
+			free(ast->value);
+			ast->value = data->tmp;
+		}
 	}
-	else if (before)
-		find_files_some(data, fname, before, after);
 }
 
-static int	check_node(t_input *data, char *str)
-{
-	t_node *tmp;
-
-	tmp = data->args;
-	while (tmp)
-	{
-		while (tmp->next && tmp->type != ASTER)
-			tmp = tmp->next;
-		if (tmp && tmp->type == ASTER && !ft_strcmp(tmp->value, str))
-			return (1);
-		tmp = tmp->next;
-	}
-	return (0);
-}
-
-void	asterisks(t_input *data, t_cmd *cmds)
+void	asterisks(t_input *data, t_node *ast)
 {
 	struct dirent	*fname;
-	size_t			i;
 
 	data->dir = opendir(".");
-	data->cmds->wild = NULL;
 	if (!data->dir)
 	{
 		write(2, "YAMSP: ", 7);
@@ -87,14 +107,7 @@ void	asterisks(t_input *data, t_cmd *cmds)
 		g_status = errno;
 		exit(errno);
 	}
-	i = 0;
 	fname = readdir(data->dir);
-	while (cmds->cmd[i])
-	{
-		if (ft_strchr(cmds->cmd[i], '*') && check_node(data, cmds->cmd[i]))
-			find_files(data, cmds->cmd[i], fname);
-		++i;
-	}
+	find_files(data, ast, fname);
 	closedir(data->dir);
-	ms_token_print(cmds->wild);
 }

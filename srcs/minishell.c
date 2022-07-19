@@ -15,9 +15,8 @@ void	prompt(t_input *data)
 			add_history(data->buf);
 			check_field(data, data->buf);
 			data_init(data);
-			// ms_envp_print(data->envp_n);
 			// ms_token_print(data->args);
-			
+			// ms_envp_print(data->envp_n);
 			token_simplification(data);
 			if (!parsing(data))
 			{
