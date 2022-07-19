@@ -4,8 +4,7 @@ int	redirection_check(t_node *args, t_cmd *elem, t_input *data)
 {
 	if (args->value && args->value[0] == '<')
 	{
-		if (!args->next)
-		//|| is_the_next_is_word(args) == 1)
+		if (!args->next || is_the_next_is_in_arg(args) == 1)
 			return (print_syntax_error_bool(args));
 		if (args->next && args->next->type == IN_ARG)
 		{
@@ -23,8 +22,7 @@ int	redirection_check(t_node *args, t_cmd *elem, t_input *data)
 	}
 	else if (args->value && args->value[0] == '>')
 	{
-		if (!args->next) 
-		//|| is_the_next_is_word(args) == 1)
+		if (!args->next || is_the_next_is_out_arg(args) == 1)
 			return (print_syntax_error_bool(args));
 		if (args->next && args->next->type == OUT_ARG)
 		{

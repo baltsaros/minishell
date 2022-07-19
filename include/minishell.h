@@ -58,6 +58,10 @@ enum e_tokens
 enum e_simplier_tokens
 {
 	ENV_VA 		= 37, 	// Example: $PATH
+	ENV_VA_BR	= 38,
+	ENV_BR_EM	= 39,
+	ENV_P		= 6,
+	ENV_P_EM	= 7,
 	ASTER_WORD	= 5,	// Example: t*.c
 	IN_ARG		= 130,
 	OUT_ARG		= 131,
@@ -221,9 +225,11 @@ void	signal_fork(int	signo);
 void	asterisks(t_input *data, t_node *ast);
 
 //syntax checker
-int		is_the_next_is_word(t_node *args);
+int		is_the_next_is_in_arg(t_node *args);
+int		is_the_next_is_out_arg(t_node *args);
 t_cmd	*print_syntax_error_cmd(t_node *args);
 int		print_syntax_error_bool(t_node *args);
+int		is_the_next_is_right_type(t_node	*args);
 
 // parsing
 int		parsing(t_input *data);
@@ -253,19 +259,32 @@ void	uwu_mode(void);
 void	normal_mode(void);
 
 // Token Simplification
-int token_simplification(t_input *data);
+int 	token_simplification(t_input *data);
 
 // Quote transformation
-int quote_transformation(t_node *elem, t_input   *data);
+int 	quote_transformation(t_node *elem, t_input   *data);
 
 // Token Simplification Utils
-int	is_between_d_quote(t_node	*args);
-int	is_between_quote(t_node	*args);
+int		is_between_d_quote(t_node	*args);
+int		is_between_quote(t_node	*args);
+t_node  *executable_token_simplification(t_node *elem, t_input *data);
+int 	get_braces_size(t_node  *elem, int type1, int type2);
+char    *get_between_braces(t_node  *elem, int type1, int type2);
+
+// Token Simplification Utils 2
+int 	delete_useless_wspace(t_node *elem, t_input *data);
+
+// Dollar simplification braces
+void    dollar_braces_2(t_node  *elem, t_input  *data);
+void    dollar_braces(t_node *elem,  t_input *data);
+void    dollar_p_2(t_node   *elem, t_input  *data);
+void    dollar_p(t_node *elem, t_input  *data);
+t_node  *dollar_token_simplification(t_node *elem, t_input  *data);
 
 // Word Quote
-int word_quote_fusion(t_node *elem, t_input *data);
+int 	word_quote_fusion(t_node *elem, t_input *data);
 
 // Word Total
-int word_total_fusion(t_node   *elem, t_input  *data);
+int 	word_total_fusion(t_node   *elem, t_input  *data);
 
 #endif

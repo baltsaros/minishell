@@ -38,6 +38,8 @@ SRC_FILES	= minishell.c \
 				yo_pwd.c \
 				token_simplification.c \
 				token_simplification_utils.c \
+				token_simplification_utils_2.c \
+				dollar_simplification.c \
 				quote_transformation.c \
 				word_quote.c \
 				word_total.c \
