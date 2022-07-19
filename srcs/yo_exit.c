@@ -54,6 +54,7 @@ int	yo_exit(t_input *data)
 		exit(g_status);
 	}
 	ms_free_all(data);
+	system("leak out");
 	if (!check_nonnumeric(data))
 		exit(g_status);
 	if (!check_amount(data))
