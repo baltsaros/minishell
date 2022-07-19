@@ -53,12 +53,18 @@ int	yo_exit(t_input *data)
 		g_status = 1;
 		exit(g_status);
 	}
-	ms_free_all(data);
 	if (!check_nonnumeric(data))
+	{
+		ms_free_all(data);
 		exit(g_status);
+	}
 	if (!check_amount(data))
+	{
+		ms_free_all(data);
 		exit(g_status);
+	}
 	g_status = ft_atoi(data->cmds->cmd[1]);
 	write(data->cmds->out, "exit\n", 5);
+	ms_free_all(data);
 	exit (g_status);
 }
