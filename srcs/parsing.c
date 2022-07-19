@@ -26,15 +26,15 @@ t_cmd	*fill_elem(t_node *args, t_cmd *elem, t_input *data)
 	elem->len_cmd = get_len_cmd(elem->cmd);
 	while (args && args->type != PIPE)
 	{
-	 	if (redirection_check(args, elem, data) == 1)
-	 		return (NULL);
-	 	if (args->next && args->next->type == PIPE)
-	 	{
-	 		if (!args->next->next || is_the_next_is_right_type(args->next) == 1)
-	 			return (print_syntax_error_cmd(args->next));
-	 		elem->pipe = 1;
-	 	}
-	 	args = args->next;
+		if (redirection_check(args, elem, data) == 1)
+			return (NULL);
+		if (args->next && args->next->type == PIPE)
+		{
+			if (!args->next->next || is_the_next_is_right_type(args->next) == 1)
+				return (print_syntax_error_cmd(args->next));
+			elem->pipe = 1;
+		}
+		args = args->next;
 	}
 	return (elem);
 }

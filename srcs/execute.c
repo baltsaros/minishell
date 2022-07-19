@@ -45,27 +45,28 @@ void	ms_heredoc(char *limiter, t_cmd *elem, t_input *data)
 {
 	char	*line;
 
-	signal(SIGINT, signal_hd);
+	if (signal(SIGINT, signal_hd) == SIG_ERR)
+		error_check(-1, "in signals ", 11, data);
 	elem->in = open("heredoc.tmp", O_RDWR | O_CREAT | O_APPEND, 0777);
 	error_check(elem->in, "In Open heredoc ", 17, data);
-	line = readline("> ");
-	while (line)
+	while (1)
 	{
-		line = ms_strjoin_free(line, "\n", data);
-		if (ft_strncmp(limiter, line, ft_strlen(limiter)) == 0
-			&& ft_strlen(limiter) == (ft_strlen(line) - 1))
+		line = readline("> ");
+		if (!line)
+		{
+			write(1, "\n", 1);
+			break ;
+		}
+		if (!ft_strcmp(line, limiter))
 		{
 			free(line);
 			break ;
 		}
-		write(elem->in, line, ft_strlen(line));
+		ft_putendl_fd(line, elem->in);
 		free(line);
-		line = readline("> ");
 	}
 	close(elem->in);
-	elem->in = open("heredoc.tmp", O_RDONLY);
-	error_check(elem->in, "In Open heredoc ", 17, data);
-	unlink("heredoc.tmp");
+	exit(0);
 }
 
 int	pipex(t_input *data)
@@ -90,7 +91,7 @@ int	execute(t_input *data)
 {
 	if (signal(SIGINT, signal_fork) == SIG_ERR
 		|| signal(SIGQUIT, signal_fork) == SIG_ERR)
-		printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
+		error_check(-1, "in signals ", 11, data);
 	if (data->cmds->pipe == 1 || !check_builtin(data, data->cmds))
 	{
 		data->pid = fork();

@@ -6,7 +6,7 @@ void	prompt(t_input *data)
 	{
 		if (signal(SIGINT, signal_handling) == SIG_ERR
 			|| signal(SIGQUIT, SIG_IGN) == SIG_ERR)
-			printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
+		error_check(-1, "in signals ", 11, data);
 		data->buf = readline(data->prompt);
 		if (!data->buf)
 			yo_exit(data);

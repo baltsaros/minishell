@@ -62,6 +62,8 @@ int	init_in(t_node *args, t_cmd *elem, t_input *data)
 	{
 		args = args->next;
 		elem->delim = ms_strdup(args->value, data);
+		if (signal(SIGINT, SIG_IGN) == SIG_ERR)
+			error_check(-1, "in signals ", 11, data);
 		data->pid = fork();
 		error_check(data->pid, "In fork ", 9, data);
 		if (data->pid == 0)
@@ -73,6 +75,9 @@ int	init_in(t_node *args, t_cmd *elem, t_input *data)
 			unlink("heredoc.tmp");
 			return (1);
 		}
+		elem->in = open("heredoc.tmp", O_RDONLY);
+		error_check(elem->in, "In Open heredoc ", 17, data);
+		unlink("heredoc.tmp");
 		return (0);
 	}
 	else if (args->type == REDIR_IN)
