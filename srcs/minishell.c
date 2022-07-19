@@ -15,12 +15,18 @@ void	prompt(t_input *data)
 			add_history(data->buf);
 			check_field(data, data->buf);
 			data_init(data);
-			// ms_token_print(data->args);
-			// ms_envp_print(data->envp_n);
 			token_simplification(data);
-			parsing(data);
-			execute(data);
-			// ms_free_token(data->args);
+			if (!parsing(data))
+			{
+				execute(data);
+				ms_free_token(data->args);
+				ms_free_cmd(data->cmds);
+			}
+			else
+			{
+				ms_free_token(data->args);
+				ms_free_cmd(data->cmds);
+			}
 		}
 		free(data->buf);
 	}

@@ -65,7 +65,7 @@ int	init_in(t_node *args, t_cmd *elem, t_input *data)
 		args = args->next;
 		elem->delim = ms_strdup(args->value, data);
 		ms_heredoc(elem->delim, elem, data);
-		elem->in_arg = "heredoc.tmp";
+		elem->in_arg = ms_strdup("heredoc.tmp", data);
 		return (0);
 	}
 	else if (args->type == REDIR_IN)

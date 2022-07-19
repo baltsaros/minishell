@@ -35,25 +35,29 @@ t_env	*ms_free_envp(t_env *node)
 	return (node);
 }
 
-void	ms_free_cmd(t_cmd *cmd)
+void	ms_free_cmd(t_cmd *to_free)
 {
 	t_cmd	*tmp;
 
-	if (!cmd)
+	if (!to_free)
 		return ;
-	while (cmd)
+	while (to_free)
 	{
-		tmp = cmd->next;
-		if (cmd->cmd)
-			free(cmd->cmd);
-		if (cmd->delim)
-			free(cmd->delim);
-		if (cmd->in_arg)
-			free(cmd->in_arg);
-		if (cmd->out_arg)
-			free(cmd->out_arg);
-		free(cmd);
-		cmd = tmp;
+		tmp = to_free->next;
+		if (to_free->cmd)
+			free(to_free->cmd);
+		if (to_free->delim)
+			free(to_free->delim);
+		if (to_free->in != 0)
+			close(to_free->in);
+		if (to_free->in_arg)
+			free(to_free->in_arg);
+		if (to_free->out != 1)
+			close(to_free->out);
+		if (to_free->out_arg)
+			free(to_free->out_arg);
+		free(to_free);
+		to_free = tmp;
 	}
 }
 
@@ -63,8 +67,8 @@ void	ms_free_all(t_input *data)
 		ms_free_envp(data->envp_n);
 	if (data->args)
 		ms_free_token(data->args);
-	// if (data->cmds)
-	// 	ms_free_cmd(data->cmds);
+	if (data->cmds)
+		ms_free_cmd(data->cmds);
 	if (data->envp)
 		ms_free(data->envp);
 	free(data->prompt);
