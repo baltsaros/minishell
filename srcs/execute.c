@@ -32,7 +32,6 @@ void	ms_fork(char *argv[], t_input *data)
 			exit(g_status);
 		else
 		{
-			close(data->cmds->in);
 			close(fd[0]);
 			ms_execve(argv, data);
 		}
