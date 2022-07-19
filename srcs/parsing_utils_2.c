@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/19 16:12:46 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/19 16:16:43 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	get_size_cmd(t_node	*args)
 			i--;
 		args = args->next;
 	}
-	printf("I: %d\n", i);
+	// printf("I: %d\n", i);
 	return (i);
 }
 

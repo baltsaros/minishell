@@ -47,7 +47,10 @@ void	check_asterisk(t_input *data)
 				tmp = tmp->next;
 		}
 		if (ft_strchr(tmp->value, '*'))
+		{
 			tmp->type = ASTER;
+			asterisks(data, tmp);
+		}
 		tmp = tmp->next;
 	}
 }
