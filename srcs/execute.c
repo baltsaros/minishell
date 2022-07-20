@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:25 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 10:40:35 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/20 16:09:36 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,29 +28,6 @@ int	check_builtin(t_input *data, t_cmd *cmds)
 		}
 	}
 	return (0);
-}
-
-void	ms_fork(char *argv[], t_input *data)
-{
-	int	fd[2];
-
-	error_check(pipe(fd), "In pipe ", 9, data);
-	data->pid = fork();
-	error_check(data->pid, "In fork ", 9, data);
-	if (data->pid == 0)
-	{
-		error_check(dup2(fd[1], STDOUT_FILENO), "In Dup2_ch ", 12, data);
-		if (check_builtin(data, data->cmds))
-			exit(g_status);
-		else
-		{
-			close(fd[0]);
-			ms_execve(argv, data);
-		}
-	}
-	waitpid(data->pid, NULL, 0);
-	error_check(dup2(fd[0], STDIN_FILENO), "In Dup2_pr ", 12, data);
-	close(fd[1]);
 }
 
 void	ms_heredoc(char *limiter, t_cmd *elem, t_input *data)
@@ -81,9 +58,32 @@ void	ms_heredoc(char *limiter, t_cmd *elem, t_input *data)
 	exit(0);
 }
 
+void	ms_fork(char *argv[], t_input *data)
+{
+	int	fd[2];
+
+	error_check(dup2(data->cmds->in, STDIN_FILENO), "In dup2_inP ", 13, data);
+	error_check(pipe(fd), "In pipe ", 9, data);
+	data->pid = fork();
+	error_check(data->pid, "In fork ", 9, data);
+	if (data->pid == 0)
+	{
+		error_check(dup2(fd[1], STDOUT_FILENO), "In Dup2_ch ", 12, data);
+		if (check_builtin(data, data->cmds))
+			exit(g_status);
+		else
+		{
+			close(fd[0]);
+			ms_execve(argv, data);
+		}
+	}
+	waitpid(data->pid, NULL, 0);
+	error_check(dup2(fd[0], STDIN_FILENO), "In Dup2_pr ", 12, data);
+	close(fd[1]);
+}
+
 int	pipex(t_input *data)
 {
-	error_check(dup2(data->cmds->in, STDIN_FILENO), "In dup2_inP ", 13, data);
 	while (data->cmds->pipe == 1)
 	{
 		ms_fork(data->cmds->cmd, data);
