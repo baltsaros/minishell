@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/19 16:16:43 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/20 10:40:03 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,10 @@ char	**init_cmd(t_node *args, t_input *data)
 	{
 		if (args->type != QUOTE_D && args->type != QUOTE)
 		{
-			str[i] = ms_strdup("", data);
 			if (args->type == WORD || args->type == ASTER
 				|| args->type == EXECUTABLE || args->type == ENV_VA || args->type == ENV_VA_BR
 				|| args->type == ENV_P || args->type == DOLLAR_VAR)
 			{
-				free(str[i]);
 				str[i] = ms_strdup(args->value, data);
 				i++;
 			}

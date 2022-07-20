@@ -27,7 +27,10 @@ t_cmd	*fill_elem(t_node *args, t_cmd *elem, t_input *data)
 	while (args && args->type != PIPE)
 	{
 		if (redirection_check(args, elem, data) == 1)
+		{
+			ms_free_cmd(elem);
 			return (NULL);
+		}
 		if (args->next && args->next->type == PIPE)
 		{
 			if (!args->next->next || is_the_next_is_right_type(args->next) == 1)

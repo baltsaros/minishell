@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:35 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 09:31:03 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/20 09:54:23 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	ms_free_cmd(t_cmd *to_free)
 	{
 		tmp = to_free->next;
 		if (to_free->cmd)
-			free(to_free->cmd);
+			ms_free(to_free->cmd);
 		if (to_free->delim)
 			free(to_free->delim);
 		if (to_free->in != 0)
