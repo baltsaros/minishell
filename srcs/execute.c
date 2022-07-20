@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:25 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 16:09:36 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/20 22:55:29 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,12 @@ void	ms_fork(char *argv[], t_input *data)
 			ms_execve(argv, data);
 		}
 	}
-	waitpid(data->pid, NULL, 0);
+	// waitpid(data->pid, NULL, 0);
 	error_check(dup2(fd[0], STDIN_FILENO), "In Dup2_pr ", 12, data);
 	close(fd[1]);
 }
 
+// loop until the last command then execve for the last one
 int	pipex(t_input *data)
 {
 	while (data->cmds->pipe == 1)
