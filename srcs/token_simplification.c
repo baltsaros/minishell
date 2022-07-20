@@ -45,12 +45,40 @@ void	in_arg_management(t_node *elem)
 		elem->next->type = IN_ARG;
 }
 
+int	is_between_p(t_node	*args)
+{
+	int	count;
+
+	count = 0;
+	if (args->type == BR_L || args->type == BR_R)
+		return (1);
+	while (args->prev && args->type != BR_L && args->type != PIPE)
+		args = args->prev;
+	if (args->type == BR_L)
+		count++;
+	else
+		return (1);
+	if (args->next)
+		args = args->next;
+	else
+		return (1);
+	while (args && args->type != BR_R && args->type != PIPE)
+		args = args->next;
+	if (args && args->type == BR_R)
+		count++;
+	if (count == 2)
+		return (0);
+	return (1);
+}
+
 int	general_simplification(t_node *elem, t_input *data)
 {
 	while (elem)
 	{
 		if (elem->type == DOLLAR)
 			dollar_management(elem, data);
+		else if (!is_between_p(elem))
+			elem->type = WORD;
 		else if (elem->type == WORD && !ft_strncmp(elem->value, ".", 2))
 			elem = executable_token_simplification(elem, data);
 		else if (elem->type == REDIR_OUT || elem->type == REDIR_AP)
@@ -64,11 +92,19 @@ int	general_simplification(t_node *elem, t_input *data)
 	return (0);
 }
 
+int	word_p_fusion(t_node	*elem, t_input	*data)
+{
+	(void)elem;
+	(void)data;
+	return (0);
+}
+
 int	token_simplification(t_input *data)
 {
 	t_node	*elem;
 
     elem = data->args;
+	ms_token_print(data->args);
     if (quote_transformation(elem, data) == 1)
         return (1);
     if (general_simplification(elem, data) == 1)
@@ -79,6 +115,6 @@ int	token_simplification(t_input *data)
         return (1);
     if (delete_useless_wspace(elem, data) == 1)
         return (1);
-    // ms_token_print(data->args);
+    ms_token_print(data->args);
     return (0);
 }

@@ -47,6 +47,9 @@ int	word_total_fusion(t_node *elem, t_input *data)
 	{
 		if (elem->type == PIPE)
 			break ;
+		if (elem->type == BR_L || elem->type == BR_R
+		 	|| elem->type == BRACES_L || elem->type == BRACES_R)		
+		 	elem->type = WORD;
 		if ((elem->type != WSPACE && elem->type != QUOTE && elem->type != QUOTE_D 
 			&& elem->type != REDIR_IN && elem->type != REDIR_OUT
 			&& elem->type != REDIR_HD && elem->type != REDIR_AP)
