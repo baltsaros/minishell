@@ -44,11 +44,14 @@ t_cmd	*fill_elem(t_node *args, t_cmd *elem, t_input *data)
 
 t_cmd	*init_elem(t_node *args, t_input *data)
 {
-	(void)args;
 	t_cmd	*elem;
 
 	elem = init_empty_elem(data);
+	if (!elem)
+		return (NULL);
 	elem = fill_elem(args, elem, data);
+	if (!elem)
+		return (NULL);
 	return (elem);
 }
 
@@ -59,15 +62,27 @@ t_cmd	*parse_cmd(t_input *data)
 	t_cmd	*new_con;
 	t_node	*tmp;
 
-	first_elem = init_elem(data->args, data);
-	arg = first_elem;
 	tmp = data->args;
+	while (tmp)
+	{
+		first_elem = init_elem(tmp, data);
+		if (first_elem)
+			break ;
+		tmp = next_elem(tmp);
+		if (!tmp || !tmp->next)
+			break ;
+	}
+	if (!first_elem)
+		return (NULL);
+	arg = first_elem;
 	while (tmp)
 	{
 		tmp = next_elem(tmp);
 		if (!tmp || !tmp->next)
 			break ;
 		new_con = init_elem(tmp, data);
+		if (!new_con)
+			continue ;
 		new_con->prev = arg;
 		arg->next = new_con;
 		arg = arg->next;

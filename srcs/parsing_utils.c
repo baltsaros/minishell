@@ -88,7 +88,8 @@ int	init_in(t_node *args, t_cmd *elem, t_input *data)
 		args = args->next;
 		elem->in_arg = ms_strdup(args->value, data);
 		elem->in = open(elem->in_arg, O_RDONLY);
-		error_check_nofork(elem->in, "in parsing open ", 16, data);
+		if (error_check_nofork(elem->in, "in parsing open ", 16, data))
+			return (1);
 		return (0);
 	}
 	return (1);
