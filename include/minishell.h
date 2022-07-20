@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 09:37:10 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/20 09:49:12 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,11 +116,11 @@ typedef struct s_input
 	int					j;
 	size_t				k;
 	char				*tmp;
-	char				*prompt;
 	char				*type;
 	char				*value;
 	t_env				*envp_tmp;
 	t_node				*node_tmp;
+	char				*prompt;
 	int					argc;
 	char				**envp;
 	int					envp_len;
@@ -184,16 +184,14 @@ void	check_field(t_input *data, char *str);
 int		is_right_buf(char *buf);
 
 // data_init
-void	tokenization(t_input *data);
 void	data_init(t_input *data);
 void	envp_init(t_input *data, char *envp[]);
 
 // tokenization
 void	create_token(t_input *data, char *str, int len, int type);
-void	check_quotes(t_input *data, size_t *i, char c);
 void	check_asterisk(t_input *data);
-void	check_dollar(t_input *data);
 void	check_next(t_input *data, size_t *i);
+void	tokenization(t_input *data);
 
 // execute
 int		pipex(t_input *data);
@@ -264,20 +262,20 @@ void	secret_mode(void);
 void	uwu_mode(void);
 void	normal_mode(void);
 
-// token Simplification
+// token simplification
 int		token_simplification(t_input *data);
 
 // quote transformation
 int		quote_transformation(t_node *elem, t_input *data);
 
-// token Simplification Utils
+// token simplification utils
 int		is_between_d_quote(t_node *args);
 int		is_between_quote(t_node *args);
 t_node	*executable_token_simplification(t_node *elem, t_input *data);
 int		get_braces_size(t_node *elem, int type1, int type2);
 char	*get_between_braces(t_node *elem, int type1, int type2);
 
-// token Simplification Utils 2
+// token simplification utils 2
 int		delete_useless_wspace(t_node *elem, t_input *data);
 
 // dollar simplification braces
@@ -287,10 +285,10 @@ void	dollar_p_2(t_node *elem, t_input *data);
 void	dollar_p(t_node *elem, t_input *data);
 t_node	*dollar_token_simplification(t_node *elem, t_input *data);
 
-// word Quote
+// word quote
 int		word_quote_fusion(t_node *elem, t_input *data);
 
-// word Total
+// word total
 int		word_total_fusion(t_node *elem, t_input *data);
 
 #endif

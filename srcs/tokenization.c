@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:34 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 09:40:36 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/20 09:46:01 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,29 @@ void	check_next(t_input *data, size_t *i)
 	data->node_tmp = ms_token_new(type, data->value, data);
 	ms_token_back(&data->args, data->node_tmp);
 	++(*i);
+}
+
+void	tokenization(t_input *data)
+{
+	size_t	i;
+	size_t	start;
+
+	i = 0;
+	while (data->buf[i])
+	{
+		start = i;
+		while (check_charset(data->buf[i], " \f\n\r\t\v"))
+			++i;
+		if (i != start)
+			create_token(data, data->buf + start, i - start, WSPACE);
+		start = i;
+		while (data->buf[i] && !check_charset(data->buf[i]
+				, "\"$\'&<>=| \f\n\r\t\v(){}/"))
+			++i;
+		if (i != start)
+			create_token(data, data->buf + start, i - start, WORD);
+		if (check_charset(data->buf[i], "\"$\'&<>=|(){}/"))
+			check_next(data, &i);
+	}
+	check_asterisk(data);
 }
