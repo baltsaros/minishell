@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 09:49:12 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/20 12:18:31 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,7 @@ void	ms_free_all(t_input *data);
 // utils
 char	*ms_strndup(char const *str, size_t size, t_input *data);
 int		error_check(int input, char *str, int n, t_input *data);
+int		error_check_nofork(int input, char *str, int n, t_input *data);
 int		ft_strstr(char *str, char *to_find);
 int		check_charset(char c, char *charset);
 void	increase_shlvl(t_input *data);

@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:39:17 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 09:39:18 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/20 12:18:09 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,18 @@ void	ms_free_node_elems(t_env *tmp)
 	if (tmp->value)
 		free(tmp->value);
 	free(tmp);
+}
+
+int	error_check_nofork(int input, char *str, int n, t_input *data)
+{
+	(void)data;
+	if (input < 0)
+	{
+		write(2, "YAMSP: ", 7);
+		write(2, str, n);
+		perror("something went wrong");
+		g_status = errno;
+		return (1);
+	}
+	return (0);
 }
