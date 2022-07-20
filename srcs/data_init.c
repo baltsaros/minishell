@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   data_init.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/20 09:30:05 by abuzdin           #+#    #+#             */
+/*   Updated: 2022/07/20 09:37:52 by abuzdin          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 static void	create_envp(t_input *data, char *envp[])
@@ -87,10 +99,7 @@ void	tokenization(t_input *data)
 		if (check_charset(data->buf[i], "\"$\'&<>=|(){}/"))
 			check_next(data, &i);
 	}
-	// ms_token_print(data->args);
 	check_asterisk(data);
-	// ms_token_print(data->args);
-	// check_dollar(data);
 }
 
 void	data_init(t_input *data)

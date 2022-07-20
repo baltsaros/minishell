@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
+/*   Updated: 2022/07/20 09:37:10 by abuzdin          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -14,12 +26,6 @@
 # include <libft.h>
 # include <stdbool.h>
 # include <errno.h>
-// # include <sys/stat.h>
-// # include <sys/ioctl.h>
-// # include <termios.h>
-// # include <curses.h>
-// # include <term.h>
-// # include "../libft/libft.h"
 
 // global var
 int	g_status;
@@ -27,43 +33,43 @@ int	g_status;
 // enum for tokens
 enum e_tokens
 {
-	DOLLAR		= 36,	// $
+	DOLLAR		= 36,
 	WORD		= 2,
 	WSPACE		= 3,
-	WORD_AST	= 4,	// *
-	QUOTE		= 39,	// '
-	QUOTE_D		= 34,	// "
-	REDIR_OUT	= 62,	// >
-	REDIR_IN	= 60,	// <
-	REDIR_AP	= 162,	// >>
-	REDIR_HD	= 160,	// <<
+	WORD_AST	= 4,
+	QUOTE		= 39,
+	QUOTE_D		= 34,
+	REDIR_OUT	= 62,
+	REDIR_IN	= 60,
+	REDIR_AP	= 162,
+	REDIR_HD	= 160,
 	DELIM		= 9,
-	PIPE		= 124,	// |
-	EQUAL		= 61,	// =
-	ASTER		= 42,	// *
-	AND			= 138,	// &&
-	OR			= 224,	// ||
-	BR_L		= 40,	// (
-	BR_R		= 41,	// )
-	AMPER		= 38,	// &
-	APOST		= 44,	// `
-	BACKSL		= 92,	// '\'
-	SLASH		= 47,	// '/'
+	PIPE		= 124,
+	EQUAL		= 61,
+	ASTER		= 42,
+	AND			= 138,
+	OR			= 224,
+	BR_L		= 40,
+	BR_R		= 41,
+	AMPER		= 38,
+	APOST		= 44,
+	BACKSL		= 92,
+	SLASH		= 47,
 	TRU			= 10,
 	FALS		= 11,
-	BRACES_L	= 123,	// {
-	BRACES_R	= 125	// }
+	BRACES_L	= 123,
+	BRACES_R	= 125
 };
 
 enum e_simplier_tokens
 {
-	ENV_VA 		= 37, 	// Example: $PATH
+	ENV_VA		= 37,
 	ENV_VA_BR	= 38,
 	ENV_BR_EM	= 39,
 	ENV_P		= 6,
 	ENV_P_EM	= 7,
-	DOLLAR_VAR 	= 8,
-	ASTER_WORD	= 5,	// Example: t*.c
+	DOLLAR_VAR	= 8,
+	ASTER_WORD	= 5,
 	IN_ARG		= 130,
 	OUT_ARG		= 131,
 	EXECUTABLE	= 132
@@ -217,7 +223,7 @@ int		yo_exit(t_input *data);
 void	add_envp(t_input *data, char *type, char *value);
 
 //signals
-void	signal_handling(int signo);
+void	signal_main(int signo);
 void	signal_fork(int signo);
 void	signal_hd(int signo);
 
@@ -229,7 +235,7 @@ int		is_the_next_is_in_arg(t_node *args);
 int		is_the_next_is_out_arg(t_node *args);
 t_cmd	*print_syntax_error_cmd(t_node *args);
 int		print_syntax_error_bool(t_node *args);
-int		is_the_next_is_right_type(t_node	*args);
+int		is_the_next_is_right_type(t_node *args);
 
 // parsing
 int		parsing(t_input *data);
@@ -248,7 +254,7 @@ int		redirection_check(t_node *args, t_cmd *elem, t_input *data);
 // parsing_utils_2
 char	**init_cmd(t_node *args, t_input *data);
 
-// Readline functions
+// readline functions
 void	rl_replace_line(const char *text, int clear_undo);
 
 // messages
@@ -258,33 +264,33 @@ void	secret_mode(void);
 void	uwu_mode(void);
 void	normal_mode(void);
 
-// Token Simplification
-int 	token_simplification(t_input *data);
+// token Simplification
+int		token_simplification(t_input *data);
 
-// Quote transformation
-int 	quote_transformation(t_node *elem, t_input   *data);
+// quote transformation
+int		quote_transformation(t_node *elem, t_input *data);
 
-// Token Simplification Utils
-int		is_between_d_quote(t_node	*args);
-int		is_between_quote(t_node	*args);
-t_node  *executable_token_simplification(t_node *elem, t_input *data);
-int 	get_braces_size(t_node  *elem, int type1, int type2);
-char    *get_between_braces(t_node  *elem, int type1, int type2);
+// token Simplification Utils
+int		is_between_d_quote(t_node *args);
+int		is_between_quote(t_node *args);
+t_node	*executable_token_simplification(t_node *elem, t_input *data);
+int		get_braces_size(t_node *elem, int type1, int type2);
+char	*get_between_braces(t_node *elem, int type1, int type2);
 
-// Token Simplification Utils 2
-int 	delete_useless_wspace(t_node *elem, t_input *data);
+// token Simplification Utils 2
+int		delete_useless_wspace(t_node *elem, t_input *data);
 
-// Dollar simplification braces
-void    dollar_braces_2(t_node  *elem, t_input  *data);
-void    dollar_braces(t_node *elem,  t_input *data);
-void    dollar_p_2(t_node   *elem, t_input  *data);
-void    dollar_p(t_node *elem, t_input  *data);
-t_node  *dollar_token_simplification(t_node *elem, t_input  *data);
+// dollar simplification braces
+void	dollar_braces_2(t_node *elem, t_input *data);
+void	dollar_braces(t_node *elem, t_input *data);
+void	dollar_p_2(t_node *elem, t_input *data);
+void	dollar_p(t_node *elem, t_input *data);
+t_node	*dollar_token_simplification(t_node *elem, t_input *data);
 
-// Word Quote
-int 	word_quote_fusion(t_node *elem, t_input *data);
+// word Quote
+int		word_quote_fusion(t_node *elem, t_input *data);
 
-// Word Total
-int 	word_total_fusion(t_node   *elem, t_input  *data);
+// word Total
+int		word_total_fusion(t_node *elem, t_input *data);
 
 #endif

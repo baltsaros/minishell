@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/20 09:38:28 by abuzdin           #+#    #+#             */
+/*   Updated: 2022/07/20 09:39:05 by abuzdin          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 void	prompt(t_input *data)
 {
 	while (1)
 	{
-		if (signal(SIGINT, signal_handling) == SIG_ERR
+		if (signal(SIGINT, signal_main) == SIG_ERR
 			|| signal(SIGQUIT, SIG_IGN) == SIG_ERR)
-		error_check(-1, "in signals ", 11, data);
+			error_check(-1, "in signals ", 11, data);
 		data->buf = readline(data->prompt);
 		if (!data->buf)
 			yo_exit(data);
