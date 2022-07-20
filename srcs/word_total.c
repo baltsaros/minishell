@@ -4,7 +4,7 @@ int	fusion_with_prev_elem(t_node *elem, t_input *data)
 {
 	char	*str;
 
-	while (elem && elem->prev && (elem->prev->type != WSPACE 
+	while (elem && elem->prev && (elem->next->type != PIPE && elem->prev->type != WSPACE 
 		&& elem->prev->type != QUOTE_D && elem->prev->type != QUOTE
 		&& elem->prev->type != REDIR_IN && elem->prev->type != REDIR_OUT
 		&& elem->prev->type != REDIR_HD && elem->prev->type != REDIR_AP))
@@ -20,7 +20,7 @@ int	fusion_with_prev_elem(t_node *elem, t_input *data)
 
 int	fusion_with_next_elem(t_node *elem, t_input *data)
 {
-	while (elem && elem->next && (elem->next->type != WSPACE 
+	while (elem && elem->next && (elem->next->type != PIPE && elem->next->type != WSPACE 
 		&& elem->next->type != QUOTE_D && elem->next->type != QUOTE
 		&& elem->next->type != REDIR_IN && elem->next->type != REDIR_OUT
 		&& elem->next->type != REDIR_HD && elem->next->type != REDIR_AP))
@@ -45,6 +45,8 @@ int	word_total_fusion(t_node *elem, t_input *data)
 {
 	while (elem)
 	{
+		if (elem->type == PIPE)
+			break ;
 		if ((elem->type != WSPACE && elem->type != QUOTE && elem->type != QUOTE_D 
 			&& elem->type != REDIR_IN && elem->type != REDIR_OUT
 			&& elem->type != REDIR_HD && elem->type != REDIR_AP)
