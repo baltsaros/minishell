@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:38:28 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 14:21:14 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/20 15:11:21 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	prompt(t_input *data)
 			check_field(data, data->buf);
 			data_init(data);
 			token_simplification(data);
-			if (!parsing(data))
+			if (!parsing(data) && data->cmds->len_cmd != 0)
 				execute(data);
 			ms_free_token(data->args);
 			ms_free_cmd(data->cmds);
