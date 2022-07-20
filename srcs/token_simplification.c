@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/20 14:53:33 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/20 15:20:10 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,10 +117,19 @@ int	general_simplification(t_node *elem, t_input *data)
 	return (0);
 }
 
-int	word_p_fusion(t_node	*elem, t_input	*data)
+int	empty_when_only_quote(t_node	*elem, t_input	*data)
 {
-	(void)elem;
 	(void)data;
+	if (elem->type == QUOTE_D && elem->next && elem->next->type == QUOTE_D)
+	{
+		elem->type = EMPTY_ARG;
+		ms_token_del(elem->next);
+	}
+	else if (elem->type == QUOTE && elem->next && elem->next->type == QUOTE)
+	{
+		elem->type = EMPTY_ARG;
+		ms_token_del(elem->next);
+	}
 	return (0);
 }
 
@@ -129,21 +138,24 @@ int	token_simplification(t_input *data)
 	t_node	*elem;
 
     elem = data->args;
-	ms_token_print(data->args);
+	// ms_token_print(data->args);
     if (quote_transformation(elem, data) == 1)
         return (1);
-	ms_token_print(data->args);
+	// ms_token_print(data->args);
     if (general_simplification(elem, data) == 1)
         return (1);
-	ms_token_print(data->args);
+	// ms_token_print(data->args);
     if (word_total_fusion(elem, data) == 1)
         return (1);
-	ms_token_print(data->args);
+	// ms_token_print(data->args);
     if (word_quote_fusion(elem, data) == 1)
         return (1);
-	ms_token_print(data->args);
+	// ms_token_print(data->args);
     if (delete_useless_wspace(elem, data) == 1)
         return (1);
     ms_token_print(data->args);
+	if (empty_when_only_quote(elem, data) == 1)
+		return (1);
+	ms_token_print(data->args);
     return (0);
 }

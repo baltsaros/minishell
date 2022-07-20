@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 12:18:31 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/20 15:16:21 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ enum e_simplier_tokens
 	ASTER_WORD	= 5,
 	IN_ARG		= 130,
 	OUT_ARG		= 131,
-	EXECUTABLE	= 132
+	EXECUTABLE	= 132,
+	EMPTY_ARG	= 133
 };
 
 // struct for tokens (+ wildcard) linked lists

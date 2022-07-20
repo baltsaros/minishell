@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:41:09 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/20 14:43:51 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/20 15:26:09 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	get_size_cmd(t_node	*args)
 			i--;
 		args = args->next;
 	}
-	// printf("I: %d\n", i);
+	printf("I: %d\n", i);
 	return (i);
 }
 
@@ -62,6 +62,11 @@ char	**init_cmd(t_node *args, t_input *data)
 				|| args->type == DOLLAR_VAR || args->type == SLASH)
 			{
 				str[i] = ms_strdup(args->value, data);
+				i++;
+			}
+			else if (args->type == EMPTY_ARG)
+			{
+				str[i] = ms_strdup("\0", data);
 				i++;
 			}
 		}
