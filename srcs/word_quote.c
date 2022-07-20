@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   word_quote.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mthiry <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/20 14:21:45 by mthiry            #+#    #+#             */
+/*   Updated: 2022/07/20 14:22:46 by mthiry           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
-void	word_quote_fusion_3(t_node *elem, t_node *first, t_input *data, int type)
+void	word_quote_fusion_3(t_node *elem, t_node *first,
+		t_input *data, int type)
 {
 	while (elem && elem->type != type)
 	{
@@ -28,12 +41,11 @@ void	word_quote_fusion_2(t_node *first, t_input *data, t_node *elem)
 			first->type = ASTER;
 		first->value = ft_strjoin(elem->prev->value, first->value);
 		free(str);
-		// elem = ms_token_del(elem->prev);
 		elem->prev->type = 0;
 	}
 }
 
-int word_quote_fusion(t_node *elem, t_input *data)
+int	word_quote_fusion(t_node *elem, t_input *data)
 {
 	t_node	*first;
 	int		type;

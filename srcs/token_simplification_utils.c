@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   token_simplification_utils.c                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mthiry <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/20 14:30:33 by mthiry            #+#    #+#             */
+/*   Updated: 2022/07/20 14:31:03 by mthiry           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 int	is_between_d_quote(t_node	*args)
@@ -73,7 +85,7 @@ t_node	*executable_token_simplification(t_node *elem, t_input *data)
 	return (elem);
 }
 
-int get_braces_size(t_node	*elem, int type1, int type2)
+int	get_braces_size(t_node	*elem, int type1, int type2)
 {
 	int	i;
 	int	size;
@@ -111,7 +123,7 @@ char	*get_between_braces(t_node *elem, int type1, int type2)
 	{
 		str[j] = elem->value[i];
 		i++;
-		j++; 
+		j++;
 	}
 	str[j] = '\0';
 	return (str);
