@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/20 16:10:14 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/20 17:11:22 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,11 +129,27 @@ int	empty_when_only_quote(t_node	*elem, t_input	*data)
 			elem->type = EMPTY_ARG;
 			ms_token_del(elem->next);
 		}
-		else if (elem->type == QUOTE && elem->next && elem->next->type == QUOTE)
+		if (elem->type == QUOTE && elem->next && elem->next->type == QUOTE)
 		{
 			elem->type = EMPTY_ARG;
 			ms_token_del(elem->next);
 		}
+		elem = elem->next;
+	}
+	return (0);
+}
+
+int	delete_useless_quote(t_node	*elem, t_input	*data)
+{
+	(void)data;
+	while (elem)
+	{
+		if (elem->type == QUOTE_D)
+			elem->type = 0;
+		if (elem->next && elem->next->type == QUOTE)
+			elem->type = 0;;
+		if (!elem->next)
+			break ;
 		elem = elem->next;
 	}
 	return (0);
@@ -144,31 +160,35 @@ int	token_simplification(t_input *data)
 	t_node	*elem;
 
     elem = data->args;
-	printf("1: ");
-	ms_token_print(data->args);
+	// printf("1: ");
+	// ms_token_print(data->args);
     if (quote_transformation(elem, data) == 1)
         return (1);
-	printf("2: ");
-	ms_token_print(data->args);
+	// printf("2: ");
+	// ms_token_print(data->args);
     if (general_simplification(elem, data) == 1)
         return (1);
-	printf("3: ");
-	ms_token_print(data->args);
+	// printf("3: ");
+	// ms_token_print(data->args);
     if (word_total_fusion(elem, data) == 1)
         return (1);
-	printf("4: ");
-	ms_token_print(data->args);
+	// printf("4: ");
+	// ms_token_print(data->args);
     if (word_quote_fusion(elem, data) == 1)
         return (1);
-	printf("5: ");
-	ms_token_print(data->args);
+	// printf("5: ");
+	// ms_token_print(data->args);
     if (delete_useless_wspace(elem, data) == 1)
         return (1);
-	printf("6: ");
-    ms_token_print(data->args);
+	// printf("6: ");
+    // ms_token_print(data->args);
 	if (empty_when_only_quote(elem, data) == 1)
 		return (1);
-	printf("7: ");
-	ms_token_print(data->args);
+	// printf("7: ");
+	// ms_token_print(data->args);
+	if (delete_useless_quote(elem, data) == 1)
+		return (1);
+	// printf("8: ");
+	// ms_token_print(data->args);
     return (0);
 }

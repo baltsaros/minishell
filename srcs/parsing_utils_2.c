@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:41:09 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/20 15:33:57 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/20 17:12:26 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,12 @@ int	get_size_cmd(t_node	*args)
 		}
 		if (args->type == ENV_VA && args->prev && args->prev->type == ENV_VA)
 			i--;
-		if (args->type == IN_ARG || args->type == OUT_ARG)
-			i--;
-		if (args->type == DOLLAR || !args->value)
+		if (args->type == IN_ARG || args->type == OUT_ARG
+			|| args->type == DOLLAR || !args->value || args->type == 0)
 			i--;
 		args = args->next;
 	}
-	printf("I: %d\n", i);
+	// printf("I: %d\n", i);
 	return (i);
 }
 
@@ -50,6 +49,8 @@ char	**init_cmd(t_node *args, t_input *data)
 	char	**str;
 
 	size = get_size_cmd(args);
+	if (size == 0)
+		return (NULL);
 	i = 0;
 	str = ms_malloc((size + 1) * sizeof(char *), data);
 	while (args && args->type != PIPE)

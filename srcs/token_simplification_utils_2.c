@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:30:01 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/20 16:10:40 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/20 16:57:04 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	delete_useless_wspace(t_node *elem, t_input *data)
 			break ;
 		if (elem->next && elem->next->type == WSPACE
 			&& (is_between_d_quote(elem->next) && is_between_quote(elem->next)))
+			ms_token_del(elem->next);
+		if (elem->next && elem->next->type == 0)
 			ms_token_del(elem->next);
 		elem = elem->next;
 	}

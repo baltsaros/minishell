@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:35 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 09:54:23 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/20 17:05:27 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,10 @@ t_env	*ms_free_envp(t_env *node)
 
 void	ms_free_cmd(t_cmd *to_free)
 {
-	t_cmd	*tmp;
-
 	if (!to_free)
 		return ;
 	while (to_free)
 	{
-		tmp = to_free->next;
 		if (to_free->cmd)
 			ms_free(to_free->cmd);
 		if (to_free->delim)
@@ -68,8 +65,16 @@ void	ms_free_cmd(t_cmd *to_free)
 			close(to_free->out);
 		if (to_free->out_arg)
 			free(to_free->out_arg);
-		free(to_free);
-		to_free = tmp;
+		if (to_free->next)
+		{
+			to_free = to_free->next;
+			free(to_free->prev);
+		}
+		else
+		{
+			free(to_free);
+			break;
+		}
 	}
 }
 
