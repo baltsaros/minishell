@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 15:16:21 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/20 15:57:57 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ enum e_simplier_tokens
 {
 	ENV_VA		= 37,
 	ENV_VA_BR	= 38,
-	ENV_BR_EM	= 39,
+	ENV_BR_EM	= 134,
 	ENV_P		= 6,
 	ENV_P_EM	= 7,
 	DOLLAR_VAR	= 8,

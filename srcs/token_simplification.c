@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/20 15:32:50 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/20 16:10:14 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ int	general_simplification(t_node *elem, t_input *data)
 {
 	while (elem)
 	{
+		if (!elem->next)
+			break ;
 		if (elem->type == DOLLAR)
 			dollar_management(elem, data);
 		else if (!is_between_p(elem))
@@ -110,8 +112,6 @@ int	general_simplification(t_node *elem, t_input *data)
 			out_arg_management(elem);
 		else if (elem->type == REDIR_IN || elem->type == REDIR_HD)
 			in_arg_management(elem);
-		if (!elem->next)
-			break ;
 		elem = elem->next;
 	}
 	return (0);
@@ -122,6 +122,8 @@ int	empty_when_only_quote(t_node	*elem, t_input	*data)
 	(void)data;
 	while (elem)
 	{
+		if (!elem->next)
+			break ;
 		if (elem->type == QUOTE_D && elem->next && elem->next->type == QUOTE_D)
 		{
 			elem->type = EMPTY_ARG;
@@ -132,8 +134,6 @@ int	empty_when_only_quote(t_node	*elem, t_input	*data)
 			elem->type = EMPTY_ARG;
 			ms_token_del(elem->next);
 		}
-		if (!elem->next)
-			break ;
 		elem = elem->next;
 	}
 	return (0);
@@ -144,24 +144,31 @@ int	token_simplification(t_input *data)
 	t_node	*elem;
 
     elem = data->args;
-	// ms_token_print(data->args);
+	printf("1: ");
+	ms_token_print(data->args);
     if (quote_transformation(elem, data) == 1)
         return (1);
-	// ms_token_print(data->args);
+	printf("2: ");
+	ms_token_print(data->args);
     if (general_simplification(elem, data) == 1)
         return (1);
-	// ms_token_print(data->args);
+	printf("3: ");
+	ms_token_print(data->args);
     if (word_total_fusion(elem, data) == 1)
         return (1);
-	// ms_token_print(data->args);
+	printf("4: ");
+	ms_token_print(data->args);
     if (word_quote_fusion(elem, data) == 1)
         return (1);
-	// ms_token_print(data->args);
+	printf("5: ");
+	ms_token_print(data->args);
     if (delete_useless_wspace(elem, data) == 1)
         return (1);
+	printf("6: ");
     ms_token_print(data->args);
 	if (empty_when_only_quote(elem, data) == 1)
 		return (1);
+	printf("7: ");
 	ms_token_print(data->args);
     return (0);
 }

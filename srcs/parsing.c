@@ -76,6 +76,9 @@ t_cmd	*parse_cmd(t_input *data)
 		return (NULL);
 	arg = first_elem;
 	tmp = next_elem(tmp);
+
+	printf("Readed value: %s\n", tmp->value);
+
 	if (!tmp)
 		return (first_elem);
 	while (tmp)
@@ -108,9 +111,7 @@ int	parsing(t_input *data)
 	while (tmp)
 	{
 		for (int i = 0; i != tmp->len_cmd; i++)
-		{
 			printf("cmd[%d]: %s\n", i, tmp->cmd[i]);
-		}
 		printf("len_cmd: %d\n", tmp->len_cmd);
 		printf("delim: %s\n", tmp->delim);
 		printf("in: %d\n", tmp->in);
