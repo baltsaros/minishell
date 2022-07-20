@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:38:28 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 15:11:21 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/20 16:13:07 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,12 @@ void	prompt(t_input *data)
 			check_field(data, data->buf);
 			data_init(data);
 			token_simplification(data);
-			if (!parsing(data) && data->cmds->len_cmd != 0)
+			if (!parsing(data))
 				execute(data);
+			printf("Before freeing\n");
 			ms_free_token(data->args);
 			ms_free_cmd(data->cmds);
+			printf("Before freeing\n");
 		}
 		free(data->buf);
 	}
