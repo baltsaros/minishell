@@ -75,17 +75,25 @@ t_cmd	*parse_cmd(t_input *data)
 	if (!first_elem)
 		return (NULL);
 	arg = first_elem;
+	tmp = next_elem(tmp);
+	if (!tmp)
+		return (first_elem);
 	while (tmp)
 	{
-		tmp = next_elem(tmp);
-		if (!tmp || !tmp->next)
-			break ;
 		new_con = init_elem(tmp, data);
 		if (!new_con)
+		{
+			tmp = next_elem(tmp);
+			if (!tmp || !tmp->next)
+				break ;
 			continue ;
+		}
 		new_con->prev = arg;
 		arg->next = new_con;
 		arg = arg->next;
+		tmp = next_elem(tmp);
+		if (!tmp || !tmp->next)
+			break ;
 	}
 	return (first_elem);
 }
@@ -101,10 +109,6 @@ int	parsing(t_input *data)
 	{
 		for (int i = 0; i != tmp->len_cmd; i++)
 		{
-			if (tmp->cmd[i] == NULL)
-			{
-				printf("TEST\n");
-			}
 			printf("cmd[%d]: %s\n", i, tmp->cmd[i]);
 		}
 		printf("len_cmd: %d\n", tmp->len_cmd);

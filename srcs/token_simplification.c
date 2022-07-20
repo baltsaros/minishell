@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/20 15:20:10 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/20 15:32:50 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,15 +120,21 @@ int	general_simplification(t_node *elem, t_input *data)
 int	empty_when_only_quote(t_node	*elem, t_input	*data)
 {
 	(void)data;
-	if (elem->type == QUOTE_D && elem->next && elem->next->type == QUOTE_D)
+	while (elem)
 	{
-		elem->type = EMPTY_ARG;
-		ms_token_del(elem->next);
-	}
-	else if (elem->type == QUOTE && elem->next && elem->next->type == QUOTE)
-	{
-		elem->type = EMPTY_ARG;
-		ms_token_del(elem->next);
+		if (elem->type == QUOTE_D && elem->next && elem->next->type == QUOTE_D)
+		{
+			elem->type = EMPTY_ARG;
+			ms_token_del(elem->next);
+		}
+		else if (elem->type == QUOTE && elem->next && elem->next->type == QUOTE)
+		{
+			elem->type = EMPTY_ARG;
+			ms_token_del(elem->next);
+		}
+		if (!elem->next)
+			break ;
+		elem = elem->next;
 	}
 	return (0);
 }

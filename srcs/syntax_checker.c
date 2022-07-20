@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_checker.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:37:42 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/20 14:38:40 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/20 15:36:49 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ int	is_the_next_is_right_type(t_node	*args)
 		&& args->next->type != ENV_VA && args->next->type != ENV_VA_BR
 		&& args->next->type != ENV_P && args->next->type != IN_ARG
 		&& args->next->type != OUT_ARG && args->next->type != EXECUTABLE
-		&& args->next->type != ENV_BR_EM && args->next->type != ENV_P_EM)
+		&& args->next->type != ENV_BR_EM && args->next->type != ENV_P_EM
+		&& args->next->type != EMPTY_ARG)
 		return (1);
 	return (0);
 }
@@ -49,9 +50,10 @@ t_cmd	*print_syntax_error_cmd(t_node *args)
 	else if (args->next->type != WORD && args->next->type != ASTER
 		&& args->next->type != ENV_VA && args->next->type != ENV_VA_BR
 		&& args->next->type != ENV_P && args->next->type != IN_ARG
-		&& args->next->type != OUT_ARG && args->next->type != EXECUTABLE)
+		&& args->next->type != OUT_ARG && args->next->type != EXECUTABLE
+		&& args->next->type != ENV_BR_EM && args->next->type != ENV_P_EM
+		&& args->next->type != EMPTY_ARG)
 	{
-		printf("Heee heee\n");
 		write(2, "[ERROR]: syntax error near unexpected token `", 45);
 		write(2, args->next->value, ft_strlen(args->value));
 		write(2, "'\n", 2);
