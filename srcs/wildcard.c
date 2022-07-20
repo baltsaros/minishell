@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wildcard.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/20 09:31:37 by abuzdin           #+#    #+#             */
+/*   Updated: 2022/07/20 09:41:18 by abuzdin          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 static void	find_files_all(t_input *data, t_node *ast, struct dirent *fname)
 {
-	char *tmp;
+	char	*tmp;
 
 	tmp = ms_strdup("", data);
 	while (fname)
@@ -43,7 +55,7 @@ static char	*find_files_some(t_input *data, struct dirent *fname
 	return (tmp);
 }
 
-static void find_files_after(t_input *data, struct dirent *fname,
+static void	find_files_after(t_input *data, struct dirent *fname,
 	t_node *ast, char *after)
 {
 	char	*tmp;

@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/20 09:38:28 by abuzdin           #+#    #+#             */
+/*   Updated: 2022/07/20 09:39:05 by abuzdin          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 void	prompt(t_input *data)
 {
 	while (1)
 	{
-		if (signal(SIGINT, signal_handling) == SIG_ERR
+		if (signal(SIGINT, signal_main) == SIG_ERR
 			|| signal(SIGQUIT, SIG_IGN) == SIG_ERR)
-			printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
+			error_check(-1, "in signals ", 11, data);
 		data->buf = readline(data->prompt);
 		if (!data->buf)
 			yo_exit(data);
@@ -17,16 +29,9 @@ void	prompt(t_input *data)
 			data_init(data);
 			token_simplification(data);
 			if (!parsing(data))
-			{
 				execute(data);
-				ms_free_token(data->args);
-				ms_free_cmd(data->cmds);
-			}
-			else
-			{
-				ms_free_token(data->args);
-				ms_free_cmd(data->cmds);
-			}
+			ms_free_token(data->args);
+			ms_free_cmd(data->cmds);
 		}
 		free(data->buf);
 	}

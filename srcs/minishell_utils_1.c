@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell_utils_1.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/20 09:39:14 by abuzdin           #+#    #+#             */
+/*   Updated: 2022/07/20 12:27:52 by abuzdin          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 char	*ms_strndup(char const *str, size_t size, t_input *data)
@@ -25,6 +37,7 @@ int	error_check(int input, char *str, int n, t_input *data)
 		write(2, str, n);
 		perror("something went wrong");
 		g_status = errno;
+		ms_free_all(data);
 		exit (errno);
 	}
 	return (input);

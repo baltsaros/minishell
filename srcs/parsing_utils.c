@@ -60,20 +60,35 @@ int	init_in(t_node *args, t_cmd *elem, t_input *data)
 {
 	if (args->type == REDIR_HD)
 	{
-		if (signal(SIGINT, SIG_IGN) == SIG_ERR || signal(SIGQUIT, SIG_IGN) == SIG_ERR)
-			printf("[ERROR]: SIGNAL HANDLER FAILED!\n");
 		args = args->next;
 		elem->delim = ms_strdup(args->value, data);
-		ms_heredoc(elem->delim, elem, data);
+		if (signal(SIGINT, SIG_IGN) == SIG_ERR)
+			error_check(-1, "in signals ", 11, data);
+		data->pid = fork();
+		error_check(data->pid, "In fork ", 9, data);
+		if (data->pid == 0)
+			ms_heredoc(elem->delim, elem, data);
 		elem->in_arg = ms_strdup("heredoc.tmp", data);
+		waitpid(data->pid, &g_status, 0);
+		if (WEXITSTATUS(g_status) == 130)
+		{
+			unlink("heredoc.tmp");
+			return (1);
+		}
+		elem->in = open("heredoc.tmp", O_RDONLY);
+		if (error_check_nofork(elem->in, "in parsing open ", 16, data))
+			return (1);
+		unlink("heredoc.tmp");
 		return (0);
 	}
 	else if (args->type == REDIR_IN)
 	{
+		if (elem->in)
+			close(elem->in);
 		args = args->next;
 		elem->in_arg = ms_strdup(args->value, data);
 		elem->in = open(elem->in_arg, O_RDONLY);
-		error_check(elem->in, "[ERROR]: Wrong File Descriptor\n", 31, data);
+		error_check_nofork(elem->in, "in parsing open ", 16, data);
 		return (0);
 	}
 	return (1);
@@ -81,13 +96,13 @@ int	init_in(t_node *args, t_cmd *elem, t_input *data)
 
 int	init_out(t_node *args, t_cmd *elem, t_input *data)
 {
-	(void)data;
 	if (args->type == REDIR_AP)
 	{
 		args = args->next;
 		elem->out_arg = ms_strdup(args->value, data);
 		elem->out = open(elem->out_arg, O_WRONLY | O_CREAT | O_APPEND, 00644);
-		error_check(elem->out, "[ERROR]: Wrong File Descriptor\n", 31, data);
+		if (error_check_nofork(elem->out, "in parsing open ", 16, data))
+			return (1);
 		return (0);
 	}
 	else if (args->type == REDIR_OUT)
@@ -95,7 +110,8 @@ int	init_out(t_node *args, t_cmd *elem, t_input *data)
 		args = args->next;
 		elem->out_arg = ms_strdup(args->value, data);
 		elem->out = open(elem->out_arg, O_WRONLY | O_CREAT | O_TRUNC, 00644);
-		error_check(elem->out, "[ERROR]: Wrong File Descriptor\n", 31, data);
+		if (error_check_nofork(elem->out, "in parsing open ", 16, data))
+			return (1);
 		return (0);
 	}
 	return (1);

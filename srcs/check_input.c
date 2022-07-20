@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_input.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/20 09:29:59 by abuzdin           #+#    #+#             */
+/*   Updated: 2022/07/20 09:30:00 by abuzdin          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 static int	check_pipe(char **buf, char *msg, char c, t_input *data)
@@ -9,7 +21,7 @@ static int	check_pipe(char **buf, char *msg, char c, t_input *data)
 		tmp = readline(msg);
 		*buf = ms_charjoin_free(*buf, '\n', data);
 		*buf = ms_strjoin_free(*buf, tmp, data);
-		if (!ft_strchr(tmp, c))
+		if (!ft_strchr(tmp, c) || !ft_strcmp(tmp, "|"))
 		{
 			free(tmp);
 			break ;

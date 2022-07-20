@@ -55,7 +55,7 @@ INCS		= -Iinclude -Ilibft
 GCC			= gcc
 RM			= rm -f
 RMF			= rm -rf
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -g
 CFLAGS_COMP = -lreadline
 
 all:		libft $(NAME)

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   data_init.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/20 09:30:05 by abuzdin           #+#    #+#             */
+/*   Updated: 2022/07/20 09:45:52 by abuzdin          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 static void	create_envp(t_input *data, char *envp[])
@@ -65,33 +77,6 @@ void	envp_init(t_input *data, char *envp[])
 	create_envp(data, data->envp);
 }
 
-void	tokenization(t_input *data)
-{
-	size_t	i;
-	size_t	start;
-
-	i = 0;
-	while (data->buf[i])
-	{
-		start = i;
-		while (check_charset(data->buf[i], " \f\n\r\t\v"))
-			++i;
-		if (i != start)
-			create_token(data, data->buf + start, i - start, WSPACE);
-		start = i;
-		while (data->buf[i] && !check_charset(data->buf[i]
-				, "\"$\'&<>=| \f\n\r\t\v(){}/"))
-			++i;
-		if (i != start)
-			create_token(data, data->buf + start, i - start, WORD);
-		if (check_charset(data->buf[i], "\"$\'&<>=|(){}/"))
-			check_next(data, &i);
-	}
-	// ms_token_print(data->args);
-	check_asterisk(data);
-	// ms_token_print(data->args);
-	// check_dollar(data);
-}
 
 void	data_init(t_input *data)
 {
