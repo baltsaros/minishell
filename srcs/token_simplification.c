@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   token_simplification.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mthiry <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
+/*   Updated: 2022/07/20 14:37:35 by mthiry           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 void	dollar_management(t_node *elem, t_input *data)
@@ -6,7 +18,8 @@ void	dollar_management(t_node *elem, t_input *data)
 	if (elem->type == ENV_VA)
 		elem->value = ms_strdup(getenv(elem->value + 1), data);
 	else if (elem->type == ENV_VA_BR)
-		elem->value = ms_strdup(getenv(get_between_braces(elem, BRACES_L, BRACES_R)), data);
+		elem->value = ms_strdup(
+				getenv(get_between_braces(elem, BRACES_L, BRACES_R)), data);
 	else if (elem->type == ENV_P)
 		elem->value = ms_strdup(get_between_braces(elem, BR_L, BR_R), data);
 	else if (elem->type == ENV_P_EM)
@@ -22,12 +35,18 @@ void	out_arg_management(t_node *elem)
 	if (elem->next && (elem->next && elem->next->type == WSPACE))
 	{
 		elem = elem->next;
-		if (elem->next && (elem->next->type != PIPE && elem->next->type != REDIR_IN && elem->next->type != REDIR_OUT 
-			&& elem->next->type != REDIR_HD && elem->next->type != REDIR_AP))
+		if (elem->next && (elem->next->type != PIPE
+				&& elem->next->type != REDIR_IN
+				&& elem->next->type != REDIR_OUT
+				&& elem->next->type != REDIR_HD
+				&& elem->next->type != REDIR_AP))
 			elem->next->type = OUT_ARG;
 	}
-	else if (elem->next && (elem->next->type != PIPE && elem->next->type != REDIR_IN && elem->next->type != REDIR_OUT 
-		&& elem->next->type != REDIR_HD && elem->next->type != REDIR_AP))
+	else if (elem->next && (elem->next->type != PIPE
+			&& elem->next->type != REDIR_IN
+			&& elem->next->type != REDIR_OUT
+			&& elem->next->type != REDIR_HD
+			&& elem->next->type != REDIR_AP))
 		elem->next->type = OUT_ARG;
 }
 
@@ -36,12 +55,18 @@ void	in_arg_management(t_node *elem)
 	if (elem->next && (elem->next && elem->next->type == WSPACE))
 	{
 		elem = elem->next;
-		if (elem->next && (elem->next->type != PIPE && elem->next->type != REDIR_IN && elem->next->type != REDIR_OUT 
-			&& elem->next->type != REDIR_HD && elem->next->type != REDIR_AP))
+		if (elem->next && (elem->next->type != PIPE
+				&& elem->next->type != REDIR_IN
+				&& elem->next->type != REDIR_OUT
+				&& elem->next->type != REDIR_HD
+				&& elem->next->type != REDIR_AP))
 			elem->next->type = IN_ARG;
 	}
-	else if (elem->next && (elem->next->type != PIPE && elem->next->type != REDIR_IN && elem->next->type != REDIR_OUT 
-		&& elem->next->type != REDIR_HD && elem->next->type != REDIR_AP))
+	else if (elem->next && (elem->next->type != PIPE
+			&& elem->next->type != REDIR_IN
+			&& elem->next->type != REDIR_OUT
+			&& elem->next->type != REDIR_HD
+			&& elem->next->type != REDIR_AP))
 		elem->next->type = IN_ARG;
 }
 

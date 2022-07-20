@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/20 12:10:27 by abuzdin          ###   ########.fr       */
+/*   Created: 2022/07/20 14:41:09 by mthiry            #+#    #+#             */
+/*   Updated: 2022/07/20 14:43:51 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@ int	get_size_cmd(t_node	*args)
 	i = 0;
 	while (args && args->type != PIPE)
 	{
-		if (args->type != WSPACE && args->type != QUOTE && args->type != QUOTE_D)
+		if (args->type != WSPACE
+			&& args->type != QUOTE && args->type != QUOTE_D)
 		{
 			if (!is_between_d_quote(args) || !is_between_quote(args))
 			{
-				if (args->prev && (args->prev->type == QUOTE || args->prev->type == QUOTE_D))
+				if (args->prev && (args->prev->type == QUOTE
+						|| args->prev->type == QUOTE_D))
 					i++;
 			}
 			else
@@ -46,7 +48,7 @@ char	**init_cmd(t_node *args, t_input *data)
 	int		size;
 	int		i;
 	char	**str;
-	
+
 	size = get_size_cmd(args);
 	i = 0;
 	str = ms_malloc((size + 1) * sizeof(char *), data);
@@ -55,8 +57,9 @@ char	**init_cmd(t_node *args, t_input *data)
 		if (args->type != QUOTE_D && args->type != QUOTE)
 		{
 			if (args->type == WORD || args->type == ASTER
-				|| args->type == EXECUTABLE || args->type == ENV_VA || args->type == ENV_VA_BR
-				|| args->type == ENV_P || args->type == DOLLAR_VAR || args->type == SLASH)
+				|| args->type == EXECUTABLE || args->type == ENV_VA
+				|| args->type == ENV_VA_BR || args->type == ENV_P
+				|| args->type == DOLLAR_VAR || args->type == SLASH)
 			{
 				str[i] = ms_strdup(args->value, data);
 				i++;
