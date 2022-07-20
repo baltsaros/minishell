@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_simplification.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/20 14:37:35 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/20 14:53:33 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,12 +132,16 @@ int	token_simplification(t_input *data)
 	ms_token_print(data->args);
     if (quote_transformation(elem, data) == 1)
         return (1);
+	ms_token_print(data->args);
     if (general_simplification(elem, data) == 1)
         return (1);
+	ms_token_print(data->args);
     if (word_total_fusion(elem, data) == 1)
         return (1);
+	ms_token_print(data->args);
     if (word_quote_fusion(elem, data) == 1)
         return (1);
+	ms_token_print(data->args);
     if (delete_useless_wspace(elem, data) == 1)
         return (1);
     ms_token_print(data->args);

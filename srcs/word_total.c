@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   word_total.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:23:06 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/20 14:29:30 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/20 15:04:49 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,18 @@ int	fusion_with_prev_elem(t_node *elem, t_input *data)
 			&& elem->prev->type != REDIR_IN && elem->prev->type != REDIR_OUT
 			&& elem->prev->type != REDIR_HD && elem->prev->type != REDIR_AP))
 	{
-		str = ms_strdup(elem->value, data);
-		free(elem->value);
-		elem->value = ft_strjoin(elem->prev->value, str);
-		free(str);
-		ms_token_del(elem->prev);
+		if (!elem->prev->value)
+		{
+			ms_token_del(elem->prev);
+		}
+		else
+		{
+			str = ms_strdup(elem->value, data);
+			free(elem->value);
+			elem->value = ft_strjoin(elem->prev->value, str);
+			free(str);
+			ms_token_del(elem->prev);
+		}
 	}
 	return (0);
 }
@@ -39,8 +46,13 @@ int	fusion_with_next_elem(t_node *elem, t_input *data)
 			&& elem->next->type != REDIR_IN && elem->next->type != REDIR_OUT
 			&& elem->next->type != REDIR_HD && elem->next->type != REDIR_AP))
 	{
-		elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
-		ms_token_del(elem->next);
+		if (!elem->next->value)
+			ms_token_del(elem->next);
+		else
+		{
+			elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
+			ms_token_del(elem->next);
+		}
 	}
 	return (0);
 }
