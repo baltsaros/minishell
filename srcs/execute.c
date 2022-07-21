@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:25 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 22:55:29 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/21 14:28:57 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,22 +62,24 @@ void	ms_fork(char *argv[], t_input *data)
 {
 	int	fd[2];
 
-	error_check(dup2(data->cmds->in, STDIN_FILENO), "In dup2_inP ", 13, data);
 	error_check(pipe(fd), "In pipe ", 9, data);
 	data->pid = fork();
 	error_check(data->pid, "In fork ", 9, data);
 	if (data->pid == 0)
 	{
-		error_check(dup2(fd[1], STDOUT_FILENO), "In Dup2_ch ", 12, data);
+		if (data->cmds->in_arg)
+			error_check(dup2(data->cmds->in, STDIN_FILENO), "In dup2_inP ", 13, data);
+		if (data->cmds->out_arg)
+			error_check(dup2(data->cmds->out, STDOUT_FILENO), "In dup2_inP ", 13, data);
+		else
+			error_check(dup2(fd[1], STDOUT_FILENO), "In Dup2_ch ", 12, data);
+		close(fd[0]);
 		if (check_builtin(data, data->cmds))
 			exit(g_status);
 		else
-		{
-			close(fd[0]);
 			ms_execve(argv, data);
-		}
 	}
-	// waitpid(data->pid, NULL, 0);
+	close(data->cmds->in);
 	error_check(dup2(fd[0], STDIN_FILENO), "In Dup2_pr ", 12, data);
 	close(fd[1]);
 }
