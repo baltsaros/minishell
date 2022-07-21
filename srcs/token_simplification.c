@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/21 16:37:40 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/21 16:41:44 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ int	delete_useless_quote(t_node	*elem, t_input	*data)
 	(void)data;
 	while (elem)
 	{
-		if (elem->type == QUOTE_D)
+		if (elem->type == QUOTE_D || elem->type == QUOTE)
 			elem->type = 0;
 		if (!elem->next)
 			break ;
