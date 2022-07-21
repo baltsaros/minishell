@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:21 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/21 16:14:22 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/21 22:22:48 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ char	*ms_strjoin_free(char *rest, char *buf, t_input *data)
 
 	if (!rest || !buf)
 		return (0);
-	data->i = ft_strlen(rest) + ft_strlen(buf) + 1;
-	unis = ms_malloc(sizeof(*unis) * data->i, data);
+	data->j = ft_strlen(rest) + ft_strlen(buf) + 1;
+	unis = ms_malloc(sizeof(*unis) * data->j, data);
 	i = 0;
 	while (rest[i])
 	{

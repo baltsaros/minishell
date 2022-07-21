@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:39:14 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 12:27:52 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/21 21:42:19 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*ms_strndup(char const *str, size_t size, t_input *data)
 	char	*dest;
 	size_t	i;
 
-	dest = ms_malloc((sizeof(*dest) * (size + 1)), data);
+	dest = ms_malloc((sizeof(char) * (size + 1)), data);
 	i = 0;
 	while (str[i] && i < size)
 	{

@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:14 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 09:31:15 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/21 22:01:08 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	ms_envp_size(t_env *node)
 
 	if (!node)
 		return (0);
-	i = 1;
+	i = 0;
 	while (node->next)
 	{
 		++i;
