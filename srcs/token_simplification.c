@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/21 16:58:48 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/21 17:49:01 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,35 +173,62 @@ int	token_simplification(t_input *data)
 	t_node	*elem;
 
     elem = data->args;
-	// printf("1: ");
+	// printf("1 before everything: ");
 	// ms_token_print(data->args);
     if (quote_transformation(elem, data) == 1)
-        return (1);
-	// printf("2: ");
-	// ms_token_print(data->args);
-    if (general_simplification(elem, data) == 1)
-        return (1);
-	// printf("3: ");
-	// ms_token_print(data->args);
-    if (word_total_fusion(elem, data) == 1)
-        return (1);
-	// printf("4: ");
-	// ms_token_print(data->args);
-    if (word_quote_fusion(elem, data) == 1)
-        return (1);
-	// printf("5: ");
-	// ms_token_print(data->args);
-    if (delete_useless_wspace(elem, data) == 1)
-        return (1);
-	// printf("6: ");
-    // ms_token_print(data->args);
-	if (empty_when_only_quote(elem, data) == 1)
+    {
 		return (1);
-	// printf("7: ");
+	}
+
+	// printf("2 after quote transformation: ");
 	// ms_token_print(data->args);
-	// if (delete_useless_quote(elem, data) == 1)
-	// 	return (1);
-	// printf("8: ");
+
+    if (general_simplification(elem, data) == 1)
+    {
+		return (1);
+	}
+
+	// printf("3 general simplification: ");
+	// ms_token_print(data->args);
+
+    if (word_total_fusion(elem, data) == 1)
+    {
+		return (1);
+	}
+
+	// printf("4 word total fusion: ");
+	// ms_token_print(data->args);
+
+    if (word_quote_fusion(elem, data) == 1)
+    {
+		return (1);
+	}
+
+	// printf("5 word quote fusion: ");
+	// ms_token_print(data->args);
+
+    if (delete_useless_wspace(elem, data) == 1)
+	{
+		return (1);
+	}
+
+	// printf("6 after delete useless wspace: ");
+    // ms_token_print(data->args);
+
+	if (empty_when_only_quote(elem, data) == 1)
+	{
+		return (1);
+	}
+
+	// printf("7 after empty when only quote: ");
+	// ms_token_print(data->args);
+
+	if (delete_useless_quote(elem, data) == 1)
+	{
+		return (1);
+	}
+		
+	// printf("8 after delete useless quote: ");
 	// ms_token_print(data->args);
     return (0);
 }
