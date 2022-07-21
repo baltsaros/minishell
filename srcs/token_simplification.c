@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/20 20:17:54 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/21 16:37:40 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,8 +146,6 @@ int	delete_useless_quote(t_node	*elem, t_input	*data)
 	{
 		if (elem->type == QUOTE_D)
 			elem->type = 0;
-		if (elem->next && elem->next->type == QUOTE)
-			elem->type = 0;;
 		if (!elem->next)
 			break ;
 		elem = elem->next;
@@ -186,8 +184,8 @@ int	token_simplification(t_input *data)
 		return (1);
 	// printf("7: ");
 	// ms_token_print(data->args);
-	if (delete_useless_quote(elem, data) == 1)
-		return (1);
+	// if (delete_useless_quote(elem, data) == 1)
+	// 	return (1);
 	// printf("8: ");
 	// ms_token_print(data->args);
     return (0);
