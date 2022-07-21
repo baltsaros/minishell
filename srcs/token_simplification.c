@@ -6,20 +6,35 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/21 16:41:44 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/21 16:58:48 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+char	*ms_getenv(char *var, t_input *data)
+{
+	t_env	*tmp;
+	char	*str;
+
+	tmp = data->envp_n;
+	while (tmp && ft_strcmp(tmp->type, var))
+		tmp = tmp->next;
+	if (tmp)
+		str = tmp->value;
+	else
+		return (NULL);
+	return (str);
+}
+
 void	dollar_management(t_node *elem, t_input *data)
 {
 	elem = dollar_token_simplification(elem, data);
 	if (elem->type == ENV_VA)
-		elem->value = ms_strdup(getenv(elem->value + 1), data);
+		elem->value = ms_strdup(ms_getenv(elem->value + 1, data), data);
 	else if (elem->type == ENV_VA_BR)
 		elem->value = ms_strdup(
-				getenv(get_between_braces(elem, BRACES_L, BRACES_R)), data);
+				ms_getenv(get_between_braces(elem, BRACES_L, BRACES_R), data), data);
 	else if (elem->type == ENV_P)
 		elem->value = ms_strdup(get_between_braces(elem, BR_L, BR_R), data);
 	else if (elem->type == ENV_P_EM)
