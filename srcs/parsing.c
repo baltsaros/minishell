@@ -44,11 +44,14 @@ t_cmd	*fill_elem(t_node *args, t_cmd *elem, t_input *data)
 
 t_cmd	*init_elem(t_node *args, t_input *data)
 {
-	(void)args;
 	t_cmd	*elem;
 
 	elem = init_empty_elem(data);
+	if (!elem)
+		return (NULL);
 	elem = fill_elem(args, elem, data);
+	if (!elem)
+		return (NULL);
 	return (elem);
 }
 
@@ -59,18 +62,36 @@ t_cmd	*parse_cmd(t_input *data)
 	t_cmd	*new_con;
 	t_node	*tmp;
 
-	first_elem = init_elem(data->args, data);
-	arg = first_elem;
 	tmp = data->args;
 	while (tmp)
 	{
+		first_elem = init_elem(tmp, data);
+		if (first_elem)
+			break ;
+		if (!tmp->next)
+			break ;
 		tmp = next_elem(tmp);
-		if (!tmp || !tmp->next)
+		if (!tmp)
+			break ;
+	}
+	if (!first_elem)
+		return (NULL);
+	arg = first_elem;
+	tmp = next_elem(tmp);
+	while (tmp)
+	{
+		if (!tmp->next)
+			break ;
+		tmp = next_elem(tmp);
+		if (!tmp)
 			break ;
 		new_con = init_elem(tmp, data);
-		new_con->prev = arg;
-		arg->next = new_con;
-		arg = arg->next;
+		if (new_con)
+		{
+			new_con->prev = arg;
+			arg->next = new_con;
+			arg = arg->next;
+		}
 	}
 	return (first_elem);
 }
@@ -81,21 +102,21 @@ int	parsing(t_input *data)
 	if (!data->cmds)
 		return (1);
 
-	// t_cmd	*tmp;
-	// tmp = data->cmds;
-	// while (tmp)
-	// {
-	// 	for (int i = 0; tmp->cmd[i]; i++)
-	// 		printf("cmd[%d]: %s\n", i, tmp->cmd[i]);
-	// 	printf("len_cmd: %d\n", tmp->len_cmd);
-	// 	printf("delim: %s\n", tmp->delim);
-	// 	printf("in: %d\n", tmp->in);
-	// 	printf("in arg: %s\n", tmp->in_arg);
-	// 	printf("out: %d\n", tmp->out);
-	// 	printf("out arg: %s\n", tmp->out_arg);
-	// 	printf("pipe: %d\n", tmp->pipe);
-	// 	printf("[NEXT]\n");
-	// 	tmp = tmp->next;
-	// }
+	t_cmd	*tmp;
+	tmp = data->cmds;
+	while (tmp)
+	{
+		for (int i = 0; i != tmp->len_cmd; i++)
+			printf("cmd[%d]: %s\n", i, tmp->cmd[i]);
+		printf("len_cmd: %d\n", tmp->len_cmd);
+		printf("delim: %s\n", tmp->delim);
+		printf("in: %d\n", tmp->in);
+		printf("in arg: %s\n", tmp->in_arg);
+		printf("out: %d\n", tmp->out);
+		printf("out arg: %s\n", tmp->out_arg);
+		printf("pipe: %d\n", tmp->pipe);
+		printf("[NEXT]\n");
+		tmp = tmp->next;
+	}
 	return (0);
 }

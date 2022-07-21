@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   word_quote.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/20 14:21:45 by mthiry            #+#    #+#             */
+/*   Updated: 2022/07/20 16:56:58 by mthiry           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
-void	word_quote_fusion_3(t_node *elem, t_node *first, t_input *data, int type)
+void	word_quote_fusion_3(t_node *elem, t_node *first,
+		t_input *data, int type)
 {
 	while (elem && elem->type != type)
 	{
@@ -18,22 +31,22 @@ void	word_quote_fusion_3(t_node *elem, t_node *first, t_input *data, int type)
 
 void	word_quote_fusion_2(t_node *first, t_input *data, t_node *elem)
 {
-	char	*str;
+	// char	*str;
 
+	(void)data;
 	if (elem->prev && (elem->prev->type == WORD || elem->prev->type == ASTER))
 	{
-		str = ms_strdup(elem->value, data);
-		free(elem->value);
+		// str = ms_strdup(elem->value, data);
+		// free(elem->value);
 		if (elem->prev->type == ASTER)
 			first->type = ASTER;
 		first->value = ft_strjoin(elem->prev->value, first->value);
-		free(str);
-		// elem = ms_token_del(elem->prev);
+		// free(str);
 		elem->prev->type = 0;
 	}
 }
 
-int word_quote_fusion(t_node *elem, t_input *data)
+int	word_quote_fusion(t_node *elem, t_input *data)
 {
 	t_node	*first;
 	int		type;

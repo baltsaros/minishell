@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 12:18:31 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/21 15:47:16 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,15 @@ enum e_simplier_tokens
 {
 	ENV_VA		= 37,
 	ENV_VA_BR	= 38,
-	ENV_BR_EM	= 39,
+	ENV_BR_EM	= 134,
 	ENV_P		= 6,
 	ENV_P_EM	= 7,
 	DOLLAR_VAR	= 8,
 	ASTER_WORD	= 5,
 	IN_ARG		= 130,
 	OUT_ARG		= 131,
-	EXECUTABLE	= 132
+	EXECUTABLE	= 132,
+	EMPTY_ARG	= 133
 };
 
 // struct for tokens (+ wildcard) linked lists
@@ -245,12 +246,18 @@ t_cmd	*init_empty_elem(t_input *data);
 
 // parsing_utils
 t_node	*next_elem(t_node *args);
-int		init_in(t_node *args, t_cmd *elem, t_input *data);
-int		init_out(t_node *args, t_cmd *elem, t_input *data);
 int		get_len_cmd(char **str);
+int		redirection_in(t_node *args, t_cmd *elem, t_input *data);
+int		redirection_out(t_node *args, t_cmd *elem, t_input *data);
 int		redirection_check(t_node *args, t_cmd *elem, t_input *data);
 
 // parsing_utils_2
+int		get_size_cmd(t_node	*args);
+int		init_hd(t_node	*args, t_cmd	*elem, t_input *data);
+int		init_in(t_node *args, t_cmd *elem, t_input *data);
+int		init_out(t_node *args, t_cmd *elem, t_input *data);
+
+// parsing_utils_3
 char	**init_cmd(t_node *args, t_input *data);
 
 // readline functions

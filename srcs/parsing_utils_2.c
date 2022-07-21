@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/06 15:19:57 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/20 12:10:27 by abuzdin          ###   ########.fr       */
+/*   Created: 2022/07/20 14:41:09 by mthiry            #+#    #+#             */
+/*   Updated: 2022/07/21 15:46:55 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@ int	get_size_cmd(t_node	*args)
 	i = 0;
 	while (args && args->type != PIPE)
 	{
-		if (args->type != WSPACE && args->type != QUOTE && args->type != QUOTE_D)
+		if (args->type != WSPACE
+			&& args->type != QUOTE && args->type != QUOTE_D)
 		{
 			if (!is_between_d_quote(args) || !is_between_quote(args))
 			{
-				if (args->prev && (args->prev->type == QUOTE || args->prev->type == QUOTE_D))
+				if (args->prev && (args->prev->type == QUOTE
+						|| args->prev->type == QUOTE_D))
 					i++;
 			}
 			else
@@ -31,39 +33,75 @@ int	get_size_cmd(t_node	*args)
 		}
 		if (args->type == ENV_VA && args->prev && args->prev->type == ENV_VA)
 			i--;
-		if (args->type == IN_ARG || args->type == OUT_ARG)
-			i--;
-		if (args->type == DOLLAR || !args->value)
+		if (args->type == IN_ARG || args->type == OUT_ARG
+			|| args->type == DOLLAR || !args->value || args->type == 0)
 			i--;
 		args = args->next;
 	}
-	// printf("I: %d\n", i);
 	return (i);
 }
 
-char	**init_cmd(t_node *args, t_input *data)
+int	init_hd(t_node	*args, t_cmd	*elem, t_input *data)
 {
-	int		size;
-	int		i;
-	char	**str;
-	
-	size = get_size_cmd(args);
-	i = 0;
-	str = ms_malloc((size + 1) * sizeof(char *), data);
-	while (args && args->type != PIPE)
+	args = args->next;
+	elem->delim = ms_strdup(args->value, data);
+	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
+		error_check(-1, "in signals ", 11, data);
+	data->pid = fork();
+	error_check(data->pid, "In fork ", 9, data);
+	if (data->pid == 0)
+		ms_heredoc(elem->delim, elem, data);
+	elem->in_arg = ms_strdup("heredoc.tmp", data);
+	waitpid(data->pid, &g_status, 0);
+	if (WEXITSTATUS(g_status) == 130)
 	{
-		if (args->type != QUOTE_D && args->type != QUOTE)
-		{
-			if (args->type == WORD || args->type == ASTER
-				|| args->type == EXECUTABLE || args->type == ENV_VA || args->type == ENV_VA_BR
-				|| args->type == ENV_P || args->type == DOLLAR_VAR || args->type == SLASH)
-			{
-				str[i] = ms_strdup(args->value, data);
-				i++;
-			}
-		}
-		args = args->next;
+		unlink("heredoc.tmp");
+		return (1);
 	}
-	str[i] = NULL;
-	return (str);
+	elem->in = open("heredoc.tmp", O_RDONLY);
+	if (error_check_nofork(elem->in, "in parsing open ", 16, data))
+		return (1);
+	unlink("heredoc.tmp");
+	return (0);
+}
+
+int	init_in(t_node *args, t_cmd *elem, t_input *data)
+{
+	if (args->type == REDIR_HD)
+		return (init_hd(args, elem, data));
+	else if (args->type == REDIR_IN)
+	{
+		if (elem->in)
+			close(elem->in);
+		args = args->next;
+		elem->in_arg = ms_strdup(args->value, data);
+		elem->in = open(elem->in_arg, O_RDONLY);
+		if (error_check_nofork(elem->in, "in parsing open ", 16, data))
+			return (1);
+		return (0);
+	}
+	return (1);
+}
+
+int	init_out(t_node *args, t_cmd *elem, t_input *data)
+{
+	if (args->type == REDIR_AP)
+	{
+		args = args->next;
+		elem->out_arg = ms_strdup(args->value, data);
+		elem->out = open(elem->out_arg, O_WRONLY | O_CREAT | O_APPEND, 00644);
+		if (error_check_nofork(elem->out, "in parsing open ", 16, data))
+			return (1);
+		return (0);
+	}
+	else if (args->type == REDIR_OUT)
+	{
+		args = args->next;
+		elem->out_arg = ms_strdup(args->value, data);
+		elem->out = open(elem->out_arg, O_WRONLY | O_CREAT | O_TRUNC, 00644);
+		if (error_check_nofork(elem->out, "in parsing open ", 16, data))
+			return (1);
+		return (0);
+	}
+	return (1);
 }
