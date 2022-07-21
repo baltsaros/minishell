@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:08 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 09:32:09 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/21 16:42:31 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,13 @@ int	yo_unset(t_input *data)
 			remove_envp(data, data->cmds->cmd[i]);
 		++i;
 	}
+	i = 0;
+	while (data->envp[i])
+	{
+		printf("envp[%d] is %s\n", i, data->envp[i]);
+		++i;
+	}
+	ms_envp_print(data->envp_n);
 	g_status = 0;
 	return (0);
 }
