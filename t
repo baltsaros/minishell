@@ -1,1 +1,0 @@
-/Users/abuzdin/Downloads/abuzdin
