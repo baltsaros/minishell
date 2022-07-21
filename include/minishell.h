@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 15:57:57 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/21 15:47:16 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,12 +246,18 @@ t_cmd	*init_empty_elem(t_input *data);
 
 // parsing_utils
 t_node	*next_elem(t_node *args);
-int		init_in(t_node *args, t_cmd *elem, t_input *data);
-int		init_out(t_node *args, t_cmd *elem, t_input *data);
 int		get_len_cmd(char **str);
+int		redirection_in(t_node *args, t_cmd *elem, t_input *data);
+int		redirection_out(t_node *args, t_cmd *elem, t_input *data);
 int		redirection_check(t_node *args, t_cmd *elem, t_input *data);
 
 // parsing_utils_2
+int		get_size_cmd(t_node	*args);
+int		init_hd(t_node	*args, t_cmd	*elem, t_input *data);
+int		init_in(t_node *args, t_cmd *elem, t_input *data);
+int		init_out(t_node *args, t_cmd *elem, t_input *data);
+
+// parsing_utils_3
 char	**init_cmd(t_node *args, t_input *data);
 
 // readline functions

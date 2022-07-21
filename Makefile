@@ -18,6 +18,7 @@ SRC_FILES	= minishell.c \
 				ms_free.c \
 				parsing_utils.c \
 				parsing_utils_2.c \
+				parsing_utils_3.c \
 				check_input.c \
 				data_init.c \
 				tokenization.c \
