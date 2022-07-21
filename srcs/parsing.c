@@ -13,8 +13,6 @@ t_cmd	*parse_cmd(t_input *data)
 		first_elem = init_elem(tmp, data);
 		if (first_elem)
 			break ;
-		if (!tmp->next)
-			break ;
 		tmp = next_elem(tmp);
 	}
 	if (!first_elem)
