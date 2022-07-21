@@ -56,7 +56,7 @@ t_node	*next_elem(t_node *args)
 	while (next_elem)
 	{
 		if (!next_elem->next)
-			break ;
+			return (NULL);
 		next_elem = next_elem->next;
 		if (next_elem->prev && next_elem->prev->type == PIPE)
 			break ;

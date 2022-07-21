@@ -20,10 +20,11 @@ t_cmd	*parse_cmd(t_input *data)
 	if (!first_elem)
 		return (NULL);
 	arg = first_elem;
-	tmp = next_elem(tmp);
-	while (tmp && tmp->next)
+	while (tmp)
 	{
-		// printf("TMP: %s\n", tmp->next->value);
+		tmp = next_elem(tmp);
+		if (!tmp)
+			break ;
 		new_con = init_elem(tmp, data);
 		if (new_con)
 		{
@@ -31,7 +32,6 @@ t_cmd	*parse_cmd(t_input *data)
 			arg->next = new_con;
 			arg = arg->next;
 		}
-		tmp = next_elem(tmp);
 	}
 	return (first_elem);
 }
