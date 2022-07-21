@@ -18,7 +18,7 @@ char	**init_cmd(t_node *args, t_input *data)
 			if (args->type == WORD || args->type == ASTER
 				|| args->type == EXECUTABLE || args->type == ENV_VA
 				|| args->type == ENV_VA_BR || args->type == ENV_P
-				|| args->type == DOLLAR_VAR || args->type == SLASH)
+				|| args->type == DOLLAR_VAR || args->type == SLASH || args->type == EQUAL)
 				str[i++] = ms_strdup(args->value, data);
 			else if (args->type == EMPTY_ARG)
 				str[i++] = ms_strdup("\0", data);
