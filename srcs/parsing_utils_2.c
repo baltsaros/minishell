@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:41:09 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/21 15:46:55 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/21 21:05:45 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int	init_hd(t_node	*args, t_cmd	*elem, t_input *data)
 {
 	args = args->next;
 	elem->delim = ms_strdup(args->value, data);
+	if (!elem->delim)
+		return (print_syntax_error_bool(args));
 	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
 		error_check(-1, "in signals ", 11, data);
 	data->pid = fork();
