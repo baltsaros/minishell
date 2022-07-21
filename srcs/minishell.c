@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:38:28 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 17:10:42 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/20 18:56:53 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ void	prompt(t_input *data)
 			data_init(data);
 			token_simplification(data);
 			if (!parsing(data))
-				execute(data);
+			{
+				printf("Executed\n");
+				// execute(data);
+			}
 			ms_free_token(data->args);
 			ms_free_cmd(data->cmds);
 		}
