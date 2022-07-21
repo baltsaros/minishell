@@ -6,59 +6,11 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:18 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 09:30:19 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/21 16:18:36 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-char	*ms_strjoin_free(char *rest, char *buf, t_input *data)
-{
-	char	*unis;
-	size_t	i;
-	size_t	j;
-
-	if (!rest || !buf)
-		return (0);
-	data->i = ft_strlen(rest) + ft_strlen(buf) + 1;
-	unis = ms_malloc(sizeof(*unis) * data->i, data);
-	i = 0;
-	while (rest[i])
-	{
-		unis[i] = rest[i];
-		++i;
-	}
-	j = 0;
-	while (buf[j])
-	{
-		unis[i + j] = buf[j];
-		++j;
-	}
-	unis[j + i] = '\0';
-	free(rest);
-	return (unis);
-}
-
-char	*ms_charjoin_free(char *line, char b, t_input *data)
-{
-	size_t	i;
-	char	*unis;
-
-	i = 0;
-	while (line[i])
-		++i;
-	unis = ms_malloc(sizeof(*unis) * (i + 2), data);
-	i = 0;
-	while (line[i])
-	{
-		unis[i] = line[i];
-		++i;
-	}
-	unis[i] = b;
-	unis[i + 1] = 0;
-	free(line);
-	return (unis);
-}
 
 char	**get_address(char *cmd[], char *envp[], t_input *data)
 {
@@ -110,23 +62,27 @@ char	*access_check(char *cmd[], t_input *data)
 
 void	ms_execve(char **argv, t_input *data)
 {
-	char	*path;
-
-	if (!argv || !argv[0])
+	if (argv[0][0] == '/')
 	{
-		write(2, "YAMSP: parse error\n", 19);
-		exit(1);
+		data->i = ft_strlen(argv[0]);
+		data->j = data->i;
+		while (argv[0][data->i] != '/')
+			data->i--;
+		data->value = ms_strndup(argv[0] + data->i, data->j - data->i, data);
+		data->tmp = argv[0];
+		argv[0] = data->value;
 	}
-	if (!ft_strncmp(argv[0], "./minishell", 12))
-		increase_shlvl(data);
-	path = access_check(argv, data);
-	g_status = 0;
-	if (execve(path, argv, data->envp) < 0)
+	else
 	{
-		write(2, "YAMSP: ", 7);
-		perror("execve error");
-		g_status = errno;
-		free(path);
-		exit(g_status);
+		if (!ft_strncmp(argv[0], "./minishell", 12))
+			increase_shlvl(data);
+		data->tmp = access_check(argv, data);
+		g_status = 0;
 	}
+	execve(data->tmp, argv, data->envp);
+	free(data->tmp);
+	write(2, "YAMSP: ", 7);
+	perror("execve error");
+	g_status = errno;
+	exit(g_status);
 }
