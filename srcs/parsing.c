@@ -77,6 +77,7 @@ t_cmd	*parse_cmd(t_input *data)
 	if (!first_elem)
 		return (NULL);
 	arg = first_elem;
+	tmp = next_elem(tmp);
 	while (tmp)
 	{
 		if (!tmp->next)
