@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:30:01 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/22 14:01:29 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/22 14:19:09 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,23 +53,16 @@ char	*ms_getenv(char *var, t_input *data)
 	return (str);
 }
 
-int	delete_useless_wspace(t_node *elem, t_input *data)
+int	delete_useless_wspace(t_node *elem)
 {
-	int	type;
-
 	while (elem)
 	{
 		while (elem->next && elem->type == WSPACE)
+			elem = delete_node(elem);
+		if (!elem->next && elem->type == WSPACE)
 		{
-			data->node_tmp = elem;
-			elem = elem->next;
-			ms_token_del(data->node_tmp);
-		}
-		if (elem && (elem->type == QUOTE || elem->type == QUOTE_D))
-		{
-			type = elem->type;
-			elem = elem->next;
-			is_between_quote(elem, type);
+			elem = ms_token_del(elem);
+			return (0);
 		}
 		elem = elem->next;
 	}

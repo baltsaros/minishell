@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/22 14:03:37 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/22 14:19:22 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	token_simplification(t_input *data)
 		return (1);
 	printf("5 general simplification: ");
 	ms_token_print(data->args);
-	if (delete_useless_wspace(elem, data) == 1)
+	if (delete_useless_wspace(elem) == 1)
 		return (1);
 	printf("6 after delete useless wspace: ");
     ms_token_print(data->args);

@@ -12,7 +12,7 @@
 
 #include "../include/minishell.h"
 
-static t_node	*delete_node(t_node *elem)
+t_node	*delete_node(t_node *elem)
 {
 	t_node	*tmp;
 

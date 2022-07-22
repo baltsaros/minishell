@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/22 14:02:32 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/22 14:19:17 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,6 +275,7 @@ int		token_simplification(t_input *data);
 
 // quote transformation
 int		quote_transformation(t_node *elem, t_input *data);
+t_node	*delete_node(t_node *elem);
 
 // token simplification utils
 int		is_between_quote(t_node *args, int type);
@@ -284,7 +285,7 @@ void	dollar_management(t_node *elem, t_input *data);
 int		expanding_variables(t_node *elem, t_input *data);
 
 // token simplification utils 2
-int		delete_useless_wspace(t_node *elem, t_input *data);
+int		delete_useless_wspace(t_node *elem);
 char	*ms_getenv(char *var, t_input *data);
 int		is_between_p(t_node	*args);
 
