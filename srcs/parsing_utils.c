@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 14:22:06 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/22 14:22:07 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/22 15:37:48 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	redirection_in(t_node *args, t_cmd *elem, t_input *data)
 {
 	if (!args->next || is_the_next_is_in_arg(args) == 1)
-		return (print_syntax_error_bool(args));
+		return (print_syntax_error_bool(args, data));
 	if (args->next && args->next->type == IN_ARG)
 	{
 		if (init_in(args, elem, data) == 1)
@@ -28,14 +28,14 @@ int	redirection_in(t_node *args, t_cmd *elem, t_input *data)
 			return (1);
 	}
 	else
-		return (print_syntax_error_bool(args));
+		return (print_syntax_error_bool(args, data));
 	return (0);
 }
 
 int	redirection_out(t_node *args, t_cmd *elem, t_input *data)
 {
 	if (!args->next || is_the_next_is_out_arg(args) == 1)
-		return (print_syntax_error_bool(args));
+		return (print_syntax_error_bool(args, data));
 	if (args->next && args->next->type == OUT_ARG)
 	{
 		if (init_out(args, elem, data) == 1)
@@ -47,7 +47,7 @@ int	redirection_out(t_node *args, t_cmd *elem, t_input *data)
 			return (1);
 	}
 	else
-		return (print_syntax_error_bool(args));
+		return (print_syntax_error_bool(args, data));
 	return (0);
 }
 

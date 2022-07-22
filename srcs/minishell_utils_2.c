@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:39:17 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/21 22:13:46 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/22 12:59:03 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	ms_free_node_elems(t_env *tmp)
 	free(tmp);
 }
 
-int	error_check_nofork(int input, char *str, int n, t_input *data)
+int	error_check_noexit(int input, char *str, int n, t_input *data)
 {
 	(void)data;
 	if (input < 0)

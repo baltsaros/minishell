@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/22 14:19:17 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/22 15:35:46 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ typedef struct s_input
 	t_node				*args;
 	t_cmd				*cmds;
 	char				*buf;
+	int					exec;
 	struct s_builtin	*builtins;
 	DIR					*dir;
 	pid_t				pid;
@@ -170,7 +171,7 @@ void	ms_free_all(t_input *data);
 // utils
 char	*ms_strndup(char const *str, size_t size, t_input *data);
 int		error_check(int input, char *str, int n, t_input *data);
-int		error_check_nofork(int input, char *str, int n, t_input *data);
+int		error_check_noexit(int input, char *str, int n, t_input *data);
 int		ft_strstr(char *str, char *to_find);
 int		check_charset(char c, char *charset);
 void	increase_shlvl(t_input *data);
@@ -182,7 +183,7 @@ char	*ms_strdup(const char *s, t_input *data);
 void	prompt(t_input *data);
 
 // check_input
-void	check_field(t_input *data, char *str);
+int		check_field(t_input *data, char *str);
 int		is_right_buf(char *buf);
 
 // data_init
@@ -233,8 +234,8 @@ void	asterisks(t_input *data, t_node *ast);
 //syntax checker
 int		is_the_next_is_in_arg(t_node *args);
 int		is_the_next_is_out_arg(t_node *args);
-t_cmd	*print_syntax_error_cmd(t_node *args);
-int		print_syntax_error_bool(t_node *args);
+t_cmd	*print_syntax_error_cmd(t_node *args, t_input *data);
+int		print_syntax_error_bool(t_node *args, t_input *data);
 int		is_the_next_is_right_type(t_node *args);
 
 // parsing

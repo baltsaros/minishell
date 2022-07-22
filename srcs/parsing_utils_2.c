@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:41:09 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/22 12:37:27 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/22 15:43:53 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,16 @@ int	get_size_cmd(t_node	*args)
 
 int	init_hd(t_node	*args, t_cmd	*elem, t_input *data)
 {
+	printf("heredoc\n");
 	args = args->next;
 	elem->delim = ms_strdup(args->value, data);
 	if (!elem->delim)
-		return (print_syntax_error_bool(args));
+		return (print_syntax_error_bool(args, data));
 	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
 		error_check(-1, "in signals ", 11, data);
 	data->pid = fork();
-	error_check(data->pid, "In fork ", 9, data);
+	if (error_check_noexit(data->pid, "In fork hd ", 11, data))
+		return (1);
 	if (data->pid == 0)
 		ms_heredoc(elem->delim, elem, data);
 	elem->in_arg = ms_strdup("heredoc.tmp", data);
@@ -59,7 +61,7 @@ int	init_hd(t_node	*args, t_cmd	*elem, t_input *data)
 		return (1);
 	}
 	elem->in = open("heredoc.tmp", O_RDONLY);
-	if (error_check_nofork(elem->in, "in parsing open ", 16, data))
+	if (error_check_noexit(elem->in, "in parsing open ", 16, data))
 		return (1);
 	unlink("heredoc.tmp");
 	return (0);
@@ -76,7 +78,7 @@ int	init_in(t_node *args, t_cmd *elem, t_input *data)
 		args = args->next;
 		elem->in_arg = ms_strdup(args->value, data);
 		elem->in = open(elem->in_arg, O_RDONLY);
-		if (error_check_nofork(elem->in, "in parsing open ", 16, data))
+		if (error_check_noexit(elem->in, "in parsing open ", 16, data))
 			return (1);
 		return (0);
 	}
@@ -90,7 +92,7 @@ int	init_out(t_node *args, t_cmd *elem, t_input *data)
 		args = args->next;
 		elem->out_arg = ms_strdup(args->value, data);
 		elem->out = open(elem->out_arg, O_WRONLY | O_CREAT | O_APPEND, 00644);
-		if (error_check_nofork(elem->out, "in parsing open ", 16, data))
+		if (error_check_noexit(elem->out, "in parsing open ", 16, data))
 			return (1);
 		return (0);
 	}
@@ -99,7 +101,7 @@ int	init_out(t_node *args, t_cmd *elem, t_input *data)
 		args = args->next;
 		elem->out_arg = ms_strdup(args->value, data);
 		elem->out = open(elem->out_arg, O_WRONLY | O_CREAT | O_TRUNC, 00644);
-		if (error_check_nofork(elem->out, "in parsing open ", 16, data))
+		if (error_check_noexit(elem->out, "in parsing open ", 16, data))
 			return (1);
 		return (0);
 	}

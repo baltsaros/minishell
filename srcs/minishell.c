@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:38:28 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/22 14:55:52 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/22 16:31:07 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,15 @@ void	prompt(t_input *data)
 		else if (is_right_buf(data->buf) != 1)
 		{
 			add_history(data->buf);
-			check_field(data, data->buf);
-			data_init(data);
-			token_simplification(data);
-			if (!parsing(data))
-			// 	execute(data);
-			ms_free_token(data->args);
-			// ms_free_cmd(data->cmds);
+			if (!check_field(data, data->buf))
+			{
+				data_init(data);
+				token_simplification(data);
+				if (!parsing(data))
+					execute(data);
+				ms_free_token(data->args);
+				ms_free_cmd(data->cmds);
+			}
 		}
 		free(data->buf);
 	}

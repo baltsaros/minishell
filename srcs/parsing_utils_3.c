@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils_3.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 14:22:15 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/22 14:29:11 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/22 16:30:57 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ t_cmd	*fill_elem(t_node *args, t_cmd *elem, t_input *data)
 		if (args->next && args->next->type == PIPE)
 		{
 			if (!args->next->next || is_the_next_is_right_type(args->next) == 1)
-				return (print_syntax_error_cmd(args->next));
+				return (print_syntax_error_cmd(args->next, data));
 			elem->pipe = 1;
 		}
 		args = args->next;

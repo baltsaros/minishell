@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:29:59 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/22 09:49:07 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/22 15:14:14 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static int	read_after(char **buf, char *msg, char c, t_input *data)
 
 static int	before_pipe(char *str, int i)
 {
+	printf("before pipe\n");
 	if (!str[i])
 	{
 		write(2, "YAMSP: ", 7);
@@ -71,7 +72,7 @@ static int	before_pipe(char *str, int i)
 	return (0);
 }
 
-void	check_field(t_input *data, char *str)
+int	check_field(t_input *data, char *str)
 {
 	int	type;
 
@@ -95,9 +96,10 @@ void	check_field(t_input *data, char *str)
 	if (str[data->i - 1] == '|')
 	{
 		if (before_pipe(str, data->i - 2))
-			return ;
+			return (1);
 		check_pipe(&data->buf, "> ", '|', data);
 	}
+	return (0);
 }
 
 int	is_right_buf(char *buf)
