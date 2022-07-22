@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/22 13:42:41 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/22 13:44:55 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,6 +277,7 @@ int		token_simplification(t_input *data);
 int		quote_transformation(t_node *elem, t_input *data);
 
 // token simplification utils
+int		is_between_quote(t_node *args, int type);
 int		get_braces_size(t_node *elem, int type1, int type2);
 char	*get_between_braces(t_node *elem, int type1, int type2);
 
