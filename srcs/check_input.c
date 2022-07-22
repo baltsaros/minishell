@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:29:59 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 09:30:00 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/22 09:49:07 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,30 @@ static int	read_after(char **buf, char *msg, char c, t_input *data)
 	return (0);
 }
 
+static int	before_pipe(char *str, int i)
+{
+	if (!str[i])
+	{
+		write(2, "YAMSP: ", 7);
+		write(2, "syntax error near unexpected token `|'\n", 39);
+		g_status = 258;
+		return (1);
+	}
+	while (check_charset(str[i], " \f\n\r\t\v"))
+		--i;
+	if (str[i] && check_charset(str[i], "><"))
+	{
+		write(2, "YAMSP: ", 7);
+		write(2, "syntax error near unexpected token `|'\n", 39);
+		g_status = 258;
+		return (1);
+	}
+	return (0);
+}
+
 void	check_field(t_input *data, char *str)
 {
-	int		type;
+	int	type;
 
 	type = 0;
 	data->i = 0;
@@ -72,7 +93,11 @@ void	check_field(t_input *data, char *str)
 		data->i++;
 	}
 	if (str[data->i - 1] == '|')
+	{
+		if (before_pipe(str, data->i - 2))
+			return ;
 		check_pipe(&data->buf, "> ", '|', data);
+	}
 }
 
 int	is_right_buf(char *buf)
