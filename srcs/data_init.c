@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:05 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 09:45:52 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/22 09:29:24 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ void	envp_init(t_input *data, char *envp[])
 	data->builtins = builtins;
 	create_envp(data, data->envp);
 }
-
 
 void	data_init(t_input *data)
 {

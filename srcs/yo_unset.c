@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:08 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/21 22:32:49 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/22 09:26:45 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	remove_envp(t_input *data, char *type)
 		size++;
 	tmp = ms_malloc(sizeof(*tmp) * size, data);
 	while (data->envp[data->i] && ft_strncmp(data->envp[data->i],
-		type, ft_strlen(type)))
+			type, ft_strlen(type)))
 	{
 		tmp[data->i] = ms_strdup(data->envp[data->i], data);
 		data->i++;
