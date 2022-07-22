@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 14:47:50 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/22 14:55:35 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/22 15:03:01 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ t_cmd	*parse_cmd(t_input *data)
 {
 	t_cmd	*first_elem;
 	t_cmd	*arg;
-	// t_cmd	*new_con;
 	t_node	*tmp;
 
 	tmp = data->args;
@@ -50,19 +49,6 @@ t_cmd	*parse_cmd(t_input *data)
 		return (NULL);
 	arg = first_elem;
 	init_all(tmp, arg, data);
-	//while (tmp)
-	//{
-	//	tmp = next_elem(tmp);
-	//	if (!tmp)
-	///		break ;
-	//	new_con = init_elem(tmp, data);
-	//	if (new_con)
-	//	{
-	//		new_con->prev = arg;
-	//		arg->next = new_con;
-	//		arg = arg->next;
-	//	}
-	//}
 	return (first_elem);
 }
 
