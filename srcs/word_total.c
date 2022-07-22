@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:23:06 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/20 16:09:34 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/22 13:04:01 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,7 @@ int	fusion_with_prev_elem(t_node *elem, t_input *data)
 			&& elem->prev->type != REDIR_HD && elem->prev->type != REDIR_AP))
 	{
 		if (!elem->prev->value)
-		{
 			ms_token_del(elem->prev);
-		}
 		else
 		{
 			str = ms_strdup(elem->value, data);

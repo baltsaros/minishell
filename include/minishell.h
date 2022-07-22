@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/22 12:24:09 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/22 13:29:20 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,9 +292,6 @@ void	dollar_braces(t_node *elem, t_input *data);
 void	dollar_p_2(t_node *elem, t_input *data);
 void	dollar_p(t_node *elem, t_input *data);
 t_node	*dollar_token_simplification(t_node *elem, t_input *data);
-
-// word quote
-int		word_quote_fusion(t_node *elem, t_input *data);
 
 // word total
 int		word_total_fusion(t_node *elem, t_input *data);

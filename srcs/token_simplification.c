@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_simplification.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/22 12:04:32 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/22 13:28:58 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,6 @@ char	*ms_getenv(char *var, t_input *data)
 	else
 		return (NULL);
 	return (str);
-}
-
-void	dollar_management(t_node *elem, t_input *data)
-{
-	elem = dollar_token_simplification(elem, data);
-	if (elem->type == ENV_VA)
-		elem->value = ms_strdup(ms_getenv(elem->value + 1, data), data);
-	else if (elem->type == ENV_VA_BR)
-		elem->value = ms_strdup(
-				ms_getenv(get_between_braces(elem, BRACES_L, BRACES_R), data), data);
-	else if (elem->type == ENV_P)
-		elem->value = ms_strdup(get_between_braces(elem, BR_L, BR_R), data);
-	else if (elem->type == ENV_P_EM)
-	{
-		elem->type = 0;
-		free(elem->value);
-		elem->value = ms_strdup(NULL, data);
-	}
 }
 
 void	out_arg_management(t_node *elem)
@@ -117,11 +99,7 @@ int	general_simplification(t_node *elem, t_input *data)
 	{
 		if (!elem->next)
 			break ;
-		if (elem->type == DOLLAR)
-			dollar_management(elem, data);
-		else if (!is_between_p(elem))
-			elem->type = WORD;
-		else if (elem->type == WORD && !ft_strncmp(elem->value, ".", 2))
+		if (elem->type == WORD && !ft_strncmp(elem->value, ".", 2))
 			elem = executable_token_simplification(elem, data);
 		else if (elem->type == REDIR_OUT || elem->type == REDIR_AP)
 			out_arg_management(elem);
@@ -132,9 +110,8 @@ int	general_simplification(t_node *elem, t_input *data)
 	return (0);
 }
 
-int	empty_when_only_quote(t_node	*elem, t_input	*data)
+int	empty_when_only_quote(t_node	*elem)
 {
-	(void)data;
 	while (elem)
 	{
 		if (!elem->next)
@@ -154,13 +131,32 @@ int	empty_when_only_quote(t_node	*elem, t_input	*data)
 	return (0);
 }
 
-int	delete_useless_quote(t_node	*elem, t_input	*data)
+void	dollar_management(t_node *elem, t_input *data)
 {
-	(void)data;
+	elem = dollar_token_simplification(elem, data);
+	if (elem->type == ENV_VA)
+		elem->value = ms_strdup(ms_getenv(elem->value + 1, data), data);
+	else if (elem->type == ENV_VA_BR)
+		elem->value = ms_strdup(
+			ms_getenv(get_between_braces(elem, BRACES_L, BRACES_R), data), data);
+	else if (elem->type == ENV_P)
+		elem->value = ms_strdup(get_between_braces(elem, BR_L, BR_R), data);
+	else if (elem->type == ENV_P_EM)
+	{
+		elem->type = 0;
+		free(elem->value);
+		elem->value = ms_strdup(NULL, data);
+	}
+}
+
+int	expanding_variables(t_node *elem, t_input *data)
+{
 	while (elem)
 	{
-		if (elem->type == QUOTE_D || elem->type == QUOTE)
-			elem->type = 0;
+		if (!is_between_p(elem))
+			elem->type = WORD;
+		if (elem->type == DOLLAR)
+			dollar_management(elem, data);
 		if (!elem->next)
 			break ;
 		elem = elem->next;
@@ -173,61 +169,32 @@ int	token_simplification(t_input *data)
 	t_node	*elem;
 
     elem = data->args;
-	// printf("1 before everything: ");
-	// ms_token_print(data->args);
-    if (quote_transformation(elem, data) == 1)
-    {
-		return (1);
-	}
-	// printf("2 after quote transformation: ");
+	printf("1 before everything: ");
 	ms_token_print(data->args);
-
-    // if (general_simplification(elem, data) == 1)
-    // {
+	if (expanding_variables(elem, data) == 1)
+		return (1);
+	printf("2 expanding variables: ");
+	ms_token_print(data->args);
+	if (quote_transformation(elem, data) == 1)
+		return (1);
+	printf("3 quote transformation: ");
+	ms_token_print(data->args);
+    if (general_simplification(elem, data) == 1)
+		return (1);
+	printf("4 general simplification: ");
+	ms_token_print(data->args);
+	if (word_total_fusion(elem, data) == 1)
+ 		return (1);
+	printf("5 word total fusion: ");
+	ms_token_print(data->args);
+	
+	// if (delete_useless_wspace(elem, data) == 1)
 	// 	return (1);
-	// }
-
-// 	// printf("3 general simplification: ");
-// 	// ms_token_print(data->args);
-
-//     if (word_total_fusion(elem, data) == 1)
-//     {
-// 		return (1);
-// 	}
-
-// 	// printf("4 word total fusion: ");
-// 	// ms_token_print(data->args);
-
-//     if (word_quote_fusion(elem, data) == 1)
-//     {
-// 		return (1);
-// 	}
-
-// 	// printf("5 word quote fusion: ");
-// 	// ms_token_print(data->args);
-
-//     if (delete_useless_wspace(elem, data) == 1)
-// 	{
-// 		return (1);
-// 	}
-
-// 	// printf("6 after delete useless wspace: ");
-//     // ms_token_print(data->args);
-
-// 	if (empty_when_only_quote(elem, data) == 1)
-// 	{
-// 		return (1);
-// 	}
-
-// 	// printf("7 after empty when only quote: ");
-// 	// ms_token_print(data->args);
-
-// 	if (delete_useless_quote(elem, data) == 1)
-// 	{
-// 		return (1);
-// 	}
-		
-// 	// printf("8 after delete useless quote: ");
-// 	// ms_token_print(data->args);
+	// printf("7 after delete useless wspace: ");
+    // ms_token_print(data->args);
+	// if (empty_when_only_quote(elem) == 1)
+	// 	return (1);
+	// printf("8 after empty when only quote: ");
+	// ms_token_print(data->args);
     return (0);
 }
