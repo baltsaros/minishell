@@ -27,6 +27,16 @@ static t_node	*delete_node(t_node *elem)
 	return (elem);
 }
 
+t_node	*fuse_next_elem(t_node *elem, t_node *tmp, t_input *data)
+{
+	tmp = elem;
+	elem = elem->prev->prev;
+	elem->value = ms_strjoin_free(elem->value, tmp->value, data);
+	tmp = delete_node(tmp);
+	elem = elem->next->next;
+	return (elem);
+}
+
 t_node	*fuse_between_quotes(t_node *elem, t_input *data, int type)
 {
 	t_node	*tmp;
@@ -47,6 +57,8 @@ t_node	*fuse_between_quotes(t_node *elem, t_input *data, int type)
 	}
 	if (tmp && tmp->type == type)
 		elem = tmp->next;
+	if (elem->type == WORD || elem->type == SLASH)
+		elem = fuse_next_elem(elem, tmp, data);
 	return (elem);
 }
 
@@ -84,6 +96,8 @@ int	quote_transformation(t_node *elem, t_input *data)
 			if (elem->prev && (elem->prev->type == WORD || elem->prev->type == SLASH))
 				fuse_prev_elem(elem, data, elem->type);
 			elem = fuse_between_quotes(elem, data, elem->type);
+			if (!elem->next)
+				break ;
 		}
 		else
 			elem = elem->next;

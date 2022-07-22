@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/22 13:28:58 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/22 13:43:09 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,14 +93,14 @@ int	is_between_p(t_node	*args)
 	return (1);
 }
 
-int	general_simplification(t_node *elem, t_input *data)
+int	general_simplification(t_node *elem)
 {
 	while (elem)
 	{
 		if (!elem->next)
 			break ;
-		if (elem->type == WORD && !ft_strncmp(elem->value, ".", 2))
-			elem = executable_token_simplification(elem, data);
+		if (elem->type == WORD && !ft_strncmp(elem->value, "./", 2))
+			elem->type = EXECUTABLE;
 		else if (elem->type == REDIR_OUT || elem->type == REDIR_AP)
 			out_arg_management(elem);
 		else if (elem->type == REDIR_IN || elem->type == REDIR_HD)
@@ -175,17 +175,17 @@ int	token_simplification(t_input *data)
 		return (1);
 	printf("2 expanding variables: ");
 	ms_token_print(data->args);
-	if (quote_transformation(elem, data) == 1)
-		return (1);
-	printf("3 quote transformation: ");
-	ms_token_print(data->args);
-    if (general_simplification(elem, data) == 1)
-		return (1);
-	printf("4 general simplification: ");
-	ms_token_print(data->args);
 	if (word_total_fusion(elem, data) == 1)
  		return (1);
-	printf("5 word total fusion: ");
+	printf("3 word total fusion: ");
+	ms_token_print(data->args);
+	if (quote_transformation(elem, data) == 1)
+		return (1);
+	printf("4 quote transformation: ");
+	ms_token_print(data->args);
+    if (general_simplification(elem) == 1)
+		return (1);
+	printf("5 general simplification: ");
 	ms_token_print(data->args);
 	
 	// if (delete_useless_wspace(elem, data) == 1)
