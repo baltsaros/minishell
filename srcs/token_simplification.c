@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/22 16:30:53 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/22 16:37:26 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ int	token_simplification(t_input *data)
 	// ms_token_print(data->args);
 	if (quote_transformation(elem, data) == 1)
 		return (1);
-	// printf("4 quote transformation: ");
-	// ms_token_print(data->args);
+	printf("4 quote transformation: ");
+	ms_token_print(data->args);
     if (general_simplification(elem) == 1)
 		return (1);
 	// printf("5 general simplification: ");
