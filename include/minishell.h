@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/22 13:44:55 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/22 14:02:32 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,9 +280,13 @@ int		quote_transformation(t_node *elem, t_input *data);
 int		is_between_quote(t_node *args, int type);
 int		get_braces_size(t_node *elem, int type1, int type2);
 char	*get_between_braces(t_node *elem, int type1, int type2);
+void	dollar_management(t_node *elem, t_input *data);
+int		expanding_variables(t_node *elem, t_input *data);
 
 // token simplification utils 2
 int		delete_useless_wspace(t_node *elem, t_input *data);
+char	*ms_getenv(char *var, t_input *data);
+int		is_between_p(t_node	*args);
 
 // dollar simplification braces
 void	dollar_braces_2(t_node *elem, t_input *data);
