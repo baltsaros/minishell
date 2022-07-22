@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/22 14:02:34 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/22 14:03:37 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,24 +67,6 @@ int	general_simplification(t_node *elem)
 		elem = elem->next;
 	}
 	return (0);
-}
-
-void	dollar_management(t_node *elem, t_input *data)
-{
-	elem = dollar_token_simplification(elem, data);
-	if (elem->type == ENV_VA)
-		elem->value = ms_strdup(ms_getenv(elem->value + 1, data), data);
-	else if (elem->type == ENV_VA_BR)
-		elem->value = ms_strdup(
-			ms_getenv(get_between_braces(elem, BRACES_L, BRACES_R), data), data);
-	else if (elem->type == ENV_P)
-		elem->value = ms_strdup(get_between_braces(elem, BR_L, BR_R), data);
-	else if (elem->type == ENV_P_EM)
-	{
-		elem->type = 0;
-		free(elem->value);
-		elem->value = ms_strdup(NULL, data);
-	}
 }
 
 int	token_simplification(t_input *data)
