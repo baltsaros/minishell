@@ -92,12 +92,8 @@ int	quote_transformation(t_node *elem, t_input *data)
 	{
 		if (!elem->next)
 			break ;
-		if (elem->type == QUOTE_D && elem->next && elem->next->type == QUOTE_D)
-		{
-			elem->type = EMPTY_ARG;
-			ms_token_del(elem->next);
-		}
-		if (elem->type == QUOTE && elem->next && elem->next->type == QUOTE)
+		if ((elem->type == QUOTE_D && elem->next && elem->next->type == QUOTE_D) 
+			|| (elem->type == QUOTE && elem->next && elem->next->type == QUOTE))
 		{
 			elem->type = EMPTY_ARG;
 			ms_token_del(elem->next);
