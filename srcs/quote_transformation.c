@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote_transformation.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:39:24 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/22 14:28:07 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/22 16:29:43 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,28 @@ t_node	*delete_node(t_node *elem)
 		return (elem);
 	tmp = elem;
 	elem = elem->next;
-	elem->prev = tmp->prev;
-	elem->prev->next = elem;
-	free(tmp->value);
-	free(tmp);
+	if (!tmp->prev)
+	{
+		elem->prev = NULL;
+	}
+	else
+	{
+		elem->prev = tmp->prev;
+	}
+	if (elem->prev)
+	{
+		elem->prev->next = elem;
+	}
+	// free(tmp->value);
+	// free(tmp);
 	return (elem);
 }
 
 t_node	*fuse_next_elem(t_node *elem, t_node *tmp, t_input *data)
 {
 	tmp = elem;
+	if (!elem->prev->prev)
+		return (elem);
 	elem = elem->prev->prev;
 	elem->value = ms_strjoin_free(elem->value, tmp->value, data);
 	elem = ms_token_del(tmp);
@@ -58,7 +70,7 @@ t_node	*fuse_between_quotes(t_node *elem, t_input *data, int type)
 	}
 	if (tmp && tmp->type == type)
 		elem = tmp->next;
-	if (elem->type == WORD || elem->type == SLASH)
+	if (elem && (elem->type == WORD || elem->type == SLASH))
 		elem = fuse_next_elem(elem, tmp, data);
 	return (elem);
 }
@@ -98,13 +110,13 @@ int	quote_transformation(t_node *elem, t_input *data)
 			elem->type = EMPTY_ARG;
 			ms_token_del(elem->next);
 		}
-		if (elem->type == QUOTE_D || elem->type == QUOTE)
+		else if (elem->type == QUOTE_D || elem->type == QUOTE)
 		{
 			if (elem->prev && (elem->prev->type == WORD
 					|| elem->prev->type == SLASH))
 				fuse_prev_elem(elem, data, elem->type);
 			elem = fuse_between_quotes(elem, data, elem->type);
-			if (!elem->next)
+			if (!elem || !elem->next)
 				break ;
 		}
 		else
