@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:39:24 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/22 14:22:34 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/22 14:28:07 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ t_node	*delete_node(t_node *elem)
 t_node	*fuse_next_elem(t_node *elem, t_node *tmp, t_input *data)
 {
 	tmp = elem;
-
 	elem = elem->prev->prev;
 	elem->value = ms_strjoin_free(elem->value, tmp->value, data);
 	elem = ms_token_del(tmp);
@@ -92,7 +91,8 @@ int	quote_transformation(t_node *elem, t_input *data)
 	{
 		if (!elem->next)
 			break ;
-		if ((elem->type == QUOTE_D && elem->next && elem->next->type == QUOTE_D) 
+		if ((elem->type == QUOTE_D && elem->next
+				&& elem->next->type == QUOTE_D)
 			|| (elem->type == QUOTE && elem->next && elem->next->type == QUOTE))
 		{
 			elem->type = EMPTY_ARG;
@@ -100,7 +100,8 @@ int	quote_transformation(t_node *elem, t_input *data)
 		}
 		if (elem->type == QUOTE_D || elem->type == QUOTE)
 		{
-			if (elem->prev && (elem->prev->type == WORD || elem->prev->type == SLASH))
+			if (elem->prev && (elem->prev->type == WORD
+					|| elem->prev->type == SLASH))
 				fuse_prev_elem(elem, data, elem->type);
 			elem = fuse_between_quotes(elem, data, elem->type);
 			if (!elem->next)
