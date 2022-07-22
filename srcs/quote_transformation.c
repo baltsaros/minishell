@@ -30,10 +30,12 @@ static t_node	*delete_node(t_node *elem)
 t_node	*fuse_next_elem(t_node *elem, t_node *tmp, t_input *data)
 {
 	tmp = elem;
+
 	elem = elem->prev->prev;
 	elem->value = ms_strjoin_free(elem->value, tmp->value, data);
-	tmp = delete_node(tmp);
-	elem = elem->next->next;
+	elem = ms_token_del(tmp);
+	if (elem->next)
+		elem = elem->next;
 	return (elem);
 }
 
@@ -86,7 +88,6 @@ t_node	*fuse_prev_elem(t_node *elem, t_input *data, int type)
 
 int	quote_transformation(t_node *elem, t_input *data)
 {
-	
 	while (elem)
 	{
 		if (!elem->next)

@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/22 13:43:09 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/22 13:55:20 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,11 +190,11 @@ int	token_simplification(t_input *data)
 	
 	// if (delete_useless_wspace(elem, data) == 1)
 	// 	return (1);
-	// printf("7 after delete useless wspace: ");
+	// printf("6 after delete useless wspace: ");
     // ms_token_print(data->args);
 	// if (empty_when_only_quote(elem) == 1)
 	// 	return (1);
-	// printf("8 after empty when only quote: ");
+	// printf("7 after empty when only quote: ");
 	// ms_token_print(data->args);
     return (0);
 }
