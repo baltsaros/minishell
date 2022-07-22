@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:23:06 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/22 13:04:01 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/22 14:23:39 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,15 @@ int	word_total_fusion(t_node *elem, t_input *data)
 			|| elem->type == BRACES_L || elem->type == BRACES_R)
 			elem->type = WORD;
 		if ((elem->type != WSPACE && elem->type != QUOTE
-			&& elem->type != QUOTE_D
-			&& elem->type != REDIR_IN && elem->type != REDIR_OUT
-			&& elem->type != REDIR_HD && elem->type != REDIR_AP)
+				&& elem->type != QUOTE_D
+				&& elem->type != REDIR_IN && elem->type != REDIR_OUT
+				&& elem->type != REDIR_HD && elem->type != REDIR_AP)
 			&& elem->prev && elem->prev->type != WSPACE)
 			fusion_with_prev_elem(elem, data);
 		if ((elem->type != WSPACE && elem->type != QUOTE
-			&& elem->type != QUOTE_D
-			&& elem->type != REDIR_IN && elem->type != REDIR_OUT
-			&& elem->type != REDIR_HD && elem->type != REDIR_AP)
+				&& elem->type != QUOTE_D
+				&& elem->type != REDIR_IN && elem->type != REDIR_OUT
+				&& elem->type != REDIR_HD && elem->type != REDIR_AP)
 			&& elem->next && elem->next->type != WSPACE)
 			fusion_with_next_elem(elem, data);
 		if (elem->type == ENV_VA && elem->next && elem->next->type == ENV_VA)
