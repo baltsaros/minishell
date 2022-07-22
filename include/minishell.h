@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/21 16:22:06 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/22 12:24:09 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,8 +277,8 @@ int		token_simplification(t_input *data);
 int		quote_transformation(t_node *elem, t_input *data);
 
 // token simplification utils
-int		is_between_d_quote(t_node *args);
-int		is_between_quote(t_node *args);
+// int		is_between_d_quote(t_node *args);
+int		is_between_quote(t_node *args, int type);
 t_node	*executable_token_simplification(t_node *elem, t_input *data);
 int		get_braces_size(t_node *elem, int type1, int type2);
 char	*get_between_braces(t_node *elem, int type1, int type2);
@@ -298,5 +298,7 @@ int		word_quote_fusion(t_node *elem, t_input *data);
 
 // word total
 int		word_total_fusion(t_node *elem, t_input *data);
+
+t_node	*fuse_between_quotes(t_node *elem, t_input *data, int type);
 
 #endif

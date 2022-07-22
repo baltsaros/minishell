@@ -3,70 +3,81 @@
 /*                                                        :::      ::::::::   */
 /*   token_simplification_utils.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:30:33 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/21 17:49:22 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/22 12:36:56 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	is_between_d_quote(t_node	*args)
+// receives token after quote and then goes until next toke with the same quote type
+// and stops on it
+int	is_between_quote(t_node *args, int type)
 {
-	int	count;
-
-	count = 0;
-	if (args->type == QUOTE_D)
-		return (1);
-	while (args->prev && args->type != QUOTE_D)
-	// && args->type != PIPE
-		args = args->prev;
-	if (args->type == QUOTE_D)
-		count++;
-	else
-		return (1);
-	if (args->next)
+	while (args->next && args->type != type)
 		args = args->next;
-	else
-		return (1);
-	while (args && args->type != QUOTE_D)
-	// && args->type != PIPE
-		args = args->next;
-	if (args && args->type == QUOTE_D)
-		count++;
-	if (count == 2)
-		return (0);
-	return (1);
+	// if (args && args->type == type)
+	// 	args = args->next;
+	return (0);
 }
 
-int	is_between_quote(t_node	*args)
-{
-	int	count;
+// int	is_between_d_quote(t_node *args)
+// {
+// 	int	count;
 
-	count = 0;
-	if (args->type == QUOTE)
-		return (1);
-	while (args->prev && args->type != QUOTE)
-	// && args->type != PIPE
-		args = args->prev;
-	if (args->type == QUOTE)
-		count++;
-	else
-		return (1);
-	if (args->next)
-		args = args->next;
-	else
-		return (1);
-	while (args && args->type != QUOTE)
-	// && args->type != PIPE
-		args = args->next;
-	if (args && args->type == QUOTE)
-		count++;
-	if (count == 2)
-		return (0);
-	return (1);
-}
+// 	count = 0;
+// 	if (args->type == QUOTE_D)
+// 		return (1);
+// 	while (args->prev && args->type != QUOTE_D)
+// 	// && args->type != PIPE
+// 		args = args->prev;
+// 	if (args->type == QUOTE_D)
+// 		count++;
+// 	else
+// 		return (1);
+// 	if (args->next)
+// 		args = args->next;
+// 	else
+// 		return (1);
+// 	while (args && args->type != QUOTE_D)
+// 	// && args->type != PIPE
+// 		args = args->next;
+// 	if (args && args->type == QUOTE_D)
+// 		count++;
+// 	if (count == 2)
+// 		return (0);
+// 	return (1);
+// }
+
+// int	is_between_quote(t_node *args)
+// {
+// 	int	count;
+
+// 	count = 0;
+// 	if (args->type == QUOTE)
+// 		return (1);
+// 	while (args->prev && args->type != QUOTE)
+// 	// && args->type != PIPE
+// 		args = args->prev;
+// 	if (args->type == QUOTE)
+// 		count++;
+// 	else
+// 		return (1);
+// 	if (args->next)
+// 		args = args->next;
+// 	else
+// 		return (1);
+// 	while (args && args->type != QUOTE)
+// 	// && args->type != PIPE
+// 		args = args->next;
+// 	if (args && args->type == QUOTE)
+// 		count++;
+// 	if (count == 2)
+// 		return (0);
+// 	return (1);
+// }
 
 t_node	*executable_token_simplification(t_node *elem, t_input *data)
 {

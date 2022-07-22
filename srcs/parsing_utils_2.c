@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:41:09 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/21 21:05:45 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/22 12:37:27 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,20 @@
 int	get_size_cmd(t_node	*args)
 {
 	int	i;
+	int	type;
 
 	i = 0;
 	while (args && args->type != PIPE)
 	{
-		if (args->type != WSPACE
-			&& args->type != QUOTE && args->type != QUOTE_D)
+		if (args->type == QUOTE || args->type == QUOTE_D)
 		{
-			if (!is_between_d_quote(args) || !is_between_quote(args))
-			{
-				if (args->prev && (args->prev->type == QUOTE
-						|| args->prev->type == QUOTE_D))
-					i++;
-			}
-			else
-				i++;
+			type = args->type;
+			args = args->next;
+			is_between_quote(args, type);
+			args = args->next;
 		}
+		if (args->type != WSPACE)
+			i++;
 		if (args->type == ENV_VA && args->prev && args->prev->type == ENV_VA)
 			i--;
 		if (args->type == IN_ARG || args->type == OUT_ARG

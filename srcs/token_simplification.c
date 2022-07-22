@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_simplification.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/21 20:36:27 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/22 12:04:32 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,56 +179,55 @@ int	token_simplification(t_input *data)
     {
 		return (1);
 	}
-
 	// printf("2 after quote transformation: ");
-	// ms_token_print(data->args);
+	ms_token_print(data->args);
 
-    if (general_simplification(elem, data) == 1)
-    {
-		return (1);
-	}
+    // if (general_simplification(elem, data) == 1)
+    // {
+	// 	return (1);
+	// }
 
-	// printf("3 general simplification: ");
-	// ms_token_print(data->args);
+// 	// printf("3 general simplification: ");
+// 	// ms_token_print(data->args);
 
-    if (word_total_fusion(elem, data) == 1)
-    {
-		return (1);
-	}
+//     if (word_total_fusion(elem, data) == 1)
+//     {
+// 		return (1);
+// 	}
 
-	// printf("4 word total fusion: ");
-	// ms_token_print(data->args);
+// 	// printf("4 word total fusion: ");
+// 	// ms_token_print(data->args);
 
-    if (word_quote_fusion(elem, data) == 1)
-    {
-		return (1);
-	}
+//     if (word_quote_fusion(elem, data) == 1)
+//     {
+// 		return (1);
+// 	}
 
-	// printf("5 word quote fusion: ");
-	// ms_token_print(data->args);
+// 	// printf("5 word quote fusion: ");
+// 	// ms_token_print(data->args);
 
-    if (delete_useless_wspace(elem, data) == 1)
-	{
-		return (1);
-	}
+//     if (delete_useless_wspace(elem, data) == 1)
+// 	{
+// 		return (1);
+// 	}
 
-	// printf("6 after delete useless wspace: ");
-    // ms_token_print(data->args);
+// 	// printf("6 after delete useless wspace: ");
+//     // ms_token_print(data->args);
 
-	if (empty_when_only_quote(elem, data) == 1)
-	{
-		return (1);
-	}
+// 	if (empty_when_only_quote(elem, data) == 1)
+// 	{
+// 		return (1);
+// 	}
 
-	// printf("7 after empty when only quote: ");
-	// ms_token_print(data->args);
+// 	// printf("7 after empty when only quote: ");
+// 	// ms_token_print(data->args);
 
-	if (delete_useless_quote(elem, data) == 1)
-	{
-		return (1);
-	}
+// 	if (delete_useless_quote(elem, data) == 1)
+// 	{
+// 		return (1);
+// 	}
 		
-	// printf("8 after delete useless quote: ");
-	// ms_token_print(data->args);
+// 	// printf("8 after delete useless quote: ");
+// 	// ms_token_print(data->args);
     return (0);
 }
