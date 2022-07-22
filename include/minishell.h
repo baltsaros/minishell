@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/21 15:47:16 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/21 16:22:06 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,9 +240,6 @@ int		is_the_next_is_right_type(t_node *args);
 // parsing
 int		parsing(t_input *data);
 t_cmd	*parse_cmd(t_input *data);
-t_cmd	*init_elem(t_node *args, t_input *data);
-t_cmd	*fill_elem(t_node *args, t_cmd *elem, t_input *data);
-t_cmd	*init_empty_elem(t_input *data);
 
 // parsing_utils
 t_node	*next_elem(t_node *args);
@@ -259,6 +256,9 @@ int		init_out(t_node *args, t_cmd *elem, t_input *data);
 
 // parsing_utils_3
 char	**init_cmd(t_node *args, t_input *data);
+t_cmd	*init_elem(t_node *args, t_input *data);
+t_cmd	*fill_elem(t_node *args, t_cmd *elem, t_input *data);
+t_cmd	*init_empty_elem(t_input *data);
 
 // readline functions
 void	rl_replace_line(const char *text, int clear_undo);

@@ -84,7 +84,14 @@ t_node	*dollar_token_simplification(t_node *elem, t_input *data)
 		elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
 		ms_token_del(elem->next);
 		if (!ft_strncmp(elem->value, "$?", 3))
+		{
 			elem->type = DOLLAR_VAR;
+			free(elem->value);
+			if (g_status > 255)
+				g_status = (g_status >> 8) & 0xff;
+			elem->value = ft_itoa(g_status);
+			alloc_check_small(elem->value, data);
+		}
 	}
 	else if (elem->next && elem->next->type == BRACES_L)
 		dollar_braces(elem, data);

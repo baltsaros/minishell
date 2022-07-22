@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_simplification_utils.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:30:33 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/20 14:31:03 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/21 17:49:22 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	is_between_d_quote(t_node	*args)
 	count = 0;
 	if (args->type == QUOTE_D)
 		return (1);
-	while (args->prev && args->type != QUOTE_D && args->type != PIPE)
+	while (args->prev && args->type != QUOTE_D)
+	// && args->type != PIPE
 		args = args->prev;
 	if (args->type == QUOTE_D)
 		count++;
@@ -29,7 +30,8 @@ int	is_between_d_quote(t_node	*args)
 		args = args->next;
 	else
 		return (1);
-	while (args && args->type != QUOTE_D && args->type != PIPE)
+	while (args && args->type != QUOTE_D)
+	// && args->type != PIPE
 		args = args->next;
 	if (args && args->type == QUOTE_D)
 		count++;
@@ -45,7 +47,8 @@ int	is_between_quote(t_node	*args)
 	count = 0;
 	if (args->type == QUOTE)
 		return (1);
-	while (args->prev && args->type != QUOTE && args->type != PIPE)
+	while (args->prev && args->type != QUOTE)
+	// && args->type != PIPE
 		args = args->prev;
 	if (args->type == QUOTE)
 		count++;
@@ -55,7 +58,8 @@ int	is_between_quote(t_node	*args)
 		args = args->next;
 	else
 		return (1);
-	while (args && args->type != QUOTE && args->type != PIPE)
+	while (args && args->type != QUOTE)
+	// && args->type != PIPE
 		args = args->next;
 	if (args && args->type == QUOTE)
 		count++;

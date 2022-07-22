@@ -80,6 +80,7 @@ norm:
 			@echo "$(C_PURPLE_B)Let's test the Norm!$(C_RESET)";
 			@norminette
 			@echo "$(C_PURPLE_B)Done!$(C_RESET)";
+			@touch test.txt
 clean:
 			@echo "$(C_RED_B)Deleting minishell o-files...$(C_RESET)";
 			@make -C ./libft clean
@@ -95,4 +96,4 @@ fclean:		clean
 
 re:			fclean all
 
-.PHONY:		all clean fclean libft re .c.o
+.PHONY:		all clean fclean libft re .c.o norm brew

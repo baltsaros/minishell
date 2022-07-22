@@ -6,20 +6,35 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/20 20:17:54 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/21 20:36:27 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+char	*ms_getenv(char *var, t_input *data)
+{
+	t_env	*tmp;
+	char	*str;
+
+	tmp = data->envp_n;
+	while (tmp && ft_strcmp(tmp->type, var))
+		tmp = tmp->next;
+	if (tmp)
+		str = tmp->value;
+	else
+		return (NULL);
+	return (str);
+}
+
 void	dollar_management(t_node *elem, t_input *data)
 {
 	elem = dollar_token_simplification(elem, data);
 	if (elem->type == ENV_VA)
-		elem->value = ms_strdup(getenv(elem->value + 1), data);
+		elem->value = ms_strdup(ms_getenv(elem->value + 1, data), data);
 	else if (elem->type == ENV_VA_BR)
 		elem->value = ms_strdup(
-				getenv(get_between_braces(elem, BRACES_L, BRACES_R)), data);
+				ms_getenv(get_between_braces(elem, BRACES_L, BRACES_R), data), data);
 	else if (elem->type == ENV_P)
 		elem->value = ms_strdup(get_between_braces(elem, BR_L, BR_R), data);
 	else if (elem->type == ENV_P_EM)
@@ -144,10 +159,8 @@ int	delete_useless_quote(t_node	*elem, t_input	*data)
 	(void)data;
 	while (elem)
 	{
-		if (elem->type == QUOTE_D)
+		if (elem->type == QUOTE_D || elem->type == QUOTE)
 			elem->type = 0;
-		if (elem->next && elem->next->type == QUOTE)
-			elem->type = 0;;
 		if (!elem->next)
 			break ;
 		elem = elem->next;
@@ -160,35 +173,62 @@ int	token_simplification(t_input *data)
 	t_node	*elem;
 
     elem = data->args;
-	// printf("1: ");
+	// printf("1 before everything: ");
 	// ms_token_print(data->args);
     if (quote_transformation(elem, data) == 1)
-        return (1);
-	// printf("2: ");
+    {
+		return (1);
+	}
+
+	// printf("2 after quote transformation: ");
 	// ms_token_print(data->args);
+
     if (general_simplification(elem, data) == 1)
-        return (1);
-	// printf("3: ");
+    {
+		return (1);
+	}
+
+	// printf("3 general simplification: ");
 	// ms_token_print(data->args);
+
     if (word_total_fusion(elem, data) == 1)
-        return (1);
-	// printf("4: ");
+    {
+		return (1);
+	}
+
+	// printf("4 word total fusion: ");
 	// ms_token_print(data->args);
+
     if (word_quote_fusion(elem, data) == 1)
-        return (1);
-	// printf("5: ");
+    {
+		return (1);
+	}
+
+	// printf("5 word quote fusion: ");
 	// ms_token_print(data->args);
+
     if (delete_useless_wspace(elem, data) == 1)
-        return (1);
-	// printf("6: ");
+	{
+		return (1);
+	}
+
+	// printf("6 after delete useless wspace: ");
     // ms_token_print(data->args);
+
 	if (empty_when_only_quote(elem, data) == 1)
+	{
 		return (1);
-	// printf("7: ");
+	}
+
+	// printf("7 after empty when only quote: ");
 	// ms_token_print(data->args);
+
 	if (delete_useless_quote(elem, data) == 1)
+	{
 		return (1);
-	// printf("8: ");
+	}
+		
+	// printf("8 after delete useless quote: ");
 	// ms_token_print(data->args);
     return (0);
 }
