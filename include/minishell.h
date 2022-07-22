@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/22 14:27:02 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/22 15:35:46 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ typedef struct s_input
 	t_node				*args;
 	t_cmd				*cmds;
 	char				*buf;
+	int					exec;
 	struct s_builtin	*builtins;
 	DIR					*dir;
 	pid_t				pid;
@@ -182,7 +183,7 @@ char	*ms_strdup(const char *s, t_input *data);
 void	prompt(t_input *data);
 
 // check_input
-void	check_field(t_input *data, char *str);
+int		check_field(t_input *data, char *str);
 int		is_right_buf(char *buf);
 
 // data_init
@@ -233,8 +234,8 @@ void	asterisks(t_input *data, t_node *ast);
 //syntax checker
 int		is_the_next_is_in_arg(t_node *args);
 int		is_the_next_is_out_arg(t_node *args);
-t_cmd	*print_syntax_error_cmd(t_node *args);
-int		print_syntax_error_bool(t_node *args);
+t_cmd	*print_syntax_error_cmd(t_node *args, t_input *data);
+int		print_syntax_error_bool(t_node *args, t_input *data);
 int		is_the_next_is_right_type(t_node *args);
 
 // parsing

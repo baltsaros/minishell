@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:41:09 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/22 12:59:03 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/22 15:43:53 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,11 @@ int	get_size_cmd(t_node	*args)
 
 int	init_hd(t_node	*args, t_cmd	*elem, t_input *data)
 {
+	printf("heredoc\n");
 	args = args->next;
 	elem->delim = ms_strdup(args->value, data);
 	if (!elem->delim)
-		return (print_syntax_error_bool(args));
+		return (print_syntax_error_bool(args, data));
 	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
 		error_check(-1, "in signals ", 11, data);
 	data->pid = fork();

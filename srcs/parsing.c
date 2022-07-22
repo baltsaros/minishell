@@ -37,7 +37,7 @@ t_cmd	*parse_cmd(t_input *data)
 int	parsing(t_input *data)
 {
 	data->cmds = parse_cmd(data);
-	if (!data->cmds)
+	if (!data->cmds || !data->exec)
 		return (1);
 
 	// t_cmd	*tmp;

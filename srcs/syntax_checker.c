@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:37:42 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/22 12:56:39 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/22 15:44:52 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	is_the_next_is_out_arg(t_node *args)
 	return (0);
 }
 
-int	is_the_next_is_right_type(t_node	*args)
+int	is_the_next_is_right_type(t_node *args)
 {
 	if (args->next->type != WORD && args->next->type != ASTER
 		&& args->next->type != ENV_VA && args->next->type != ENV_VA_BR
@@ -38,7 +38,7 @@ int	is_the_next_is_right_type(t_node	*args)
 	return (0);
 }
 
-t_cmd	*print_syntax_error_cmd(t_node *args)
+t_cmd	*print_syntax_error_cmd(t_node *args, t_input *data)
 {
 	if (!args->next)
 	{
@@ -46,6 +46,7 @@ t_cmd	*print_syntax_error_cmd(t_node *args)
 		write(2, "newline", 7);
 		write(2, "'\n", 2);
 		g_status = 258;
+		data->exec = 0;
 	}
 	else if (args->next->type != WORD && args->next->type != ASTER
 		&& args->next->type != ENV_VA && args->next->type != ENV_VA_BR
@@ -58,11 +59,12 @@ t_cmd	*print_syntax_error_cmd(t_node *args)
 		write(2, args->next->value, ft_strlen(args->value));
 		write(2, "'\n", 2);
 		g_status = 258;
+		data->exec = 0;
 	}
 	return (NULL);
 }
 
-int	print_syntax_error_bool(t_node *args)
+int	print_syntax_error_bool(t_node *args, t_input *data)
 {
 	if (!args->next)
 	{
@@ -70,6 +72,7 @@ int	print_syntax_error_bool(t_node *args)
 		write(2, "newline", 7);
 		write(2, "'\n", 2);
 		g_status = 258;
+		data->exec = 0;
 	}
 	else if (is_the_next_is_in_arg(args) || is_the_next_is_out_arg(args))
 	{
@@ -77,6 +80,7 @@ int	print_syntax_error_bool(t_node *args)
 		write(2, args->next->value, ft_strlen(args->value));
 		write(2, "'\n", 2);
 		g_status = 258;
+		data->exec = 0;
 	}
 	return (1);
 }

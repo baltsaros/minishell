@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:05 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/22 09:29:24 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/22 15:28:27 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	envp_init(t_input *data, char *envp[])
 void	data_init(t_input *data)
 {
 	data->args = NULL;
+	data->exec = 1;
 	tokenization(data);
 	data->argc = ms_token_size(data->args);
 	if (data->argc == 1 && !ft_strcmp(data->buf, "secret"))

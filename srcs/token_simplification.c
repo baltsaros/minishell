@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_simplification.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/22 14:19:22 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/22 15:04:37 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,27 +74,27 @@ int	token_simplification(t_input *data)
 	t_node	*elem;
 
     elem = data->args;
-	printf("1 before everything: ");
-	ms_token_print(data->args);
+	// printf("1 before everything: ");
+	// ms_token_print(data->args);
 	if (expanding_variables(elem, data) == 1)
 		return (1);
-	printf("2 expanding variables: ");
-	ms_token_print(data->args);
+	// printf("2 expanding variables: ");
+	// ms_token_print(data->args);
 	if (word_total_fusion(elem, data) == 1)
  		return (1);
-	printf("3 word total fusion: ");
-	ms_token_print(data->args);
+	// printf("3 word total fusion: ");
+	// ms_token_print(data->args);
 	if (quote_transformation(elem, data) == 1)
 		return (1);
-	printf("4 quote transformation: ");
-	ms_token_print(data->args);
+	// printf("4 quote transformation: ");
+	// ms_token_print(data->args);
     if (general_simplification(elem) == 1)
 		return (1);
-	printf("5 general simplification: ");
-	ms_token_print(data->args);
+	// printf("5 general simplification: ");
+	// ms_token_print(data->args);
 	if (delete_useless_wspace(elem) == 1)
 		return (1);
-	printf("6 after delete useless wspace: ");
-    ms_token_print(data->args);
+	// printf("6 after delete useless wspace: ");
+    // ms_token_print(data->args);
     return (0);
 }
