@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:25 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/25 14:38:15 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/25 15:43:47 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ int	pipex(t_input *data)
 		ms_fork(data->cmds->cmd, data);
 		data->cmds = data->cmds->next;
 	}
+	error_check(dup2(data->cmds->in, STDIN_FILENO),
+		"In dup2_inP ", 13, data);
 	error_check(dup2(data->cmds->out, STDOUT_FILENO),
 		"In dup2_outP ", 14, data);
 	if (check_builtin(data, data->cmds))
