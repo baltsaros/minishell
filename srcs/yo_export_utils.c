@@ -6,20 +6,30 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:57 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/25 11:57:53 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/25 12:37:08 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+static size_t	ms_dstrlen(char **dstr)
+{
+	size_t	i;
+
+	i = 0;
+	while (dstr[i])
+		++i;
+	return (i);
+}
 
 void	add_envp(t_input *data, char *type, char *value)
 {
 	int		size;
 	char	**tmp;
 
-	size = ms_envp_size(data->envp_n);
+	size = ms_dstrlen(data->envp);
 	data->i = 0;
-	tmp = ms_malloc((sizeof(tmp) * (size + 3)), data);
+	tmp = ms_malloc((sizeof(tmp) * (size + 2)), data);
 	while (data->envp[data->i])
 	{
 		tmp[data->i] = ms_strdup(data->envp[data->i], data);
