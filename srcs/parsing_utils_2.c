@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:41:09 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/22 15:43:53 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/25 10:00:45 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int	get_size_cmd(t_node	*args)
 
 int	init_hd(t_node	*args, t_cmd	*elem, t_input *data)
 {
-	printf("heredoc\n");
 	args = args->next;
 	elem->delim = ms_strdup(args->value, data);
 	if (!elem->delim)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote_transformation.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:39:24 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/22 16:29:43 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/25 09:54:24 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ t_node	*delete_node(t_node *elem)
 	{
 		elem->prev->next = elem;
 	}
-	// free(tmp->value);
-	// free(tmp);
+	free(tmp->value);
+	free(tmp);
 	return (elem);
 }
 

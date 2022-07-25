@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:38:53 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/20 14:38:55 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/07/25 10:54:46 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	signal_main(int signo)
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
-	g_status = 1;
+	g_status = 130;
 }
 
 void	signal_fork(int signo)

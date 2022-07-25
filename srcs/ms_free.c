@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:35 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/22 09:27:33 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/25 09:31:41 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	ms_free(char *str[])
 {
 	int	i;
 
+	if (!str)
+		return ;
 	i = 0;
 	while (str[i])
 	{
@@ -53,8 +55,7 @@ void	ms_free_cmd(t_cmd *to_free)
 		return ;
 	while (to_free)
 	{
-		if (to_free->cmd)
-			ms_free(to_free->cmd);
+		ms_free(to_free->cmd);
 		if (to_free->delim)
 			free(to_free->delim);
 		if (to_free->in != 0)

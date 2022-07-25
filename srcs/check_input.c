@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:29:59 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/22 15:14:14 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/25 09:28:52 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ int	check_field(t_input *data, char *str)
 {
 	int	type;
 
-	type = 0;
 	data->i = 0;
 	while (str[data->i])
 	{

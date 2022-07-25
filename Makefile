@@ -95,4 +95,7 @@ fclean:		clean
 
 re:			fclean all
 
-.PHONY:		all clean fclean libft re .c.o norm brew
+val:		${NAME}
+			valgrind --leak-check=full ./$(NAME)
+
+.PHONY:		all clean fclean libft re .c.o norm brew val

@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:57 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/21 22:40:13 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/25 11:57:53 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	add_envp(t_input *data, char *type, char *value)
 
 	size = ms_envp_size(data->envp_n);
 	data->i = 0;
-	tmp = ms_malloc((sizeof(*tmp) * (size + 2)), data);
+	tmp = ms_malloc((sizeof(tmp) * (size + 3)), data);
 	while (data->envp[data->i])
 	{
 		tmp[data->i] = ms_strdup(data->envp[data->i], data);
