@@ -18,6 +18,7 @@ SRC_FILES	= minishell.c \
 				ms_free.c \
 				parsing_utils.c \
 				parsing_utils_2.c \
+				parsing_utils_3.c \
 				check_input.c \
 				data_init.c \
 				tokenization.c \
@@ -41,7 +42,6 @@ SRC_FILES	= minishell.c \
 				token_simplification_utils_2.c \
 				dollar_simplification.c \
 				quote_transformation.c \
-				word_quote.c \
 				word_total.c \
 				syntax_checker.c
 SRCS		= $(notdir $(SRC_FILES))
@@ -55,7 +55,7 @@ INCS		= -Iinclude -Ilibft
 GCC			= gcc
 RM			= rm -f
 RMF			= rm -rf
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -g
 CFLAGS_COMP = -lreadline
 
 all:		libft $(NAME)
@@ -79,6 +79,7 @@ norm:
 			@echo "$(C_PURPLE_B)Let's test the Norm!$(C_RESET)";
 			@norminette
 			@echo "$(C_PURPLE_B)Done!$(C_RESET)";
+			@touch test.txt
 clean:
 			@echo "$(C_RED_B)Deleting minishell o-files...$(C_RESET)";
 			@make -C ./libft clean
@@ -94,4 +95,7 @@ fclean:		clean
 
 re:			fclean all
 
-.PHONY:		all clean fclean libft re .c.o
+val:		${NAME}
+			valgrind --leak-check=full ./$(NAME)
+
+.PHONY:		all clean fclean libft re .c.o norm brew val

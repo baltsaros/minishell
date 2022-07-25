@@ -1,12 +1,38 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   yo_unset.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/20 09:32:08 by abuzdin           #+#    #+#             */
+/*   Updated: 2022/07/25 12:36:50 by abuzdin          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
-static int	check_envp(char *c, t_env *envp_n, int n)
+static void	error_msg(char *s)
+{
+	write(2, "YAMSP: ", 7);
+	write(2, "unset: `", 8);
+	write(2, s, ft_strlen(s));
+	write(2, "': not a valid identifier\n", 26);
+	g_status = 1;
+}
+
+static int	check_envp(char *s, t_env *envp_n, int n)
 {
 	if (!envp_n)
 		return (0);
+	if (ft_strchr(s, '='))
+	{
+		error_msg(s);
+		return (0);
+	}
 	while (envp_n)
 	{
-		if (!ft_strncmp(c, envp_n->type, n))
+		if (!ft_strncmp(s, envp_n->type, n))
 		{
 			envp_n = ms_envp_del(envp_n);
 			return (1);
@@ -26,7 +52,7 @@ static void	remove_envp(t_input *data, char *type)
 	data->j = 0;
 	while (data->envp[size])
 		size++;
-	tmp = ms_malloc(sizeof(*tmp) * size, data);
+	tmp = ms_malloc(sizeof(*tmp) * (size), data);
 	while (data->envp[data->i] && ft_strncmp(data->envp[data->i],
 			type, ft_strlen(type)))
 	{

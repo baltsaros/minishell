@@ -1,88 +1,67 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/22 14:47:50 by mthiry            #+#    #+#             */
+/*   Updated: 2022/07/25 09:29:54 by abuzdin          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
-t_cmd	*init_empty_elem(t_input *data)
+void	init_all(t_node *tmp, t_cmd *arg, t_input *data)
 {
-	t_cmd	*elem;
+	t_cmd	*new_con;
 
-	elem = ms_malloc(sizeof(t_cmd), data);
-	elem->cmd = NULL;
-	elem->len_cmd = 0;
-	elem->delim = NULL;
-	elem->in = 0;
-	elem->in_arg = NULL;
-	elem->out = 1;
-	elem->out_arg = NULL;
-	elem->pipe = -1;
-	elem->next = NULL;
-	elem->prev = NULL;
-	return (elem);
-}
-
-t_cmd	*fill_elem(t_node *args, t_cmd *elem, t_input *data)
-{
-	elem->cmd = init_cmd(args, data);
-	if (!elem->cmd)
-		return (NULL);
-	elem->len_cmd = get_len_cmd(elem->cmd);
-	while (args && args->type != PIPE)
+	while (tmp)
 	{
-	 	if (redirection_check(args, elem, data) == 1)
-	 		return (NULL);
-	 	if (args->next && args->next->type == PIPE)
-	 	{
-	 		if (!args->next->next || is_the_next_is_right_type(args->next) == 1)
-	 			return (print_syntax_error_cmd(args->next));
-	 		elem->pipe = 1;
-	 	}
-	 	args = args->next;
+		tmp = next_elem(tmp);
+		if (!tmp)
+			break ;
+		new_con = init_elem(tmp, data);
+		if (new_con)
+		{
+			new_con->prev = arg;
+			arg->next = new_con;
+			arg = arg->next;
+		}
 	}
-	return (elem);
-}
-
-t_cmd	*init_elem(t_node *args, t_input *data)
-{
-	(void)args;
-	t_cmd	*elem;
-
-	elem = init_empty_elem(data);
-	elem = fill_elem(args, elem, data);
-	return (elem);
 }
 
 t_cmd	*parse_cmd(t_input *data)
 {
 	t_cmd	*first_elem;
 	t_cmd	*arg;
-	t_cmd	*new_con;
 	t_node	*tmp;
 
-	first_elem = init_elem(data->args, data);
-	arg = first_elem;
 	tmp = data->args;
 	while (tmp)
 	{
-		tmp = next_elem(tmp);
-		if (!tmp || !tmp->next)
+		first_elem = init_elem(tmp, data);
+		if (first_elem)
 			break ;
-		new_con = init_elem(tmp, data);
-		new_con->prev = arg;
-		arg->next = new_con;
-		arg = arg->next;
+		tmp = next_elem(tmp);
 	}
+	if (!first_elem)
+		return (NULL);
+	arg = first_elem;
+	init_all(tmp, arg, data);
 	return (first_elem);
 }
 
 int	parsing(t_input *data)
 {
 	data->cmds = parse_cmd(data);
-	if (!data->cmds)
+	if (!data->cmds || !data->exec)
 		return (1);
-
 	// t_cmd	*tmp;
 	// tmp = data->cmds;
 	// while (tmp)
 	// {
-	// 	for (int i = 0; tmp->cmd[i]; i++)
+	// 	for (int i = 0; i != tmp->len_cmd; i++)
 	// 		printf("cmd[%d]: %s\n", i, tmp->cmd[i]);
 	// 	printf("len_cmd: %d\n", tmp->len_cmd);
 	// 	printf("delim: %s\n", tmp->delim);

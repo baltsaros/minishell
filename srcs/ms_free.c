@@ -1,9 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_free.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/20 09:30:35 by abuzdin           #+#    #+#             */
+/*   Updated: 2022/07/25 09:31:41 by abuzdin          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 void	ms_free(char *str[])
 {
 	int	i;
 
+	if (!str)
+		return ;
 	i = 0;
 	while (str[i])
 	{
@@ -37,15 +51,11 @@ t_env	*ms_free_envp(t_env *node)
 
 void	ms_free_cmd(t_cmd *to_free)
 {
-	t_cmd	*tmp;
-
 	if (!to_free)
 		return ;
 	while (to_free)
 	{
-		tmp = to_free->next;
-		if (to_free->cmd)
-			free(to_free->cmd);
+		ms_free(to_free->cmd);
 		if (to_free->delim)
 			free(to_free->delim);
 		if (to_free->in != 0)
@@ -56,8 +66,16 @@ void	ms_free_cmd(t_cmd *to_free)
 			close(to_free->out);
 		if (to_free->out_arg)
 			free(to_free->out_arg);
-		free(to_free);
-		to_free = tmp;
+		if (to_free->next)
+		{
+			to_free = to_free->next;
+			free(to_free->prev);
+		}
+		else
+		{
+			free(to_free);
+			break ;
+		}
 	}
 }
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   yo_export.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/20 09:32:00 by abuzdin           #+#    #+#             */
+/*   Updated: 2022/07/21 22:38:29 by abuzdin          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 static int	check_duplicate(t_input *data, char *type, char *value)
@@ -11,6 +23,7 @@ static int	check_duplicate(t_input *data, char *type, char *value)
 		free(data->envp_tmp->value);
 	data->envp_tmp->value = value;
 	add_envp(data, type, value);
+	free(type);
 	return (1);
 }
 
@@ -37,24 +50,38 @@ static void	print_envp(t_input *data, t_env *envp)
 	}
 }
 
-static void	export_var(t_input *data, int *i)
+static void	error_msg(void)
 {
-	data->type = ms_strdup(data->cmds->cmd[*i], data);
-	if (!data->cmds->cmd[*i + 1])
-		data->value = NULL;
-	else if (data->cmds->cmd[*i + 1] && data->cmds->cmd[*i + 1][0] == '=')
+	write(2, "YAMSP: ", 7);
+	write(2, "export: `=': not a valid identifier\n", 36);
+	g_status = 1;
+}
+
+static void	export_var(t_input *data, char *s)
+{
+	data->i = 0;
+	data->type = NULL;
+	data->value = NULL;
+	while (s[data->i] && s[data->i] != '=')
+		data->i++;
+	if (data->i == 0 && s[data->i])
 	{
-		if (data->cmds->cmd[*i + 2])
-		{
-			data->value = ms_strdup(data->cmds->cmd[*i + 2], data);
-			++(*i);
-		}
-		else
-			data->value = ms_strdup("", data);
-		++(*i);
+		error_msg();
+		return ;
 	}
-	else
-		data->value = NULL;
+	data->type = ms_strndup(s, data->i, data);
+	if (s[data->i])
+	{
+		data->i++;
+		if (s[data->i])
+			data->value = ms_strdup(s + data->i, data);
+	}
+	if (!check_duplicate(data, data->type, data->value))
+	{
+		data->envp_tmp = ms_envp_new(data->type, data->value, data);
+		ms_envp_back(&data->envp_n, data->envp_tmp);
+		add_envp(data, data->type, data->value);
+	}
 }
 
 int	yo_export(t_input *data)
@@ -70,13 +97,7 @@ int	yo_export(t_input *data)
 	i = 1;
 	while (data->cmds->cmd[i])
 	{
-		export_var(data, &i);
-		if (!check_duplicate(data, data->type, data->value))
-		{
-			data->envp_tmp = ms_envp_new(data->type, data->value, data);
-			ms_envp_back(&data->envp_n, data->envp_tmp);
-			add_envp(data, data->type, data->value);
-		}
+		export_var(data, data->cmds->cmd[i]);
 		++i;
 	}
 	return (0);
