@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:25 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/22 09:28:58 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/25 14:38:15 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	ms_fork(char *argv[], t_input *data)
 		if (data->cmds->in_arg)
 			error_check(dup2(data->cmds->in, STDIN_FILENO),
 				"In dup2_inP ", 13, data);
-		if (data->cmds->out_arg && !check_builtin(data, data->cmds))
+		if (data->cmds->out_arg && !is_builtin(data, data->cmds))
 			error_check(dup2(data->cmds->out, STDOUT_FILENO),
 				"In dup2_inP ", 13, data);
 		else

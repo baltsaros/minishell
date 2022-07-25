@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:47 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/22 09:58:32 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/25 14:34:28 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static void	echo_with_flag(t_cmd *com)
 	while (com->cmd[i])
 	{
 		write(com->out, com->cmd[i], ft_strlen(com->cmd[i]));
+		if (com->cmd[i + 1])
+			write(com->out, " ", 1);
 		++i;
 	}
 }
@@ -32,7 +34,8 @@ static void	echo_without_flag(t_cmd *com)
 	while (com->cmd[i])
 	{
 		write(com->out, com->cmd[i], ft_strlen(com->cmd[i]));
-		write(com->out, " ", 1);
+		if (com->cmd[i + 1])
+			write(com->out, " ", 1);
 		++i;
 	}
 	write(com->out, "\n", 1);

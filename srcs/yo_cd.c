@@ -6,11 +6,72 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:43 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 09:31:44 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/25 15:03:35 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+static void	update_envp(t_input *data, char *pwd, char *oldpwd)
+{
+	int	i;
+
+	i = 0;
+	while (data->envp[i] && ft_strncmp(data->envp[i], "PWD", 3))
+		++i;
+	if (data->envp[i])
+	{
+		free(data->envp[i]);
+		data->envp[i] = ms_strdup("PWD=", data);
+		data->envp[i] = ms_strjoin_free(data->envp[i], pwd, data);
+	}
+	i = 0;
+	while (data->envp[i] && ft_strncmp(data->envp[i], "OLDPWD", 3))
+		++i;
+	if (data->envp[i])
+	{
+		free(data->envp[i]);
+		data->envp[i] = ms_strdup("OLDPWD=", data);
+		data->envp[i] = ms_strjoin_free(data->envp[i], oldpwd, data);
+	}
+	free(pwd);
+}
+
+static void	getcwd_error(void)
+{
+	write(2, "YAMSP: ", 7);
+	perror("updating pwd");
+	g_status = errno;
+	return ;
+}
+
+static void	update_pwd(t_input *data)
+{
+	char	*pwd;
+	char	*oldpwd;
+
+	pwd = NULL;
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		return (getcwd_error());
+	data->envp_tmp = data->envp_n;
+	while (data->envp_tmp && ft_strcmp(data->envp_tmp->type, "PWD"))
+		data->envp_tmp = data->envp_tmp->next;
+	if (data->envp_tmp && !ft_strcmp(data->envp_tmp->type, "PWD"))
+	{
+		oldpwd = data->envp_tmp->value;
+		data->envp_tmp->value = ms_strdup(pwd, data);
+	}
+	data->envp_tmp = data->envp_n;
+	while (data->envp_tmp && ft_strcmp(data->envp_tmp->type, "OLDPWD"))
+		data->envp_tmp = data->envp_tmp->next;
+	if (data->envp_tmp && !ft_strcmp(data->envp_tmp->type, "OLDPWD"))
+	{
+		free(data->envp_tmp->value);
+		data->envp_tmp->value = oldpwd;
+	}
+	update_envp(data, pwd, oldpwd);
+}
 
 int	yo_cd(t_input *data)
 {
@@ -23,5 +84,6 @@ int	yo_cd(t_input *data)
 		g_status = errno;
 		return (g_status);
 	}
+	update_pwd(data);
 	return (0);
 }
