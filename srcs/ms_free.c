@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:35 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/25 09:31:41 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/26 09:30:10 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,8 @@ void	ms_free_cmd(t_cmd *to_free)
 		ms_free(to_free->cmd);
 		if (to_free->delim)
 			free(to_free->delim);
-		if (to_free->in != 0)
-			close(to_free->in);
 		if (to_free->in_arg)
 			free(to_free->in_arg);
-		if (to_free->out != 1)
-			close(to_free->out);
 		if (to_free->out_arg)
 			free(to_free->out_arg);
 		if (to_free->next)

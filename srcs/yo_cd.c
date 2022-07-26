@@ -6,12 +6,13 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:43 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/25 15:03:35 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/26 10:45:16 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+// update for char** envp
 static void	update_envp(t_input *data, char *pwd, char *oldpwd)
 {
 	int	i;
@@ -45,6 +46,7 @@ static void	getcwd_error(void)
 	return ;
 }
 
+// update for linked lists envp
 static void	update_pwd(t_input *data)
 {
 	char	*pwd;

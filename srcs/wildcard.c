@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:37 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 09:41:18 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/26 10:44:31 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ static void	find_files_after(t_input *data, struct dirent *fname,
 	}
 }
 
+// checks for characters before and after *, then act accordingly
 static void	find_files(t_input *data, t_node *ast, struct dirent *fname)
 {
 	char	*before;
@@ -107,6 +108,7 @@ static void	find_files(t_input *data, t_node *ast, struct dirent *fname)
 	}
 }
 
+// open current directory
 void	asterisks(t_input *data, t_node *ast)
 {
 	struct dirent	*fname;

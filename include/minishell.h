@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/25 14:38:03 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/26 10:43:26 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@
 // global var
 int	g_status;
 
-// enum for tokens
+// enum for tokens; values correspond to ASCII values or
+// to the ASCII value + 100 for double symbols like << or >>
 enum e_tokens
 {
 	DOLLAR		= 36,
@@ -61,6 +62,7 @@ enum e_tokens
 	BRACES_R	= 125
 };
 
+// simplified tokens
 enum e_simplier_tokens
 {
 	ENV_VA		= 37,
@@ -110,7 +112,8 @@ typedef struct s_env
 	struct s_env	*prev;
 }	t_env;
 
-// main structure
+// main structure; some variables serve as counters or
+// tmp variables; praise the Norm!
 typedef struct s_input
 {
 	int					i;

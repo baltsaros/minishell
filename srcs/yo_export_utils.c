@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:57 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/25 12:37:08 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/26 10:46:19 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static size_t	ms_dstrlen(char **dstr)
 	return (i);
 }
 
+// add to envp char**
 void	add_envp(t_input *data, char *type, char *value)
 {
 	int		size;

@@ -1,5 +1,9 @@
 [WORK IN PROGRESS]
 
+## **The team**
+* Aleksandr Buzdin ([abuzdin](https://profile.intra.42.fr/users/abuzdin)/[baltsaros](https://github.com/baltsaros))
+* Marius Thiry ([mthiry](https://profile.intra.42.fr/users/mthiry)/[ElMariuso](https://github.com/ElMariuso))
+
 ## **Project description** 
 This project is about creating a simple shell. Bash was used as a reference.
 
@@ -46,7 +50,13 @@ Allowed functions:
 * there are three user mods: *normal*, *secret* and *uwu*. Try them all!
 
 ## **Our approach**
-* 
+* We splitted the project into seven parts: prompt, tokenization, token simplification (added later), parsing, execution, exit and signal. I (baltsaros) would say that tokenization is the most important, because it determines how other parts are done
+* In our tokenization we read character by character and then create an according token (in a linked list). Main tokens that we used are WORD, WSPACE(for white spaces) and some special characters like _$_, _*_, _>_, etc. Values for the latter correspond to ther ASCII values or in case of double characters (like << or >>) to their ASCII value + 100
+* We decided to expand _*_ in tokenization and _$_ in token simplification, since it was easier to do this at earlier stages
+* In token simplification we fuse some tokens (mainly quotes) and remove others (like white spaces)
+* In parsing we open files, initiate heredoc (if any) and creates future commands
+* Then we do the execution! Before any _execve_ we check whether a current cmd is builtin or not. We also decided to wait for every child in case of pipe(s) in order to always have a proper output when all or some of the incoming cmds work with the same file. Without _waitpid_ output order or its content for cmds like _echo one > f1 | echo two >> f2 | echo three >> f3_ can be messed up
+* We have several structures: one is integral (*t_input*) and is used almost in any other function. Another important structure is *t_cmd* that is actually a linked list. One command is one linked list that consists of command arguments, input and output fds (0 and 1 by default), input and output file names, delimiter (if any) and pipe flag. We also have two other linked lists: one for tokens and another one for envp. Envp are also saved in the _char**_ form in order to be able to send it into another _./minishell_
 
 ## **Testing**
 The project was tested by us and peers
@@ -62,9 +72,18 @@ The project was tested by us and peers
 **libft** - libft library
 
 ## **Useful resources**
-* []() 
+* Tutorials on how to create basic shells: [one](http://www.dmulholl.com/lets-build/a-command-line-shell.html) and [two](https://brennan.io/2015/01/16/write-a-shell-in-c/)
+* Another cool [tutorail](https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf) on writing one's own shell that helped me (baltsaros) a lot!
+* Bash manuals: [one](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/) and [two](https://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html). I (baltsaros) prefer the second one
+* [Wiki](https://en.wikipedia.org/wiki/Lexical_analysis) on lexer(tokenization)
+* [Guide](https://ruslanspivak.com/lsbasi-part1/) on how to build a basic interpreter
+* Big [collection](https://www.notion.so/Minishell-Materials-7bbd45a806e04395ab578ca3f805806c) of various links for minishell that I (baltsaros) forgot about :upside_down_face:
+* [Dot art](https://emojicombos.com/dot-art-generator) :octocat:
+* [Thread](https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux) about colors
+
 
 ## **Tips**
+* Read through the subject with your partner and divide the parts
 * Ask peers
 * Google
 * Keep going

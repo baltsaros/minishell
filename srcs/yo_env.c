@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:50 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/21 19:34:27 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/26 10:45:46 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static void	env_error(char *str)
 	write(2, ": No such file or directory\n", 28);
 }
 
+// print only envp that have values
 int	yo_env(t_input *data)
 {
 	t_env	*tmp;

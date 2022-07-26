@@ -6,12 +6,13 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:29:59 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/25 09:28:52 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/26 10:11:42 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+// wait for an unclosed pipe to be closed
 static int	check_pipe(char **buf, char *msg, char c, t_input *data)
 {
 	char	*tmp;
@@ -31,6 +32,7 @@ static int	check_pipe(char **buf, char *msg, char c, t_input *data)
 	return (0);
 }
 
+// wait for unclosed quotes to be closed
 static int	read_after(char **buf, char *msg, char c, t_input *data)
 {
 	char	*tmp;
@@ -50,6 +52,7 @@ static int	read_after(char **buf, char *msg, char c, t_input *data)
 	return (0);
 }
 
+// syntax check for pipe
 static int	before_pipe(char *str, int i)
 {
 	printf("before pipe\n");
@@ -72,6 +75,7 @@ static int	before_pipe(char *str, int i)
 	return (0);
 }
 
+// check for unclosed quotes and pipes
 int	check_field(t_input *data, char *str)
 {
 	int	type;
@@ -101,6 +105,7 @@ int	check_field(t_input *data, char *str)
 	return (0);
 }
 
+// check for white space in input
 int	is_right_buf(char *buf)
 {
 	int	i;

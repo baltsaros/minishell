@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:08 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/25 12:36:50 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/26 10:47:44 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static void	error_msg(char *s)
 	g_status = 1;
 }
 
+// remove envp from linked lists
 static int	check_envp(char *s, t_env *envp_n, int n)
 {
 	if (!envp_n)
@@ -42,6 +43,7 @@ static int	check_envp(char *s, t_env *envp_n, int n)
 	return (0);
 }
 
+// remove envp from char**
 static void	remove_envp(t_input *data, char *type)
 {
 	int		size;
