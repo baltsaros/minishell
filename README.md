@@ -84,10 +84,6 @@ The project was tested by us and peers
 
 ## **Tips**
 * Read through the subject with your partner and divide the parts
-* Ask peers
-* Google
-* Keep going
-* Test
-* Rewrite
-* Test
+* Ask peers how they approached the project
+* Learn about lexer and parser
 * 
