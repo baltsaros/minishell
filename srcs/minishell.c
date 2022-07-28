@@ -12,6 +12,8 @@
 
 #include "../include/minishell.h"
 
+int	g_status;
+
 void	prompt(t_input *data)
 {
 	while (1)

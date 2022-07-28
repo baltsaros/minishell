@@ -28,7 +28,7 @@
 # include <errno.h>
 
 // global var
-int	g_status;
+extern int	g_status;
 
 // enum for tokens
 enum e_tokens
