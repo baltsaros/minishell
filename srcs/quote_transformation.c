@@ -89,7 +89,6 @@ t_node	*fuse_prev_elem(t_node *elem, t_input *data, int type)
 	str_2 = elem->value;
 	elem->value = ms_strjoin_free(str, str_2, data);
 	tmp->type = 0;
-	// delete_node(tmp);
 	free(str_2);
 	return (elem);
 }
