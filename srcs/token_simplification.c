@@ -80,6 +80,7 @@ int	token_simplification(t_input *data)
 		return (1);
 	if (quote_transformation(elem, data) == 1)
 		return (1);
+	// ms_token_print(elem);
 	if (general_simplification(elem) == 1)
 		return (1);
 	if (delete_useless_wspace(elem) == 1)

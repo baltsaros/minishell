@@ -16,22 +16,18 @@ t_node	*delete_node(t_node *elem)
 {
 	t_node	*tmp;
 
-	if (!elem || !elem->next)
+	if (!elem)
+		return (NULL);
+	if (!elem->next)
 		return (elem);
 	tmp = elem;
 	elem = elem->next;
 	if (!tmp->prev)
-	{
 		elem->prev = NULL;
-	}
 	else
-	{
 		elem->prev = tmp->prev;
-	}
 	if (elem->prev)
-	{
 		elem->prev->next = elem;
-	}
 	free(tmp->value);
 	free(tmp);
 	return (elem);
@@ -91,8 +87,9 @@ t_node	*fuse_prev_elem(t_node *elem, t_input *data, int type)
 	}
 	str = ms_strdup(tmp->value, data);
 	str_2 = elem->value;
-	tmp = delete_node(tmp);
 	elem->value = ms_strjoin_free(str, str_2, data);
+	tmp->type = 0;
+	// delete_node(tmp);
 	free(str_2);
 	return (elem);
 }
