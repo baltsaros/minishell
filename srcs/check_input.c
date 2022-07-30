@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:29:59 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/26 10:11:42 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/30 19:57:16 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,15 @@ static int	check_pipe(char **buf, char *msg, char c, t_input *data)
 }
 
 // wait for unclosed quotes to be closed
-static int	read_after(char **buf, char *msg, char c, t_input *data)
+static int	read_after(char **buf, char c, t_input *data)
 {
 	char	*tmp;
+	char	*msg;
 
+	if (c = '\'')
+		msg = ms_strdup("quote> ", data);
+	else
+		msg = ms_strdup("dquote> ", data);
 	while (1)
 	{
 		tmp = readline(msg);
@@ -49,13 +54,13 @@ static int	read_after(char **buf, char *msg, char c, t_input *data)
 		}
 		free(tmp);
 	}
+	free(msg);
 	return (0);
 }
 
 // syntax check for pipe
 static int	before_pipe(char *str, int i)
 {
-	printf("before pipe\n");
 	if (!str[i])
 	{
 		write(2, "YAMSP: ", 7);
@@ -89,10 +94,11 @@ int	check_field(t_input *data, char *str)
 			data->i++;
 			while (str[data->i] && str[data->i] != type)
 				data->i++;
-			if (!str[data->i] && type == '\'')
-				read_after(&data->buf, "quote> ", type, data);
-			else if (!str[data->i] && type == '\"')
-				read_after(&data->buf, "dquote> ", type, data);
+			if (!str[data->i] && (type == '\'' || type == '\"'))
+			{
+				read_after(&data->buf, type, data);
+				break ;
+			}
 		}
 		data->i++;
 	}
