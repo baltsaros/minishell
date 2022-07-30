@@ -86,9 +86,15 @@ int	check_field(t_input *data, char *str)
 			while (str[data->i] && str[data->i] != type)
 				data->i++;
 			if (!str[data->i] && type == '\'')
+			{
 				read_after(&data->buf, "quote> ", type, data);
+				break ;
+			}
 			else if (!str[data->i] && type == '\"')
+			{
 				read_after(&data->buf, "dquote> ", type, data);
+				break ;
+			}
 		}
 		data->i++;
 	}
