@@ -1,6 +1,6 @@
 #include "../include/minishell.h"
 
-void	all_flags(t_node *elem)
+void	init_all_flags(t_node *elem)
 {
 	while (elem)
 	{
@@ -11,7 +11,7 @@ void	all_flags(t_node *elem)
 
 int	add_flags(t_node *elem)
 {
-	all_flags(elem);
+	init_all_flags(elem);
 	while (elem)
 	{
 		if (elem->type == QUOTE)
