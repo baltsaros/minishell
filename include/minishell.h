@@ -296,7 +296,6 @@ int		expanding_variables(t_node *elem, t_input *data);
 // token simplification utils 2
 int		delete_useless_wspace(t_node *elem);
 char	*ms_getenv(char *var, t_input *data);
-int		is_between_p(t_node	*args);
 
 // dollar simplification braces
 void	dollar_braces_2(t_node *elem, t_input *data);

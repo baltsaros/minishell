@@ -86,7 +86,7 @@ int	expanding_variables(t_node *elem, t_input *data)
 {
 	while (elem)
 	{
-		if (!is_between_p(elem) || elem->flag == B_QUOTE)
+		if (elem->flag == B_QUOTE_P || elem->flag == B_QUOTE)
 			elem->type = WORD;
 		if (elem->type == DOLLAR)
 			dollar_management(elem, data);

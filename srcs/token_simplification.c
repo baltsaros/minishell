@@ -76,6 +76,7 @@ int	token_simplification(t_input *data)
 	elem = data->args;
 	if (add_flags(elem) == 1)
 		return (1);
+	// ms_token_print(elem);
 	if (expanding_variables(elem, data) == 1)
 		return (1);
 	if (word_total_fusion(elem, data) == 1)
