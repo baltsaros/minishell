@@ -76,10 +76,18 @@ enum e_simplier_tokens
 	EMPTY_ARG	= 133
 };
 
+enum b_flags
+{
+	B_QUOTE		= 135,
+	B_QUOTE_D	= 136,
+	B_QUOTE_P	= 137
+};
+
 // struct for tokens (+ wildcard) linked lists
 typedef struct s_node
 {
 	int				type;
+	int				flag;
 	char			*value;
 	int				i;
 	struct s_node	*next;
@@ -299,6 +307,9 @@ t_node	*dollar_token_simplification(t_node *elem, t_input *data);
 
 // word total
 int		word_total_fusion(t_node *elem, t_input *data);
+
+// add flags
+int	add_flags(t_node *elem);
 
 t_node	*fuse_between_quotes(t_node *elem, t_input *data, int type);
 

@@ -43,6 +43,7 @@ SRC_FILES	= minishell.c \
 				dollar_simplification.c \
 				quote_transformation.c \
 				word_total.c \
+				add_flags.c \
 				syntax_checker.c
 SRCS		= $(notdir $(SRC_FILES))
 

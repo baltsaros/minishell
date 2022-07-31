@@ -88,6 +88,8 @@ int	expanding_variables(t_node *elem, t_input *data)
 	{
 		if (!is_between_p(elem))
 			elem->type = WORD;
+		if (elem->flag == B_QUOTE)
+			elem->type = WORD;
 		if (elem->type == DOLLAR)
 			dollar_management(elem, data);
 		if (!elem->next)

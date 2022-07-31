@@ -74,6 +74,8 @@ int	token_simplification(t_input *data)
 	t_node	*elem;
 
 	elem = data->args;
+	if (add_flags(elem) == 1)
+		return (1);
 	if (expanding_variables(elem, data) == 1)
 		return (1);
 	if (word_total_fusion(elem, data) == 1)
@@ -84,5 +86,6 @@ int	token_simplification(t_input *data)
 		return (1);
 	if (delete_useless_wspace(elem) == 1)
 		return (1);
+	// ms_token_print(elem);
 	return (0);
 }
