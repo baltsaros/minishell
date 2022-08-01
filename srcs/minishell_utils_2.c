@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:39:17 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/01 14:43:22 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/01 15:50:56 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	ms_free_node_elems(t_env *tmp)
 	if (tmp->value)
 		free(tmp->value);
 	free(tmp);
+	tmp = NULL;
 }
 
 int	error_check_noexit(int input, char *str, int n, t_input *data)
