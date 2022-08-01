@@ -72,6 +72,7 @@ The project was tested by us and peers
 **libft** - libft library
 
 ## **Useful resources**
+* [Interactive tutorial](https://learngitbranching.js.org/) on git branching
 * Tutorials on how to create basic shells: [one](http://www.dmulholl.com/lets-build/a-command-line-shell.html) and [two](https://brennan.io/2015/01/16/write-a-shell-in-c/)
 * Another cool [tutorail](https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf) on writing one's own shell that helped me (baltsaros) a lot!
 * Bash manuals: [one](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/) and [two](https://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html). I (baltsaros) prefer the second one
