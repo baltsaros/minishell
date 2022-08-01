@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:29:59 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/30 19:57:16 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/01 13:43:40 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	read_after(char **buf, char c, t_input *data)
 	char	*tmp;
 	char	*msg;
 
-	if (c = '\'')
+	if (c == '\'')
 		msg = ms_strdup("quote> ", data);
 	else
 		msg = ms_strdup("dquote> ", data);
@@ -90,8 +90,7 @@ int	check_field(t_input *data, char *str)
 	{
 		if (str[data->i] == '\'' || str[data->i] == '\"')
 		{
-			type = str[data->i];
-			data->i++;
+			type = str[data->i++];
 			while (str[data->i] && str[data->i] != type)
 				data->i++;
 			if (!str[data->i] && (type == '\'' || type == '\"'))
