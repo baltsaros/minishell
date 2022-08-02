@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_simplification.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/25 09:27:35 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/02 17:23:15 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,16 +64,12 @@ int	general_simplification(t_node *elem)
 			in_arg_management(elem);
 		else if (elem->type == BR_L)
 		{
-			if (elem->next && elem->next->flag != B_QUOTE_P)
-				elem->type = WORD;
-			else if (!elem->next)
+			if ((!elem->next) || (elem->next && elem->next->flag != B_QUOTE_P))
 				elem->type = WORD;
 		}
 		else if (elem->type == BR_R)
 		{
-			if (elem->prev && elem->prev->flag != B_QUOTE_P)
-				elem->type = WORD;
-			else if (!elem->prev)
+			if ((!elem->prev) || (elem->prev && elem->prev->flag != B_QUOTE_P))
 				elem->type = WORD;
 		}
 		if (!elem->next)
@@ -94,13 +90,11 @@ int	token_simplification(t_input *data)
 		return (1);
 	if (word_total_fusion(elem, data) == 1)
 		return (1);
-	// ms_token_print(elem);
 	if (quote_transformation(elem, data) == 1)
 		return (1);
 	if (general_simplification(elem) == 1)
 		return (1);
 	if (delete_useless_wspace(elem) == 1)
 		return (1);
-	// ms_token_print(elem);
 	return (0);
 }
