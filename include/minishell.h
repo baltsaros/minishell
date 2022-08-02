@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/02 16:03:55 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/02 16:18:56 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@
 // global var
 int	g_status;
 
-// enum for tokens
+// enum for tokens; values correspond to ASCII values or
+// to the ASCII value + 100 for double symbols like << or >>
 enum e_tokens
 {
 	DOLLAR		= 36,
@@ -61,6 +62,7 @@ enum e_tokens
 	BRACES_R	= 125
 };
 
+// simplified tokens
 enum e_simplier_tokens
 {
 	ENV_VA		= 37,
@@ -118,7 +120,8 @@ typedef struct s_env
 	struct s_env	*prev;
 }	t_env;
 
-// main structure
+// main structure; some variables serve as counters or
+// tmp variables; praise the Norm!
 typedef struct s_input
 {
 	int					i;
@@ -218,6 +221,7 @@ char	*access_check(char *cmd[], t_input *data);
 void	ms_execve(char *argv[], t_input *data);
 void	set_std(t_input *data, int in, int out);
 void	close_fds(int fd1, int f2);
+int		is_builtin(t_input *data, t_cmd *cmds);
 
 // builtins
 int		yo_pwd(t_input *data);

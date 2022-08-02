@@ -6,12 +6,13 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:25 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/22 09:28:58 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/26 10:41:46 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+// check for builtin and execute it if it exists
 int	check_builtin(t_input *data, t_cmd *cmds)
 {
 	int	i;
@@ -30,6 +31,7 @@ int	check_builtin(t_input *data, t_cmd *cmds)
 	return (0);
 }
 
+// reads from stdin and saves it in tmp file; stops in case of ctrl+d or ctrl+c
 void	ms_heredoc(char *limiter, t_cmd *elem, t_input *data)
 {
 	char	*line;
@@ -58,6 +60,7 @@ void	ms_heredoc(char *limiter, t_cmd *elem, t_input *data)
 	exit(0);
 }
 
+// fork for all cmds except the last one; dup2 input and output files
 void	ms_fork(char *argv[], t_input *data)
 {
 	int	fd[2];
@@ -70,7 +73,7 @@ void	ms_fork(char *argv[], t_input *data)
 		if (data->cmds->in_arg)
 			error_check(dup2(data->cmds->in, STDIN_FILENO),
 				"In dup2_inP ", 13, data);
-		if (data->cmds->out_arg && !check_builtin(data, data->cmds))
+		if (data->cmds->out_arg && !is_builtin(data, data->cmds))
 			error_check(dup2(data->cmds->out, STDOUT_FILENO),
 				"In dup2_inP ", 13, data);
 		else
@@ -81,6 +84,7 @@ void	ms_fork(char *argv[], t_input *data)
 		else
 			ms_execve(argv, data);
 	}
+	waitpid(data->pid, &g_status, 0);
 	close(data->cmds->in);
 	error_check(dup2(fd[0], STDIN_FILENO), "In Dup2_pr ", 12, data);
 	close(fd[1]);
@@ -94,6 +98,8 @@ int	pipex(t_input *data)
 		ms_fork(data->cmds->cmd, data);
 		data->cmds = data->cmds->next;
 	}
+	error_check(dup2(data->cmds->in, STDIN_FILENO),
+		"In dup2_inP ", 13, data);
 	error_check(dup2(data->cmds->out, STDOUT_FILENO),
 		"In dup2_outP ", 14, data);
 	if (check_builtin(data, data->cmds))
@@ -104,6 +110,8 @@ int	pipex(t_input *data)
 	return (0);
 }
 
+// if there is no pipe or no builtin, execute simple command
+// otherwise do pipex or execute builtin (without fork)
 int	execute(t_input *data)
 {
 	if (signal(SIGINT, signal_fork) == SIG_ERR

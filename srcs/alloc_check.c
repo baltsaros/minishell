@@ -6,12 +6,13 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:29:45 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/20 09:29:46 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/26 10:12:07 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+// allocation check for ft functions from libft
 void	alloc_check_big(char **str, t_input *data)
 {
 	if (!str)

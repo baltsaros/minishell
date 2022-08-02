@@ -6,12 +6,13 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:18 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/21 16:18:36 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/26 10:27:07 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+// find PATH envp, split it into several paths and append cmd to it
 char	**get_address(char *cmd[], char *envp[], t_input *data)
 {
 	char	**env;
@@ -33,6 +34,7 @@ char	**get_address(char *cmd[], char *envp[], t_input *data)
 	return (env);
 }
 
+// check whether the cmd exists or not
 char	*access_check(char *cmd[], t_input *data)
 {
 	char	**env;
@@ -60,6 +62,7 @@ char	*access_check(char *cmd[], t_input *data)
 	return (ret);
 }
 
+// execution with both absolute and relative paths
 void	ms_execve(char **argv, t_input *data)
 {
 	if (argv[0][0] == '/')

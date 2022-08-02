@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:00 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/21 22:38:29 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/26 10:47:06 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static int	check_duplicate(t_input *data, char *type, char *value)
 	return (1);
 }
 
+// print all envp, including ones without values
 static void	print_envp(t_input *data, t_env *envp)
 {
 	t_env	*tmp;
@@ -57,6 +58,7 @@ static void	error_msg(void)
 	g_status = 1;
 }
 
+// update linked list envp
 static void	export_var(t_input *data, char *s)
 {
 	data->i = 0;

@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:08 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/25 12:36:50 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/01 15:49:33 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static void	error_msg(char *s)
 	g_status = 1;
 }
 
-static int	check_envp(char *s, t_env *envp_n, int n)
+// remove envp from linked lists
+static int	check_envp(char *s, t_env *envp_n, int n, t_input *data)
 {
 	if (!envp_n)
 		return (0);
@@ -29,6 +30,11 @@ static int	check_envp(char *s, t_env *envp_n, int n)
 	{
 		error_msg(s);
 		return (0);
+	}
+	if (!ft_strncmp(s, data->envp_n->type, n))
+	{
+		data->envp_n = ms_envp_del(data->envp_n);
+		return (1);
 	}
 	while (envp_n)
 	{
@@ -42,6 +48,7 @@ static int	check_envp(char *s, t_env *envp_n, int n)
 	return (0);
 }
 
+// remove envp from char**
 static void	remove_envp(t_input *data, char *type)
 {
 	int		size;
@@ -79,7 +86,7 @@ int	yo_unset(t_input *data)
 	while (data->cmds->cmd[i])
 	{
 		len = ft_strlen(data->cmds->cmd[i]) + 1;
-		if (check_envp(data->cmds->cmd[i], data->envp_n, len))
+		if (check_envp(data->cmds->cmd[i], data->envp_n, len, data))
 			remove_envp(data, data->cmds->cmd[i]);
 		++i;
 	}

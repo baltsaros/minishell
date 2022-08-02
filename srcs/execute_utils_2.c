@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:21 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/21 22:22:48 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/26 10:27:32 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,19 @@ char	*ms_charjoin_free(char *line, char b, t_input *data)
 	unis[i + 1] = 0;
 	free(line);
 	return (unis);
+}
+
+int	is_builtin(t_input *data, t_cmd *cmds)
+{
+	int	i;
+
+	i = 0;
+	while (i < 7)
+	{
+		if (ft_strcmp(cmds->cmd[0], data->builtins[i].name))
+			++i;
+		else
+			return (1);
+	}
+	return (0);
 }
