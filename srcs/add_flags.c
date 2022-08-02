@@ -20,50 +20,48 @@ int	is_p_closed(t_node *elem)
 	return (1);
 }
 
+t_node	*change_flags(t_node *elem, int type, int flag)
+{
+	if (elem->next && elem->next->type != type)
+	{
+		elem = elem->next;
+		while (elem && elem->type != type)
+		{
+			elem->flag = flag;
+			elem = elem->next;
+		}
+	}
+	return (elem);
+}
+
+t_node	*change_flag_p(t_node *elem)
+{
+	if (elem->next && elem->next->type != BR_R)
+	{
+		elem = elem->next;
+		if (!is_p_closed(elem))
+		{
+			while (elem && elem->type != BR_R)
+			{
+				elem->flag = B_QUOTE_P;
+				elem = elem->next;
+			}
+		}
+	}
+	return (elem);
+}
+
 int	add_flags(t_node *elem)
 {
 	init_all_flags(elem);
 	while (elem)
 	{
 		if (elem->type == QUOTE)
-		{
-			if (elem->next && elem->next->type != QUOTE)
-			{
-				elem = elem->next;
-				while (elem && elem->type != QUOTE)
-				{
-					elem->flag = B_QUOTE;
-					elem = elem->next;
-				}
-			}
-		}
+			elem = change_flags(elem, QUOTE, B_QUOTE);
 		else if (elem->type == QUOTE_D)
-		{
-			if (elem->next && elem->next->type != QUOTE_D)
-			{
-				elem = elem->next;
-				while (elem && elem->type != QUOTE_D)
-				{
-					elem->flag = B_QUOTE_D;
-					elem = elem->next;
-				}
-			}
-		}
+			elem = change_flags(elem, QUOTE_D, B_QUOTE_D);
 		else if (elem->type == BR_L)
-		{
-			if (elem->next && elem->next->type != BR_R)
-			{
-				elem = elem->next;
-				if (!is_p_closed(elem))
-				{
-					while (elem && elem->type != BR_R)
-					{
-						elem->flag = B_QUOTE_P;
-						elem = elem->next;
-					}
-				}
-			}
-		}
+			elem = change_flag_p(elem);
 		if (!elem || !elem->next)
 			break ;
 		elem = elem->next;
