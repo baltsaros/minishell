@@ -6,11 +6,22 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 14:22:15 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/22 16:30:57 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/02 17:45:28 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+int	is_a_right_type(t_node *args)
+{
+	if (args->type == WORD || args->type == ASTER
+			|| args->type == EXECUTABLE || args->type == ENV_VA
+			|| args->type == ENV_VA_BR || args->type == ENV_P
+			|| args->type == DOLLAR_VAR || args->type == SLASH
+			|| args->type == EQUAL)
+		return (0);
+	return (1);
+}
 
 char	**init_cmd(t_node *args, t_input *data)
 {
@@ -27,11 +38,7 @@ char	**init_cmd(t_node *args, t_input *data)
 	{
 		if (args->type != QUOTE_D && args->type != QUOTE)
 		{
-			if (args->type == WORD || args->type == ASTER
-				|| args->type == EXECUTABLE || args->type == ENV_VA
-				|| args->type == ENV_VA_BR || args->type == ENV_P
-				|| args->type == DOLLAR_VAR || args->type == SLASH
-				|| args->type == EQUAL)
+			if (!is_a_right_type(args))
 				str[i++] = ms_strdup(args->value, data);
 			else if (args->type == EMPTY_ARG)
 				str[i++] = ms_strdup("\0", data);

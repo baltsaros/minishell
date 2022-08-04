@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/26 10:43:26 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/02 16:18:56 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,18 @@ enum e_simplier_tokens
 	EMPTY_ARG	= 133
 };
 
+enum b_flags
+{
+	B_QUOTE		= 135,
+	B_QUOTE_D	= 136,
+	B_QUOTE_P	= 137
+};
+
 // struct for tokens (+ wildcard) linked lists
 typedef struct s_node
 {
 	int				type;
+	int				flag;
 	char			*value;
 	int				i;
 	struct s_node	*next;
@@ -292,7 +300,6 @@ int		expanding_variables(t_node *elem, t_input *data);
 // token simplification utils 2
 int		delete_useless_wspace(t_node *elem);
 char	*ms_getenv(char *var, t_input *data);
-int		is_between_p(t_node	*args);
 
 // dollar simplification braces
 void	dollar_braces_2(t_node *elem, t_input *data);
@@ -303,6 +310,9 @@ t_node	*dollar_token_simplification(t_node *elem, t_input *data);
 
 // word total
 int		word_total_fusion(t_node *elem, t_input *data);
+
+// add flags
+int	add_flags(t_node *elem);
 
 t_node	*fuse_between_quotes(t_node *elem, t_input *data, int type);
 

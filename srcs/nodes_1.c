@@ -87,6 +87,7 @@ void	ms_token_print(t_node *node)
 	{
 		printf("type for node[%d] is %d\n", i, node->type);
 		printf("value for node[%d] is %s\n", i, node->value);
+		printf("flag for node[%d] is %d\n", i, node->flag);
 		node = node->next;
 		++i;
 	}
