@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:34 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/22 15:28:11 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/26 10:36:26 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	create_token(t_input *data, char *str, int len, int type)
 	ms_token_back(&data->args, data->node_tmp);
 }
 
+// find unquoted asterisks and change token type
 void	check_asterisk(t_input *data)
 {
 	t_node	*tmp;
@@ -43,6 +44,7 @@ void	check_asterisk(t_input *data)
 	}
 }
 
+// check for the second quote or character
 void	check_next(t_input *data, size_t *i)
 {
 	int	type;
@@ -66,6 +68,7 @@ void	check_next(t_input *data, size_t *i)
 	++(*i);
 }
 
+// white space is also considered as a token
 void	tokenization(t_input *data)
 {
 	size_t	i;

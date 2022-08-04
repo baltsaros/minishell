@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/22 15:35:46 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/04 10:41:55 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@
 // global var
 int	g_status;
 
-// enum for tokens
+// enum for tokens; values correspond to ASCII values or
+// to the ASCII value + 100 for double symbols like << or >>
 enum e_tokens
 {
 	DOLLAR		= 36,
@@ -61,6 +62,7 @@ enum e_tokens
 	BRACES_R	= 125
 };
 
+// simplified tokens
 enum e_simplier_tokens
 {
 	ENV_VA		= 37,
@@ -76,10 +78,18 @@ enum e_simplier_tokens
 	EMPTY_ARG	= 133
 };
 
+enum e_b_flags
+{
+	B_QUOTE		= 135,
+	B_QUOTE_D	= 136,
+	B_QUOTE_P	= 137
+};
+
 // struct for tokens (+ wildcard) linked lists
 typedef struct s_node
 {
 	int				type;
+	int				flag;
 	char			*value;
 	int				i;
 	struct s_node	*next;
@@ -110,7 +120,8 @@ typedef struct s_env
 	struct s_env	*prev;
 }	t_env;
 
-// main structure
+// main structure; some variables serve as counters or
+// tmp variables; praise the Norm!
 typedef struct s_input
 {
 	int					i;
@@ -210,6 +221,7 @@ char	*access_check(char *cmd[], t_input *data);
 void	ms_execve(char *argv[], t_input *data);
 void	set_std(t_input *data, int in, int out);
 void	close_fds(int fd1, int f2);
+int		is_builtin(t_input *data, t_cmd *cmds);
 
 // builtins
 int		yo_pwd(t_input *data);
@@ -288,7 +300,6 @@ int		expanding_variables(t_node *elem, t_input *data);
 // token simplification utils 2
 int		delete_useless_wspace(t_node *elem);
 char	*ms_getenv(char *var, t_input *data);
-int		is_between_p(t_node	*args);
 
 // dollar simplification braces
 void	dollar_braces_2(t_node *elem, t_input *data);
@@ -299,6 +310,9 @@ t_node	*dollar_token_simplification(t_node *elem, t_input *data);
 
 // word total
 int		word_total_fusion(t_node *elem, t_input *data);
+
+// add flags
+int	add_flags(t_node *elem);
 
 t_node	*fuse_between_quotes(t_node *elem, t_input *data, int type);
 

@@ -6,12 +6,13 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:38:53 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/25 10:54:46 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/07/26 10:33:57 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+// signals for main
 void	signal_main(int signo)
 {
 	(void)signo;
@@ -22,6 +23,7 @@ void	signal_main(int signo)
 	g_status = 130;
 }
 
+// signals for forks
 void	signal_fork(int signo)
 {
 	kill(-2, signo);
@@ -30,6 +32,7 @@ void	signal_fork(int signo)
 	rl_on_new_line();
 }
 
+// signals for heredoc
 void	signal_hd(int signo)
 {
 	(void)signo;

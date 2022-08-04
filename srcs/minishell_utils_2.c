@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:39:17 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/25 10:46:48 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/01 15:50:56 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	ft_strcmp(char *s1, char *s2)
 	return (s1[i] - s2[i]);
 }
 
+// hidden gem
 void	*ms_malloc(size_t n, t_input *data)
 {
 	void	*ptr;
@@ -64,6 +65,7 @@ void	ms_free_node_elems(t_env *tmp)
 	if (tmp->value)
 		free(tmp->value);
 	free(tmp);
+	tmp = NULL;
 }
 
 int	error_check_noexit(int input, char *str, int n, t_input *data)

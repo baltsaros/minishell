@@ -6,12 +6,13 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:05 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/22 15:28:27 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/02 19:09:33 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+// creation of envp variable in linked list form
 static void	create_envp(t_input *data, char *envp[])
 {
 	int	i;
@@ -36,6 +37,7 @@ static void	create_envp(t_input *data, char *envp[])
 	data->envp_len = i;
 }
 
+// creation of envp variable in char** form
 static void	copy_envp(t_input *data, char *envp[])
 {
 	int	size;
@@ -86,7 +88,7 @@ void	data_init(t_input *data)
 	if (data->argc == 1 && !ft_strcmp(data->buf, "secret"))
 	{
 		free(data->prompt);
-		data->prompt = ms_strdup("🤓 YAMSP-1.7 🤓 $ ", data);
+		data->prompt = ms_strdup("🌞 YAMSP-1.7 🌞 $ ", data);
 		secret_mode();
 	}
 	else if (data->argc == 1 && !ft_strcmp(data->buf, "uwu"))
