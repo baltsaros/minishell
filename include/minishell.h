@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/02 16:18:56 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/04 10:41:55 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ enum e_simplier_tokens
 	EMPTY_ARG	= 133
 };
 
-enum b_flags
+enum e_b_flags
 {
 	B_QUOTE		= 135,
 	B_QUOTE_D	= 136,
