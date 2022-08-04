@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 14:47:50 by mthiry            #+#    #+#             */
-/*   Updated: 2022/07/26 10:09:18 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/04 10:38:32 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,21 +57,5 @@ int	parsing(t_input *data)
 	data->cmds = parse_cmd(data);
 	if (!data->cmds || !data->exec)
 		return (1);
-	// t_cmd	*tmp;
-	// tmp = data->cmds;
-	// while (tmp)
-	// {
-	// 	for (int i = 0; i != tmp->len_cmd; i++)
-	// 		printf("cmd[%d]: %s\n", i, tmp->cmd[i]);
-	// 	printf("len_cmd: %d\n", tmp->len_cmd);
-	// 	printf("delim: %s\n", tmp->delim);
-	// 	printf("in: %d\n", tmp->in);
-	// 	printf("in arg: %s\n", tmp->in_arg);
-	// 	printf("out: %d\n", tmp->out);
-	// 	printf("out arg: %s\n", tmp->out_arg);
-	// 	printf("pipe: %d\n", tmp->pipe);
-	// 	printf("[NEXT]\n");
-	// 	tmp = tmp->next;
-	// }
 	return (0);
 }
