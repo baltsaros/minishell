@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils_3.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 14:22:15 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/04 10:26:04 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/04 10:55:01 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 int	is_a_right_type(t_node *args)
 {
 	if (args->type == WORD || args->type == ASTER
-			|| args->type == EXECUTABLE || args->type == ENV_VA
-			|| args->type == ENV_VA_BR || args->type == ENV_P
-			|| args->type == DOLLAR_VAR || args->type == SLASH
-			|| args->type == EQUAL)
+		|| args->type == EXECUTABLE || args->type == ENV_VA
+		|| args->type == ENV_VA_BR || args->type == ENV_P
+		|| args->type == DOLLAR_VAR || args->type == SLASH
+		|| args->type == EQUAL)
 		return (0);
 	return (1);
 }

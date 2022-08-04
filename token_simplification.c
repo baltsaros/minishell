@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_simplification.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/04 10:26:25 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/04 10:55:10 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,11 @@ int	general_simplification(t_node *elem)
 	{
 		if (elem->type == WORD && !ft_strncmp(elem->value, "./", 2))
 			elem->type = EXECUTABLE;
-		else if ((elem->type == REDIR_OUT || elem->type == REDIR_AP) && elem->next)
+		else if ((elem->type == REDIR_OUT
+				|| elem->type == REDIR_AP) && elem->next)
 			out_arg_management(elem);
-		else if ((elem->type == REDIR_IN || elem->type == REDIR_HD) && elem->next)
+		else if ((elem->type == REDIR_IN
+				|| elem->type == REDIR_HD) && elem->next)
 			in_arg_management(elem);
 		else if (elem->type == BR_L)
 		{
