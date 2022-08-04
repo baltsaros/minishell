@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 14:22:06 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/04 10:26:06 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/04 11:28:17 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ int	redirection_out(t_node *args, t_cmd *elem, t_input *data)
 
 int	redirection_check(t_node *args, t_cmd *elem, t_input *data)
 {
-	if (args->value && args->value[0] == '<')
+	if (args->value && (args->type == REDIR_IN || args->type == REDIR_HD))
 		return (redirection_in(args, elem, data));
-	else if (args->value && args->value[0] == '>')
+	else if (args->value && (args->type == REDIR_OUT || args->type == REDIR_AP))
 		return (redirection_out(args, elem, data));
 	return (0);
 }

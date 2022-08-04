@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_simplification_utils.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:30:33 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/04 10:26:22 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/04 11:36:19 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,9 @@ char	*get_between_braces(t_node *elem, int type1, int type2)
 
 void	dollar_management(t_node *elem, t_input *data)
 {
+	if (!elem->prev 
+		|| (!elem->next || (elem->next && elem->next->type == WSPACE)))
+			elem->type = WORD;
 	elem = dollar_token_simplification(elem, data);
 	if (elem->type == ENV_VA)
 		elem->value = ms_strdup(ms_getenv(elem->value + 1, data), data);

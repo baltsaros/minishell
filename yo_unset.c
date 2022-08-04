@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   yo_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:08 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/04 10:27:05 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/04 11:42:17 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int	yo_unset(t_input *data)
 	int	len;
 
 	i = 1;
+	g_status = 0;
 	while (data->cmds->cmd[i])
 	{
 		len = ft_strlen(data->cmds->cmd[i]) + 1;
@@ -90,6 +91,5 @@ int	yo_unset(t_input *data)
 			remove_envp(data, data->cmds->cmd[i]);
 		++i;
 	}
-	g_status = 0;
 	return (0);
 }
