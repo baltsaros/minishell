@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/02 16:18:56 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/04 10:34:27 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	g_status;
 
 // enum for tokens; values correspond to ASCII values or
 // to the ASCII value + 100 for double symbols like << or >>
+
 enum e_tokens
 {
 	DOLLAR		= 36,
@@ -312,7 +313,7 @@ t_node	*dollar_token_simplification(t_node *elem, t_input *data);
 int		word_total_fusion(t_node *elem, t_input *data);
 
 // add flags
-int	add_flags(t_node *elem);
+int		add_flags(t_node *elem);
 
 t_node	*fuse_between_quotes(t_node *elem, t_input *data, int type);
 
