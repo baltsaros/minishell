@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:37 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/04 12:23:19 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/04 12:25:37 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ static void	find_files_all(t_input *data, t_node *ast, struct dirent *fname)
 	while (fname)
 	{
 		check = 0;
-		// if (ft_strcmp(fname->d_name, ".") && ft_strcmp(fname->d_name, ".."))
 		if (fname->d_name[0] != '.')
 		{
 			tmp = ms_strjoin_free(tmp, fname->d_name, data);
