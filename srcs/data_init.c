@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:05 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/07/26 10:13:08 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/02 19:09:33 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	data_init(t_input *data)
 	if (data->argc == 1 && !ft_strcmp(data->buf, "secret"))
 	{
 		free(data->prompt);
-		data->prompt = ms_strdup("🤓 YAMSP-1.7 🤓 $ ", data);
+		data->prompt = ms_strdup("🌞 YAMSP-1.7 🌞 $ ", data);
 		secret_mode();
 	}
 	else if (data->argc == 1 && !ft_strcmp(data->buf, "uwu"))
