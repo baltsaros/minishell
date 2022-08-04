@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:38:28 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/04 11:53:58 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/04 12:13:05 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	prompt(t_input *data)
 			{
 				data_init(data);
 				token_simplification(data);
+				// ms_token_print(data->args);
 				if (!parsing(data))
 					execute(data);
 				ms_free_token(data->args);
