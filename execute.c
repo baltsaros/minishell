@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:25 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/04 10:25:07 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/04 10:50:35 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ void	ms_fork(char *argv[], t_input *data)
 		else
 			ms_execve(argv, data);
 	}
-	waitpid(data->pid, &g_status, 0);
 	close(data->cmds->in);
 	error_check(dup2(fd[0], STDIN_FILENO), "In Dup2_pr ", 12, data);
 	close(fd[1]);
