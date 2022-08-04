@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_input.c                                      :+:      :+:    :+:   */
+/*   check_input_1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:29:59 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/04 10:24:48 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/04 21:06:40 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static int	check_pipe(char **buf, char *msg, char c, t_input *data)
 	while (1)
 	{
 		tmp = readline(msg);
+		if (!tmp)
+			return (eof_error(msg, 0));
 		*buf = ms_charjoin_free(*buf, '\n', data);
 		*buf = ms_strjoin_free(*buf, tmp, data);
 		if (!ft_strchr(tmp, c) || !ft_strcmp(tmp, "|"))
@@ -45,6 +47,8 @@ static int	read_after(char **buf, char c, t_input *data)
 	while (1)
 	{
 		tmp = readline(msg);
+		if (!tmp)
+			return (eof_error(msg, 1));
 		*buf = ms_charjoin_free(*buf, '\n', data);
 		*buf = ms_strjoin_free(*buf, tmp, data);
 		if (ft_strchr(tmp, c))
@@ -80,12 +84,8 @@ static int	before_pipe(char *str, int i)
 	return (0);
 }
 
-// check for unclosed quotes and pipes
-int	check_field(t_input *data, char *str)
+static int	check_pipe_quotes(t_input *data, char *str, int type)
 {
-	int	type;
-
-	data->i = 0;
 	while (str[data->i])
 	{
 		if (str[data->i] == '\'' || str[data->i] == '\"')
@@ -95,7 +95,8 @@ int	check_field(t_input *data, char *str)
 				data->i++;
 			if (!str[data->i] && (type == '\'' || type == '\"'))
 			{
-				read_after(&data->buf, type, data);
+				if (read_after(&data->buf, type, data))
+					return (1);
 				break ;
 			}
 		}
@@ -105,25 +106,35 @@ int	check_field(t_input *data, char *str)
 	{
 		if (before_pipe(str, data->i - 2))
 			return (1);
-		check_pipe(&data->buf, "> ", '|', data);
+		if (check_pipe(&data->buf, "> ", '|', data))
+			return (1);
 	}
 	return (0);
 }
 
-// check for white space in input
-int	is_right_buf(char *buf)
+// check for unclosed quotes and pipes
+// i had to add fork in order to handle signals properly
+int	check_field(t_input *data, char *str)
 {
-	int	i;
+	int	type;
+	int	ret;
 
-	i = 0;
-	if (buf[0] == '\0')
-		return (1);
-	while (buf[i])
+	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
+		error_check(-1, "in signals ", 11, data);
+	data->i = 0;
+	type = 0;
+	ret = 1;
+	data->pid = fork();
+	if (data->pid == 0)
 	{
-		if (buf[i] != ' ' && buf[i] != '\t' && buf[i] != '\n'
-			&& buf[i] != '\v' && buf[i] != '\f' && buf[i] != '\r')
-			return (0);
-		i++;
+		if (signal(SIGINT, signal_hd) == SIG_ERR)
+			error_check(-1, "in signals ", 11, data);
+		ret = check_pipe_quotes(data, str, type);
+		return (ret);
 	}
-	return (1);
+	waitpid(data->pid, &g_status, 0);
+	if (WEXITSTATUS(g_status) == 130)
+		return (ret);
+	else
+		exit(g_status);
 }

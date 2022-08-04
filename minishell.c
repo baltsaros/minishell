@@ -6,12 +6,16 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:38:28 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/04 12:25:54 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/04 21:15:25 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// read from input, check whether it is correct or not; if correct,
+// create tokens, simplify them, build commands and execute;
+// then free what is not needed anymore and repeat;
+// check for ctrl+c all the time
 void	prompt(t_input *data)
 {
 	while (1)
@@ -39,6 +43,8 @@ void	prompt(t_input *data)
 	}
 }
 
+// create welcome message; initialize envp variable
+// create prompt's name and then call it
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_input	data;

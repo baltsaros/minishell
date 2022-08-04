@@ -19,7 +19,8 @@ SRCS		= minishell.c \
 				parsing_utils.c \
 				parsing_utils_2.c \
 				parsing_utils_3.c \
-				check_input.c \
+				check_input_1.c \
+				check_input_2.c \
 				data_init.c \
 				tokenization.c \
 				wildcard.c \
@@ -51,7 +52,7 @@ OBJ_DIR		= objs
 OBJ_FILES	= $(SRCS:.c=.o)
 OBJS		= $(addprefix $(OBJ_DIR)/,$(OBJ_FILES))
 
-INCS		= -Iminishell.h -Ilibft
+INCS		= -Ilibft
 
 GCC			= gcc
 RM			= rm -f
