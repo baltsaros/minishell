@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:29:59 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/04 21:06:40 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/05 10:53:17 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,8 @@ int	check_field(t_input *data, char *str)
 	type = 0;
 	ret = 1;
 	data->pid = fork();
+	if (error_check_noexit(data->pid, "In check_input ", 15, data))
+		return (1);
 	if (data->pid == 0)
 	{
 		if (signal(SIGINT, signal_hd) == SIG_ERR)
