@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/04 10:36:15 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/04 10:54:43 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/05 13:23:42 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ t_node	*change_flags(t_node *elem, int type, int flag)
 			elem = elem->next;
 		}
 	}
+	else if (elem->next)
+		elem = elem->next;
 	return (elem);
 }
 
@@ -60,6 +62,8 @@ t_node	*change_flag_p(t_node *elem)
 			}
 		}
 	}
+	else if (elem->next)
+		elem = elem->next;
 	return (elem);
 }
 
