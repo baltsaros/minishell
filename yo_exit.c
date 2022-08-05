@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:53 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/04 19:56:44 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/05 10:24:17 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,7 @@ int	yo_exit(t_input *data)
 		exit(g_status);
 	}
 	if (!check_amount(data))
-	{
-		// ms_free_all(data);
 		return (g_status);
-	}
 	g_status = ft_atoi(data->cmds->cmd[1]);
 	write(data->cmds->out, "exit\n", 5);
 	ms_free_all(data);
