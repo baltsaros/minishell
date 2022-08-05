@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:18 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/04 10:25:02 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/05 10:47:56 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ char	*access_check(char *cmd[], t_input *data)
 	}
 	if (env[i] && access(env[i], X_OK) < 0)
 	{
+		write(2, "YAMSP: ", 7);
 		write(2, cmd[0], ft_strlen(cmd[0]));
 		write(2, ": command not found\n", 20);
 		ms_free(env);
