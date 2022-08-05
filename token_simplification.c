@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/05 11:07:36 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/05 13:01:57 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,29 @@ void	in_arg_management(t_node *elem)
 		elem->next->type = IN_ARG;
 }
 
+int	manage_empty_args(t_node *elem)
+{
+	while (elem)
+	{
+		if (elem->type == EMPTY_ARG && elem->next
+			&& elem->next->type == EMPTY_ARG)
+			delete_node(elem->next);
+		else if ((elem->type != EMPTY_ARG && elem->type != WSPACE)
+			&& elem->prev && elem->prev->type == EMPTY_ARG)
+			elem->prev->type = 0;
+		else if ((elem->type != EMPTY_ARG && elem->type != WSPACE)
+			&& elem->next && elem->next->type == EMPTY_ARG)
+			delete_node(elem->next);
+		else if (elem->type == EMPTY_ARG && elem->prev
+			&& (elem->prev->type != EMPTY_ARG && elem->prev->type != WSPACE))
+			elem->type = 0;
+		if (!elem->next)
+			break ;
+		elem = elem->next;
+	}
+	return (0);
+}
+
 int	general_simplification(t_node *elem)
 {
 	while (elem)
@@ -74,16 +97,6 @@ int	general_simplification(t_node *elem)
 		else if ((elem->type == REDIR_IN
 				|| elem->type == REDIR_HD) && elem->next)
 			in_arg_management(elem);
-		else if (elem->type == EMPTY_ARG && elem->next && elem->next->type == EMPTY_ARG)
-			delete_node(elem->next);
-		else if ((elem->type != EMPTY_ARG && elem->type != WSPACE)
-			&& elem->prev && elem->prev->type == EMPTY_ARG)
-			elem->prev->type = 0;
-		else if ((elem->type != EMPTY_ARG && elem->type != WSPACE)
-			&& elem->next && elem->next->type == EMPTY_ARG)
-			delete_node(elem->next);
-		else if (elem->type == EMPTY_ARG && elem->prev && (elem->prev->type != EMPTY_ARG && elem->prev->type != WSPACE))
-			elem->type = 0;
 		if (!elem->next)
 			break ;
 		elem = elem->next;
@@ -105,6 +118,8 @@ int	token_simplification(t_input *data)
 	if (quote_transformation(elem, data) == 1)
 		return (1);
 	if (general_simplification(elem) == 1)
+		return (1);
+	if (manage_empty_args(elem) == 1)
 		return (1);
 	if (delete_useless_wspace(elem) == 1)
 		return (1);
