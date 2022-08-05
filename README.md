@@ -59,7 +59,7 @@ This project is about creating a simple shell. Bash was used as a reference.
 * We have several structures: one is integral (*t_input*) and is used almost in any other function. Another important structure is *t_cmd* that is actually a linked list. One command is one linked list that consists of command arguments, input and output fds (0 and 1 by default), input and output file names, delimiter (if any) and pipe flag. We also have two other linked lists: one for tokens and another one for envp. Envp are also saved in the _char**_ form in order to be able to send it into another _./minishell_
 
 # **Testing**
-Here are some tricky tests to do:
+Here are some tricky tests to do (compare with bash output):
 ## Signals
 Make sure that you signals work correctly (in terms of behavior and exit code) in the following cases with reading from stdin:
 * cat
@@ -96,16 +96,16 @@ Make sure that you signals work correctly (in terms of behavior and exit code) i
 * export one two=three four (if you use *env* after, it should display only envp with values)
 * unset one two=three four (error message, but still should remove *one* and *four*)
 * unset PATH (*ls* should display nothing after this)
+* make sure that your builtin write in proper output (export, export > f1, echo one > f1 | echo two > f2 | echo three > f3)
 
+## Other cases
+* echo $$
+* $$
 
 # **Attempts**
 
 
 # **Folders**
-**srcs** - source files
-
-**include** - header
-
 **libft** - libft library
 
 # **Useful resources**
