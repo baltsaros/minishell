@@ -67,11 +67,13 @@ Make sure that you signals work correctly (in terms of behavior and exit code) i
 * ls | cat << end
 * cat |
 * cat " (if you handle unclosed quotes)
+
 ## Redirection and pipes
 * sleep 20 | ls
 * cat | cat | ls
 * cat < Makefile > f1 | wc -l < f1 > f2 | echo done > f3
 * echo "one two" > f1 | grep "one two" < f1 | wc -l
+
 ## Quotes
 * echo hi"yo"hi
 * echo '$PATH'
@@ -79,9 +81,21 @@ Make sure that you signals work correctly (in terms of behavior and exit code) i
 * echo $'PATH'
 * echo "$PATH"
 * echo "$"PATH
-* echo '"$PATH"'
+* echo '"$USER"'
+* echo ""$USER""
 * echo ""
 * echo ''
+
+## Builtins
+* exit 9 9
+* exit a a
+* exit 1a
+* cd (should go to $HOME)
+* check that cd updates $PWD and $OLDPWD
+* cd [existing folder] [non existsing folder] (no error message, should go to the existing one)
+* export one two=three four (if you use *env* after, it should display only envp with values)
+* unset one two=three four (error message, but still should remove *one* and *four*)
+* unset PATH (*ls* should display nothing after this)
 
 
 # **Attempts**
