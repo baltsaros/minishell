@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 14:47:50 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/04 12:28:02 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/05 11:02:35 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,7 @@ int	parsing(t_input *data)
 	data->cmds = parse_cmd(data);
 	if (!data->cmds || !data->exec)
 		return (1);
+	for(int i = 0; data->cmds->cmd[i]; i++)
+		printf("cmd: %s\n", data->cmds->cmd[i]);
 	return (0);
 }
