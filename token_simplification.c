@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/05 13:24:38 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/05 14:02:17 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,16 +58,17 @@ int	manage_empty_args(t_node *elem)
 	{
 		if (elem->type == EMPTY_ARG && elem->next
 			&& elem->next->type == EMPTY_ARG)
-			delete_node(elem->next);
-		else if ((elem->type != EMPTY_ARG && elem->type != WSPACE)
-			&& elem->prev && elem->prev->type == EMPTY_ARG)
-			elem->prev->type = 0;
-		else if ((elem->type != EMPTY_ARG && elem->type != WSPACE)
-			&& elem->next && elem->next->type == EMPTY_ARG)
-			delete_node(elem->next);
-		else if (elem->type == EMPTY_ARG && elem->prev
-			&& (elem->prev->type != EMPTY_ARG && elem->prev->type != WSPACE))
-			elem->type = 0;
+		{
+			while (elem->next && elem->next->type == EMPTY_ARG)
+				delete_node(elem->next);
+		}
+		if (elem->type != EMPTY_ARG && elem->type != WSPACE)
+		{
+			if (elem->prev && elem->prev->type == EMPTY_ARG)
+				elem->prev->type = 0;
+			if (elem->next && elem->next->type == EMPTY_ARG)
+				delete_node(elem->next);
+		}
 		if (!elem->next)
 			break ;
 		elem = elem->next;
