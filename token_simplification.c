@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_simplification.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/04 12:17:52 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/05 11:07:36 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,16 @@ int	general_simplification(t_node *elem)
 		else if ((elem->type == REDIR_IN
 				|| elem->type == REDIR_HD) && elem->next)
 			in_arg_management(elem);
+		else if (elem->type == EMPTY_ARG && elem->next && elem->next->type == EMPTY_ARG)
+			delete_node(elem->next);
+		else if ((elem->type != EMPTY_ARG && elem->type != WSPACE)
+			&& elem->prev && elem->prev->type == EMPTY_ARG)
+			elem->prev->type = 0;
+		else if ((elem->type != EMPTY_ARG && elem->type != WSPACE)
+			&& elem->next && elem->next->type == EMPTY_ARG)
+			delete_node(elem->next);
+		else if (elem->type == EMPTY_ARG && elem->prev && (elem->prev->type != EMPTY_ARG && elem->prev->type != WSPACE))
+			elem->type = 0;
 		if (!elem->next)
 			break ;
 		elem = elem->next;
