@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:34 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/04 12:19:56 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/05 12:51:29 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	create_token(t_input *data, char *str, int len, int type)
 	ms_token_back(&data->args, data->node_tmp);
 }
 
+// add every found file into a separate linked list
 static void	split_aster(t_input *data, t_node *ast)
 {
 	char	**spl;
@@ -102,6 +103,8 @@ void	tokenization(t_input *data)
 	size_t	start;
 
 	i = 0;
+	while (check_charset(data->buf[i], " \f\n\r\t\v"))
+		++i;
 	while (data->buf[i])
 	{
 		start = i;
