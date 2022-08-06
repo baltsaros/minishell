@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:21 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/04 10:25:05 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/06 10:03:20 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ void	set_std(t_input *data, int in, int out)
 	if (in > 0)
 	{
 		ret = dup2(data->cmds->in, STDIN_FILENO);
-		error_check(ret, "In dup2_in ", 12, data);
+		error_check(ret, data->cmds->in_arg, data);
 	}
 	if (out > 0)
 	{
 		ret = dup2(data->cmds->out, STDOUT_FILENO);
-		error_check(ret, "In dup2_out ", 13, data);
+		error_check(ret, data->cmds->out_arg, data);
 	}
 }
 

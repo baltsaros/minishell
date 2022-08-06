@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:25 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/04 11:09:06 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/06 10:06:27 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ void	ms_heredoc(char *limiter, t_cmd *elem, t_input *data)
 	char	*line;
 
 	if (signal(SIGINT, signal_hd) == SIG_ERR)
-		error_check(-1, "in signals ", 11, data);
+		error_check(-1, "", data);
 	elem->in = open("heredoc.tmp", O_RDWR | O_CREAT | O_APPEND, 0777);
-	error_check(elem->in, "In Open heredoc ", 17, data);
+	error_check(elem->in, "heredoc", data);
 	while (1)
 	{
 		line = readline("> ");
@@ -65,19 +65,19 @@ void	ms_fork(char *argv[], t_input *data)
 {
 	int	fd[2];
 
-	error_check(pipe(fd), "In pipe ", 9, data);
+	error_check(pipe(fd), "", data);
 	data->pid = fork();
-	error_check(data->pid, "In fork ", 9, data);
+	error_check(data->pid, "", data);
 	if (data->pid == 0)
 	{
 		if (data->cmds->in_arg)
 			error_check(dup2(data->cmds->in, STDIN_FILENO),
-				"In dup2_inP ", 13, data);
+				data->cmds->in_arg, data);
 		if (data->cmds->out_arg && !is_builtin(data, data->cmds))
 			error_check(dup2(data->cmds->out, STDOUT_FILENO),
-				"In dup2_inP ", 13, data);
+				data->cmds->out_arg, data);
 		else
-			error_check(dup2(fd[1], STDOUT_FILENO), "In Dup2_ch ", 12, data);
+			error_check(dup2(fd[1], STDOUT_FILENO), "", data);
 		close(fd[0]);
 		if (check_builtin(data, data->cmds))
 			exit(g_status);
@@ -85,7 +85,7 @@ void	ms_fork(char *argv[], t_input *data)
 			ms_execve(argv, data);
 	}
 	close(data->cmds->in);
-	error_check(dup2(fd[0], STDIN_FILENO), "In Dup2_pr ", 12, data);
+	error_check(dup2(fd[0], STDIN_FILENO), "", data);
 	close(fd[1]);
 }
 
@@ -97,10 +97,8 @@ int	pipex(t_input *data)
 		ms_fork(data->cmds->cmd, data);
 		data->cmds = data->cmds->next;
 	}
-	error_check(dup2(data->cmds->in, STDIN_FILENO),
-		"In dup2_inP ", 13, data);
-	error_check(dup2(data->cmds->out, STDOUT_FILENO),
-		"In dup2_outP ", 14, data);
+	error_check(dup2(data->cmds->in, STDIN_FILENO), "", data);
+	error_check(dup2(data->cmds->out, STDOUT_FILENO), "", data);
 	if (check_builtin(data, data->cmds))
 		exit(g_status);
 	else
@@ -115,11 +113,11 @@ int	execute(t_input *data)
 {
 	if (signal(SIGINT, signal_fork) == SIG_ERR
 		|| signal(SIGQUIT, signal_fork) == SIG_ERR)
-		error_check(-1, "in signals ", 11, data);
+		error_check(-1, "", data);
 	if (data->cmds->pipe == 1 || !check_builtin(data, data->cmds))
 	{
 		data->pid = fork();
-		error_check(data->pid, "In fork ", 9, data);
+		error_check(data->pid, "", data);
 		if (data->pid == 0)
 		{
 			if (data->cmds->pipe == 1)

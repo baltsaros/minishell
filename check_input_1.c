@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:29:59 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/05 10:53:17 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/06 10:07:31 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,17 +120,17 @@ int	check_field(t_input *data, char *str)
 	int	ret;
 
 	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
-		error_check(-1, "in signals ", 11, data);
+		error_check(-1, "", data);
 	data->i = 0;
 	type = 0;
 	ret = 1;
 	data->pid = fork();
-	if (error_check_noexit(data->pid, "In check_input ", 15, data))
+	if (error_check_noexit(data->pid, "", data))
 		return (1);
 	if (data->pid == 0)
 	{
 		if (signal(SIGINT, signal_hd) == SIG_ERR)
-			error_check(-1, "in signals ", 11, data);
+			error_check(-1, "", data);
 		ret = check_pipe_quotes(data, str, type);
 		return (ret);
 	}

@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:39:14 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/04 10:25:12 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/06 10:09:08 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,21 @@ char	*ms_strndup(char const *str, size_t size, t_input *data)
 	return (dest);
 }
 
-int	error_check(int input, char *str, int n, t_input *data)
+int	error_check(int input, char *str, t_input *data)
 {
+	size_t	len;
+
 	(void)data;
 	if (input < 0)
 	{
 		write(2, "YAMSP: ", 7);
-		write(2, str, n);
-		perror("something went wrong");
-		g_status = errno;
+		len = ft_strlen(str);
+		write(2, str, len);
+		write(2, ": ", 2);
+		perror("");
+		g_status = 1;
 		ms_free_all(data);
-		exit (errno);
+		exit (1);
 	}
 	return (input);
 }

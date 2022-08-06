@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:18 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/05 10:47:56 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/06 10:02:21 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	ms_execve(char **argv, t_input *data)
 	execve(data->tmp, argv, data->envp);
 	free(data->tmp);
 	write(2, "YAMSP: ", 7);
-	perror("execve error");
-	g_status = errno;
+	perror("execve");
+	g_status = 1;
 	exit(g_status);
 }

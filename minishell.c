@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:38:28 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/04 21:15:25 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/06 10:13:27 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	prompt(t_input *data)
 	{
 		if (signal(SIGINT, signal_main) == SIG_ERR
 			|| signal(SIGQUIT, SIG_IGN) == SIG_ERR)
-			error_check(-1, "in signals ", 11, data);
+			error_check(-1, "", data);
 		data->buf = readline(data->prompt);
 		if (!data->buf)
 			yo_exit(data);

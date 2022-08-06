@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:39:17 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/04 10:25:48 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/06 10:09:36 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,19 @@ void	ms_free_node_elems(t_env *tmp)
 	tmp = NULL;
 }
 
-int	error_check_noexit(int input, char *str, int n, t_input *data)
+int	error_check_noexit(int input, char *str, t_input *data)
 {
+	size_t	len;
+
 	(void)data;
 	if (input < 0)
 	{
 		write(2, "YAMSP: ", 7);
-		write(2, str, n);
-		perror("something went wrong");
-		g_status = errno;
+		len = ft_strlen(str);
+		write(2, str, len);
+		write(2, ": ", 2);
+		perror("");
+		g_status = 1;
 		return (1);
 	}
 	return (0);
