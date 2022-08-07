@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:37:42 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/04 10:26:16 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/07 13:44:55 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_cmd	*print_syntax_error_cmd(t_node *args, t_input *data)
 		write(2, "YAMSP: syntax error near unexpected token `", 43);
 		write(2, "newline", 7);
 		write(2, "'\n", 2);
-		g_status = 258;
+		g_status = 2;
 		data->exec = 0;
 	}
 	else if (args->next->type != WORD && args->next->type != ASTER
@@ -58,7 +58,7 @@ t_cmd	*print_syntax_error_cmd(t_node *args, t_input *data)
 		write(2, "YAMSP: syntax error near unexpected token `", 43);
 		write(2, args->next->value, ft_strlen(args->value));
 		write(2, "'\n", 2);
-		g_status = 258;
+		g_status = 2;
 		data->exec = 0;
 	}
 	return (NULL);
@@ -71,7 +71,7 @@ int	print_syntax_error_bool(t_node *args, t_input *data)
 		write(2, "YAMSP: syntax error near unexpected token `", 43);
 		write(2, "newline", 7);
 		write(2, "'\n", 2);
-		g_status = 258;
+		g_status = 2;
 		data->exec = 0;
 	}
 	else if (is_the_next_is_in_arg(args) || is_the_next_is_out_arg(args))
@@ -79,7 +79,7 @@ int	print_syntax_error_bool(t_node *args, t_input *data)
 		write(2, "YAMSP: syntax error near unexpected token `", 43);
 		write(2, args->next->value, ft_strlen(args->value));
 		write(2, "'\n", 2);
-		g_status = 258;
+		g_status = 2;
 		data->exec = 0;
 	}
 	return (1);

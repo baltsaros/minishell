@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:29:59 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/06 10:07:31 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/07 13:43:14 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int	before_pipe(char *str, int i)
 	{
 		write(2, "YAMSP: ", 7);
 		write(2, "syntax error near unexpected token `|'\n", 39);
-		g_status = 258;
+		g_status = 2;
 		return (1);
 	}
 	while (check_charset(str[i], " \f\n\r\t\v"))
@@ -78,7 +78,7 @@ static int	before_pipe(char *str, int i)
 	{
 		write(2, "YAMSP: ", 7);
 		write(2, "syntax error near unexpected token `|'\n", 39);
-		g_status = 258;
+		g_status = 2;
 		return (1);
 	}
 	return (0);

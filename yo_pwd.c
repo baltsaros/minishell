@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:03 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/04 10:27:02 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/07 13:48:50 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	yo_pwd(t_input *data)
 	{
 		write(2, "YAMSP: ", 7);
 		perror("pwd");
-		g_status = errno;
+		g_status = 1;
 	}
 	else
 	{

@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:43 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/05 10:45:41 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/07 13:45:28 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ static void	update_envp(t_input *data, char *pwd, char *oldpwd)
 static void	getcwd_error(void)
 {
 	write(2, "YAMSP: ", 7);
-	perror("updating pwd");
-	g_status = errno;
+	perror("pwd");
+	g_status = 1;
 	return ;
 }
 
