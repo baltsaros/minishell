@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/08 14:14:10 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/08 14:43:58 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ int	manage_empty_args(t_node *elem)
 {
 	while (elem)
 	{
+		if (elem->type != EMPTY_ARG && !elem->value)
+			elem->type = EMPTY_ARG;
 		if (elem->type == EMPTY_ARG && elem->next
 			&& elem->next->type == EMPTY_ARG)
 		{
@@ -146,5 +148,6 @@ int	token_simplification(t_input *data)
 		return (1);
 	if (delete_useless_wspace(elem) == 1)
 		return (1);
+	ms_token_print(elem);
 	return (0);
 }
