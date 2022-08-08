@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:29:59 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/08 18:42:25 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/08 19:59:50 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	check_pipe(char **buf, char *msg, char c, t_input *data)
 	{
 		tmp = readline(msg);
 		if (!tmp)
-			return (eof_error(msg, 0));
+			eof_error(msg, 0);
 		*buf = ms_charjoin_free(*buf, '\n', data);
 		*buf = ms_strjoin_free(*buf, tmp, data);
 		if (!ft_strchr(tmp, c) || !ft_strcmp(tmp, "|"))
@@ -48,7 +48,7 @@ static int	read_after(char **buf, char c, t_input *data)
 	{
 		tmp = readline(msg);
 		if (!tmp)
-			return (eof_error(msg, 1));
+			eof_error(msg, 1);
 		*buf = ms_charjoin_free(*buf, '\n', data);
 		*buf = ms_strjoin_free(*buf, tmp, data);
 		if (ft_strchr(tmp, c))

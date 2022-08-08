@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:29:59 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/08 11:12:41 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/08 19:58:55 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	is_right_buf(char *buf)
 }
 
 // eof error for unclosed quotes and pipes
-int	eof_error(char *msg, int check)
+void	eof_error(char *msg, int check)
 {
 	if (check)
 		free(msg);
@@ -39,7 +39,7 @@ int	eof_error(char *msg, int check)
 	write(2, "unexpected end of file\n", 23);
 	g_status = 2;
 	write(1, "\n", 1);
-	return (1);
+	exit(g_status);
 }
 
 int	check_closed(t_input *data, char *str)

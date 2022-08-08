@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/08 15:21:45 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/08 19:59:18 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,7 @@ void	prompt(t_input *data);
 int		check_closed(t_input *data, char *str);
 int		check_field(t_input *data, char *str);
 int		is_right_buf(char *buf);
-int		eof_error(char *msg, int check);
+void	eof_error(char *msg, int check);
 
 // data_init
 void	data_init(t_input *data);
