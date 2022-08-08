@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:25 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/06 10:06:27 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/08 10:46:15 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,13 @@ void	ms_fork(char *argv[], t_input *data)
 	if (data->pid == 0)
 	{
 		if (data->cmds->in_arg)
-			error_check(dup2(data->cmds->in, STDIN_FILENO),
+			error_check(dup2(data->cmds->in, IN),
 				data->cmds->in_arg, data);
 		if (data->cmds->out_arg && !is_builtin(data, data->cmds))
-			error_check(dup2(data->cmds->out, STDOUT_FILENO),
+			error_check(dup2(data->cmds->out, OUT),
 				data->cmds->out_arg, data);
 		else
-			error_check(dup2(fd[1], STDOUT_FILENO), "", data);
+			error_check(dup2(fd[1], OUT), "", data);
 		close(fd[0]);
 		if (check_builtin(data, data->cmds))
 			exit(g_status);
@@ -85,7 +85,7 @@ void	ms_fork(char *argv[], t_input *data)
 			ms_execve(argv, data);
 	}
 	close(data->cmds->in);
-	error_check(dup2(fd[0], STDIN_FILENO), "", data);
+	error_check(dup2(fd[0], IN), "", data);
 	close(fd[1]);
 }
 
@@ -97,8 +97,8 @@ int	pipex(t_input *data)
 		ms_fork(data->cmds->cmd, data);
 		data->cmds = data->cmds->next;
 	}
-	error_check(dup2(data->cmds->in, STDIN_FILENO), "", data);
-	error_check(dup2(data->cmds->out, STDOUT_FILENO), "", data);
+	error_check(dup2(data->cmds->in, IN), "", data);
+	error_check(dup2(data->cmds->out, OUT), "", data);
 	if (check_builtin(data, data->cmds))
 		exit(g_status);
 	else
@@ -133,5 +133,5 @@ int	execute(t_input *data)
 		if (WIFSIGNALED(data->pid) && g_status)
 			g_status += 128;
 	}
-	return (0);
+	return (g_status);
 }

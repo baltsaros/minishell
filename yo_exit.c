@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:53 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/07 13:52:51 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/08 10:46:19 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	check_nonnumeric(t_input *data)
 			write(2, "YAMSP: exit: ", 13);
 			write(2, data->cmds->cmd[1], ft_strlen(data->cmds->cmd[1]));
 			write(2, ": numeric argument required\n", 28);
-			g_status = 2;
+			g_status = 255;
 			return (0);
 		}
 		data->i++;
@@ -68,12 +68,13 @@ int	yo_exit(t_input *data)
 	if (!check_nonnumeric(data))
 	{
 		ms_free_all(data);
+		printf("status is %d\n", g_status);
 		exit(g_status);
 	}
 	if (!check_amount(data))
 		return (g_status);
 	g_status = ft_atoi(data->cmds->cmd[1]);
-	write(data->cmds->out, "exit\n", 5);
+	// write(data->cmds->out, "exit\n", 5);
 	ms_free_all(data);
 	exit (g_status);
 }

@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/06 10:05:25 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/08 10:19:23 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@
 # include <libft.h>
 # include <stdbool.h>
 # include <errno.h>
+
+# define IN STDIN_FILENO
+# define OUT STDOUT_FILENO
 
 // global var
 int	g_status;
