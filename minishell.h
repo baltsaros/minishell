@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/08 11:11:07 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/08 11:48:55 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,6 +245,7 @@ void	add_envp(t_input *data, char *type, char *value);
 void	signal_main(int signo);
 void	signal_fork(int signo);
 void	signal_hd(int signo);
+void	signal_unclosed(int signo);
 
 // wildcard
 void	asterisks(t_input *data, t_node *ast);

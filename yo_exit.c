@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:53 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/08 11:19:42 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/08 11:45:29 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ int	yo_exit(t_input *data)
 	if (!check_nonnumeric(data))
 	{
 		ms_free_all(data);
-		printf("g_status is %d\n", g_status);
 		exit(g_status);
 	}
 	if (!check_amount(data))

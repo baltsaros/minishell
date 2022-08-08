@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:38:53 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/04 10:26:14 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/08 11:48:11 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,14 @@ void	signal_hd(int signo)
 	(void)signo;
 	write(1, "\n", 1);
 	g_status = 130;
+	exit(g_status);
+}
+
+// signals for unclosed quotes and pipes
+void	signal_unclosed(int signo)
+{
+	(void)signo;
+	write(1, "\n", 1);
+	g_status = 1;
 	exit(g_status);
 }
