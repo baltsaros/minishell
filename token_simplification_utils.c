@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_simplification_utils.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:30:33 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/04 12:26:20 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/08 15:58:35 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,24 +65,31 @@ char	*get_between_braces(t_node *elem, int type1, int type2)
 
 void	dollar_management(t_node *elem, t_input *data)
 {
-	if (!elem->prev || (!elem->next
-			|| (elem->next && elem->next->type == WSPACE)))
-		elem->type = WORD;
-	elem = dollar_token_simplification(elem, data);
+	char	*tmp;
+	
+	become_word_and_more(elem, data);
 	if (elem->type == ENV_VA)
+	{
+		tmp = elem->value;
 		elem->value = ms_strdup(ms_getenv(elem->value + 1, data), data);
+		free(tmp);
+	}
 	else if (elem->type == ENV_VA_BR)
+	{
+		tmp = elem->value;
 		elem->value = ms_strdup(
 				ms_getenv(get_between_braces(
 						elem, BRACES_L, BRACES_R), data), data);
-	else if (elem->type == ENV_P)
-		elem->value = ms_strdup(get_between_braces(elem, BR_L, BR_R), data);
-	else if (elem->type == ENV_P_EM)
-	{
-		elem->type = 0;
-		free(elem->value);
-		elem->value = ms_strdup(NULL, data);
+		free(tmp);
 	}
+	else if (elem->type == ENV_P)
+	{
+		tmp = elem->value;
+		elem->value = ms_strdup(get_between_braces(elem, BR_L, BR_R), data);
+		free(tmp);
+	}
+	else if (elem->type == ENV_P_EM)
+		empty_env_management(elem, data);
 }
 
 int	expanding_variables(t_node *elem, t_input *data)

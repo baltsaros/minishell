@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/08 11:48:55 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/08 15:56:17 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,7 +306,14 @@ int		expanding_variables(t_node *elem, t_input *data);
 
 // token simplification utils 2
 int		delete_useless_wspace(t_node *elem);
+void	become_word_and_more(t_node	*elem, t_input	*data);
+void	empty_env_management(t_node	*elem, t_input	*data);
+int		delete_useless_empty_args(t_node *elem);
 char	*ms_getenv(char *var, t_input *data);
+
+// token simplification utils 3
+void	out_arg_management(t_node *elem);
+void	in_arg_management(t_node *elem);
 
 // dollar simplification braces
 void	dollar_braces_2(t_node *elem, t_input *data);

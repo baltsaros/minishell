@@ -41,6 +41,7 @@ SRCS		= minishell.c \
 				token_simplification.c \
 				token_simplification_utils.c \
 				token_simplification_utils_2.c \
+				token_simplification_utils_3.c \
 				dollar_simplification.c \
 				quote_transformation.c \
 				word_total.c \

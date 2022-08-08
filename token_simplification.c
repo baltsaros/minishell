@@ -6,51 +6,11 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/08 14:43:58 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/08 15:55:48 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	out_arg_management(t_node *elem)
-{
-	if (elem->next && (elem->next && elem->next->type == WSPACE))
-	{
-		elem = elem->next;
-		if (elem->next && (elem->next->type != PIPE
-				&& elem->next->type != REDIR_IN
-				&& elem->next->type != REDIR_OUT
-				&& elem->next->type != REDIR_HD
-				&& elem->next->type != REDIR_AP))
-			elem->next->type = OUT_ARG;
-	}
-	else if (elem->next && (elem->next->type != PIPE
-			&& elem->next->type != REDIR_IN
-			&& elem->next->type != REDIR_OUT
-			&& elem->next->type != REDIR_HD
-			&& elem->next->type != REDIR_AP))
-		elem->next->type = OUT_ARG;
-}
-
-void	in_arg_management(t_node *elem)
-{
-	if (elem->next && (elem->next && elem->next->type == WSPACE))
-	{
-		elem = elem->next;
-		if (elem->next && (elem->next->type != PIPE
-				&& elem->next->type != REDIR_IN
-				&& elem->next->type != REDIR_OUT
-				&& elem->next->type != REDIR_HD
-				&& elem->next->type != REDIR_AP))
-			elem->next->type = IN_ARG;
-	}
-	else if (elem->next && (elem->next->type != PIPE
-			&& elem->next->type != REDIR_IN
-			&& elem->next->type != REDIR_OUT
-			&& elem->next->type != REDIR_HD
-			&& elem->next->type != REDIR_AP))
-		elem->next->type = IN_ARG;
-}
 
 int	manage_empty_args(t_node *elem)
 {
@@ -78,13 +38,19 @@ int	manage_empty_args(t_node *elem)
 	return (0);
 }
 
+void	ft_executable(t_node	*elem)
+{
+	if (elem->value && elem->type == WORD
+		&& !ft_strncmp(elem->value, "./", 2))
+		elem->type = EXECUTABLE;
+}
+
 int	general_simplification(t_node *elem)
 {
 	while (elem)
 	{
-		if (elem->value && elem->type == WORD && !ft_strncmp(elem->value, "./", 2))
-			elem->type = EXECUTABLE;
-		else if (elem->type == BR_L)
+		ft_executable(elem);
+		if (elem->type == BR_L)
 		{
 			if ((!elem->next) || (elem->next && elem->next->flag != B_QUOTE_P))
 				elem->type = WORD;
@@ -100,26 +66,6 @@ int	general_simplification(t_node *elem)
 		else if ((elem->type == REDIR_IN
 				|| elem->type == REDIR_HD) && elem->next)
 			in_arg_management(elem);
-		if (!elem->next)
-			break ;
-		elem = elem->next;
-	}
-	return (0);
-}
-
-int	delete_useless_empty_args(t_node *elem)
-{
-	while (elem)
-	{
-		if (elem->type == WSPACE && (elem->next && !elem->next->value) && (elem->next->next && elem->next->next->value))
-		{
-			while (elem->next && !elem->next->value)
-			{
-				delete_node(elem->next);
-				if (!elem->next)
-					break ;
-			}
-		}
 		if (!elem->next)
 			break ;
 		elem = elem->next;
@@ -148,6 +94,7 @@ int	token_simplification(t_input *data)
 		return (1);
 	if (delete_useless_wspace(elem) == 1)
 		return (1);
-	ms_token_print(elem);
+	if (elem && elem->type == EMPTY_ARG)
+		elem->type = 0;
 	return (0);
 }
