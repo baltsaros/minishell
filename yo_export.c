@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:00 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/04 10:26:59 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/08 15:10:24 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,6 @@ static void	error_msg(void)
 // update linked list envp
 static void	export_var(t_input *data, char *s)
 {
-	data->i = 0;
-	data->type = NULL;
-	data->value = NULL;
 	while (s[data->i] && s[data->i] != '=')
 		data->i++;
 	if (data->i == 0 && s[data->i])
@@ -72,12 +69,14 @@ static void	export_var(t_input *data, char *s)
 		return ;
 	}
 	data->type = ms_strndup(s, data->i, data);
-	if (s[data->i])
+	if (s[data->i] && s[data->i + 1])
 	{
 		data->i++;
 		if (s[data->i])
 			data->value = ms_strdup(s + data->i, data);
 	}
+	else if (s[data->i])
+			data->value = ms_strdup("", data);
 	if (!check_duplicate(data, data->type, data->value))
 	{
 		data->envp_tmp = ms_envp_new(data->type, data->value, data);
@@ -99,6 +98,9 @@ int	yo_export(t_input *data)
 	i = 1;
 	while (data->cmds->cmd[i])
 	{
+		data->i = 0;
+		data->type = NULL;
+		data->value = NULL;
 		export_var(data, data->cmds->cmd[i]);
 		++i;
 	}
