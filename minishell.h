@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/08 10:19:23 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/08 11:11:07 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,6 +198,7 @@ char	*ms_strdup(const char *s, t_input *data);
 void	prompt(t_input *data);
 
 // check_input
+int		check_closed(t_input *data, char *str);
 int		check_field(t_input *data, char *str);
 int		is_right_buf(char *buf);
 int		eof_error(char *msg, int check);

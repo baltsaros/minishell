@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:29:59 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/07 13:43:14 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/08 11:19:12 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,8 @@ int	check_field(t_input *data, char *str)
 
 	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
 		error_check(-1, "", data);
+	if (!check_closed(data, str))
+		return (0);
 	data->i = 0;
 	type = 0;
 	ret = 1;

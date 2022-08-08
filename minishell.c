@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:38:28 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/06 10:13:27 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/08 11:26:31 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	prompt(t_input *data)
 				token_simplification(data);
 				if (!parsing(data))
 					execute(data);
+				printf("g_status is %d\n", g_status);
 				ms_free_token(data->args);
 				ms_free_cmd(data->cmds);
 			}

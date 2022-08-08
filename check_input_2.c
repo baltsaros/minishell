@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:29:59 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/04 21:02:55 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/08 11:12:41 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,26 @@ int	eof_error(char *msg, int check)
 	g_status = 2;
 	write(1, "\n", 1);
 	return (1);
+}
+
+int	check_closed(t_input *data, char *str)
+{
+	int	type;
+
+	data->i = 0;
+	while (str[data->i])
+	{
+		if (str[data->i] == '\'' || str[data->i] == '\"')
+		{
+			type = str[data->i++];
+			while (str[data->i] && str[data->i] != type)
+				data->i++;
+		}
+		if (!str[data->i])
+			return (1);
+		data->i++;
+	}
+	if (str[data->i - 1] == '|')
+		return (1);
+	return (0);
 }
