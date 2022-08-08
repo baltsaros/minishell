@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:29:59 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/08 11:58:19 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/08 12:16:12 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,5 +140,5 @@ int	check_field(t_input *data, char *str)
 	if (WEXITSTATUS(g_status) == 1 || WEXITSTATUS(g_status) == 2)
 		return (ret);
 	else
-		exit(g_status);
+		exit((g_status >> 8) & 0xff);
 }
