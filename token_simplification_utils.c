@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:30:33 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/08 15:58:35 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/08 15:59:57 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*get_between_braces(t_node *elem, int type1, int type2)
 void	dollar_management(t_node *elem, t_input *data)
 {
 	char	*tmp;
-	
+
 	become_word_and_more(elem, data);
 	if (elem->type == ENV_VA)
 	{
