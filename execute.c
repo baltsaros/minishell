@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:25 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/08 10:46:15 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/08 15:22:03 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ void	ms_heredoc(char *limiter, t_cmd *elem, t_input *data)
 			free(line);
 			break ;
 		}
-		ft_putendl_fd(line, elem->in);
+		hd_write(data, line, elem->in);
+		// ft_putendl_fd(line, elem->in);
 		free(line);
 	}
 	close(elem->in);

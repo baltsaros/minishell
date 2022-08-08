@@ -29,6 +29,7 @@ SRCS		= minishell.c \
 				messages.c \
 				execute_utils_1.c \
 				execute_utils_2.c \
+				execute_utils_3.c \
 				signals.c \
 				yo_export.c \
 				yo_export_utils.c \
