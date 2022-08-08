@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:25 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/08 15:22:03 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/09 01:03:59 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ void	ms_fork(char *argv[], t_input *data)
 	int	fd[2];
 
 	error_check(pipe(fd), "", data);
-	data->pid = fork();
-	error_check(data->pid, "", data);
-	if (data->pid == 0)
+	data->cmds->pid = fork();
+	error_check(data->cmds->pid, "", data);
+	if (data->cmds->pid == 0)
 	{
 		if (data->cmds->in_arg)
 			error_check(dup2(data->cmds->in, IN),
@@ -93,19 +93,33 @@ void	ms_fork(char *argv[], t_input *data)
 // loop until the last command then execve for the last one
 int	pipex(t_input *data)
 {
+	t_cmd	*head;
+
+	head = data->cmds;
 	while (data->cmds->pipe == 1)
 	{
 		ms_fork(data->cmds->cmd, data);
 		data->cmds = data->cmds->next;
 	}
-	error_check(dup2(data->cmds->in, IN), "", data);
-	error_check(dup2(data->cmds->out, OUT), "", data);
-	if (check_builtin(data, data->cmds))
-		exit(g_status);
-	else
-		ms_execve(data->cmds->cmd, data);
-	close_fds(data->cmds->in, data->cmds->out);
-	return (0);
+	data->cmds->pid = fork();
+	if (data->cmds->pid == 0)
+	{
+		error_check(dup2(data->cmds->in, IN), "", data);
+		error_check(dup2(data->cmds->out, OUT), "", data);
+		if (check_builtin(data, data->cmds))
+			exit(g_status);
+		else
+			ms_execve(data->cmds->cmd, data);
+		close_fds(data->cmds->in, data->cmds->out);
+	}
+	while(head)
+	{
+		waitpid(head->pid, &g_status, 0);
+		if (WIFSIGNALED(data->cmds->pid) && g_status)
+			g_status += 128;
+		head = head->next;
+	}
+	exit(g_status);
 }
 
 // if there is no pipe or no builtin, execute simple command

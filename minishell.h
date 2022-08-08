@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/08 19:59:18 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/09 00:57:06 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ typedef struct s_cmd
 	int				out;
 	char			*out_arg;
 	int				pipe;
+	int				pid;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 }	t_cmd;
