@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/08 13:33:18 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/08 14:14:10 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,26 @@ int	general_simplification(t_node *elem)
 	return (0);
 }
 
+int	delete_useless_empty_args(t_node *elem)
+{
+	while (elem)
+	{
+		if (elem->type == WSPACE && (elem->next && !elem->next->value) && (elem->next->next && elem->next->next->value))
+		{
+			while (elem->next && !elem->next->value)
+			{
+				delete_node(elem->next);
+				if (!elem->next)
+					break ;
+			}
+		}
+		if (!elem->next)
+			break ;
+		elem = elem->next;
+	}
+	return (0);
+}
+
 int	token_simplification(t_input *data)
 {
 	t_node	*elem;
@@ -113,6 +133,8 @@ int	token_simplification(t_input *data)
 	if (add_flags(elem) == 1)
 		return (1);
 	if (expanding_variables(elem, data) == 1)
+		return (1);
+	if (delete_useless_empty_args(elem) == 1)
 		return (1);
 	if (word_total_fusion(elem, data) == 1)
 		return (1);
