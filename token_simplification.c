@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/05 14:02:17 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/08 13:33:18 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	general_simplification(t_node *elem)
 {
 	while (elem)
 	{
-		if (elem->type == WORD && !ft_strncmp(elem->value, "./", 2))
+		if (elem->value && elem->type == WORD && !ft_strncmp(elem->value, "./", 2))
 			elem->type = EXECUTABLE;
 		else if (elem->type == BR_L)
 		{
