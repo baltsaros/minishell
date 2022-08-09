@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:25 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/09 09:04:40 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/09 13:50:28 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	ms_fork(char *argv[], t_input *data)
 		else
 			error_check(dup2(fd[1], OUT), "", data);
 		close(fd[0]);
+		close(fd[1]);
 		if (check_builtin(data, data->cmds))
 			exit(g_status);
 		else
@@ -58,6 +59,7 @@ void	ms_fork(char *argv[], t_input *data)
 	close(data->cmds->in);
 	error_check(dup2(fd[0], IN), "", data);
 	close(fd[1]);
+	close(fd[0]);
 }
 
 static void	last_cmd(t_input *data)
@@ -87,6 +89,11 @@ int	pipex(t_input *data)
 		last_cmd(data);
 	while(head)
 	{
+		if (head->next)
+		{
+			close(0);
+			close(1);
+		}
 		waitpid(head->pid, &g_status, 0);
 		if (WIFSIGNALED(data->cmds->pid) && g_status)
 			g_status += 128;
