@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:29:59 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/09 14:39:00 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/09 14:58:38 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	check_pipe(char **buf, char *msg, char c, t_input *data)
 	{
 		tmp = readline(msg);
 		if (!tmp)
-			eof_error(msg, 0);
+			return(eof_error(msg, 0));
 		*buf = ms_charjoin_free(*buf, '\n', data);
 		*buf = ms_strjoin_free(*buf, tmp, data);
 		if (!ft_strchr(tmp, c) || !ft_strcmp(tmp, "|"))
@@ -48,7 +48,7 @@ static int	read_after(char **buf, char c, t_input *data)
 	{
 		tmp = readline(msg);
 		if (!tmp)
-			eof_error(msg, 1);
+			return(eof_error(msg, 1));
 		*buf = ms_charjoin_free(*buf, '\n', data);
 		*buf = ms_strjoin_free(*buf, tmp, data);
 		if (ft_strchr(tmp, c))
@@ -137,10 +137,10 @@ int	check_field(t_input *data, char *str)
 		return (ret);
 	}
 	waitpid(data->pid, &g_status, 0);
-	if (WIFEXITED(g_status))
-		exit((g_status >> 8) & 0xff);
-	else if (WEXITSTATUS(g_status) == 1 || WEXITSTATUS(g_status) == 2)
+	if (WEXITSTATUS(g_status) == 1)
 		return (ret);
+	else if (WIFEXITED(g_status))
+		exit((g_status >> 8) & 0xff);
 	else
 		exit((g_status >> 8) & 0xff);
 }
