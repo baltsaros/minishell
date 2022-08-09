@@ -70,7 +70,9 @@ Make sure that you signals work correctly (in terms of behavior and exit code) i
 
 ## Redirection and pipes
 * sleep 20 | ls
-* cat | cat | ls
+* cat | cat | ls (should display output for *ls* and then wait for input)
+* cat > f1 | cat > f2 | ls (saves output only in f1; proper output for ls on stdout)
+* caaaat | caaaat | ls (should display output for *ls* and two error messages)
 * cat < Makefile > f1 | wc -l < f1 > f2 | echo done > f3
 * echo "one two" > f1 | grep "one two" < f1 | wc -l
 
@@ -100,7 +102,23 @@ Make sure that you signals work correctly (in terms of behavior and exit code) i
 
 ## Other cases
 * echo $$
+* ""
+* ''
+* $NONEXISTING
+* "$NONEXISTING"
+*             ls (with spaces before a command)
 * $$
+* expansion for heredoc (should replace all valid $VAR with their values; if none, just a new line; test against bash):
+> cat << EOF
+> $USER
+> "$USER"
+> '$USER'
+> $?$?
+> $
+* with export and a command (should execute the command if it exists):
+> export TEST=echo
+> $TEST hello
+
 
 # **Attempts**
 
