@@ -89,13 +89,19 @@ Make sure that you signals work correctly (in terms of behavior and exit code) i
 * echo ''
 
 ## Builtins
-* exit 9 9
-* exit a a
-* exit 1a
+* exit 9 9 (should not exit)
+* exit a a (should exit)
+* exit 1a (should exit)
+* exit 1a 1 (should exit)
+* exit 1 1a (should not exit)
 * cd (should go to $HOME)
 * check that cd updates $PWD and $OLDPWD
 * cd [existing folder] [non existsing folder] (no error message, should go to the existing one)
 * export one two=three four (if you use *env* after, it should display only envp with values)
+* export =
+* unset =
+* pwd .
+* pwd ..
 * unset one two=three four (error message, but still should remove *one* and *four*)
 * unset PATH (*ls* should display nothing after this)
 * make sure that your builtin write in proper output (export, export > f1, echo one > f1 | echo two > f2 | echo three > f3)
