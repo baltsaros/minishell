@@ -1,25 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   yo_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/10 09:33:45 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/06 10:12:54 by abuzdin          ###   ########.fr       */
+/*   Created: 2022/07/20 09:32:03 by abuzdin           #+#    #+#             */
+/*   Updated: 2022/08/07 13:48:50 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-size_t	ft_strlen(const char *s)
+int	yo_pwd(t_input *data)
 {
-	size_t	i;
+	char	*ret;
 
-	if (!s)
-		return (0);
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
+	ret = NULL;
+	ret = getcwd(NULL, 0);
+	if (!ret)
+	{
+		write(2, "YAMSP: ", 7);
+		perror("pwd");
+		g_status = 1;
+	}
+	else
+	{
+		write(data->cmds->out, ret, ft_strlen(ret));
+		write(data->cmds->out, "\n", 1);
+		g_status = 0;
+		free(ret);
+	}
+	return (0);
 }

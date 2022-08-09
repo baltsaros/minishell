@@ -8,8 +8,8 @@ C_RESET			=\033[0m
 
 NAME		= minishell
 
-SRC_DIR		= srcs
-SRC_FILES	= minishell.c \
+# SRC_DIR		= srcs
+SRCS		= minishell.c \
 				minishell_utils_1.c \
 				minishell_utils_2.c \
 				nodes_1.c \
@@ -19,7 +19,8 @@ SRC_FILES	= minishell.c \
 				parsing_utils.c \
 				parsing_utils_2.c \
 				parsing_utils_3.c \
-				check_input.c \
+				check_input_1.c \
+				check_input_2.c \
 				data_init.c \
 				tokenization.c \
 				wildcard.c \
@@ -28,6 +29,7 @@ SRC_FILES	= minishell.c \
 				messages.c \
 				execute_utils_1.c \
 				execute_utils_2.c \
+				execute_utils_3.c \
 				signals.c \
 				yo_export.c \
 				yo_export_utils.c \
@@ -40,18 +42,19 @@ SRC_FILES	= minishell.c \
 				token_simplification.c \
 				token_simplification_utils.c \
 				token_simplification_utils_2.c \
+				token_simplification_utils_3.c \
 				dollar_simplification.c \
 				quote_transformation.c \
 				word_total.c \
 				add_flags.c \
 				syntax_checker.c
-SRCS		= $(notdir $(SRC_FILES))
+# SRCS		= $(notdir $(SRC_FILES))
 
 OBJ_DIR		= objs
 OBJ_FILES	= $(SRCS:.c=.o)
 OBJS		= $(addprefix $(OBJ_DIR)/,$(OBJ_FILES))
 
-INCS		= -Iinclude -Ilibft
+INCS		= -Ilibft
 
 GCC			= gcc
 RM			= rm -f
@@ -65,7 +68,7 @@ brew :
 			@brew install readline
 			@printf "\n$(C_GREEN_B)Installed!$(C_RESET)\n";
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+$(OBJ_DIR)/%.o: %.c
 			@mkdir -p $(OBJ_DIR)
 			@printf "$(C_GREEN).$(C_RESET)";
 			@$(GCC) $(CFLAGS) -c $< $(INCS) -o $@
@@ -76,11 +79,12 @@ $(NAME):	$(OBJS)
 
 libft:
 			@make -C ./libft
+
 norm:
 			@echo "$(C_PURPLE_B)Let's test the Norm!$(C_RESET)";
 			@norminette
 			@echo "$(C_PURPLE_B)Done!$(C_RESET)";
-			@touch test.txt
+
 clean:
 			@echo "$(C_RED_B)Deleting minishell o-files...$(C_RESET)";
 			@make -C ./libft clean

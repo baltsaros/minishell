@@ -1,13 +1,13 @@
 [WORK IN PROGRESS]
 
-## **The team**
+# **The team**
 * Aleksandr Buzdin ([abuzdin](https://profile.intra.42.fr/users/abuzdin)/[baltsaros](https://github.com/baltsaros))
 * Marius Thiry ([mthiry](https://profile.intra.42.fr/users/mthiry)/[ElMariuso](https://github.com/ElMariuso))
 
-## **Project description** 
+# **Project description** 
 This project is about creating a simple shell. Bash was used as a reference.
 
-The shell should:
+## The shell should:
 * > Display a prompt when waiting for a new command.
 * > Have a working history.
 * > Search and launch the right executable (based on the PATH variable or using a relative or an absolute path).
@@ -23,7 +23,7 @@ The shell should:
 * > Your shell must implement the following builtins (without options): echo (with -n), cd, pwd, export, unset, env, exit
 
 
-Allowed functions:
+## Allowed functions:
 * readline and connected to it
 * printf
 * malloc, free
@@ -44,12 +44,12 @@ Allowed functions:
 * tcseattr, tcgetattr, tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 
 
-## **How to use**
+# **How to use**
 * *make* - to compile the executable file
 * execute it with *./minishell*
 * there are three user mods: *normal*, *secret* and *uwu*. Try them all!
 
-## **Our approach**
+# **Our approach**
 * We splitted the project into seven parts: prompt, tokenization, token simplification (added later), parsing, execution, exit and signal. I (baltsaros) would say that tokenization is the most important, because it determines how other parts are done
 * In our tokenization we read character by character and then create an according token (in a linked list). Main tokens that we used are WORD, WSPACE(for white spaces) and some special characters like _$_, _*_, _>_, etc. Values for the latter correspond to ther ASCII values or in case of double characters (like << or >>) to their ASCII value + 100
 * We decided to expand _*_ in tokenization and _$_ in token simplification, since it was easier to do this at earlier stages
@@ -58,20 +58,81 @@ Allowed functions:
 * Then we do the execution! Before any _execve_ we check whether a current cmd is builtin or not. We also decided to wait for every child in case of pipe(s) in order to always have a proper output when all or some of the incoming cmds work with the same file. Without _waitpid_ output order or its content for cmds like _echo one > f1 | echo two >> f2 | echo three >> f3_ can be messed up
 * We have several structures: one is integral (*t_input*) and is used almost in any other function. Another important structure is *t_cmd* that is actually a linked list. One command is one linked list that consists of command arguments, input and output fds (0 and 1 by default), input and output file names, delimiter (if any) and pipe flag. We also have two other linked lists: one for tokens and another one for envp. Envp are also saved in the _char**_ form in order to be able to send it into another _./minishell_
 
-## **Testing**
-The project was tested by us and peers
+# **Testing**
+Here are some tricky tests to do (compare with bash output):
+## Signals
+Make sure that you signals work correctly (in terms of behavior and exit code) in the following cases with reading from stdin:
+* cat
+* cat << end
+* ls | cat << end
+* cat |
+* cat " (if you handle unclosed quotes)
 
-## **Attempts**
+## Redirection and pipes
+* sleep 20 | ls
+* cat | cat | ls (should display output for *ls* and then wait for input)
+* cat > f1 | cat > f2 | ls (saves output only in f1; proper output for ls on stdout)
+* caaaat | caaaat | ls (should display output for *ls* and two error messages)
+* cat < Makefile > f1 | wc -l < f1 > f2 | echo done > f3
+* echo "one two" > f1 | grep "one two" < f1 | wc -l
+
+## Quotes
+* echo hi"yo"hi
+* echo '$PATH'
+* echo '$'PATH
+* echo $'PATH'
+* echo "$PATH"
+* echo "$"PATH
+* echo '"$USER"'
+* echo ""$USER""
+* echo ""
+* echo ''
+
+## Builtins
+* exit 9 9 (should not exit)
+* exit a a (should exit)
+* exit 1a (should exit)
+* exit 1a 1 (should exit)
+* exit 1 1a (should not exit)
+* cd (should go to $HOME)
+* check that cd updates $PWD and $OLDPWD
+* cd [existing folder] [non existsing folder] (no error message, should go to the existing one)
+* export one two=three four (if you use *env* after, it should display only envp with values)
+* export =
+* unset =
+* pwd .
+* pwd ..
+* unset one two=three four (error message, but still should remove *one* and *four*)
+* unset PATH (*ls* should display nothing after this)
+* make sure that your builtin write in proper output (export, export > f1, echo one > f1 | echo two > f2 | echo three > f3)
+
+## Other cases
+* echo $$
+* ""
+* ''
+* $NONEXISTING
+* "$NONEXISTING"
+*   ls (with spaces before a command)
+* $$
+* expansion for heredoc (should replace all valid $VAR with their values; if none, just a new line; test against bash):
+> cat << EOF  
+> $USER  
+> "$USER"  
+> '$USER'  
+> $?$?  
+> $  
+* with export and a command (should execute the command if it exists):
+> export TEST=echo  
+> $TEST hello  
 
 
-## **Folders**
-**srcs** - source files
+# **Attempts**
 
-**include** - header
 
+# **Folders**
 **libft** - libft library
 
-## **Useful resources**
+# **Useful resources**
 * [Interactive tutorial](https://learngitbranching.js.org/) on git branching
 * Tutorials on how to create basic shells: [one](http://www.dmulholl.com/lets-build/a-command-line-shell.html) and [two](https://brennan.io/2015/01/16/write-a-shell-in-c/)
 * Another cool [tutorail](https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf) on writing one's own shell that helped me (baltsaros) a lot!
@@ -83,7 +144,7 @@ The project was tested by us and peers
 * [Thread](https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux) about colors
 
 
-## **Tips**
+# **Tips**
 * Read through the subject with your partner and divide the parts
 * Ask peers how they approached the project
 * Learn about lexer and parser
