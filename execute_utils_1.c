@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:18 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/08 15:54:11 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/09 12:43:12 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*access_check(char *cmd[], t_input *data)
 		if (!env[i + 1])
 			break ;
 	}
-	if (env[i] && access(env[i], X_OK) < 0)
+	if ((env[i] && access(env[i], X_OK) < 0) || !cmd[0][0])
 	{
 		write(2, "YAMSP: ", 7);
 		write(2, cmd[0], ft_strlen(cmd[0]));
