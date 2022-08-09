@@ -3,14 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:41:09 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/08 14:24:15 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/09 09:03:25 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// reads from stdin and saves it in tmp file; stops in case of ctrl+d or ctrl+c
+void	ms_heredoc(char *limiter, t_cmd *elem, t_input *data)
+{
+	char	*line;
+
+	if (signal(SIGINT, signal_hd) == SIG_ERR)
+		error_check(-1, "", data);
+	elem->in = open("heredoc.tmp", O_RDWR | O_CREAT | O_APPEND, 0777);
+	error_check(elem->in, "heredoc", data);
+	while (1)
+	{
+		line = readline("> ");
+		if (!line)
+		{
+			write(1, "\n", 1);
+			break ;
+		}
+		if (!ft_strcmp(line, limiter))
+		{
+			free(line);
+			break ;
+		}
+		hd_write(data, line, elem->in);
+		free(line);
+	}
+	close(elem->in);
+	exit(0);
+}
 
 int	get_size_cmd(t_node	*args)
 {
