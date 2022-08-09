@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_simplification.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltsaros <abuzdin@student.s19.be>         +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/09 09:15:20 by baltsaros        ###   ########.fr       */
+/*   Updated: 2022/08/09 12:40:31 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	manage_empty_args(t_node *elem)
 			while (elem->next && elem->next->type == EMPTY_ARG)
 				delete_node(elem->next);
 		}
-		if (elem->type != EMPTY_ARG && elem->type != WSPACE)
+		if (elem->type != EMPTY_ARG && elem->type != WSPACE
+			&& elem->type != QUOTE_D && elem->type != QUOTE)
 		{
 			if (elem->prev && elem->prev->type == EMPTY_ARG)
 				elem->prev->type = 0;
@@ -94,7 +95,5 @@ int	token_simplification(t_input *data)
 		return (1);
 	if (delete_useless_wspace(elem) == 1)
 		return (1);
-	if (elem && elem->type == EMPTY_ARG)
-		elem->type = 0;
 	return (0);
 }
