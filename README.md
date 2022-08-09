@@ -106,18 +106,18 @@ Make sure that you signals work correctly (in terms of behavior and exit code) i
 * ''
 * $NONEXISTING
 * "$NONEXISTING"
-*             ls (with spaces before a command)
+*   ls (with spaces before a command)
 * $$
 * expansion for heredoc (should replace all valid $VAR with their values; if none, just a new line; test against bash):
-> cat << EOF
-> $USER
-> "$USER"
-> '$USER'
-> $?$?
-> $
+> cat << EOF  
+> $USER  
+> "$USER"  
+> '$USER'  
+> $?$?  
+> $  
 * with export and a command (should execute the command if it exists):
-> export TEST=echo
-> $TEST hello
+> export TEST=echo  
+> $TEST hello  
 
 
 # **Attempts**
