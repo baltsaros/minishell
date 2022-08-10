@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:29:59 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/09 15:26:19 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/10 16:08:59 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,11 +134,15 @@ int	check_field(t_input *data, char *str)
 		if (signal(SIGINT, signal_unclosed) == SIG_ERR)
 			error_check(-1, "", data);
 		ret = check_pipe_quotes(data, str, type);
+		add_history(data->buf);
 		return (ret);
 	}
 	waitpid(data->pid, &g_status, 0);
 	if (WEXITSTATUS(g_status) == 1)
+	{
+		add_history(data->buf);
 		return (ret);
+	}
 	else if (WIFEXITED(g_status))
 		exit((g_status >> 8) & 0xff);
 	else

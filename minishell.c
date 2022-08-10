@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:38:28 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/10 15:50:26 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/10 16:07:55 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	prompt(t_input *data)
 			yo_exit(data);
 		else if (is_right_buf(data->buf) != 1)
 		{
-			add_history(data->buf);
+			if (!check_closed(data, data->buf))
+				add_history(data->buf);
 			if (!check_field(data, data->buf))
 			{
 				data_init(data);
