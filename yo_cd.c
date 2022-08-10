@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:43 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/10 13:47:48 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/10 15:33:23 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,16 +84,19 @@ static void	cd_home(t_input *data)
 		{
 			if ((chdir(data->envp_tmp->value)))
 			{
-				write(2, "YAMSP: cd: ", 11);
-				write(2, data->envp_tmp->value,
-					ft_strlen(data->envp_tmp->value));
-				write(2, ": ", 2);
-				perror(NULL);
+				write(2, "YAMSP: ", 7);
+				perror("cd");
 				g_status = 1;
 				return ;
 			}
 		}
 		data->envp_tmp = data->envp_tmp->next;
+	}
+	if (!data->envp_tmp)
+	{
+		write(2, "YAMSP: cd: HOME not set\n", 24);
+		g_status = 1;
+		return ;
 	}
 	update_pwd(data);
 }

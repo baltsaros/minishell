@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/09 15:22:56 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/10 15:38:46 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	g_status;
 enum e_tokens
 {
 	DOLLAR		= 36,
+	DOLLAR_R	= 12,
 	WORD		= 2,
 	WSPACE		= 3,
 	WORD_AST	= 4,
