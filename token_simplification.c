@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_simplification.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/10 16:34:41 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/10 17:51:00 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,6 @@ int	token_simplification(t_input *data)
 		return (1);
 	if (delete_useless_wspace(elem) == 1)
 		return (1);
-	ms_token_print(elem);
+	// ms_token_print(elem);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:43 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/10 15:33:23 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/10 17:50:24 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ static void	cd_home(t_input *data)
 				g_status = 1;
 				return ;
 			}
+			break ;
 		}
 		data->envp_tmp = data->envp_tmp->next;
 	}
@@ -103,6 +104,7 @@ static void	cd_home(t_input *data)
 
 int	yo_cd(t_input *data)
 {
+	g_status = 0;
 	if (!data->cmds->cmd[1])
 	{
 		cd_home(data);
