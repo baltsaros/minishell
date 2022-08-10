@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/10 15:38:46 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/10 21:14:28 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -317,6 +317,7 @@ char	*ms_getenv(char *var, t_input *data);
 // token simplification utils 3
 void	out_arg_management(t_node *elem);
 void	in_arg_management(t_node *elem);
+int		check_dredir(t_node *elem, t_input *data);
 
 // dollar simplification braces
 void	dollar_braces_2(t_node *elem, t_input *data);
