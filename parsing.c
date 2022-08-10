@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 14:47:50 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/10 13:29:29 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/10 21:00:52 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ t_cmd	*parse_cmd(t_input *data)
 	t_node	*tmp;
 
 	tmp = data->args;
+	if (tmp->type == 999)
+		return (NULL);
 	while (tmp)
 	{
 		first_elem = init_elem(tmp, data);

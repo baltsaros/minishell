@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/10 20:55:22 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/10 21:03:42 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,13 @@ static int	dredir_cmd(t_node *elem, t_input *data)
 static int	dredir_nocmd(t_node *elem, t_input *data)
 {
 	int	fd;
+	t_node	*in;
+	t_node	*out;
 
+	in = elem;
 	if (elem->next && elem->next->type == REDIR_OUT)
 	{
-		// elem = delete_node(elem);
-		// elem = delete_node(elem);
+		out = elem->next;
 		elem = elem->next->next;
 	}
 	while (elem && elem->type == WSPACE)
@@ -114,7 +116,9 @@ static int	dredir_nocmd(t_node *elem, t_input *data)
 		if (error_check_noexit(fd, elem->value, data))
 			return (1);
 		close(fd);
-		elem->type = 0;
+		elem->type = 999;
+		in->type = 999;
+		out->type = 999;
 	}
 	return (0);
 }
