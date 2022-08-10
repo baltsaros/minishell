@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:30:33 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/08 15:59:57 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/10 16:25:42 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,15 @@ int	expanding_variables(t_node *elem, t_input *data)
 			elem->type = WORD;
 		if (elem->type == DOLLAR)
 			dollar_management(elem, data);
+		else if (elem->type == DOLLAR_R)
+		{
+			elem->type = DOLLAR_VAR;
+			free(elem->value);
+			if (g_status > 255)
+				g_status = (g_status >> 8) & 0xff;
+			elem->value = ft_itoa(g_status);
+			alloc_check_small(elem->value, data);
+		}
 		if (!elem->next)
 			break ;
 		elem = elem->next;

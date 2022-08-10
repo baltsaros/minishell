@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 14:21:33 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/08 15:44:11 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/10 16:24:58 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,15 +95,6 @@ t_node	*dollar_token_simplification(t_node *elem, t_input *data)
 		elem->type = ENV_VA;
 		elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
 		ms_token_del(elem->next);
-		if (!ft_strncmp(elem->value, "$?", 3))
-		{
-			elem->type = DOLLAR_VAR;
-			free(elem->value);
-			if (g_status > 255)
-				g_status = (g_status >> 8) & 0xff;
-			elem->value = ft_itoa(g_status);
-			alloc_check_small(elem->value, data);
-		}
 	}
 	else if (elem->next && elem->next->type == BRACES_L)
 		dollar_braces(elem, data);
