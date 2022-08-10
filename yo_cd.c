@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:43 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/10 13:20:48 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/10 13:47:48 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	update_envp(t_input *data, char *pwd, char *oldpwd)
 	free(pwd);
 }
 
-static void	getcwd_error(void)
+static void	getpwd_error(void)
 {
 	write(2, "YAMSP: ", 7);
 	perror("pwd");
@@ -55,7 +55,7 @@ static void	update_pwd(t_input *data)
 	pwd = NULL;
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
-		return (getcwd_error());
+		return (getpwd_error());
 	data->envp_tmp = data->envp_n;
 	while (data->envp_tmp && ft_strcmp(data->envp_tmp->type, "PWD"))
 		data->envp_tmp = data->envp_tmp->next;

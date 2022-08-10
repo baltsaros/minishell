@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 14:47:50 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/08 14:24:19 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/10 13:29:29 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,21 @@ int	parsing(t_input *data)
 	data->cmds = parse_cmd(data);
 	if (!data->cmds || !data->exec)
 		return (1);
+	// t_cmd	*tmp;
+	// tmp = data->cmds;
+	// while (tmp)
+	// {
+	// 	for (int i = 0; tmp->cmd[i]; i++)
+	// 		printf("cmd[%d]: %s\n", i, tmp->cmd[i]);
+	// 	printf("len_cmd: %d\n", tmp->len_cmd);
+	// 	printf("delim: %s\n", tmp->delim);
+	// 	printf("in: %d\n", tmp->in);
+	// 	printf("in arg: %s\n", tmp->in_arg);
+	// 	printf("out: %d\n", tmp->out);
+	// 	printf("out arg: %s\n", tmp->out_arg);
+	// 	printf("pipe: %d\n", tmp->pipe);
+	// 	printf("[NEXT]\n");
+	// 	tmp = tmp->next;
+	// }
 	return (0);
 }
