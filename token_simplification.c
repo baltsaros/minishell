@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/10 21:03:42 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/10 21:10:42 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,8 +127,6 @@ int	check_dredir(t_node *elem, t_input *data)
 {
 	int	ret;
 
-	while (elem && elem->type == WSPACE)
-		elem = elem->next;
 	while (elem)
 	{
 		data->j = 0;
