@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:38:28 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/10 15:34:55 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/10 15:50:26 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ void	prompt(t_input *data)
 			if (!check_field(data, data->buf))
 			{
 				data_init(data);
-				token_simplification(data);
 				// ms_token_print(data->args);
+				token_simplification(data);
 				if (!parsing(data))
 					execute(data);
 				ms_free_token(data->args);
