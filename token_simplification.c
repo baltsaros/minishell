@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/10 17:51:00 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/10 20:55:22 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,81 @@ int	general_simplification(t_node *elem)
 	return (0);
 }
 
+static int	dredir_cmd(t_node *elem, t_input *data)
+{
+	int	fd;
+
+	if (elem->next && elem->next->type == REDIR_OUT)
+	{
+		elem = delete_node(elem);
+		elem = delete_node(elem);
+	}
+	while (elem && elem->type == WSPACE)
+		elem = elem->next;
+	if (elem && elem->type == WORD && elem->value && data->j > 1)
+	{
+		fd = open(elem->value, O_WRONLY | O_CREAT | O_APPEND, 00644);
+		if (error_check_noexit(fd, elem->value, data))
+			return (1);
+		close(fd);
+		elem = ms_token_del(elem);
+	}
+	return (0);
+}
+
+static int	dredir_nocmd(t_node *elem, t_input *data)
+{
+	int	fd;
+
+	if (elem->next && elem->next->type == REDIR_OUT)
+	{
+		// elem = delete_node(elem);
+		// elem = delete_node(elem);
+		elem = elem->next->next;
+	}
+	while (elem && elem->type == WSPACE)
+		elem = elem->next;
+	if (elem && elem->type == WORD && elem->value)
+	{
+		fd = open(elem->value, O_WRONLY | O_CREAT | O_APPEND, 00644);
+		if (error_check_noexit(fd, elem->value, data))
+			return (1);
+		close(fd);
+		elem->type = 0;
+	}
+	return (0);
+}
+
+int	check_dredir(t_node *elem, t_input *data)
+{
+	int	ret;
+
+	while (elem && elem->type == WSPACE)
+		elem = elem->next;
+	while (elem)
+	{
+		data->j = 0;
+		while (elem && elem->type != REDIR_IN)
+		{
+			if (elem->type == WORD)
+				data->j++;
+			else if (elem->type == PIPE)
+				data->j = 0;
+			elem = elem->next;
+		}
+		if (!elem)
+			return (0);
+		if (data->j > 0)
+			ret = dredir_cmd(elem, data);
+		else if (data->j == 0)
+			ret = dredir_nocmd(elem, data);
+		if (ret == 1)
+			return (1);
+		elem = elem->next;
+	}
+	return (0);
+}
+
 int	token_simplification(t_input *data)
 {
 	t_node	*elem;
@@ -82,6 +157,8 @@ int	token_simplification(t_input *data)
 	if (add_flags(elem) == 1)
 		return (1);
 	if (expanding_variables(elem, data) == 1)
+		return (1);
+	if (check_dredir(elem, data) == 1)
 		return (1);
 	if (delete_useless_empty_args(elem) == 1)
 		return (1);
@@ -95,6 +172,6 @@ int	token_simplification(t_input *data)
 		return (1);
 	if (delete_useless_wspace(elem) == 1)
 		return (1);
-	// ms_token_print(elem);
+	ms_token_print(elem);
 	return (0);
 }
