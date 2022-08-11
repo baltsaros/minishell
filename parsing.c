@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 14:47:50 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/11 14:24:38 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/11 14:33:03 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ t_cmd	*parse_cmd(t_input *data)
 	t_node	*tmp;
 
 	tmp = data->args;
+	if (tmp->type == 999)
+		return (NULL);
 	while (tmp)
 	{
 		first_elem = init_elem(tmp, data);
