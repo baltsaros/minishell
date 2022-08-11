@@ -8,7 +8,6 @@ C_RESET			=\033[0m
 
 NAME		= minishell
 
-# SRC_DIR		= srcs
 SRCS		= minishell.c \
 				minishell_utils_1.c \
 				minishell_utils_2.c \
@@ -49,7 +48,6 @@ SRCS		= minishell.c \
 				word_total.c \
 				add_flags.c \
 				syntax_checker.c
-# SRCS		= $(notdir $(SRC_FILES))
 
 OBJ_DIR		= objs
 OBJ_FILES	= $(SRCS:.c=.o)
