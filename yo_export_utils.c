@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:57 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/11 13:10:24 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/11 13:43:08 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	add_envp(t_input *data, char *type, char *value)
 	else
 		tmp[data->i] = ms_strdup(str, data);
 	tmp[data->i + 1] = NULL;
+	free(str);
 	ms_free(data->envp);
 	data->envp = tmp;
 	type = NULL;
