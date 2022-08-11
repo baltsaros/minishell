@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   yo_export_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:57 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/11 13:43:08 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/11 14:02:40 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	add_envp(t_input *data, char *type, char *value)
 	str = ft_strjoin(type, "=");
 	alloc_check_small(str, data);
 	if (value)
-		tmp[data->i] = ms_strjoin_free(str, value, data);
+		tmp[data->i] = ft_strjoin(str, value);
 	else
 		tmp[data->i] = ms_strdup(str, data);
 	tmp[data->i + 1] = NULL;
