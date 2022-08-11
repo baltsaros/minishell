@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/11 09:54:13 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/11 10:13:02 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,7 @@ int		check_closed(t_input *data, char *str);
 int		check_field(t_input *data, char *str);
 int		is_right_buf(char *buf);
 int		eof_error(char *msg, int check);
+int		check_pipe(char **buf, char *msg, char c, t_input *data);
 
 // data_init
 void	data_init(t_input *data);
@@ -228,7 +229,7 @@ char	**get_address(char *cmd[], char *envp[], t_input *data);
 char	*access_check(char *cmd[], t_input *data);
 void	ms_execve(char *argv[], t_input *data);
 void	set_std(t_input *data, int in, int out);
-void	close_fds(int fd1, int f2);
+void	close_fds(int fd1, int f2, int param);
 int		is_builtin(t_input *data, t_cmd *cmds);
 void	hd_write(t_input *data, char *str, int out);
 

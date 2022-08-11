@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:25 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/11 09:34:43 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/11 10:04:56 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,7 @@ void	ms_fork(char *argv[], t_input *data)
 				data->cmds->out_arg, data);
 		else
 			error_check(dup2(fd[1], OUT), "", data);
-		close(fd[0]);
-		close(fd[1]);
+		close_fds(fd[1], fd[0], 0);
 		if (check_builtin(data, data->cmds))
 			exit(g_status);
 		else
@@ -58,8 +57,7 @@ void	ms_fork(char *argv[], t_input *data)
 	}
 	close(data->cmds->in);
 	error_check(dup2(fd[0], IN), "", data);
-	close(fd[1]);
-	close(fd[0]);
+	close_fds(fd[1], fd[0], 0);
 }
 
 static void	last_cmd(t_input *data)
@@ -70,7 +68,7 @@ static void	last_cmd(t_input *data)
 		exit(g_status);
 	else
 		ms_execve(data->cmds->cmd, data);
-	close_fds(data->cmds->in, data->cmds->out);
+	close_fds(data->cmds->in, data->cmds->out, 1);
 }
 
 // loop until the last command then execve for the last one
@@ -121,7 +119,7 @@ int	execute(t_input *data)
 			{
 				set_std(data, 1, 1);
 				ms_execve(data->cmds->cmd, data);
-				close_fds(data->cmds->in, data->cmds->out);
+				close_fds(data->cmds->in, data->cmds->out, 1);
 			}
 		}
 		waitpid(data->pid, &g_status, 0);

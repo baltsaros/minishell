@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_input_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:29:59 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/11 09:34:26 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/11 10:12:51 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,27 @@ int	check_closed(t_input *data, char *str)
 	}
 	if (str[data->i - 1] == '|')
 		return (1);
+	return (0);
+}
+
+// wait for an unclosed pipe to be closed
+int	check_pipe(char **buf, char *msg, char c, t_input *data)
+{
+	char	*tmp;
+
+	while (1)
+	{
+		tmp = readline(msg);
+		if (!tmp)
+			return (eof_error(msg, 0));
+		*buf = ms_charjoin_free(*buf, '\n', data);
+		*buf = ms_strjoin_free(*buf, tmp, data);
+		if (!ft_strchr(tmp, c) || !ft_strcmp(tmp, "|"))
+		{
+			free(tmp);
+			break ;
+		}
+		free(tmp);
+	}
 	return (0);
 }
