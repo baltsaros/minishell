@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   yo_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:53 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/09 15:24:59 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/11 10:49:11 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ int	yo_exit(t_input *data)
 	if (!data->buf)
 	{
 		g_status = 0;
-		write(1, "\n", 1);
 		exit(g_status);
 	}
 	if (!check_nonnumeric(data))
