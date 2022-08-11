@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:57 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/11 13:43:08 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/11 14:28:43 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,12 @@ static size_t	ms_dstrlen(char **dstr)
 // add to envp char**
 void	add_envp(t_input *data, char *type, char *value)
 {
-	int		size;
 	char	**tmp;
 	char	*str;
 
-	size = ms_dstrlen(data->envp);
+	data->k = ms_dstrlen(data->envp);
 	data->i = 0;
-	tmp = ms_malloc((sizeof(tmp) * (size + 2)), data);
+	tmp = ms_malloc((sizeof(tmp) * (data->k + 2)), data);
 	while (data->envp[data->i])
 	{
 		tmp[data->i] = ms_strdup(data->envp[data->i], data);
@@ -40,9 +39,10 @@ void	add_envp(t_input *data, char *type, char *value)
 	str = ft_strjoin(type, "=");
 	alloc_check_small(str, data);
 	if (value)
-		tmp[data->i] = ms_strjoin_free(str, value, data);
+		tmp[data->i] = ft_strjoin(str, value);
 	else
 		tmp[data->i] = ms_strdup(str, data);
+	alloc_check_small(tmp[data->i], data);
 	tmp[data->i + 1] = NULL;
 	free(str);
 	ms_free(data->envp);
