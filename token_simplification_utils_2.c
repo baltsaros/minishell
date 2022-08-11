@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:30:01 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/08 15:54:00 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/11 10:02:24 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*ms_getenv(char *var, t_input *data)
 	if (tmp)
 		str = tmp->value;
 	else
-		return (NULL);
+		return ("");
 	return (str);
 }
 
