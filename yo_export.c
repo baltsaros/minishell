@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:00 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/08 15:10:24 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/11 12:46:07 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,21 +51,24 @@ static void	print_envp(t_input *data, t_env *envp)
 	}
 }
 
-static void	error_msg(void)
+static void	error_msg(int c)
 {
 	write(2, "YAMSP: ", 7);
-	write(2, "export: `=': not a valid identifier\n", 36);
+	write(2, "export: `", 9);
+	write(2, &c, 1);
+	write(2, "': not a valid identifier\n", 26);
 	g_status = 1;
 }
 
 // update linked list envp
 static void	export_var(t_input *data, char *s)
 {
-	while (s[data->i] && s[data->i] != '=')
+	// while (s[data->i] && !check_charset(s[data->i], "%!@+-?=\'\"$"))
+	while (s[data->i] && ft_isalnum(s[data->i]))
 		data->i++;
 	if (data->i == 0 && s[data->i])
 	{
-		error_msg();
+		error_msg(s[data->i]);
 		return ;
 	}
 	data->type = ms_strndup(s, data->i, data);
@@ -101,6 +104,11 @@ int	yo_export(t_input *data)
 		data->i = 0;
 		data->type = NULL;
 		data->value = NULL;
+		if (!data->cmds->cmd[i][0])
+		{
+			++i;
+			continue ;
+		}
 		export_var(data, data->cmds->cmd[i]);
 		++i;
 	}

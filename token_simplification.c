@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_simplification.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:32:59 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/11 10:12:33 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/11 12:20:32 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,10 @@ int	token_simplification(t_input *data)
 	elem = data->args;
 	if (add_flags(elem) == 1)
 		return (1);
+	// ms_token_print(elem);
 	if (expanding_variables(elem, data) == 1)
 		return (1);
+	// ms_token_print(elem);
 	if (check_dredir(elem, data) == 1)
 		return (1);
 	if (delete_useless_empty_args(elem) == 1)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar_simplification.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 14:21:33 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/11 12:10:06 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/11 12:19:14 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,11 @@ t_node	*dollar_token_simplification(t_node *elem, t_input *data)
 {
 	if (elem->next && elem->next->type == WORD)
 	{
-		if (check_charset(elem->value[0], ":.,\%=")
-			printf("Test\n")
+		if (check_charset(elem->next->value[0], ":.,/%=+"))
+		{
+			elem->type = WORD;
+			return (elem);
+		}
 		elem->type = ENV_VA;
 		elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
 		ms_token_del(elem->next);
