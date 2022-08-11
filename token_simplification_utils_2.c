@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:30:01 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/11 10:02:24 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/11 10:12:22 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,11 @@ int	delete_useless_empty_args(t_node *elem)
 
 int	delete_useless_wspace(t_node *elem)
 {
+	if (!ft_strncmp(elem->value, "", 2))
+	{
+		elem->type = 0;
+		elem = elem->next;
+	}
 	while (elem)
 	{
 		while (elem->next && elem->type == WSPACE)
