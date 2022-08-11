@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:39:14 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/06 10:09:08 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/11 13:08:50 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void	increase_shlvl(t_input *data)
 	i = 0;
 	while (data->envp[i] && ft_strncmp(data->envp[i], "SHLVL", 5))
 		i++;
+	if (!data->envp[i])
+		return ;
 	data->tmp = ms_strdup(data->envp[i] + 6, data);
 	data->value = ms_strndup(data->envp[i], 6, data);
 	data->i = ft_atoi(data->tmp);

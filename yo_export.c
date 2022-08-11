@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:00 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/11 12:46:07 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/11 13:11:20 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ static void	error_msg(int c)
 // update linked list envp
 static void	export_var(t_input *data, char *s)
 {
-	// while (s[data->i] && !check_charset(s[data->i], "%!@+-?=\'\"$"))
 	while (s[data->i] && ft_isalnum(s[data->i]))
 		data->i++;
 	if (data->i == 0 && s[data->i])

@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:57 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/04 10:26:54 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/11 13:10:24 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	add_envp(t_input *data, char *type, char *value)
 {
 	int		size;
 	char	**tmp;
+	char	*str;
 
 	size = ms_dstrlen(data->envp);
 	data->i = 0;
@@ -36,14 +37,12 @@ void	add_envp(t_input *data, char *type, char *value)
 		tmp[data->i] = ms_strdup(data->envp[data->i], data);
 		data->i++;
 	}
+	str = ft_strjoin(type, "=");
+	alloc_check_small(str, data);
 	if (value)
-	{
-		data->tmp = ft_strjoin(type, "=");
-		alloc_check_small(data->tmp, data);
-		tmp[data->i] = ms_strjoin_free(data->tmp, value, data);
-	}
+		tmp[data->i] = ms_strjoin_free(str, value, data);
 	else
-		tmp[data->i] = ms_strdup(type, data);
+		tmp[data->i] = ms_strdup(str, data);
 	tmp[data->i + 1] = NULL;
 	ms_free(data->envp);
 	data->envp = tmp;
