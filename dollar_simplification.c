@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 14:21:33 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/10 16:24:58 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/11 12:10:06 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ t_node	*dollar_token_simplification(t_node *elem, t_input *data)
 {
 	if (elem->next && elem->next->type == WORD)
 	{
+		if (check_charset(elem->value[0], ":.,\%=")
+			printf("Test\n")
 		elem->type = ENV_VA;
 		elem->value = ms_strjoin_free(elem->value, elem->next->value, data);
 		ms_token_del(elem->next);
