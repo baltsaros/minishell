@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/10 21:14:28 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/11 09:54:13 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -318,6 +318,9 @@ char	*ms_getenv(char *var, t_input *data);
 void	out_arg_management(t_node *elem);
 void	in_arg_management(t_node *elem);
 int		check_dredir(t_node *elem, t_input *data);
+
+// Token Simplification Utils 4
+void	expansion_between_quote(t_node *elem);
 
 // dollar simplification braces
 void	dollar_braces_2(t_node *elem, t_input *data);
