@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:25 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/11 10:04:56 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/11 18:35:01 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int	execute(t_input *data)
 				pipex(data);
 			else
 			{
-				set_std(data, 1, 1);
+				set_std(data, data->cmds->in, data->cmds->out);
 				ms_execve(data->cmds->cmd, data);
 				close_fds(data->cmds->in, data->cmds->out, 1);
 			}
