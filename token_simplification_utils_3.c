@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_simplification_utils_3.c                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 15:55:27 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/11 09:30:59 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/11 18:42:05 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,14 @@ static int	dredir_cmd(t_node *elem, t_input *data)
 			return (1);
 		close(fd);
 		elem = ms_token_del(elem);
+	}
+	else if (elem && elem->type == WORD && elem->value && data->j == 1)
+	{
+		fd = open(elem->value, O_WRONLY | O_CREAT | O_APPEND, 00644);
+		if (error_check_noexit(fd, elem->value, data))
+			return (1);
+		close(fd);
+		// elem = ms_token_del(elem);
 	}
 	return (0);
 }
