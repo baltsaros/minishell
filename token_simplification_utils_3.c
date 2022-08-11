@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_simplification_utils_3.c                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 15:55:27 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/10 21:14:47 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/11 09:30:59 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static int	dredir_cmd(t_node *elem, t_input *data)
 // for cases like: <> f1
 static int	dredir_nocmd(t_node *elem, t_input *data)
 {
-	int	fd;
+	int		fd;
 	t_node	*in;
 	t_node	*out;
 

@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 14:22:06 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/10 16:33:22 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/11 09:31:42 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	redirection_in(t_node *args, t_cmd *elem, t_input *data)
 {
-	printf("IN test\n");
 	if (!args->next || is_the_next_is_in_arg(args) == 1)
 		return (print_syntax_error_bool(args, data));
 	if (args->next && args->next->type == IN_ARG)
@@ -28,7 +27,8 @@ int	redirection_in(t_node *args, t_cmd *elem, t_input *data)
 		if (init_in(args, elem, data) == 1)
 			return (1);
 	}
-	else if (args->next && (args->next->type == REDIR_OUT || args->next->type == REDIR_AP))
+	else if (args->next && (args->next->type == REDIR_OUT
+			|| args->next->type == REDIR_AP))
 		return (0);
 	else
 		return (print_syntax_error_bool(args, data));
@@ -37,7 +37,6 @@ int	redirection_in(t_node *args, t_cmd *elem, t_input *data)
 
 int	redirection_out(t_node *args, t_cmd *elem, t_input *data)
 {
-	printf("OUT test\n");
 	if (!args->next || is_the_next_is_out_arg(args) == 1)
 		return (print_syntax_error_bool(args, data));
 	if (args->next && args->next->type == OUT_ARG)
@@ -50,7 +49,8 @@ int	redirection_out(t_node *args, t_cmd *elem, t_input *data)
 		if (init_out(args, elem, data) == 1)
 			return (1);
 	}
-	else if (args->next && (args->next->type == REDIR_IN || args->next->type == REDIR_HD))
+	else if (args->next && (args->next->type == REDIR_IN
+			|| args->next->type == REDIR_HD))
 		return (0);
 	else
 		return (print_syntax_error_bool(args, data));

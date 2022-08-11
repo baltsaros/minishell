@@ -6,7 +6,7 @@
 /*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:38:28 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/10 16:30:03 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/11 09:31:56 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	prompt(t_input *data)
 			if (!check_field(data, data->buf))
 			{
 				data_init(data);
-				// ms_token_print(data->args);
 				token_simplification(data);
 				if (!parsing(data))
 					execute(data);
