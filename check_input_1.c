@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:29:59 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/11 10:15:47 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/11 10:17:55 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ static int	check_pipe_quotes(t_input *data, char *str, int type)
 {
 	while (str[data->i])
 	{
-		data->i = 0;
 		if (str[data->i] == '\'' || str[data->i] == '\"')
 		{
 			type = str[data->i++];
@@ -96,6 +95,7 @@ static int	child_pipe_quote(t_input *data, char *str)
 	int	ret;
 	int	type;
 
+	data->i = 0;
 	ret = 0;
 	type = 0;
 	if (signal(SIGINT, signal_unclosed) == SIG_ERR)
