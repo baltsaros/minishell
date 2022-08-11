@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_input_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:29:59 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/09 15:22:53 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/11 09:34:26 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	eof_error(char *msg, int check)
 	g_status = 2;
 	write(1, "\n", 1);
 	return (1);
-	// exit(g_status);
 }
 
 int	check_closed(t_input *data, char *str)

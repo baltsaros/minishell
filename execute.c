@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:25 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/09 13:50:28 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/11 09:34:43 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	pipex(t_input *data)
 	data->cmds->pid = fork();
 	if (data->cmds->pid == 0)
 		last_cmd(data);
-	while(head)
+	while (head)
 	{
 		if (head->next)
 		{
