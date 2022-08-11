@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:29:59 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/11 10:17:55 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/11 11:36:13 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	read_after(char **buf, char c, t_input *data)
 	{
 		tmp = readline(msg);
 		if (!tmp)
-			return (eof_error(msg, 1));
+			return (eof_error(msg, c));
 		*buf = ms_charjoin_free(*buf, '\n', data);
 		*buf = ms_strjoin_free(*buf, tmp, data);
 		if (ft_strchr(tmp, c))

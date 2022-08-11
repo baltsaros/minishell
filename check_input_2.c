@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_input_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:29:59 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/11 10:48:55 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/11 11:35:59 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,12 @@ int	is_right_buf(char *buf)
 int	eof_error(char *msg, int check)
 {
 	if (check)
+	{
 		free(msg);
+		write(2, "YAMSP: unexpected EOF while looking for matching `", 50);
+		write(2, &check, 1);
+		write(2, "'\n", 2);
+	}
 	write(2, "YAMSP: syntax error: ", 21);
 	write(2, "unexpected end of file\n", 23);
 	g_status = 2;
