@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/20 09:31:57 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/04 10:26:54 by abuzdin          ###   ########.fr       */
+/*   Created: 2022/08/11 14:30:32 by abuzdin           #+#    #+#             */
+/*   Updated: 2022/08/11 14:30:35 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,26 +25,26 @@ static size_t	ms_dstrlen(char **dstr)
 // add to envp char**
 void	add_envp(t_input *data, char *type, char *value)
 {
-	int		size;
 	char	**tmp;
+	char	*str;
 
-	size = ms_dstrlen(data->envp);
+	data->k = ms_dstrlen(data->envp);
 	data->i = 0;
-	tmp = ms_malloc((sizeof(tmp) * (size + 2)), data);
+	tmp = ms_malloc((sizeof(tmp) * (data->k + 2)), data);
 	while (data->envp[data->i])
 	{
 		tmp[data->i] = ms_strdup(data->envp[data->i], data);
 		data->i++;
 	}
+	str = ft_strjoin(type, "=");
+	alloc_check_small(str, data);
 	if (value)
-	{
-		data->tmp = ft_strjoin(type, "=");
-		alloc_check_small(data->tmp, data);
-		tmp[data->i] = ms_strjoin_free(data->tmp, value, data);
-	}
+		tmp[data->i] = ft_strjoin(str, value);
 	else
-		tmp[data->i] = ms_strdup(type, data);
+		tmp[data->i] = ms_strdup(str, data);
+	alloc_check_small(tmp[data->i], data);
 	tmp[data->i + 1] = NULL;
+	free(str);
 	ms_free(data->envp);
 	data->envp = tmp;
 	type = NULL;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:38:28 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/08 19:47:16 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/11 14:24:48 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	prompt(t_input *data)
 			yo_exit(data);
 		else if (is_right_buf(data->buf) != 1)
 		{
-			add_history(data->buf);
+			if (!check_closed(data, data->buf))
+				add_history(data->buf);
 			if (!check_field(data, data->buf))
 			{
 				data_init(data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 09:33:16 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/01/14 10:07:16 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/10 12:57:11 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*ft_strchr(const char *s, int c)
 	unsigned char	x;
 	size_t			i;
 
+	if (!s)
+		return (NULL);
 	str = (unsigned char *)s;
 	x = (unsigned char)c;
 	i = 0;

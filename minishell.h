@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: baltsaros <abuzdin@student.s19.be>         +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:32:15 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/09 09:14:56 by baltsaros        ###   ########.fr       */
+/*   Updated: 2022/08/11 10:13:02 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	g_status;
 enum e_tokens
 {
 	DOLLAR		= 36,
+	DOLLAR_R	= 12,
 	WORD		= 2,
 	WSPACE		= 3,
 	WORD_AST	= 4,
@@ -202,7 +203,8 @@ void	prompt(t_input *data);
 int		check_closed(t_input *data, char *str);
 int		check_field(t_input *data, char *str);
 int		is_right_buf(char *buf);
-void	eof_error(char *msg, int check);
+int		eof_error(char *msg, int check);
+int		check_pipe(char **buf, char *msg, char c, t_input *data);
 
 // data_init
 void	data_init(t_input *data);
@@ -227,7 +229,7 @@ char	**get_address(char *cmd[], char *envp[], t_input *data);
 char	*access_check(char *cmd[], t_input *data);
 void	ms_execve(char *argv[], t_input *data);
 void	set_std(t_input *data, int in, int out);
-void	close_fds(int fd1, int f2);
+void	close_fds(int fd1, int f2, int param);
 int		is_builtin(t_input *data, t_cmd *cmds);
 void	hd_write(t_input *data, char *str, int out);
 
@@ -316,6 +318,10 @@ char	*ms_getenv(char *var, t_input *data);
 // token simplification utils 3
 void	out_arg_management(t_node *elem);
 void	in_arg_management(t_node *elem);
+int		check_dredir(t_node *elem, t_input *data);
+
+// Token Simplification Utils 4
+void	expansion_between_quote(t_node *elem);
 
 // dollar simplification braces
 void	dollar_braces_2(t_node *elem, t_input *data);

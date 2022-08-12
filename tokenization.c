@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:34 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/05 12:51:29 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/10 15:47:48 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	check_next(t_input *data, size_t *i)
 	if (!data->buf[*i + 1])
 		next = 0;
 	else
-		next = check_charset(data->buf[*i + 1], "<>|&");
+		next = check_charset(data->buf[*i + 1], "?<>|&");
 	if (type == next)
 	{
 		data->value = ms_strndup(data->buf + *i, 2, data);
@@ -91,6 +91,11 @@ void	check_next(t_input *data, size_t *i)
 	}
 	else
 		data->value = ms_strndup(data->buf + *i, 1, data);
+	if (type == '$' && next == '?')
+	{
+		type = DOLLAR_R;
+		++(*i);
+	}
 	data->node_tmp = ms_token_new(type, data->value, data);
 	ms_token_back(&data->args, data->node_tmp);
 	++(*i);

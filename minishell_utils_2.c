@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:39:17 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/06 10:09:36 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/10 12:55:47 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	ft_strcmp(char *s1, char *s2)
 	int	i;
 
 	i = 0;
+	if (!s1 || !s2)
+		return (1);
 	while (s1[i] && s2[i] && (s1[i] == s2[i]))
 		++i;
 	return (s1[i] - s2[i]);

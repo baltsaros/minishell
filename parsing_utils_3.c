@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils_3.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
+/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 14:22:15 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/04 11:52:42 by mthiry           ###   ########.fr       */
+/*   Updated: 2022/08/11 14:42:36 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,17 @@ t_cmd	*fill_elem(t_node *args, t_cmd *elem, t_input *data)
 t_cmd	*init_elem(t_node *args, t_input *data)
 {
 	t_cmd	*elem;
+	t_cmd	*head;
 
 	elem = init_empty_elem(data);
 	if (!elem)
 		return (NULL);
+	head = elem;
 	elem = fill_elem(args, elem, data);
 	if (!elem)
+	{
+		ms_free_cmd(head);
 		return (NULL);
+	}
 	return (elem);
 }

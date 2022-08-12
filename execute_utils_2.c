@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:21 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/08 10:17:51 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/11 10:05:41 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,27 @@ void	set_std(t_input *data, int in, int out)
 		ret = dup2(data->cmds->in, IN);
 		error_check(ret, data->cmds->in_arg, data);
 	}
-	if (out > 0)
+	if (out > 1)
 	{
 		ret = dup2(data->cmds->out, OUT);
 		error_check(ret, data->cmds->out_arg, data);
 	}
 }
 
-void	close_fds(int fd1, int fd2)
+void	close_fds(int fd1, int fd2, int param)
 {
-	if (fd1)
+	if (param)
+	{
+		if (fd1)
+			close(fd1);
+		if (fd2 > 1)
+			close(fd2);
+	}
+	if (!param)
+	{
 		close(fd1);
-	if (fd2)
 		close(fd2);
+	}
 }
 
 char	*ms_strjoin_free(char *rest, char *buf, t_input *data)

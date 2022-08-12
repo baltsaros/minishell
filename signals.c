@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 14:38:53 by mthiry            #+#    #+#             */
-/*   Updated: 2022/08/08 19:52:41 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/11 17:29:21 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ void	signal_main(int signo)
 {
 	(void)signo;
 	write(1, "\n", 1);
-	rl_replace_line("", 0);
+	rl_replace_line("", 1);
 	rl_on_new_line();
 	rl_redisplay();
-	g_status = 130;
+	g_status = 1;
 }
 
 // signals for forks

@@ -3,36 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   check_input_1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
+/*   By: mthiry <mthiry@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:29:59 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/08 19:59:50 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/11 14:04:15 by mthiry           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// wait for an unclosed pipe to be closed
-static int	check_pipe(char **buf, char *msg, char c, t_input *data)
-{
-	char	*tmp;
-
-	while (1)
-	{
-		tmp = readline(msg);
-		if (!tmp)
-			eof_error(msg, 0);
-		*buf = ms_charjoin_free(*buf, '\n', data);
-		*buf = ms_strjoin_free(*buf, tmp, data);
-		if (!ft_strchr(tmp, c) || !ft_strcmp(tmp, "|"))
-		{
-			free(tmp);
-			break ;
-		}
-		free(tmp);
-	}
-	return (0);
-}
 
 // wait for unclosed quotes to be closed
 static int	read_after(char **buf, char c, t_input *data)
@@ -48,7 +26,7 @@ static int	read_after(char **buf, char c, t_input *data)
 	{
 		tmp = readline(msg);
 		if (!tmp)
-			eof_error(msg, 1);
+			return (eof_error(msg, c));
 		*buf = ms_charjoin_free(*buf, '\n', data);
 		*buf = ms_strjoin_free(*buf, tmp, data);
 		if (ft_strchr(tmp, c))
@@ -112,33 +90,42 @@ static int	check_pipe_quotes(t_input *data, char *str, int type)
 	return (0);
 }
 
+static int	child_pipe_quote(t_input *data, char *str)
+{
+	int	ret;
+	int	type;
+
+	data->i = 0;
+	ret = 0;
+	type = 0;
+	if (signal(SIGINT, signal_unclosed) == SIG_ERR)
+		error_check(-1, "", data);
+	ret = check_pipe_quotes(data, str, type);
+	add_history(data->buf);
+	return (ret);
+}
+
 // check for unclosed quotes and pipes
 // i had to add fork in order to handle signals properly
 int	check_field(t_input *data, char *str)
 {
-	int	type;
-	int	ret;
-
 	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
 		error_check(-1, "", data);
 	if (!check_closed(data, str))
 		return (0);
-	data->i = 0;
-	type = 0;
-	ret = 1;
 	data->pid = fork();
 	if (error_check_noexit(data->pid, "", data))
 		return (1);
 	if (data->pid == 0)
-	{
-		if (signal(SIGINT, signal_unclosed) == SIG_ERR)
-			error_check(-1, "", data);
-		ret = check_pipe_quotes(data, str, type);
-		return (ret);
-	}
+		return (child_pipe_quote(data, str));
 	waitpid(data->pid, &g_status, 0);
-	if (WEXITSTATUS(g_status) == 1 || WEXITSTATUS(g_status) == 2)
-		return (ret);
+	if (WEXITSTATUS(g_status) == 1)
+	{
+		add_history(data->buf);
+		return (1);
+	}
+	else if (WIFEXITED(g_status))
+		exit((g_status >> 8) & 0xff);
 	else
 		exit((g_status >> 8) & 0xff);
 }

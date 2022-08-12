@@ -6,13 +6,13 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/08 15:53:41 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/08 15:59:41 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/11 10:07:32 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	hd_estatus(int *i, int out)
+static int	hd_estatus(int *i, int out)
 {
 	char	*tmp;
 
@@ -22,6 +22,7 @@ static void	hd_estatus(int *i, int out)
 	write(out, tmp, ft_strlen(tmp));
 	free(tmp);
 	++(*i);
+	return (0);
 }
 
 static int	hd_expansion(t_input *data, char *str, int out, int *i)
@@ -31,10 +32,7 @@ static int	hd_expansion(t_input *data, char *str, int out, int *i)
 
 	start = *i;
 	if (str[start] == '?')
-	{
-		hd_estatus(i, out);
-		return (0);
-	}
+		return (hd_estatus(i, out));
 	while (str[*i] && ft_isalnum(str[*i]))
 		++(*i);
 	if (start == *i)

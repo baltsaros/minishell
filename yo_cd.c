@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:43 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/07 13:45:28 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/10 17:50:24 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	update_envp(t_input *data, char *pwd, char *oldpwd)
 	free(pwd);
 }
 
-static void	getcwd_error(void)
+static void	getpwd_error(void)
 {
 	write(2, "YAMSP: ", 7);
 	perror("pwd");
@@ -55,7 +55,7 @@ static void	update_pwd(t_input *data)
 	pwd = NULL;
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
-		return (getcwd_error());
+		return (getpwd_error());
 	data->envp_tmp = data->envp_n;
 	while (data->envp_tmp && ft_strcmp(data->envp_tmp->type, "PWD"))
 		data->envp_tmp = data->envp_tmp->next;
@@ -84,26 +84,37 @@ static void	cd_home(t_input *data)
 		{
 			if ((chdir(data->envp_tmp->value)))
 			{
-				write(2, "YAMSP: cd: ", 11);
-				write(2, data->envp_tmp->value,
-					ft_strlen(data->envp_tmp->value));
-				write(2, ": ", 2);
-				perror(NULL);
+				write(2, "YAMSP: ", 7);
+				perror("cd");
 				g_status = 1;
 				return ;
 			}
+			break ;
 		}
 		data->envp_tmp = data->envp_tmp->next;
+	}
+	if (!data->envp_tmp)
+	{
+		write(2, "YAMSP: cd: HOME not set\n", 24);
+		g_status = 1;
+		return ;
 	}
 	update_pwd(data);
 }
 
 int	yo_cd(t_input *data)
 {
+	g_status = 0;
 	if (!data->cmds->cmd[1])
 	{
 		cd_home(data);
 		return (0);
+	}
+	else if (data->cmds->len_cmd > 2)
+	{
+		write(2, "YAMSP: cd: too many arguments\n", 30);
+		g_status = 1;
+		return (g_status);
 	}
 	else if (chdir(data->cmds->cmd[1]))
 	{

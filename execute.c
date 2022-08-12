@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:25 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/09 09:04:40 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/11 18:35:01 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	ms_fork(char *argv[], t_input *data)
 				data->cmds->out_arg, data);
 		else
 			error_check(dup2(fd[1], OUT), "", data);
-		close(fd[0]);
+		close_fds(fd[1], fd[0], 0);
 		if (check_builtin(data, data->cmds))
 			exit(g_status);
 		else
@@ -57,7 +57,7 @@ void	ms_fork(char *argv[], t_input *data)
 	}
 	close(data->cmds->in);
 	error_check(dup2(fd[0], IN), "", data);
-	close(fd[1]);
+	close_fds(fd[1], fd[0], 0);
 }
 
 static void	last_cmd(t_input *data)
@@ -68,7 +68,7 @@ static void	last_cmd(t_input *data)
 		exit(g_status);
 	else
 		ms_execve(data->cmds->cmd, data);
-	close_fds(data->cmds->in, data->cmds->out);
+	close_fds(data->cmds->in, data->cmds->out, 1);
 }
 
 // loop until the last command then execve for the last one
@@ -85,8 +85,13 @@ int	pipex(t_input *data)
 	data->cmds->pid = fork();
 	if (data->cmds->pid == 0)
 		last_cmd(data);
-	while(head)
+	while (head)
 	{
+		if (head->next)
+		{
+			close(0);
+			close(1);
+		}
 		waitpid(head->pid, &g_status, 0);
 		if (WIFSIGNALED(data->cmds->pid) && g_status)
 			g_status += 128;
@@ -112,9 +117,9 @@ int	execute(t_input *data)
 				pipex(data);
 			else
 			{
-				set_std(data, 1, 1);
+				set_std(data, data->cmds->in, data->cmds->out);
 				ms_execve(data->cmds->cmd, data);
-				close_fds(data->cmds->in, data->cmds->out);
+				close_fds(data->cmds->in, data->cmds->out, 1);
 			}
 		}
 		waitpid(data->pid, &g_status, 0);
