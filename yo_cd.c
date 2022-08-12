@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:31:43 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/10 17:50:24 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/12 15:41:25 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,12 +110,6 @@ int	yo_cd(t_input *data)
 		cd_home(data);
 		return (0);
 	}
-	else if (data->cmds->len_cmd > 2)
-	{
-		write(2, "YAMSP: cd: too many arguments\n", 30);
-		g_status = 1;
-		return (g_status);
-	}
 	else if (chdir(data->cmds->cmd[1]))
 	{
 		write(2, "YAMSP: cd: ", 11);
@@ -125,6 +119,13 @@ int	yo_cd(t_input *data)
 		g_status = 1;
 		return (g_status);
 	}
+	// for linux
+	// else if (data->cmds->len_cmd > 2)
+	// {
+	// 	write(2, "YAMSP: cd: too many arguments\n", 30);
+	// 	g_status = 1;
+	// 	return (g_status);
+	// }
 	update_pwd(data);
 	return (0);
 }

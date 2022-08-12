@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:05 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/04 10:24:56 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/12 16:00:27 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,22 +37,68 @@ static void	create_envp(t_input *data, char *envp[])
 	data->envp_len = i;
 }
 
+void	strdup_and_increase(t_input *data, char **tmp)
+{
+		tmp[data->i] = ms_strdup(data->tmp, data);
+		data->i++;
+}
+
+static void	add_missed_envp(t_input *data, int *vars)
+{
+	int		size;
+	char	**tmp;
+
+	size = data->i + vars[0] + vars[0] + vars[0];
+	tmp = ms_malloc((sizeof(*tmp) * size), data);
+	tmp = data->envp;
+	data->tmp = getcwd(NULL, 0);
+	if (data->tmp)
+	{
+		write(2, "YAMSP: ", 7);
+		perror("pwd");
+		ms_free_all(data);
+		exit(1);
+	}
+	if (vars[0])
+		strdup_and_increase(data, tmp);
+	if (vars[1])
+		strdup_and_increase(data, tmp);
+	if (vars[2])
+		strdup_and_increase(data, tmp);
+	tmp[data->i] = NULL;
+	ms_free(data->envp);
+	data->envp = tmp;
+	free(data->tmp);
+}
+
 // creation of envp variable in char** form
+// also checks for missing envp like HOME, PWD, OLDPWD
 static void	copy_envp(t_input *data, char *envp[])
 {
 	int	size;
+	int	vars[3];
 
 	size = 0;
+	vars[0] = 0;
+	vars[1] = 0;
+	vars[2] = 0;
 	while (envp[size])
 		++size;
 	data->envp = ms_malloc((sizeof(*data->envp) * (size + 1)), data);
 	data->i = 0;
 	while (envp[data->i])
 	{
+		if (!ft_strncmp(envp[data->i], "HOME", 4))
+			vars[0] = 1;
+		else if (!ft_strncmp(envp[data->i], "PWD", 3))
+			vars[1] = 1;
+		else if (!ft_strncmp(envp[data->i], "OLDPWD", 6))
+			vars[2] = 1;
 		data->envp[data->i] = ms_strdup(envp[data->i], data);
 		data->i++;
 	}
 	data->envp[data->i] = NULL;
+	add_missed_envp(data, vars);
 }
 
 void	envp_init(t_input *data, char *envp[])

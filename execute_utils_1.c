@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:18 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/09 12:43:12 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/12 15:39:50 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,16 @@ char	**get_address(char *cmd[], char *envp[], t_input *data)
 	int		i;
 
 	i = 0;
-	while (ft_strncmp("PATH=", envp[i], 5))
+	while (envp[i] && ft_strncmp("PATH=", envp[i], 5))
 		++i;
+	if (!envp[i])
+	{
+		write(2, "YAMSP: ", 7);
+		write(2, cmd[0], ft_strlen(cmd[0]));
+		write(2, ": command not found\n", 20);
+		g_status = 127;
+		exit(g_status);
+	}
 	envp[i] = ms_strjoin_free(envp[i], ":.", data);
 	env = ft_split(envp[i] + 5, ':');
 	alloc_check_big(env, data);
