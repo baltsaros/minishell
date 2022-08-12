@@ -22,6 +22,9 @@ This project is about creating a simple shell. Bash was used as a reference.
 * > Handle ctrl-C, ctrl-D and ctrl-\ which should behave like in bash.
 * > Your shell must implement the following builtins (without options): echo (with -n), cd, pwd, export, unset, env, exit
 
+## Bonus:
+* > && and || with parenthesis for priorities  
+* > Wildcards * should work for the current working directory  
 
 ## Allowed functions:
 * readline and connected to it
@@ -97,6 +100,16 @@ Make sure that you signals work correctly (in terms of behavior and exit code) i
 * cd (should go to $HOME)
 * check that cd updates $PWD and $OLDPWD
 * cd [existing folder] [non existsing folder] (no error message, should go to the existing one)
+* cd in this case should diplay an error:
+> unset HOME  
+> cd  
+* echo one$?two
+* echo "one$?two"
+* echo -n one
+* echo -nnnnnnnnnn one
+* echo -n -n -n -n -n -n one
+* echo -nnnnnnnnnnnnn -n -n -n -n -n one
+* echo one -n -n -n -n -n -n one
 * export one two=three four (if you use *env* after, it should display only envp with values)
 * export =
 * unset =
@@ -120,17 +133,26 @@ Make sure that you signals work correctly (in terms of behavior and exit code) i
 > "$USER"  
 > '$USER'  
 > $?$?  
+> one$?two
 > $  
+PS: if eof is between double quotes, no expansion should happen. We did not implement that
 * with export and a command (should execute the command if it exists):
 > export TEST=echo  
 > $TEST hello  
+* <> nonexistingfile
+* cat <> nonexistingfile
+* cat f1 <> nonexistingfile
+* cat f1 <> nonexistingfile f2 f3 f4
 
 
 # **Attempts**
-
+* 1st attempt: 0 % (segfaulted when there were spaces before a command)
+* 2nd attempt: 0 % (segfaulted when $VAR does not exist)
+* 3rd attempt: 106 % (-4 points because we forgot to revert changes in simple rediraction after debugging)
 
 # **Folders**
 **libft** - libft library
+It is the only folder that is allowed by the subject
 
 # **Useful resources**
 * [Interactive tutorial](https://learngitbranching.js.org/) on git branching
@@ -148,4 +170,6 @@ Make sure that you signals work correctly (in terms of behavior and exit code) i
 * Read through the subject with your partner and divide the parts
 * Ask peers how they approached the project
 * Learn about lexer and parser
-* 
+* Don't be afraid to change your lexer/parsing
+* Try to make functions as universal as possible in order to avoid many if conditions (this is one thing that we can improve in our minishell :D)
+* Test)
