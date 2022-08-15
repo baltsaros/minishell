@@ -6,7 +6,7 @@
 /*   By: abuzdin <abuzdin@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 09:30:05 by abuzdin           #+#    #+#             */
-/*   Updated: 2022/08/12 16:00:27 by abuzdin          ###   ########.fr       */
+/*   Updated: 2022/08/15 10:18:14 by abuzdin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,10 @@ static void	create_envp(t_input *data, char *envp[])
 	data->envp_len = i;
 }
 
-void	strdup_and_increase(t_input *data, char **tmp)
+void	strdup_and_increase(t_input *data, char **tmp, char *type)
 {
-		tmp[data->i] = ms_strdup(data->tmp, data);
+		tmp[data->i] = ft_strjoin(type, data->tmp);
+		alloc_check_small(tmp[data->i], data);
 		data->i++;
 }
 
@@ -48,11 +49,16 @@ static void	add_missed_envp(t_input *data, int *vars)
 	int		size;
 	char	**tmp;
 
-	size = data->i + vars[0] + vars[0] + vars[0];
+	size = data->i + vars[0] + vars[1] + vars[2];
 	tmp = ms_malloc((sizeof(*tmp) * size), data);
-	tmp = data->envp;
+	data->i = 0;
+	while (data->envp[data->i])
+	{
+		tmp[data->i] = ms_strdup(data->envp[data->i], data);
+		data->i++;
+	}
 	data->tmp = getcwd(NULL, 0);
-	if (data->tmp)
+	if (!data->tmp)
 	{
 		write(2, "YAMSP: ", 7);
 		perror("pwd");
@@ -60,11 +66,11 @@ static void	add_missed_envp(t_input *data, int *vars)
 		exit(1);
 	}
 	if (vars[0])
-		strdup_and_increase(data, tmp);
+		strdup_and_increase(data, tmp, "HOME=");
 	if (vars[1])
-		strdup_and_increase(data, tmp);
+		strdup_and_increase(data, tmp, "PWD=");
 	if (vars[2])
-		strdup_and_increase(data, tmp);
+		strdup_and_increase(data, tmp, "OLDPWD=");
 	tmp[data->i] = NULL;
 	ms_free(data->envp);
 	data->envp = tmp;
@@ -79,9 +85,9 @@ static void	copy_envp(t_input *data, char *envp[])
 	int	vars[3];
 
 	size = 0;
-	vars[0] = 0;
-	vars[1] = 0;
-	vars[2] = 0;
+	vars[0] = 1;
+	vars[1] = 1;
+	vars[2] = 1;
 	while (envp[size])
 		++size;
 	data->envp = ms_malloc((sizeof(*data->envp) * (size + 1)), data);
@@ -89,11 +95,11 @@ static void	copy_envp(t_input *data, char *envp[])
 	while (envp[data->i])
 	{
 		if (!ft_strncmp(envp[data->i], "HOME", 4))
-			vars[0] = 1;
+			vars[0] = 0;
 		else if (!ft_strncmp(envp[data->i], "PWD", 3))
-			vars[1] = 1;
-		else if (!ft_strncmp(envp[data->i], "OLDPWD", 6))
-			vars[2] = 1;
+			vars[1] = 0;
+		if (!ft_strncmp(envp[data->i], "OLDPWD", 6))
+			vars[2] = 0;
 		data->envp[data->i] = ms_strdup(envp[data->i], data);
 		data->i++;
 	}
